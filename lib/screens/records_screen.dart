@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/ad_definition.dart';
 import '../services/rewarded_ad_service.dart';
 import '../state/app_controller.dart';
+import '../widgets/ad_thumbnail.dart';
 
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({
@@ -372,71 +373,104 @@ class _CatalogTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final secret = ad.isSecret && !found;
-    return Card(
+    final frame = _rarityFrame(ad.rarity, found: found);
+    return Container(
       key: Key('catalog-tile-${ad.id}'),
-      color: secret
-          ? const Color(0xFF111111)
-          : found
-          ? Colors.white
-          : const Color(0xFFE8E3DA),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                ad.displayNumber,
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: secret ? Colors.white : Colors.black,
-                ),
-              ),
-              const Spacer(),
-              Center(
-                child: Text(
-                  found
-                      ? ad.symbol
-                      : secret
-                      ? 'SECRET'
-                      : '？',
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        gradient: frame.gradient,
+        color: frame.color,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 5, offset: Offset(0, 2)),
+        ],
+      ),
+      child: Material(
+        color: secret
+            ? const Color(0xFF111111)
+            : found
+            ? Colors.white
+            : const Color(0xFFE8E3DA),
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  ad.displayNumber,
                   style: TextStyle(
-                    fontSize: secret ? 18 : 36,
-                    color: secret ? Colors.amber : Colors.black38,
                     fontWeight: FontWeight.w900,
+                    color: secret ? Colors.white : Colors.black,
                   ),
                 ),
-              ),
-              const Spacer(),
-              Text(
-                found ? ad.name : '？？？？？？？？？',
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: secret ? Colors.white : Colors.black,
+                const SizedBox(height: 5),
+                Expanded(
+                  child: ClipRect(
+                    child: AdThumbnail(ad: ad, discovered: found),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                found
-                    ? ad.rarity
-                    : secret
-                    ? 'SECRET'
-                    : '未発見',
-                style: TextStyle(
-                  fontSize: 11,
-                  color: secret ? Colors.amber : Colors.black54,
+                const SizedBox(height: 7),
+                Text(
+                  found ? ad.name : '？？？？？？？？？',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    color: secret ? Colors.white : Colors.black,
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  found
+                      ? ad.rarity
+                      : secret
+                      ? 'SECRET'
+                      : '未発見',
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: secret ? Colors.amber : Colors.black54,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+({Color? color, Gradient? gradient}) _rarityFrame(
+  String rarity, {
+  required bool found,
+}) {
+  if (!found) return (color: const Color(0xFF77736C), gradient: null);
+  return switch (rarity) {
+    'COMMON' => (color: const Color(0xFFB87333), gradient: null),
+    'UNCOMMON' => (color: const Color(0xFFC9CED6), gradient: null),
+    'RARE' => (color: const Color(0xFFFFC928), gradient: null),
+    'SUPER RARE' => (
+      color: null,
+      gradient: const LinearGradient(
+        colors: [
+          Color(0xFFFF4D4D),
+          Color(0xFFFFC928),
+          Color(0xFF45D483),
+          Color(0xFF42A5F5),
+          Color(0xFFAB62E8),
+        ],
+      ),
+    ),
+    'SECRET' => (
+      color: null,
+      gradient: const LinearGradient(
+        colors: [Color(0xFF050505), Color(0xFFFFC928), Color(0xFF050505)],
+      ),
+    ),
+    _ => (color: Colors.black, gradient: null),
+  };
 }
 
 class _MetricCard extends StatelessWidget {
