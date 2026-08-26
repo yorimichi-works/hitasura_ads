@@ -1,12 +1,12 @@
 {
-    "name": "hitasura_ads",
-    "short_name": "hitasura_ads",
+    "name": "ひたすら広告",
+    "short_name": "ひたすら広告",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#FFF3D2",
+    "theme_color": "#FF3D00",
+    "description": "広告を見る。それだけ。全151種類の架空広告を集める広告探索アプリ。",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
