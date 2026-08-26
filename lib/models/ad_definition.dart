@@ -62,6 +62,11 @@ class AdDefinition {
     required this.interactionType,
     required this.symbol,
     required this.accentColor,
+    required this.fixedValues,
+    required this.resultText,
+    required this.imageAssets,
+    required this.seIds,
+    required this.bgmId,
     required this.targetTags,
     required this.unlockCondition,
   });
@@ -87,6 +92,13 @@ class AdDefinition {
       ),
       symbol: json['symbol'] as String,
       accentColor: Color(int.parse(json['accentColor'] as String, radix: 16)),
+      fixedValues: Map<String, String>.from(
+        json['fixedValues'] as Map<String, dynamic>,
+      ),
+      resultText: json['resultText'] as String,
+      imageAssets: List<String>.from(json['imageAssets'] as List<dynamic>),
+      seIds: List<String>.from(json['seIds'] as List<dynamic>),
+      bgmId: json['bgmId'] as String?,
       targetTags: List<String>.from(json['targetTags'] as List<dynamic>),
       unlockCondition: json['unlockCondition'] as String,
     );
@@ -107,6 +119,11 @@ class AdDefinition {
   final AdInteractionType interactionType;
   final String symbol;
   final Color accentColor;
+  final Map<String, String> fixedValues;
+  final String resultText;
+  final List<String> imageAssets;
+  final List<String> seIds;
+  final String? bgmId;
   final List<String> targetTags;
   final String unlockCondition;
 

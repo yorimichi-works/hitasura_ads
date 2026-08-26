@@ -13,8 +13,17 @@
     "ctaText": "詳しく見る",
     "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "★",
+    "symbol": "あなたは本日999,999人目！",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "visitorNumber": "999,999人目"
+    },
+    "resultText": "詳しく見ても、たぶん昨日も999,999人目。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
       "retro",
@@ -34,10 +43,17 @@
     "headline": "今すぐクリックしないでください！",
     "body": "押すなと言われると押したくなる。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "pulse",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "→",
+    "symbol": "今すぐクリックしないでください！",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、押すなと言われると押したくなる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
       "retro",
@@ -57,10 +73,17 @@
     "headline": "この矢印の先に未来がある",
     "body": "矢印が多すぎてどれか分からない。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "shake",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "NEW!",
+    "symbol": "この矢印の先に未来がある",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、矢印が多すぎてどれか分からない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
       "retro",
@@ -75,18 +98,25 @@
     "description": "0になると10へ戻る。",
     "category": "古のWeb",
     "rarity": "COMMON",
-    "displayType": "retro",
-    "minimumDisplaySeconds": 6,
+    "displayType": "warning",
+    "minimumDisplaySeconds": 10,
     "headline": "残り時間、永遠の10秒",
     "body": "0になると10へ戻る。\n効果には広告差があります。",
-    "ctaText": "今は押さない",
-    "animationPreset": "bounce",
-    "interactionType": "tap",
-    "symbol": "AD",
+    "ctaText": "眺める",
+    "animationPreset": "blink",
+    "interactionType": "none",
+    "symbol": "残り時間、永遠の10秒",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "countdown": "残り10秒"
+    },
+    "resultText": "0になると10へ戻る。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
-      "retro",
+      "warning",
       "common"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -98,18 +128,27 @@
     "description": "企業努力の結晶。",
     "category": "古のWeb",
     "rarity": "COMMON",
-    "displayType": "retro",
-    "minimumDisplaySeconds": 7,
+    "displayType": "sale",
+    "minimumDisplaySeconds": 8,
     "headline": "驚異の1円OFF！",
     "body": "企業努力の結晶。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "slide",
+    "animationPreset": "confetti",
     "interactionType": "tap",
-    "symbol": "★",
+    "symbol": "驚異の1円OFF！",
     "accentColor": "FFFF4081",
+    "fixedValues": {
+      "discount": "1円OFF"
+    },
+    "resultText": "詳しく見ても、企業努力の結晶。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
-      "retro",
+      "sale",
       "common"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -121,18 +160,27 @@
     "description": "震えているのは広告だけ。",
     "category": "古のWeb",
     "rarity": "COMMON",
-    "displayType": "retro",
-    "minimumDisplaySeconds": 5,
+    "displayType": "sale",
+    "minimumDisplaySeconds": 6,
     "headline": "世界が震えた0.5％OFF",
     "body": "震えているのは広告だけ。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "rotate",
+    "animationPreset": "shake",
     "interactionType": "tap",
-    "symbol": "→",
+    "symbol": "世界が震えた0.5％OFF",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "discount": "0.5％OFF"
+    },
+    "resultText": "詳しく見ても、震えているのは広告だけ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
-      "retro",
+      "sale",
       "common"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -148,11 +196,18 @@
     "minimumDisplaySeconds": 6,
     "headline": "閉じるボタンを探せ！",
     "body": "×は逃げる。\n詳しくは広告の中で。",
-    "ctaText": "詳しく見る",
-    "animationPreset": "glow",
+    "ctaText": "×を探す",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "NEW!",
+    "symbol": "閉じるボタンを探せ！",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、×は逃げる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
       "retro",
@@ -172,10 +227,19 @@
     "headline": "ダウンロード率120％",
     "body": "何をダウンロードするのかは不明。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "confetti",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "AD",
+    "symbol": "ダウンロード率120％",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "downloadRate": "120％"
+    },
+    "resultText": "詳しく見ても、何をダウンロードするのかは不明。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
       "retro",
@@ -197,8 +261,15 @@
     "ctaText": "詳しく見る",
     "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "★",
+    "symbol": "NEW！たぶんNEW！",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、いつからNEWなのか誰も知らない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
       "retro",
@@ -218,10 +289,17 @@
     "headline": "工事中なのに営業中",
     "body": "永遠に完成しないWebサイト。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "pulse",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "→",
+    "symbol": "工事中なのに営業中",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、永遠に完成しないWebサイト。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "古のWeb",
       "retro",
@@ -241,10 +319,17 @@
     "headline": "水が入る！奇跡のコップ",
     "body": "驚くほど普通。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "shake",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "限定",
+    "symbol": "水が入る！奇跡のコップ",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、驚くほど普通。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -266,8 +351,15 @@
     "ctaText": "今は押さない",
     "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "PR",
+    "symbol": "座れる椅子、ついに登場",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、家具業界騒然。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -287,10 +379,17 @@
     "headline": "絶対に開かない傘",
     "body": "雨にも使用者にも負けない。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "slide",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "箱",
+    "symbol": "絶対に開かない傘",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、雨にも使用者にも負けない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -310,10 +409,17 @@
     "headline": "何も入らない財布",
     "body": "究極のミニマリズム。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "rotate",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "!?",
+    "symbol": "何も入らない財布",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、究極のミニマリズム。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -333,10 +439,17 @@
     "headline": "寝るためだけの枕",
     "body": "ほぼ枕。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "glow",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "限定",
+    "symbol": "寝るためだけの枕",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、ほぼ枕。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -356,10 +469,17 @@
     "headline": "切れる包丁・改",
     "body": "包丁として正しい。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "confetti",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "PR",
+    "symbol": "切れる包丁・改",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、包丁として正しい。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -379,10 +499,17 @@
     "headline": "冷たい冷蔵庫",
     "body": "専門家も驚いた。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "blink",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "箱",
+    "symbol": "冷たい冷蔵庫",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、専門家も驚いた。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -402,10 +529,17 @@
     "headline": "歩ける靴 PREMIUM",
     "body": "左右セット！\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "pulse",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "!?",
+    "symbol": "歩ける靴 PREMIUM",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、左右セット！",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -425,10 +559,17 @@
     "headline": "持てるカバン PRO MAX",
     "body": "取っ手搭載。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "shake",
+    "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "限定",
+    "symbol": "持てるカバン PRO MAX",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、取っ手搭載。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -450,8 +591,17 @@
     "ctaText": "今は押さない",
     "animationPreset": "bounce",
     "interactionType": "tap",
-    "symbol": "PR",
+    "symbol": "飲める水 2026",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "edition": "2026"
+    },
+    "resultText": "詳しく見ても、大型アップデート。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "怪しい通販",
       "product",
@@ -471,10 +621,20 @@
     "headline": "専門家100人中1人が推薦",
     "body": "選ばれし一人。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "slide",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "★",
+    "symbol": "専門家100人中1人が推薦",
     "accentColor": "FFFF6D00",
+    "fixedValues": {
+      "experts": "100人",
+      "recommended": "1人"
+    },
+    "resultText": "診断・選択完了。選ばれし一人。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -494,10 +654,20 @@
     "headline": "堂々の第1位（1商品中）",
     "body": "圧倒的首位。\n専門家も首をかしげた。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "rotate",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "1位",
+    "symbol": "堂々の第1位（1商品中）",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "rank": "第1位",
+      "products": "1商品"
+    },
+    "resultText": "診断・選択完了。圧倒的首位。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -517,10 +687,20 @@
     "headline": "★★★★★ 0件のレビュー",
     "body": "誰も評価していない高評価。\n詳しくは広告の中で。",
     "ctaText": "絶対こちら",
-    "animationPreset": "glow",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "99%",
+    "symbol": "★★★★★ 0件のレビュー",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "stars": "★★★★★",
+      "reviews": "0件"
+    },
+    "resultText": "診断・選択完了。誰も評価していない高評価。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -540,10 +720,19 @@
     "headline": "満足度101％",
     "body": "残り1％はどこから来た。\n効果には広告差があります。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "confetti",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "声",
+    "symbol": "満足度101％",
     "accentColor": "FF00C853",
+    "fixedValues": {
+      "satisfaction": "101％"
+    },
+    "resultText": "診断・選択完了。残り1％はどこから来た。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -563,10 +752,19 @@
     "headline": "リピート率300％",
     "body": "一人が三回来た。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "blink",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "★",
+    "symbol": "リピート率300％",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "repeatRate": "300％"
+    },
+    "resultText": "診断・選択完了。一人が三回来た。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -588,8 +786,18 @@
     "ctaText": "たぶんこちら",
     "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "1位",
+    "symbol": "利用者の99％が人間",
     "accentColor": "FFFF4081",
+    "fixedValues": {
+      "humanRate": "99％",
+      "otherRate": "1％"
+    },
+    "resultText": "診断・選択完了。残り1％が気になる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -609,10 +817,17 @@
     "headline": "広告博士が認めた広告",
     "body": "広告博士とは。\n詳しくは広告の中で。",
     "ctaText": "絶対こちら",
-    "animationPreset": "shake",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "99%",
+    "symbol": "広告博士が認めた広告",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。広告博士とは。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -632,10 +847,17 @@
     "headline": "今年最も広告だった広告",
     "body": "広告賞受賞。\n効果には広告差があります。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "bounce",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "声",
+    "symbol": "今年最も広告だった広告",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。広告賞受賞。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -655,10 +877,17 @@
     "headline": "比較したら勝ってました",
     "body": "比較対象は非公開。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "slide",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "★",
+    "symbol": "比較したら勝ってました",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。比較対象は非公開。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -678,10 +907,19 @@
     "headline": "口コミで話題！（口コミ1件）",
     "body": "その1件が強い。\n専門家も首をかしげた。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "rotate",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "1位",
+    "symbol": "口コミで話題！（口コミ1件）",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "reviews": "口コミ1件"
+    },
+    "resultText": "診断・選択完了。その1件が強い。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "ランキング",
       "review",
@@ -701,10 +939,17 @@
     "headline": "王様を助けろ！初級編",
     "body": "王様は今日も危険。\n詳しくは広告の中で。",
     "ctaText": "左のピンを抜く",
-    "animationPreset": "glow",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "水",
+    "symbol": "PIN",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "操作完了。王様は今日も危険。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -724,10 +969,17 @@
     "headline": "王様、炎上する",
     "body": "物理的に。\n効果には広告差があります。",
     "ctaText": "右のピンを抜く",
-    "animationPreset": "confetti",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "宝",
+    "symbol": "炎",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "操作完了。物理的に。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -747,10 +999,19 @@
     "headline": "王様と三本のピン",
     "body": "抜く順番だけが人生。\n今だけかもしれない。",
     "ctaText": "左のピンを抜く",
-    "animationPreset": "blink",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "王",
+    "symbol": "PIN×3",
     "accentColor": "FFFF4081",
+    "fixedValues": {
+      "pins": "3本のピン"
+    },
+    "resultText": "操作完了。抜く順番だけが人生。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -770,10 +1031,17 @@
     "headline": "宝より王を選べ",
     "body": "宝を選びがち。\n専門家も首をかしげた。",
     "ctaText": "右のピンを抜く",
-    "animationPreset": "pulse",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "炎",
+    "symbol": "王 vs 宝",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "操作完了。宝を選びがち。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -797,6 +1065,13 @@
     "interactionType": "pinPull",
     "symbol": "水",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "操作完了。前回から学んでいない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -816,10 +1091,17 @@
     "headline": "溶岩 VS 王様",
     "body": "カードではない。\n効果には広告差があります。",
     "ctaText": "右のピンを抜く",
-    "animationPreset": "bounce",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "宝",
+    "symbol": "溶岩",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "操作完了。カードではない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -833,20 +1115,27 @@
     "name": "王様、また燃える",
     "description": "正解を選んだはずなのに。",
     "category": "王様救出",
-    "rarity": "COMMON",
+    "rarity": "RARE",
     "displayType": "rescue",
     "minimumDisplaySeconds": 10,
     "headline": "王様、また燃える",
     "body": "正解を選んだはずなのに。\n今だけかもしれない。",
     "ctaText": "左のピンを抜く",
-    "animationPreset": "slide",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "王",
+    "symbol": "炎",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "FAIL!! 正解を選んだはずなのに、王様はまた燃えました。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
-      "common"
+      "rare"
     ],
     "unlockCondition": "通常抽選で出現"
   },
@@ -862,10 +1151,19 @@
     "headline": "王様救出率2％",
     "body": "広告主も驚いた低さ。\n専門家も首をかしげた。",
     "ctaText": "右のピンを抜く",
-    "animationPreset": "rotate",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "炎",
+    "symbol": "2％",
     "accentColor": "FF00C853",
+    "fixedValues": {
+      "rescueRate": "救出率2％"
+    },
+    "resultText": "操作完了。広告主も驚いた低さ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -885,10 +1183,17 @@
     "headline": "王様はそこじゃない",
     "body": "ピンを抜く前に気づきたい。\n詳しくは広告の中で。",
     "ctaText": "左のピンを抜く",
-    "animationPreset": "glow",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "水",
+    "symbol": "王？",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "操作完了。ピンを抜く前に気づきたい。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -908,10 +1213,17 @@
     "headline": "王様と謎の魚",
     "body": "なぜ魚がいる。\n効果には広告差があります。",
     "ctaText": "右のピンを抜く",
-    "animationPreset": "confetti",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "宝",
+    "symbol": "魚",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "操作完了。なぜ魚がいる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -931,10 +1243,17 @@
     "headline": "王様、大富豪になる",
     "body": "救出しただけなのに。\n今だけかもしれない。",
     "ctaText": "左のピンを抜く",
-    "animationPreset": "blink",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "王",
+    "symbol": "金貨",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "操作完了。救出しただけなのに。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -954,10 +1273,19 @@
     "headline": "王様、地下100階へ",
     "body": "助ける気ある？\n専門家も首をかしげた。",
     "ctaText": "右のピンを抜く",
-    "animationPreset": "pulse",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "炎",
+    "symbol": "100F",
     "accentColor": "FFFF6D00",
+    "fixedValues": {
+      "floor": "地下100階"
+    },
+    "resultText": "操作完了。助ける気ある？",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -979,8 +1307,15 @@
     "ctaText": "左のピンを抜く",
     "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "水",
+    "symbol": "禁PIN",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "操作完了。当然抜きたくなる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -1000,10 +1335,17 @@
     "headline": "王様の休日",
     "body": "それでもピンを抜かれる。\n効果には広告差があります。",
     "ctaText": "右のピンを抜く",
-    "animationPreset": "bounce",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "宝",
+    "symbol": "休日",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "操作完了。それでもピンを抜かれる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -1023,10 +1365,17 @@
     "headline": "王様FINALっぽい何か",
     "body": "FINALではない。\n今だけかもしれない。",
     "ctaText": "左のピンを抜く",
-    "animationPreset": "slide",
+    "animationPreset": "shake",
     "interactionType": "pinPull",
-    "symbol": "王",
+    "symbol": "FINAL?",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "操作完了。FINALではない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "王様救出",
       "rescue",
@@ -1045,11 +1394,21 @@
     "minimumDisplaySeconds": 9,
     "headline": "＋10か×2か、それが問題だ",
     "body": "だいたい×2。\n専門家も首をかしげた。",
-    "ctaText": "×2へ進む",
-    "animationPreset": "rotate",
+    "ctaText": "＋10を選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "×2",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "leftGate": "＋10",
+      "rightGate": "×2"
+    },
+    "resultText": "ゲート通過。だいたい×2。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1068,11 +1427,18 @@
     "minimumDisplaySeconds": 10,
     "headline": "棒人間、増えすぎる",
     "body": "端末は増やさない。\n詳しくは広告の中で。",
-    "ctaText": "＋10へ進む",
-    "animationPreset": "glow",
+    "ctaText": "ゲートを選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "人",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "ゲート通過。端末は増やさない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1091,11 +1457,21 @@
     "minimumDisplaySeconds": 8,
     "headline": "1人から999999人へ",
     "body": "人口問題。\n効果には広告差があります。",
-    "ctaText": "×2へ進む",
-    "animationPreset": "confetti",
+    "ctaText": "1人を選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "剣",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "startCount": "1人",
+      "endCount": "999999人"
+    },
+    "resultText": "ゲート通過。人口問題。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1114,11 +1490,20 @@
     "minimumDisplaySeconds": 9,
     "headline": "×100を選んだだけなのに",
     "body": "社会が崩壊。\n今だけかもしれない。",
-    "ctaText": "＋10へ進む",
-    "animationPreset": "blink",
+    "ctaText": "×100を選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "+10",
     "accentColor": "FFFF6D00",
+    "fixedValues": {
+      "gate": "×100"
+    },
+    "resultText": "ゲート通過。社会が崩壊。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1137,11 +1522,20 @@
     "minimumDisplaySeconds": 10,
     "headline": "＋5の方が強かった",
     "body": "数学への挑戦。\n専門家も首をかしげた。",
-    "ctaText": "×2へ進む",
-    "animationPreset": "pulse",
+    "ctaText": "＋5を選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "×2",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "gate": "＋5"
+    },
+    "resultText": "ゲート通過。数学への挑戦。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1160,11 +1554,21 @@
     "minimumDisplaySeconds": 8,
     "headline": "レベル1から宇宙王へ",
     "body": "所要時間12秒。\n詳しくは広告の中で。",
-    "ctaText": "＋10へ進む",
-    "animationPreset": "shake",
+    "ctaText": "LV.1を選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "人",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "startLevel": "LV.1",
+      "duration": "12秒"
+    },
+    "resultText": "ゲート通過。所要時間12秒。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1183,11 +1587,20 @@
     "minimumDisplaySeconds": 9,
     "headline": "LV.9999なのに弱い",
     "body": "数字とは何だったのか。\n効果には広告差があります。",
-    "ctaText": "×2へ進む",
-    "animationPreset": "bounce",
+    "ctaText": "LV.9999を選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "剣",
     "accentColor": "FF00C853",
+    "fixedValues": {
+      "level": "LV.9999"
+    },
+    "resultText": "ゲート通過。数字とは何だったのか。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1206,11 +1619,18 @@
     "minimumDisplaySeconds": 10,
     "headline": "敵が急に巨大化しました",
     "body": "広告なので。\n今だけかもしれない。",
-    "ctaText": "＋10へ進む",
+    "ctaText": "ゲートを選ぶ",
     "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "+10",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "ゲート通過。広告なので。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1229,11 +1649,18 @@
     "minimumDisplaySeconds": 8,
     "headline": "剣を拾ったら社長になった",
     "body": "キャリア形成。\n専門家も首をかしげた。",
-    "ctaText": "×2へ進む",
-    "animationPreset": "rotate",
+    "ctaText": "ゲートを選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "×2",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "ゲート通過。キャリア形成。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1252,11 +1679,20 @@
     "minimumDisplaySeconds": 9,
     "headline": "棒人間帝国の終焉",
     "body": "開始から20秒。\n詳しくは広告の中で。",
-    "ctaText": "＋10へ進む",
-    "animationPreset": "glow",
+    "ctaText": "20秒を選ぶ",
+    "animationPreset": "slide",
     "interactionType": "gate",
     "symbol": "人",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "duration": "20秒"
+    },
+    "resultText": "ゲート通過。開始から20秒。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "数字ゲート",
       "gate",
@@ -1276,10 +1712,17 @@
     "headline": "ネジを外すだけだったのに",
     "body": "板が増えた。\n効果には広告差があります。",
     "ctaText": "動かして解決する",
-    "animationPreset": "confetti",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "車",
+    "symbol": "ネジを外すだけだったのに",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "パズル完了。板が増えた。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1299,10 +1742,17 @@
     "headline": "そのネジ、そこじゃない",
     "body": "でも入る。\n今だけかもしれない。",
     "ctaText": "動かして解決する",
-    "animationPreset": "blink",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "ネジ",
+    "symbol": "そのネジ、そこじゃない",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "パズル完了。でも入る。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1322,10 +1772,17 @@
     "headline": "水をコップへ導け！",
     "body": "水の物理は休暇中。\n専門家も首をかしげた。",
     "ctaText": "動かして解決する",
-    "animationPreset": "pulse",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "水",
+    "symbol": "水をコップへ導け！",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "パズル完了。水の物理は休暇中。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1345,10 +1802,17 @@
     "headline": "蜂から犬っぽい何かを守れ",
     "body": "犬かどうかも怪しい。\n詳しくは広告の中で。",
     "ctaText": "動かして解決する",
-    "animationPreset": "shake",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "線",
+    "symbol": "蜂から犬っぽい何かを守れ",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "パズル完了。犬かどうかも怪しい。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1368,10 +1832,17 @@
     "headline": "線を引けば全部解決",
     "body": "だいたい解決しない。\n効果には広告差があります。",
     "ctaText": "動かして解決する",
-    "animationPreset": "bounce",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "車",
+    "symbol": "線を引けば全部解決",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "パズル完了。だいたい解決しない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1391,10 +1862,17 @@
     "headline": "駐車場から出たいだけ",
     "body": "車が多すぎる。\n今だけかもしれない。",
     "ctaText": "動かして解決する",
-    "animationPreset": "slide",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "ネジ",
+    "symbol": "駐車場から出たいだけ",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "パズル完了。車が多すぎる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1416,8 +1894,15 @@
     "ctaText": "動かして解決する",
     "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "水",
+    "symbol": "赤い車だけ特別扱い",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "パズル完了。主人公だから。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1437,10 +1922,17 @@
     "headline": "色を分けろ！何のために？",
     "body": "説明はない。\n詳しくは広告の中で。",
     "ctaText": "動かして解決する",
-    "animationPreset": "glow",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "線",
+    "symbol": "色を分けろ！何のために？",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "パズル完了。説明はない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1460,10 +1952,17 @@
     "headline": "ボールを正しい穴へ",
     "body": "全部同じ穴に見える。\n効果には広告差があります。",
     "ctaText": "動かして解決する",
-    "animationPreset": "confetti",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "車",
+    "symbol": "ボールを正しい穴へ",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "パズル完了。全部同じ穴に見える。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1483,10 +1982,20 @@
     "headline": "3秒で解けるIQ999パズル",
     "body": "IQの定義が揺らぐ。\n今だけかもしれない。",
     "ctaText": "動かして解決する",
-    "animationPreset": "blink",
+    "animationPreset": "rotate",
     "interactionType": "drag",
-    "symbol": "ネジ",
+    "symbol": "3秒で解けるIQ999パズル",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "duration": "3秒",
+      "iq": "IQ999"
+    },
+    "resultText": "パズル完了。IQの定義が揺らぐ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "パズル",
       "puzzle",
@@ -1506,10 +2015,17 @@
     "headline": "汚れすぎた靴",
     "body": "靴だったことに驚く。\n専門家も首をかしげた。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "pulse",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "キラ",
+    "symbol": "汚れすぎた靴",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。靴だったことに驚く。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1529,10 +2045,17 @@
     "headline": "この部屋をなんとかして！",
     "body": "まず壁がない。\n詳しくは広告の中で。",
     "ctaText": "絶対こちら",
-    "animationPreset": "shake",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "家",
+    "symbol": "この部屋をなんとかして！",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。まず壁がない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1552,10 +2075,17 @@
     "headline": "掃除したら豪邸になった",
     "body": "清掃の力。\n効果には広告差があります。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "bounce",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "服",
+    "symbol": "掃除したら豪邸になった",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。清掃の力。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1575,10 +2105,19 @@
     "headline": "貧乏から億万長者まで15秒",
     "body": "投資助言ではありません。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "slide",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "汚",
+    "symbol": "貧乏から億万長者まで15秒",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "duration": "15秒"
+    },
+    "resultText": "診断・選択完了。投資助言ではありません。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1598,10 +2137,19 @@
     "headline": "所持金3円から始めます",
     "body": "謎のリアリティ。\n専門家も首をかしげた。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "rotate",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "キラ",
+    "symbol": "所持金3円から始めます",
     "accentColor": "FFFF6D00",
+    "fixedValues": {
+      "money": "所持金3円"
+    },
+    "resultText": "診断・選択完了。謎のリアリティ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1623,8 +2171,15 @@
     "ctaText": "絶対こちら",
     "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "家",
+    "symbol": "選ぶだけで人生逆転!?",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。寝るを選ぶと勝つ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1644,10 +2199,17 @@
     "headline": "服を着替えたら王族になった",
     "body": "身分制度が軽い。\n効果には広告差があります。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "confetti",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "服",
+    "symbol": "服を着替えたら王族になった",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。身分制度が軽い。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1667,10 +2229,17 @@
     "headline": "ボロ家から宮殿へ",
     "body": "建築確認は取っていない。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "blink",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "汚",
+    "symbol": "ボロ家から宮殿へ",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。建築確認は取っていない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1690,10 +2259,19 @@
     "headline": "掃除力9999",
     "body": "スポンジ一本。\n専門家も首をかしげた。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "pulse",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "キラ",
+    "symbol": "掃除力9999",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "cleaningPower": "掃除力9999"
+    },
+    "resultText": "診断・選択完了。スポンジ一本。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1713,10 +2291,17 @@
     "headline": "AFTERが別人",
     "body": "もはや比較不能。\n詳しくは広告の中で。",
     "ctaText": "絶対こちら",
-    "animationPreset": "shake",
+    "animationPreset": "glow",
     "interactionType": "choice",
-    "symbol": "家",
+    "symbol": "AFTERが別人",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。もはや比較不能。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "変身",
       "makeover",
@@ -1736,10 +2321,17 @@
     "headline": "小魚から海の王へ",
     "body": "食物連鎖が速い。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "bounce",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "合体",
+    "symbol": "小魚から海の王へ",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、食物連鎖が速い。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1759,10 +2351,17 @@
     "headline": "魚が魚を超えた日",
     "body": "最後は宇宙船になる。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "slide",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "魚",
+    "symbol": "魚が魚を超えた日",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、最後は宇宙船になる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1782,10 +2381,17 @@
     "headline": "リンゴ＋リンゴ＝なぜかメロン",
     "body": "進化。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "rotate",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "卵",
+    "symbol": "リンゴ＋リンゴ＝なぜかメロン",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、進化。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1805,10 +2411,17 @@
     "headline": "メロン＋メロン＝冷蔵庫",
     "body": "マージの限界。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "glow",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "LV",
+    "symbol": "メロン＋メロン＝冷蔵庫",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、マージの限界。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1828,10 +2441,17 @@
     "headline": "何でも合体させればいい",
     "body": "思想。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "confetti",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "合体",
+    "symbol": "何でも合体させればいい",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、思想。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1851,10 +2471,19 @@
     "headline": "LV.1スライムっぽくない何か",
     "body": "法的にもスライムではない。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "blink",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "魚",
+    "symbol": "LV.1スライムっぽくない何か",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "level": "LV.1"
+    },
+    "resultText": "詳しく見ても、法的にもスライムではない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1876,8 +2505,15 @@
     "ctaText": "詳しく見る",
     "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "卵",
+    "symbol": "育てたら巨大になりすぎた",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、画面外へ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1897,10 +2533,19 @@
     "headline": "ペット育成 8秒目",
     "body": "もう成人。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "shake",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "LV",
+    "symbol": "ペット育成 8秒目",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "elapsed": "8秒目"
+    },
+    "resultText": "詳しく見ても、もう成人。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1920,10 +2565,17 @@
     "headline": "卵から社長が生まれた",
     "body": "生命の神秘。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "bounce",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "合体",
+    "symbol": "卵から社長が生まれた",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、生命の神秘。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1943,10 +2595,17 @@
     "headline": "進化先：広告",
     "body": "最終形態。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "slide",
+    "animationPreset": "pulse",
     "interactionType": "tap",
-    "symbol": "魚",
+    "symbol": "進化先：広告",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、最終形態。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "成長・マージ",
       "merge",
@@ -1966,10 +2625,22 @@
     "headline": "777っぽいもの",
     "body": "惜しいようで何も惜しくない。\n専門家も首をかしげた。",
     "ctaText": "SPIN!",
-    "animationPreset": "rotate",
+    "animationPreset": "shake",
     "interactionType": "spin",
-    "symbol": "★",
+    "symbol": "777",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "reelSequence": "777",
+      "reelA": "7",
+      "reelB": "7",
+      "reelC": "7"
+    },
+    "resultText": "+999999　何が増えたのかは分かりません。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "抽選",
       "slot",
@@ -1993,6 +2664,13 @@
     "interactionType": "spin",
     "symbol": "謎",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "抽選終了。温度は常温。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "抽選",
       "slot",
@@ -2012,10 +2690,17 @@
     "headline": "大当たり!? たぶん！",
     "body": "何も当たらない。\n効果には広告差があります。",
     "ctaText": "SPIN!",
-    "animationPreset": "confetti",
+    "animationPreset": "shake",
     "interactionType": "spin",
     "symbol": "BAR",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "抽選終了。何も当たらない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "抽選",
       "slot",
@@ -2035,10 +2720,19 @@
     "headline": "コイン＋999999",
     "body": "使い道：なし。\n今だけかもしれない。",
     "ctaText": "SPIN!",
-    "animationPreset": "blink",
+    "animationPreset": "shake",
     "interactionType": "spin",
-    "symbol": "7",
+    "symbol": "＋999999",
     "accentColor": "FFFF4081",
+    "fixedValues": {
+      "reward": "＋999999"
+    },
+    "resultText": "＋999999　使い道はありません。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "抽選",
       "slot",
@@ -2058,10 +2752,17 @@
     "headline": "回せ！無料スロット風広告",
     "body": "スロット“風”。\n専門家も首をかしげた。",
     "ctaText": "SPIN!",
-    "animationPreset": "pulse",
+    "animationPreset": "shake",
     "interactionType": "spin",
     "symbol": "★",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "抽選終了。スロット“風”。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "抽選",
       "slot",
@@ -2081,10 +2782,17 @@
     "headline": "全部当たりに見えるルーレット",
     "body": "ハズレも光っている。\n詳しくは広告の中で。",
     "ctaText": "ルーレットを回す",
-    "animationPreset": "shake",
+    "animationPreset": "rotate",
     "interactionType": "spin",
     "symbol": "謎",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "抽選終了。ハズレも光っている。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "抽選",
       "roulette",
@@ -2104,10 +2812,17 @@
     "headline": "スクラッチしたら広告だった",
     "body": "予想どおり。\n効果には広告差があります。",
     "ctaText": "ここをこする",
-    "animationPreset": "bounce",
+    "animationPreset": "slide",
     "interactionType": "scratch",
     "symbol": "広告",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "削った結果、広告でした。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "抽選",
       "scratch",
@@ -2127,10 +2842,19 @@
     "headline": "超絶プレミアム広告パック",
     "body": "1口0円。\n今だけかもしれない。",
     "ctaText": "そっと開封する",
-    "animationPreset": "slide",
+    "animationPreset": "glow",
     "interactionType": "packOpen",
     "symbol": "SSR?",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "price": "1口0円"
+    },
+    "resultText": "SUPER RARE!?　1口0円の広告カードでした。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2150,10 +2874,20 @@
     "headline": "SSR大量封入っぽいパック",
     "body": "Rが出る。\n専門家も首をかしげた。",
     "ctaText": "豪快に開封する",
-    "animationPreset": "rotate",
+    "animationPreset": "glow",
     "interactionType": "packOpen",
     "symbol": "袋",
     "accentColor": "FF00C853",
+    "fixedValues": {
+      "packClaim": "SSR大量封入",
+      "reveal": "R"
+    },
+    "resultText": "開封結果：広告カード。Rが出る。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2175,8 +2909,17 @@
     "ctaText": "そっと開封する",
     "animationPreset": "glow",
     "interactionType": "packOpen",
-    "symbol": "光",
+    "symbol": "残り3口",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "initialStock": "残り3口"
+    },
+    "resultText": "残り4口！ 本当に増えました。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2196,10 +2939,19 @@
     "headline": "市場価格999999円相当!?",
     "body": "何の市場かは不明。\n効果には広告差があります。",
     "ctaText": "豪快に開封する",
-    "animationPreset": "confetti",
+    "animationPreset": "glow",
     "interactionType": "packOpen",
     "symbol": "カード",
     "accentColor": "FFFF4081",
+    "fixedValues": {
+      "marketPrice": "999999円相当"
+    },
+    "resultText": "開封結果：広告カード。何の市場かは不明。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2219,10 +2971,17 @@
     "headline": "幻の広告カード開封",
     "body": "カードも広告。\n今だけかもしれない。",
     "ctaText": "そっと開封する",
-    "animationPreset": "blink",
+    "animationPreset": "glow",
     "interactionType": "packOpen",
     "symbol": "SSR?",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "開封結果：広告カード。カードも広告。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2242,10 +3001,19 @@
     "headline": "ラストワンじゃない賞",
     "body": "まだ42口ある。\n専門家も首をかしげた。",
     "ctaText": "豪快に開封する",
-    "animationPreset": "pulse",
+    "animationPreset": "glow",
     "interactionType": "packOpen",
     "symbol": "袋",
     "accentColor": "FFFF6D00",
+    "fixedValues": {
+      "remaining": "42口"
+    },
+    "resultText": "開封結果：広告カード。まだ42口ある。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2265,10 +3033,19 @@
     "headline": "UR『すごい水』",
     "body": "絵柄が少し光る。\n詳しくは広告の中で。",
     "ctaText": "そっと開封する",
-    "animationPreset": "shake",
+    "animationPreset": "glow",
     "interactionType": "packOpen",
-    "symbol": "光",
+    "symbol": "UR 水",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "cardRarity": "UR"
+    },
+    "resultText": "開封結果：広告カード。絵柄が少し光る。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2288,10 +3065,19 @@
     "headline": "100番記念・何も当たらない祭",
     "body": "おめでとう。\n効果には広告差があります。",
     "ctaText": "豪快に開封する",
-    "animationPreset": "bounce",
+    "animationPreset": "glow",
     "interactionType": "packOpen",
     "symbol": "カード",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "catalogNumber": "100番"
+    },
+    "resultText": "開封結果：広告カード。おめでとう。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "広告パック",
       "pack",
@@ -2311,10 +3097,19 @@
     "headline": "AIがあなたの年齢を当てます",
     "body": "だいたい27歳。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "slide",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "AI",
+    "symbol": "AIがあなたの年齢を当てます",
     "accentColor": "FF00C853",
+    "fixedValues": {
+      "predictedAge": "27歳"
+    },
+    "resultText": "AI診断結果：27歳。根拠はありません。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2334,10 +3129,17 @@
     "headline": "AIが考えたAI広告",
     "body": "AIの文字が多い。\n専門家も首をかしげた。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "rotate",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "診断",
+    "symbol": "AIが考えたAI広告",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。AIの文字が多い。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2357,10 +3159,17 @@
     "headline": "あなたの広告タイプ診断",
     "body": "結果：広告。\n詳しくは広告の中で。",
     "ctaText": "絶対こちら",
-    "animationPreset": "glow",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "脳",
+    "symbol": "あなたの広告タイプ診断",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。結果：広告。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2380,10 +3189,19 @@
     "headline": "3秒で分かる性格診断",
     "body": "広告を見るタイプ。\n効果には広告差があります。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "confetti",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "27",
+    "symbol": "3秒で分かる性格診断",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "duration": "3秒"
+    },
+    "resultText": "診断・選択完了。広告を見るタイプ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2403,10 +3221,20 @@
     "headline": "IQ999の人だけ解けます",
     "body": "1＋1。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "blink",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "AI",
+    "symbol": "IQ999の人だけ解けます",
     "accentColor": "FFFF6D00",
+    "fixedValues": {
+      "iq": "IQ999",
+      "problem": "1＋1"
+    },
+    "resultText": "正解は2。IQ999かもしれません。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2428,8 +3256,15 @@
     "ctaText": "たぶんこちら",
     "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "診断",
+    "symbol": "あなたの隠れた才能は？",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。広告を見ること。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2449,10 +3284,17 @@
     "headline": "AIが選ぶ今日の商品",
     "body": "毎日コップ。\n詳しくは広告の中で。",
     "ctaText": "絶対こちら",
-    "animationPreset": "shake",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "脳",
+    "symbol": "AIが選ぶ今日の商品",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。毎日コップ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2472,10 +3314,17 @@
     "headline": "未来の顔を予測しました",
     "body": "謎の丸。\n効果には広告差があります。",
     "ctaText": "たぶんこちら",
-    "animationPreset": "bounce",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "27",
+    "symbol": "未来の顔を予測しました",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。謎の丸。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2495,10 +3344,17 @@
     "headline": "あなたに最適な広告です",
     "body": "根拠なし。\n今だけかもしれない。",
     "ctaText": "絶対こちら",
-    "animationPreset": "slide",
+    "animationPreset": "pulse",
     "interactionType": "choice",
-    "symbol": "AI",
+    "symbol": "あなたに最適な広告です",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。根拠なし。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2514,14 +3370,21 @@
     "category": "AI・診断",
     "rarity": "RARE",
     "displayType": "diagnosis",
-    "minimumDisplaySeconds": 9,
+    "minimumDisplaySeconds": 10,
     "headline": "AI搭載ボタン",
     "body": "押せる。\n専門家も首をかしげた。",
-    "ctaText": "たぶんこちら",
-    "animationPreset": "rotate",
-    "interactionType": "choice",
-    "symbol": "診断",
+    "ctaText": "AIボタンを押す",
+    "animationPreset": "pulse",
+    "interactionType": "tap",
+    "symbol": "AI搭載ボタン",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、押せる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "AI・診断",
       "diagnosis",
@@ -2541,10 +3404,17 @@
     "headline": "知らないと損！→知っても得しない",
     "body": "最後まで広告。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "glow",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "♡",
+    "symbol": "知らないと損！→知っても得しない",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、最後まで広告。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2564,10 +3434,17 @@
     "headline": "衝撃の事実はCMのあと",
     "body": "今がCM。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "confetti",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "話題",
+    "symbol": "衝撃の事実はCMのあと",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、今がCM。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2587,10 +3464,19 @@
     "headline": "この動画を最後まで見てください",
     "body": "4秒。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "blink",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "▶",
+    "symbol": "この動画を最後まで見てください",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "duration": "4秒"
+    },
+    "resultText": "詳しく見ても、4秒。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2610,10 +3496,17 @@
     "headline": "コメント欄が全員絶賛",
     "body": "全員架空。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "pulse",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "再生",
+    "symbol": "コメント欄が全員絶賛",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、全員架空。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2633,10 +3526,17 @@
     "headline": "人生変わりました！（何が？）",
     "body": "広告を見ました。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "shake",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "♡",
+    "symbol": "人生変わりました！（何が？）",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、広告を見ました。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2656,10 +3556,19 @@
     "headline": "たった3日でこうなった",
     "body": "何がとは言わない。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "bounce",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "話題",
+    "symbol": "たった3日でこうなった",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "duration": "3日"
+    },
+    "resultText": "詳しく見ても、何がとは言わない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2681,8 +3590,15 @@
     "ctaText": "詳しく見る",
     "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "▶",
+    "symbol": "正直、教えたくありません",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、広告なので教える。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2702,10 +3618,17 @@
     "headline": "友達には秘密にしてください",
     "body": "ランキング公開中。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "rotate",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "再生",
+    "symbol": "友達には秘密にしてください",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、ランキング公開中。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2725,10 +3648,17 @@
     "headline": "今、若者の間で話題！",
     "body": "若者とは誰か。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "glow",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "♡",
+    "symbol": "今、若者の間で話題！",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、若者とは誰か。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2748,10 +3678,19 @@
     "headline": "1000万再生っぽい動画",
     "body": "再生数表示だけ。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "confetti",
+    "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "話題",
+    "symbol": "1000万再生っぽい動画",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "views": "1000万再生"
+    },
+    "resultText": "詳しく見ても、再生数表示だけ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "動画・SNS風",
       "social",
@@ -2773,8 +3712,15 @@
     "ctaText": "詳しく見る",
     "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "!",
+    "symbol": "警告：広告が不足しています",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、重大。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2794,10 +3740,17 @@
     "headline": "あなたの広告は古くなっています",
     "body": "更新してください。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "pulse",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "残1",
+    "symbol": "あなたの広告は古くなっています",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、更新してください。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2817,10 +3770,19 @@
     "headline": "残り1個！から増える在庫",
     "body": "自己増殖。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "shake",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "99%",
+    "symbol": "残り1個！から増える在庫",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "stock": "残り1個"
+    },
+    "resultText": "詳しく見ても、自己増殖。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2840,10 +3802,17 @@
     "headline": "今だけ！毎日開催",
     "body": "今とは。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "bounce",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "速報",
+    "symbol": "今だけ！毎日開催",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、今とは。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2863,10 +3832,19 @@
     "headline": "本日最終日・第438日目",
     "body": "終わらない。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "slide",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "!",
+    "symbol": "本日最終日・第438日目",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {
+      "day": "第438日目"
+    },
+    "resultText": "詳しく見ても、終わらない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2886,10 +3864,19 @@
     "headline": "あと5秒で終了します",
     "body": "終了しない。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "rotate",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "残1",
+    "symbol": "あと5秒で終了します",
     "accentColor": "FFFF6D00",
+    "fixedValues": {
+      "countdown": "あと5秒"
+    },
+    "resultText": "詳しく見ても、終了しない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2909,10 +3896,19 @@
     "headline": "99％で止まるアップデート",
     "body": "永遠の99％。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "glow",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "99%",
+    "symbol": "99％で止まるアップデート",
     "accentColor": "FFFFC107",
+    "fixedValues": {
+      "progress": "99％"
+    },
+    "resultText": "詳しく見ても、永遠の99％。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2932,10 +3928,17 @@
     "headline": "容量が足りません（広告の）",
     "body": "ストレージは正常。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "confetti",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "速報",
+    "symbol": "容量が足りません（広告の）",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、ストレージは正常。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2957,8 +3960,15 @@
     "ctaText": "詳しく見る",
     "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "!",
+    "symbol": "この広告を見逃すと損!?",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、何を失うのか不明。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -2978,10 +3988,17 @@
     "headline": "緊急でも何でもない速報",
     "body": "広告です。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "pulse",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "残1",
+    "symbol": "緊急でも何でもない速報",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、広告です。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "警告",
       "warning",
@@ -3001,10 +4018,15 @@
     "headline": "広告を広告する広告",
     "body": "メタ。\n詳しくは広告の中で。",
     "ctaText": "眺める",
-    "animationPreset": "shake",
+    "animationPreset": "blink",
     "interactionType": "none",
-    "symbol": "光",
+    "symbol": "広告を広告する広告",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "メタ。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3023,11 +4045,18 @@
     "minimumDisplaySeconds": 6,
     "headline": "詳しく見る→詳細はありません",
     "body": "正直。\n効果には広告差があります。",
-    "ctaText": "眺める",
-    "animationPreset": "bounce",
-    "interactionType": "none",
-    "symbol": "？",
+    "ctaText": "詳しく見る",
+    "animationPreset": "blink",
+    "interactionType": "tap",
+    "symbol": "詳しく見る→詳細はありません",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、正直。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3047,10 +4076,15 @@
     "headline": "何の商品でしょう？",
     "body": "答え：不明。\n今だけかもしれない。",
     "ctaText": "眺める",
-    "animationPreset": "slide",
+    "animationPreset": "blink",
     "interactionType": "none",
-    "symbol": "広告",
+    "symbol": "何の商品でしょう？",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "答え：不明。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3070,10 +4104,15 @@
     "headline": "とにかく光る広告",
     "body": "内容より輝度。\n専門家も首をかしげた。",
     "ctaText": "眺める",
-    "animationPreset": "rotate",
+    "animationPreset": "glow",
     "interactionType": "none",
-    "symbol": "無",
+    "symbol": "とにかく光る広告",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "内容より輝度。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3093,10 +4132,15 @@
     "headline": "とにかく揺れる広告",
     "body": "端末は揺れない。\n詳しくは広告の中で。",
     "ctaText": "眺める",
-    "animationPreset": "glow",
+    "animationPreset": "shake",
     "interactionType": "none",
-    "symbol": "光",
+    "symbol": "とにかく揺れる広告",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "端末は揺れない。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3116,10 +4160,15 @@
     "headline": "広告です！！！！！！",
     "body": "説明終了。\n効果には広告差があります。",
     "ctaText": "眺める",
-    "animationPreset": "confetti",
+    "animationPreset": "blink",
     "interactionType": "none",
-    "symbol": "？",
+    "symbol": "広告です！！！！！！",
     "accentColor": "FF00C853",
+    "fixedValues": {},
+    "resultText": "説明終了。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3141,8 +4190,13 @@
     "ctaText": "眺める",
     "animationPreset": "blink",
     "interactionType": "none",
-    "symbol": "広告",
+    "symbol": "この広告には意味があります",
     "accentColor": "FF00B0FF",
+    "fixedValues": {},
+    "resultText": "まだ見つかっていない。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3162,10 +4216,15 @@
     "headline": "広告を見るための広告",
     "body": "目的達成。\n専門家も首をかしげた。",
     "ctaText": "眺める",
-    "animationPreset": "pulse",
+    "animationPreset": "blink",
     "interactionType": "none",
-    "symbol": "無",
+    "symbol": "広告を見るための広告",
     "accentColor": "FFFF4081",
+    "fixedValues": {},
+    "resultText": "目的達成。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3185,10 +4244,15 @@
     "headline": "何も売らないセール",
     "body": "全品対象。\n詳しくは広告の中で。",
     "ctaText": "眺める",
-    "animationPreset": "shake",
+    "animationPreset": "blink",
     "interactionType": "none",
-    "symbol": "光",
+    "symbol": "何も売らないセール",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "全品対象。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3208,10 +4272,15 @@
     "headline": "クリックする場所がありません",
     "body": "安心設計。\n効果には広告差があります。",
     "ctaText": "眺める",
-    "animationPreset": "bounce",
+    "animationPreset": "blink",
     "interactionType": "none",
-    "symbol": "？",
+    "symbol": "クリックする場所がありません",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "安心設計。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "意味不明",
       "meta",
@@ -3230,11 +4299,18 @@
     "minimumDisplaySeconds": 10,
     "headline": "伝説の閉じるボタン",
     "body": "見つけたら閉じたくない。\n今だけかもしれない。",
-    "ctaText": "詳しく見る",
+    "ctaText": "伝説の×を押す",
     "animationPreset": "slide",
     "interactionType": "tap",
-    "symbol": "王冠",
+    "symbol": "伝説の閉じるボタン",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、見つけたら閉じたくない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
       "legendary",
@@ -3254,10 +4330,17 @@
     "headline": "広告王の王冠",
     "body": "広告を見続けた者の証。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "rotate",
+    "animationPreset": "glow",
     "interactionType": "tap",
-    "symbol": "SR",
+    "symbol": "広告王の王冠",
     "accentColor": "FFFF3D00",
+    "fixedValues": {},
+    "resultText": "詳しく見ても、広告を見続けた者の証。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
       "legendary",
@@ -3272,18 +4355,27 @@
     "description": "割引額を計算してはいけない。",
     "category": "高レア",
     "rarity": "SUPER RARE",
-    "displayType": "legendary",
+    "displayType": "sale",
     "minimumDisplaySeconds": 12,
     "headline": "0.01％OFF祭",
     "body": "割引額を計算してはいけない。\n詳しくは広告の中で。",
     "ctaText": "詳しく見る",
-    "animationPreset": "glow",
+    "animationPreset": "confetti",
     "interactionType": "tap",
-    "symbol": "伝説",
+    "symbol": "0.01％OFF祭",
     "accentColor": "FF00C853",
+    "fixedValues": {
+      "discount": "0.01％OFF"
+    },
+    "resultText": "詳しく見ても、割引額を計算してはいけない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
-      "legendary",
+      "sale",
       "super rare"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -3295,18 +4387,27 @@
     "description": "誰も買えない。",
     "category": "高レア",
     "rarity": "SUPER RARE",
-    "displayType": "legendary",
+    "displayType": "warning",
     "minimumDisplaySeconds": 10,
     "headline": "幻の残り1個",
     "body": "誰も買えない。\n効果には広告差があります。",
     "ctaText": "今は押さない",
-    "animationPreset": "confetti",
+    "animationPreset": "blink",
     "interactionType": "tap",
-    "symbol": "虹",
+    "symbol": "幻の残り1個",
     "accentColor": "FF00B0FF",
+    "fixedValues": {
+      "stock": "残り1個"
+    },
+    "resultText": "詳しく見ても、誰も買えない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
-      "legendary",
+      "warning",
       "super rare"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -3323,10 +4424,19 @@
     "headline": "SSRより上っぽい何か",
     "body": "名前はまだない。\n今だけかもしれない。",
     "ctaText": "詳しく見る",
-    "animationPreset": "blink",
+    "animationPreset": "glow",
     "interactionType": "tap",
-    "symbol": "王冠",
+    "symbol": "SSRより上っぽい何か",
     "accentColor": "FFFF4081",
+    "fixedValues": {
+      "rank": "SSRより上"
+    },
+    "resultText": "詳しく見ても、名前はまだない。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
       "legendary",
@@ -3341,18 +4451,25 @@
     "description": "結論：広告だった。",
     "category": "高レア",
     "rarity": "SUPER RARE",
-    "displayType": "legendary",
+    "displayType": "diagnosis",
     "minimumDisplaySeconds": 12,
     "headline": "広告博士・最終講義",
     "body": "結論：広告だった。\n専門家も首をかしげた。",
-    "ctaText": "詳しく見る",
+    "ctaText": "たぶんこちら",
     "animationPreset": "pulse",
-    "interactionType": "tap",
-    "symbol": "SR",
+    "interactionType": "choice",
+    "symbol": "広告博士・最終講義",
     "accentColor": "FF7C4DFF",
+    "fixedValues": {},
+    "resultText": "診断・選択完了。結論：広告だった。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
-      "legendary",
+      "diagnosis",
       "super rare"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -3364,18 +4481,25 @@
     "description": "長かった。",
     "category": "高レア",
     "rarity": "SUPER RARE",
-    "displayType": "legendary",
-    "minimumDisplaySeconds": 10,
+    "displayType": "rescue",
+    "minimumDisplaySeconds": 12,
     "headline": "王様、ついに助かる",
     "body": "長かった。\n詳しくは広告の中で。",
-    "ctaText": "詳しく見る",
-    "animationPreset": "shake",
-    "interactionType": "tap",
-    "symbol": "伝説",
+    "ctaText": "左のピンを抜く",
+    "animationPreset": "confetti",
+    "interactionType": "pinPull",
+    "symbol": "王",
     "accentColor": "FFFF6D00",
+    "fixedValues": {},
+    "resultText": "SUCCESS! 王様、ついに助かる。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
-      "legendary",
+      "rescue",
       "super rare"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -3387,18 +4511,25 @@
     "description": "中身：広告。",
     "category": "高レア",
     "rarity": "SUPER RARE",
-    "displayType": "legendary",
-    "minimumDisplaySeconds": 11,
+    "displayType": "pack",
+    "minimumDisplaySeconds": 13,
     "headline": "究極の広告パック",
     "body": "中身：広告。\n効果には広告差があります。",
-    "ctaText": "今は押さない",
-    "animationPreset": "bounce",
-    "interactionType": "tap",
-    "symbol": "虹",
+    "ctaText": "豪快に開封する",
+    "animationPreset": "glow",
+    "interactionType": "packOpen",
+    "symbol": "究極",
     "accentColor": "FFFFC107",
+    "fixedValues": {},
+    "resultText": "究極開封！ 中身は広告でした。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
-      "legendary",
+      "pack",
       "super rare"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -3410,18 +4541,25 @@
     "description": "実際そう。",
     "category": "高レア",
     "rarity": "SUPER RARE",
-    "displayType": "legendary",
+    "displayType": "meta",
     "minimumDisplaySeconds": 12,
     "headline": "最後から2番目っぽい広告",
     "body": "実際そう。\n今だけかもしれない。",
-    "ctaText": "詳しく見る",
-    "animationPreset": "slide",
-    "interactionType": "tap",
-    "symbol": "王冠",
+    "ctaText": "眺める",
+    "animationPreset": "blink",
+    "interactionType": "none",
+    "symbol": "最後から2番目っぽい広告",
     "accentColor": "FFFF3D00",
+    "fixedValues": {
+      "position": "最後から2番目"
+    },
+    "resultText": "実際そう。",
+    "imageAssets": [],
+    "seIds": [],
+    "bgmId": null,
     "targetTags": [
       "高レア",
-      "legendary",
+      "meta",
       "super rare"
     ],
     "unlockCondition": "通常抽選で出現"
@@ -3438,10 +4576,19 @@
     "headline": "広告図鑑、ほぼ完成！",
     "body": "あと一つ。\n専門家も首をかしげた。",
     "ctaText": "詳しく見る",
-    "animationPreset": "rotate",
+    "animationPreset": "glow",
     "interactionType": "tap",
-    "symbol": "SR",
+    "symbol": "広告図鑑、ほぼ完成！",
     "accentColor": "FF00C853",
+    "fixedValues": {
+      "remaining": "あと一つ"
+    },
+    "resultText": "詳しく見ても、あと一つ。",
+    "imageAssets": [],
+    "seIds": [
+      "ui_click.wav"
+    ],
+    "bgmId": null,
     "targetTags": [
       "高レア",
       "legendary",
@@ -3459,12 +4606,21 @@
     "displayType": "secret",
     "minimumDisplaySeconds": 19,
     "headline": "幻の広告 ― アドゴン",
-    "body": "すべての広告を見たあなたへ。\n広告の向こう側が、いま開く。",
+    "body": "151種類を見つけた者だけが出会える、幻の広告。\nすべての広告を見たあなたへ。",
     "ctaText": "幻を見る",
     "animationPreset": "glow",
     "interactionType": "none",
     "symbol": "ADGON",
     "accentColor": "FFFFD54F",
+    "fixedValues": {
+      "completion": "151 / 151"
+    },
+    "resultText": "COMPLETE　151 / 151",
+    "imageAssets": [],
+    "seIds": [
+      "secret_se.wav"
+    ],
+    "bgmId": "secret_bgm.wav",
     "targetTags": [
       "SECRET",
       "secret",

@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../models/ad_definition.dart';
+import '../services/ad_audio_manager.dart';
 
 class AdPlaybackResult {
   const AdPlaybackResult(this.activeSeconds);
@@ -28,6 +28,7 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
   bool _foreground = true;
   bool _interacted = false;
   int _scratchProgress = 0;
+  late final AdAudioManager _audio = AdAudioManager();
   late final AnimationController _animation = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 850),
@@ -41,6 +42,9 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    if (widget.ad.isSecret) {
+      unawaited(_audio.playSecretSequence(widget.ad));
+    }
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!_foreground || !mounted) return;
       setState(() {
@@ -61,11 +65,12 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
     _timer?.cancel();
     _animation.dispose();
     _spin.dispose();
+    unawaited(_audio.dispose());
     super.dispose();
   }
 
   void _interact() {
-    SystemSound.play(SystemSoundType.click);
+    unawaited(_audio.playInteraction(widget.ad));
     if (widget.ad.interactionType == AdInteractionType.scratch) {
       setState(() {
         _scratchProgress = min(100, _scratchProgress + 34);
@@ -361,6 +366,10 @@ class _AnimatedExperience extends StatelessWidget {
               scratchProgress: scratchProgress,
             ),
           ),
+          if (ad.fixedValues.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            _FixedFacts(ad: ad),
+          ],
           const SizedBox(height: 12),
           Text(
             ad.headline,
@@ -393,6 +402,37 @@ class _AnimatedExperience extends StatelessWidget {
       ),
     );
   }
+}
+
+class _FixedFacts extends StatelessWidget {
+  const _FixedFacts({required this.ad});
+
+  final AdDefinition ad;
+
+  @override
+  Widget build(BuildContext context) => Wrap(
+    alignment: WrapAlignment.center,
+    spacing: 6,
+    runSpacing: 6,
+    children: [
+      for (final value in ad.fixedValues.values.toSet())
+        Container(
+          key: Key('fixed-${ad.id}-$value'),
+          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            border: Border.all(color: ad.accentColor, width: 2),
+          ),
+          child: Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ),
+    ],
+  );
 }
 
 class _ExperienceVisual extends StatelessWidget {
@@ -446,9 +486,11 @@ class _PosterVisual extends StatelessWidget {
     child: Text(
       interacted ? '完了!?' : ad.symbol,
       textAlign: TextAlign.center,
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: _contrast(ad.accentColor),
-        fontSize: 28,
+        fontSize: 20,
         fontWeight: FontWeight.w900,
       ),
     ),
@@ -461,42 +503,45 @@ class _RescueVisual extends StatelessWidget {
   final bool solved;
 
   @override
-  Widget build(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(
-        solved ? '水' : '炎',
-        style: const TextStyle(
-          fontSize: 42,
-          color: Colors.orange,
-          fontWeight: FontWeight.w900,
-        ),
-      ),
-      Container(
-        margin: const EdgeInsets.symmetric(horizontal: 18),
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 4),
-        ),
-        child: Text(
-          solved ? '王\nSAFE' : '王\n!?',
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 28,
+  Widget build(BuildContext context) => FittedBox(
+    fit: BoxFit.scaleDown,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          solved ? '操作完了' : ad.symbol,
+          style: TextStyle(
+            fontSize: 42,
+            color: ad.accentColor,
             fontWeight: FontWeight.w900,
           ),
         ),
-      ),
-      Text(
-        solved ? '宝' : 'PIN',
-        style: TextStyle(
-          fontSize: 34,
-          color: ad.accentColor,
-          fontWeight: FontWeight.w900,
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 18),
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 4),
+          ),
+          child: Text(
+            solved ? '王\nSAFE' : '王\n!?',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
         ),
-      ),
-    ],
+        Text(
+          solved ? '宝' : 'PIN',
+          style: TextStyle(
+            fontSize: 34,
+            color: ad.accentColor,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -506,43 +551,48 @@ class _GateVisual extends StatelessWidget {
   final bool solved;
 
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          for (final label in [
-            '＋${ad.number % 20 + 1}',
-            '×${ad.number % 4 + 2}',
-          ])
-            Container(
-              margin: const EdgeInsets.all(6),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-              decoration: BoxDecoration(
-                color: label.startsWith('＋') ? Colors.green : Colors.red,
-                border: Border.all(color: Colors.white, width: 3),
-              ),
-              child: Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
+  Widget build(BuildContext context) {
+    final labels = ad.fixedValues.isEmpty
+        ? const ['＋？', '×？']
+        : ad.fixedValues.values.toSet().take(3).toList();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            for (final label in labels)
+              Container(
+                margin: const EdgeInsets.all(6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  color: label.startsWith('＋') ? Colors.green : Colors.red,
+                  border: Border.all(color: Colors.white, width: 3),
+                ),
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
-            ),
-        ],
-      ),
-      Text(
-        solved ? '人数が増えたっぽい！' : 'どちらか選べ！',
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w900,
+          ],
         ),
-      ),
-    ],
-  );
+        Text(
+          solved ? 'ゲート通過！' : 'どれを選ぶ？',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class _SpinVisual extends StatelessWidget {
@@ -557,8 +607,15 @@ class _SpinVisual extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final symbols = solved
-        ? ['7', '7', ad.number.isEven ? '7' : '謎']
+    final configuredReels = [
+      ad.fixedValues['reelA'],
+      ad.fixedValues['reelB'],
+      ad.fixedValues['reelC'],
+    ].whereType<String>().toList();
+    final symbols = configuredReels.length == 3
+        ? configuredReels
+        : solved
+        ? ['7', '7', '謎']
         : ['★', ad.symbol, '7'];
     return Transform.rotate(
       angle: ad.displayType == AdDisplayType.roulette ? spin * pi * 6 : 0,
@@ -630,7 +687,9 @@ class _PackVisual extends StatelessWidget {
       borderRadius: BorderRadius.circular(opened ? 4 : 18),
     ),
     child: Text(
-      opened ? 'R\n広告カード' : 'SSR!?\n広告パック',
+      opened
+          ? '${ad.fixedValues['cardRarity'] ?? ad.fixedValues['reveal'] ?? 'R'}\n広告カード'
+          : '${ad.fixedValues['packClaim'] ?? 'SSR!?'}\n広告パック',
       textAlign: TextAlign.center,
       style: const TextStyle(
         color: Colors.white,
@@ -677,30 +736,16 @@ class _ResultStrip extends StatelessWidget {
   final AdDefinition ad;
 
   @override
-  Widget build(BuildContext context) {
-    final result = switch (ad.displayType) {
-      AdDisplayType.slot =>
-        ad.number.isEven ? '+999999　何が増えたかは不明。' : '惜しい！ 謎記号でした。',
-      AdDisplayType.rescue =>
-        ad.number == 147 ? 'SUCCESS! 王様、ついに助かる。' : 'SUCCESSっぽい！',
-      AdDisplayType.pack => 'SUPER RARE!?　広告だった。',
-      AdDisplayType.diagnosis => '診断結果：広告を見るタイプ',
-      _ => '操作を受け付けました！ たぶん。',
-    };
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10),
-      color: Colors.black,
-      child: Text(
-        result,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w900,
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(10),
+    color: Colors.black,
+    child: Text(
+      ad.resultText,
+      textAlign: TextAlign.center,
+      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+    ),
+  );
 }
 
 class _AdBurstPainter extends CustomPainter {
