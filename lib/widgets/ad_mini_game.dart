@@ -271,9 +271,11 @@ class _AdMiniGameState extends State<AdMiniGame>
                   decoration: BoxDecoration(
                     color: game.assetPath == null
                         ? widget.ad.accentColor
-                        : Colors.white.withValues(alpha: .2),
+                        : Colors.transparent,
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 4),
+                    border: game.assetPath == null
+                        ? Border.all(color: Colors.white, width: 4)
+                        : null,
                   ),
                   child: game.assetPath == null
                       ? Text(
@@ -1011,14 +1013,9 @@ class _StageObject extends StatelessWidget {
   final String label;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context) => SizedBox(
     width: 88,
     height: 112,
-    padding: const EdgeInsets.all(6),
-    decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: .2),
-      border: Border.all(color: Colors.white, width: 2),
-    ),
     child: Column(
       children: [
         Expanded(
@@ -1032,6 +1029,10 @@ class _StageObject extends StatelessWidget {
             color: Colors.white,
             fontSize: 11,
             fontWeight: FontWeight.w900,
+            shadows: [
+              Shadow(color: Colors.black, blurRadius: 3),
+              Shadow(color: Colors.black, offset: Offset(1, 1)),
+            ],
           ),
         ),
       ],
