@@ -389,6 +389,12 @@ class _DiscoveryDialog extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
+            '「${ad.discoveryText}」',
+            textAlign: TextAlign.center,
+            style: const TextStyle(height: 1.5),
+          ),
+          const SizedBox(height: 8),
+          Text(
             complete ? '広告図鑑 COMPLETE' : '広告図鑑に登録しました！',
             textAlign: TextAlign.center,
           ),

@@ -51,6 +51,9 @@ class AdDefinition {
     required this.number,
     required this.name,
     required this.description,
+    required this.discoveryText,
+    required this.flavorText,
+    required this.flavorType,
     required this.category,
     required this.rarity,
     required this.displayType,
@@ -77,6 +80,9 @@ class AdDefinition {
       number: json['number'] as int,
       name: json['name'] as String,
       description: json['description'] as String,
+      discoveryText: (json['discoveryText'] ?? json['description']) as String,
+      flavorText: (json['flavorText'] ?? json['description']) as String,
+      flavorType: (json['flavorType'] ?? 'その他') as String,
       category: json['category'] as String,
       rarity: json['rarity'] as String,
       displayType: AdDisplayType.values.byName(json['displayType'] as String),
@@ -108,6 +114,9 @@ class AdDefinition {
   final int number;
   final String name;
   final String description;
+  final String discoveryText;
+  final String flavorText;
+  final String flavorType;
   final String category;
   final String rarity;
   final AdDisplayType displayType;

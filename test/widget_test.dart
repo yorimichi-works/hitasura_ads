@@ -316,6 +316,36 @@ void main() {
 
     expect(find.text('発見状況: 0 / 150'), findsOneWidget);
     expect(find.byKey(const Key('reward-unlock-AD_151')), findsNothing);
+    expect(find.byKey(const Key('catalog-flavor-AD_151')), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('discovered catalog detail shows its dedicated flavor text', (
+    tester,
+  ) async {
+    final controller = await AppController.create(
+      store: MemoryAppStore(),
+      catalog: catalog,
+    );
+    await controller.unlockAdWithReward('AD_001');
+    await tester.pumpWidget(
+      MaterialApp(
+        home: CatalogScreen(
+          controller: controller,
+          onReplay: (_) async {},
+          onRewardUnlock: (_) async => false,
+          rewardUnlockAvailable: false,
+          rewardInProgress: false,
+          rewardStatus: RewardedAdStatus.unsupported,
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const Key('catalog-tile-AD_001')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('catalog-flavor-AD_001')), findsOneWidget);
+    expect(find.text(catalog['AD_001'].flavorText), findsOneWidget);
+    expect(find.byKey(const Key('catalog-replay-AD_001')), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

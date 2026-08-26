@@ -29,7 +29,10 @@
       "retro",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "たぶん昨日も999,999人目。",
+    "flavorText": "「あなたは本日999,999人目！」と書かれた看板を、旅人は疑わずにくぐった。\n\nたぶん昨日も999,999人目。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
+    "flavorType": "寓話"
   },
   {
     "id": "AD_002",
@@ -59,7 +62,10 @@
       "retro",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "押すなと言われると押したくなる。",
+    "flavorText": "社内通達：今すぐクリックしないでください！\n\n本件に関する質問は受け付けます。回答は受け付けません。",
+    "flavorType": "企業文書"
   },
   {
     "id": "AD_003",
@@ -89,7 +95,10 @@
       "retro",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "矢印が多すぎてどれか分からない。",
+    "flavorText": "この矢印の先に未来があるを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n詳しく見ても、矢印が多すぎてどれか分からない。",
+    "flavorType": "不気味"
   },
   {
     "id": "AD_004",
@@ -119,7 +128,10 @@
       "warning",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "0になると10へ戻る。",
+    "flavorText": "古のWebの担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「残り10秒」とだけ残っている。",
+    "flavorType": "言葉遊び"
   },
   {
     "id": "AD_005",
@@ -151,7 +163,10 @@
       "sale",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "企業努力の結晶。",
+    "flavorText": "★★★★★\n驚異の1円OFF！のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
+    "flavorType": "口コミ"
   },
   {
     "id": "AD_006",
@@ -183,7 +198,10 @@
       "sale",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "震えているのは広告だけ。",
+    "flavorText": "実験6日目。被験者は「世界が震えた0.5％OFF」を信じ続けている。\n\n震えているのは広告だけ。\n\n対照群も、なぜか同じ広告を見ていた。",
+    "flavorType": "実験記録"
   },
   {
     "id": "AD_007",
@@ -213,7 +231,10 @@
       "retro",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "×は逃げる。",
+    "flavorText": "私は閉じるボタンを探せ！を選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n詳しく見ても、×は逃げる。",
+    "flavorType": "独白"
   },
   {
     "id": "AD_008",
@@ -245,7 +266,10 @@
       "retro",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "何をダウンロードするのかは不明。",
+    "flavorText": "この町では、ダウンロード率120％を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
+    "flavorType": "噂話"
   },
   {
     "id": "AD_009",
@@ -275,7 +299,10 @@
       "retro",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "いつからNEWなのか誰も知らない。",
+    "flavorText": "9日目。NEW！たぶんNEW！にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
+    "flavorType": "日記"
   },
   {
     "id": "AD_010",
@@ -305,7 +332,10 @@
       "retro",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "永遠に完成しないWebサイト。",
+    "flavorText": "警告：工事中なのに営業中\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
+    "flavorType": "警告文"
   },
   {
     "id": "AD_011",
@@ -335,7 +365,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "驚くほど普通。",
+    "flavorText": "むかしむかし、水が入る！奇跡のコップを本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
+    "flavorType": "昔話"
   },
   {
     "id": "AD_012",
@@ -365,7 +398,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "家具業界騒然。",
+    "flavorText": "本日、座れる椅子、ついに登場と発表されました。\n\n専門家は「家具業界騒然。」と分析。\n提供元は次の広告へ移動しています。",
+    "flavorType": "ニュース"
   },
   {
     "id": "AD_013",
@@ -395,7 +431,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "雨にも使用者にも負けない。",
+    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：絶対に開かない傘の実績です。",
+    "flavorType": "説明書"
   },
   {
     "id": "AD_014",
@@ -425,7 +464,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "究極のミニマリズム。",
+    "flavorText": "拝啓、あの日見た何も入らない財布を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
+    "flavorType": "手紙"
   },
   {
     "id": "AD_015",
@@ -455,7 +497,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "ほぼ枕。",
+    "flavorText": "tapを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n詳しく見ても、ほぼ枕。",
+    "flavorType": "メタ"
   },
   {
     "id": "AD_016",
@@ -485,7 +530,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "包丁として正しい。",
+    "flavorText": "切れる包丁・改\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
+    "flavorType": "脱力"
   },
   {
     "id": "AD_017",
@@ -515,7 +563,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "専門家も驚いた。",
+    "flavorText": "第7研究所・資料17。\n冷たい冷蔵庫は再現に成功したが、目的は再現できなかった。",
+    "flavorType": "研究記録"
   },
   {
     "id": "AD_018",
@@ -545,7 +596,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "左右セット！",
+    "flavorText": "王国暦18年、布告「歩ける靴 PREMIUM」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
+    "flavorType": "王国史"
   },
   {
     "id": "AD_019",
@@ -575,7 +629,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "取っ手搭載。",
+    "flavorText": "議題：持てるカバン PRO MAX\n結論：詳しく見ても、取っ手搭載。\n\nなお、誰が提案したかは全員が否定した。",
+    "flavorType": "議事録"
   },
   {
     "id": "AD_020",
@@ -607,7 +664,10 @@
       "product",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "大型アップデート。",
+    "flavorText": "飲める水 2026【名】\n信じる直前が最も魅力的に見える現象。\n用例：「大型アップデート。」",
+    "flavorType": "辞書風"
   },
   {
     "id": "AD_021",
@@ -640,7 +700,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "選ばれし一人。",
+    "flavorText": "はじめに広告があり、広告は「専門家100人中1人が推薦」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
+    "flavorType": "神話風"
   },
   {
     "id": "AD_022",
@@ -673,7 +736,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "圧倒的首位。",
+    "flavorText": "回収票 No.22\n品名：堂々の第1位（1商品中）\n状態：圧倒的首位。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
+    "flavorType": "回収報告"
   },
   {
     "id": "AD_023",
@@ -706,7 +772,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "誰も評価していない高評価。",
+    "flavorText": "「★★★★★ 0件のレビュー」と書かれた看板を、旅人は疑わずにくぐった。\n\n誰も評価していない高評価。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
+    "flavorType": "寓話"
   },
   {
     "id": "AD_024",
@@ -738,7 +807,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "残り1％はどこから来た。",
+    "flavorText": "社内通達：満足度101％\n\n本件に関する質問は受け付けます。回答は受け付けません。\n\n帳簿には「101％」とだけ残っている。",
+    "flavorType": "企業文書"
   },
   {
     "id": "AD_025",
@@ -770,7 +842,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "一人が三回来た。",
+    "flavorText": "リピート率300％を閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n診断・選択完了。一人が三回来た。",
+    "flavorType": "不気味"
   },
   {
     "id": "AD_026",
@@ -803,7 +878,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "残り1％が気になる。",
+    "flavorText": "ランキングの担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「99％」とだけ残っている。",
+    "flavorType": "言葉遊び"
   },
   {
     "id": "AD_027",
@@ -833,7 +911,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告博士とは。",
+    "flavorText": "★★★★★\n広告博士が認めた広告のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
+    "flavorType": "口コミ"
   },
   {
     "id": "AD_028",
@@ -863,7 +944,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告賞受賞。",
+    "flavorText": "実験28日目。被験者は「今年最も広告だった広告」を信じ続けている。\n\n広告賞受賞。\n\n対照群も、なぜか同じ広告を見ていた。",
+    "flavorType": "実験記録"
   },
   {
     "id": "AD_029",
@@ -893,7 +977,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "比較対象は非公開。",
+    "flavorText": "私は比較したら勝ってましたを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n診断・選択完了。比較対象は非公開。",
+    "flavorType": "独白"
   },
   {
     "id": "AD_030",
@@ -925,7 +1012,10 @@
       "review",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "その1件が強い。",
+    "flavorText": "この町では、口コミで話題！（口コミ1件）を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
+    "flavorType": "噂話"
   },
   {
     "id": "AD_031",
@@ -955,7 +1045,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "王様は今日も危険。",
+    "flavorText": "31日目。王様を助けろ！初級編にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
+    "flavorType": "日記"
   },
   {
     "id": "AD_032",
@@ -985,7 +1078,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "物理的に。",
+    "flavorText": "警告：王様、炎上する\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
+    "flavorType": "警告文"
   },
   {
     "id": "AD_033",
@@ -1017,7 +1113,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "抜く順番だけが人生。",
+    "flavorText": "むかしむかし、王様と三本のピンを本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
+    "flavorType": "昔話"
   },
   {
     "id": "AD_034",
@@ -1047,7 +1146,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "宝を選びがち。",
+    "flavorText": "本日、宝より王を選べと発表されました。\n\n専門家は「宝を選びがち。」と分析。\n提供元は次の広告へ移動しています。",
+    "flavorType": "ニュース"
   },
   {
     "id": "AD_035",
@@ -1077,7 +1179,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "前回から学んでいない。",
+    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：王様、また溺れるの実績です。",
+    "flavorType": "説明書"
   },
   {
     "id": "AD_036",
@@ -1107,7 +1212,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "カードではない。",
+    "flavorText": "拝啓、あの日見た溶岩 VS 王様を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
+    "flavorType": "手紙"
   },
   {
     "id": "AD_037",
@@ -1137,7 +1245,10 @@
       "rescue",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "正解を選んだはずなのに。",
+    "flavorText": "pinPullを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\nFAIL!! 正解を選んだはずなのに、王様はまた燃えました。",
+    "flavorType": "メタ"
   },
   {
     "id": "AD_038",
@@ -1169,7 +1280,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告主も驚いた低さ。",
+    "flavorText": "王様救出率2％\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
+    "flavorType": "脱力"
   },
   {
     "id": "AD_039",
@@ -1199,7 +1313,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "ピンを抜く前に気づきたい。",
+    "flavorText": "第7研究所・資料39。\n王様はそこじゃないは再現に成功したが、目的は再現できなかった。",
+    "flavorType": "研究記録"
   },
   {
     "id": "AD_040",
@@ -1229,7 +1346,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "なぜ魚がいる。",
+    "flavorText": "王国暦40年、布告「王様と謎の魚」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
+    "flavorType": "王国史"
   },
   {
     "id": "AD_041",
@@ -1259,7 +1379,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "救出しただけなのに。",
+    "flavorText": "議題：王様、大富豪になる\n結論：操作完了。救出しただけなのに。\n\nなお、誰が提案したかは全員が否定した。",
+    "flavorType": "議事録"
   },
   {
     "id": "AD_042",
@@ -1291,7 +1414,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "助ける気ある？",
+    "flavorText": "王様、地下100階へ【名】\n信じる直前が最も魅力的に見える現象。\n用例：「助ける気ある？」",
+    "flavorType": "辞書風"
   },
   {
     "id": "AD_043",
@@ -1321,7 +1447,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "当然抜きたくなる。",
+    "flavorText": "はじめに広告があり、広告は「王様と絶対抜くなピン」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
+    "flavorType": "神話風"
   },
   {
     "id": "AD_044",
@@ -1351,7 +1480,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "それでもピンを抜かれる。",
+    "flavorText": "回収票 No.44\n品名：王様の休日\n状態：それでもピンを抜かれる。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
+    "flavorType": "回収報告"
   },
   {
     "id": "AD_045",
@@ -1381,7 +1513,10 @@
       "rescue",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "FINALではない。",
+    "flavorText": "「王様FINALっぽい何か」と書かれた看板を、旅人は疑わずにくぐった。\n\nFINALではない。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
+    "flavorType": "寓話"
   },
   {
     "id": "AD_046",
@@ -1414,7 +1549,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "だいたい×2。",
+    "flavorText": "社内通達：＋10か×2か、それが問題だ\n\n本件に関する質問は受け付けます。回答は受け付けません。\n\n帳簿には「＋10」とだけ残っている。",
+    "flavorType": "企業文書"
   },
   {
     "id": "AD_047",
@@ -1444,7 +1582,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "端末は増やさない。",
+    "flavorText": "棒人間、増えすぎるを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\nゲート通過。端末は増やさない。",
+    "flavorType": "不気味"
   },
   {
     "id": "AD_048",
@@ -1477,7 +1618,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "人口問題。",
+    "flavorText": "数字ゲートの担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「1人」とだけ残っている。",
+    "flavorType": "言葉遊び"
   },
   {
     "id": "AD_049",
@@ -1509,7 +1653,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "社会が崩壊。",
+    "flavorText": "★★★★★\n×100を選んだだけなのにのおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
+    "flavorType": "口コミ"
   },
   {
     "id": "AD_050",
@@ -1541,7 +1688,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "数学への挑戦。",
+    "flavorText": "実験50日目。被験者は「＋5の方が強かった」を信じ続けている。\n\n数学への挑戦。\n\n対照群も、なぜか同じ広告を見ていた。",
+    "flavorType": "実験記録"
   },
   {
     "id": "AD_051",
@@ -1574,7 +1724,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "所要時間12秒。",
+    "flavorText": "私はレベル1から宇宙王へを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\nゲート通過。所要時間12秒。",
+    "flavorType": "独白"
   },
   {
     "id": "AD_052",
@@ -1606,7 +1759,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "数字とは何だったのか。",
+    "flavorText": "この町では、LV.9999なのに弱いを見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
+    "flavorType": "噂話"
   },
   {
     "id": "AD_053",
@@ -1636,7 +1792,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告なので。",
+    "flavorText": "53日目。敵が急に巨大化しましたにまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
+    "flavorType": "日記"
   },
   {
     "id": "AD_054",
@@ -1666,7 +1825,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "キャリア形成。",
+    "flavorText": "警告：剣を拾ったら社長になった\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
+    "flavorType": "警告文"
   },
   {
     "id": "AD_055",
@@ -1698,7 +1860,10 @@
       "gate",
       "common"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "開始から20秒。",
+    "flavorText": "むかしむかし、棒人間帝国の終焉を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
+    "flavorType": "昔話"
   },
   {
     "id": "AD_056",
@@ -1728,7 +1893,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "板が増えた。",
+    "flavorText": "本日、ネジを外すだけだったのにと発表されました。\n\n専門家は「板が増えた。」と分析。\n提供元は次の広告へ移動しています。",
+    "flavorType": "ニュース"
   },
   {
     "id": "AD_057",
@@ -1758,7 +1926,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "でも入る。",
+    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：そのネジ、そこじゃないの実績です。",
+    "flavorType": "説明書"
   },
   {
     "id": "AD_058",
@@ -1788,7 +1959,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "水の物理は休暇中。",
+    "flavorText": "拝啓、あの日見た水をコップへ導け！を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
+    "flavorType": "手紙"
   },
   {
     "id": "AD_059",
@@ -1818,7 +1992,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "犬かどうかも怪しい。",
+    "flavorText": "dragを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\nパズル完了。犬かどうかも怪しい。",
+    "flavorType": "メタ"
   },
   {
     "id": "AD_060",
@@ -1848,7 +2025,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "だいたい解決しない。",
+    "flavorText": "線を引けば全部解決\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
+    "flavorType": "脱力"
   },
   {
     "id": "AD_061",
@@ -1878,7 +2058,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "車が多すぎる。",
+    "flavorText": "第7研究所・資料61。\n駐車場から出たいだけは再現に成功したが、目的は再現できなかった。",
+    "flavorType": "研究記録"
   },
   {
     "id": "AD_062",
@@ -1908,7 +2091,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "主人公だから。",
+    "flavorText": "王国暦62年、布告「赤い車だけ特別扱い」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
+    "flavorType": "王国史"
   },
   {
     "id": "AD_063",
@@ -1938,7 +2124,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "説明はない。",
+    "flavorText": "議題：色を分けろ！何のために？\n結論：パズル完了。説明はない。\n\nなお、誰が提案したかは全員が否定した。",
+    "flavorType": "議事録"
   },
   {
     "id": "AD_064",
@@ -1968,7 +2157,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "全部同じ穴に見える。",
+    "flavorText": "ボールを正しい穴へ【名】\n信じる直前が最も魅力的に見える現象。\n用例：「全部同じ穴に見える。」",
+    "flavorType": "辞書風"
   },
   {
     "id": "AD_065",
@@ -2001,7 +2193,10 @@
       "puzzle",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "IQの定義が揺らぐ。",
+    "flavorText": "はじめに広告があり、広告は「3秒で解けるIQ999パズル」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
+    "flavorType": "神話風"
   },
   {
     "id": "AD_066",
@@ -2031,7 +2226,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "靴だったことに驚く。",
+    "flavorText": "回収票 No.66\n品名：汚れすぎた靴\n状態：靴だったことに驚く。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
+    "flavorType": "回収報告"
   },
   {
     "id": "AD_067",
@@ -2061,7 +2259,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "まず壁がない。",
+    "flavorText": "「この部屋をなんとかして！」と書かれた看板を、旅人は疑わずにくぐった。\n\nまず壁がない。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
+    "flavorType": "寓話"
   },
   {
     "id": "AD_068",
@@ -2091,7 +2292,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "清掃の力。",
+    "flavorText": "社内通達：掃除したら豪邸になった\n\n本件に関する質問は受け付けます。回答は受け付けません。",
+    "flavorType": "企業文書"
   },
   {
     "id": "AD_069",
@@ -2123,7 +2327,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "投資助言ではありません。",
+    "flavorText": "貧乏から億万長者まで15秒を閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n診断・選択完了。投資助言ではありません。",
+    "flavorType": "不気味"
   },
   {
     "id": "AD_070",
@@ -2155,7 +2362,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "謎のリアリティ。",
+    "flavorText": "変身の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「所持金3円」とだけ残っている。",
+    "flavorType": "言葉遊び"
   },
   {
     "id": "AD_071",
@@ -2185,7 +2395,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "寝るを選ぶと勝つ。",
+    "flavorText": "★★★★★\n選ぶだけで人生逆転!?のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
+    "flavorType": "口コミ"
   },
   {
     "id": "AD_072",
@@ -2215,7 +2428,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "身分制度が軽い。",
+    "flavorText": "実験72日目。被験者は「服を着替えたら王族になった」を信じ続けている。\n\n身分制度が軽い。\n\n対照群も、なぜか同じ広告を見ていた。",
+    "flavorType": "実験記録"
   },
   {
     "id": "AD_073",
@@ -2245,7 +2461,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "建築確認は取っていない。",
+    "flavorText": "私はボロ家から宮殿へを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n診断・選択完了。建築確認は取っていない。",
+    "flavorType": "独白"
   },
   {
     "id": "AD_074",
@@ -2277,7 +2496,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "スポンジ一本。",
+    "flavorText": "この町では、掃除力9999を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
+    "flavorType": "噂話"
   },
   {
     "id": "AD_075",
@@ -2307,7 +2529,10 @@
       "makeover",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "もはや比較不能。",
+    "flavorText": "75日目。AFTERが別人にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
+    "flavorType": "日記"
   },
   {
     "id": "AD_076",
@@ -2337,7 +2562,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "食物連鎖が速い。",
+    "flavorText": "警告：小魚から海の王へ\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
+    "flavorType": "警告文"
   },
   {
     "id": "AD_077",
@@ -2367,7 +2595,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "最後は宇宙船になる。",
+    "flavorText": "むかしむかし、魚が魚を超えた日を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
+    "flavorType": "昔話"
   },
   {
     "id": "AD_078",
@@ -2397,7 +2628,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "進化。",
+    "flavorText": "本日、リンゴ＋リンゴ＝なぜかメロンと発表されました。\n\n専門家は「進化。」と分析。\n提供元は次の広告へ移動しています。",
+    "flavorType": "ニュース"
   },
   {
     "id": "AD_079",
@@ -2427,7 +2661,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "マージの限界。",
+    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：メロン＋メロン＝冷蔵庫の実績です。",
+    "flavorType": "説明書"
   },
   {
     "id": "AD_080",
@@ -2457,7 +2694,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "思想。",
+    "flavorText": "拝啓、あの日見た何でも合体させればいいを覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
+    "flavorType": "手紙"
   },
   {
     "id": "AD_081",
@@ -2489,7 +2729,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "法的にもスライムではない。",
+    "flavorText": "tapを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n詳しく見ても、法的にもスライムではない。",
+    "flavorType": "メタ"
   },
   {
     "id": "AD_082",
@@ -2519,7 +2762,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "画面外へ。",
+    "flavorText": "育てたら巨大になりすぎた\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
+    "flavorType": "脱力"
   },
   {
     "id": "AD_083",
@@ -2551,7 +2797,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "もう成人。",
+    "flavorText": "第7研究所・資料83。\nペット育成 8秒目は再現に成功したが、目的は再現できなかった。\n\n帳簿には「8秒目」とだけ残っている。",
+    "flavorType": "研究記録"
   },
   {
     "id": "AD_084",
@@ -2581,7 +2830,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "生命の神秘。",
+    "flavorText": "王国暦84年、布告「卵から社長が生まれた」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
+    "flavorType": "王国史"
   },
   {
     "id": "AD_085",
@@ -2611,7 +2863,10 @@
       "merge",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "最終形態。",
+    "flavorText": "議題：進化先：広告\n結論：詳しく見ても、最終形態。\n\nなお、誰が提案したかは全員が否定した。",
+    "flavorType": "議事録"
   },
   {
     "id": "AD_086",
@@ -2646,7 +2901,10 @@
       "slot",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "惜しいようで何も惜しくない。",
+    "flavorText": "777っぽいもの【名】\n信じる直前が最も魅力的に見える現象。\n用例：「惜しいようで何も惜しくない。」",
+    "flavorType": "辞書風"
   },
   {
     "id": "AD_087",
@@ -2676,7 +2934,10 @@
       "slot",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "温度は常温。",
+    "flavorText": "はじめに広告があり、広告は「超激熱っぽい！」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
+    "flavorType": "神話風"
   },
   {
     "id": "AD_088",
@@ -2706,7 +2967,10 @@
       "slot",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "何も当たらない。",
+    "flavorText": "回収票 No.88\n品名：大当たり!? たぶん！\n状態：何も当たらない。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
+    "flavorType": "回収報告"
   },
   {
     "id": "AD_089",
@@ -2738,7 +3002,10 @@
       "slot",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "使い道：なし。",
+    "flavorText": "「コイン＋999999」と書かれた看板を、旅人は疑わずにくぐった。\n\n使い道：なし。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
+    "flavorType": "寓話"
   },
   {
     "id": "AD_090",
@@ -2768,7 +3035,10 @@
       "slot",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "スロット“風”。",
+    "flavorText": "社内通達：回せ！無料スロット風広告\n\n本件に関する質問は受け付けます。回答は受け付けません。",
+    "flavorType": "企業文書"
   },
   {
     "id": "AD_091",
@@ -2798,7 +3068,10 @@
       "roulette",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "ハズレも光っている。",
+    "flavorText": "全部当たりに見えるルーレットを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n抽選終了。ハズレも光っている。",
+    "flavorType": "不気味"
   },
   {
     "id": "AD_092",
@@ -2828,7 +3101,10 @@
       "scratch",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "予想どおり。",
+    "flavorText": "抽選の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。",
+    "flavorType": "言葉遊び"
   },
   {
     "id": "AD_093",
@@ -2860,7 +3136,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "1口0円。",
+    "flavorText": "★★★★★\n超絶プレミアム広告パックのおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
+    "flavorType": "口コミ"
   },
   {
     "id": "AD_094",
@@ -2893,7 +3172,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "Rが出る。",
+    "flavorText": "実験94日目。被験者は「SSR大量封入っぽいパック」を信じ続けている。\n\nRが出る。\n\n対照群も、なぜか同じ広告を見ていた。",
+    "flavorType": "実験記録"
   },
   {
     "id": "AD_095",
@@ -2925,7 +3207,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "在庫概念への挑戦。",
+    "flavorText": "私は残り3口！（増えます）を選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n残り4口！ 本当に増えました。",
+    "flavorType": "独白"
   },
   {
     "id": "AD_096",
@@ -2957,7 +3242,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "何の市場かは不明。",
+    "flavorText": "この町では、市場価格999999円相当!?を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
+    "flavorType": "噂話"
   },
   {
     "id": "AD_097",
@@ -2987,7 +3275,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "カードも広告。",
+    "flavorText": "97日目。幻の広告カード開封にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
+    "flavorType": "日記"
   },
   {
     "id": "AD_098",
@@ -3019,7 +3310,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "まだ42口ある。",
+    "flavorText": "警告：ラストワンじゃない賞\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
+    "flavorType": "警告文"
   },
   {
     "id": "AD_099",
@@ -3051,7 +3345,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "絵柄が少し光る。",
+    "flavorText": "むかしむかし、UR『すごい水』を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
+    "flavorType": "昔話"
   },
   {
     "id": "AD_100",
@@ -3083,7 +3380,10 @@
       "pack",
       "uncommon"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "おめでとう。",
+    "flavorText": "本日、100番記念・何も当たらない祭と発表されました。\n\n専門家は「おめでとう。」と分析。\n提供元は次の広告へ移動しています。",
+    "flavorType": "ニュース"
   },
   {
     "id": "AD_101",
@@ -3115,7 +3415,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "だいたい27歳。",
+    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：AIがあなたの年齢を当てますの実績です。",
+    "flavorType": "説明書"
   },
   {
     "id": "AD_102",
@@ -3145,7 +3448,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "AIの文字が多い。",
+    "flavorText": "拝啓、あの日見たAIが考えたAI広告を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
+    "flavorType": "手紙"
   },
   {
     "id": "AD_103",
@@ -3175,7 +3481,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "結果：広告。",
+    "flavorText": "choiceを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n診断・選択完了。結果：広告。",
+    "flavorType": "メタ"
   },
   {
     "id": "AD_104",
@@ -3207,7 +3516,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告を見るタイプ。",
+    "flavorText": "3秒で分かる性格診断\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
+    "flavorType": "脱力"
   },
   {
     "id": "AD_105",
@@ -3240,7 +3552,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "1＋1。",
+    "flavorText": "第7研究所・資料105。\nIQ999の人だけ解けますは再現に成功したが、目的は再現できなかった。\n\n帳簿には「IQ999」とだけ残っている。",
+    "flavorType": "研究記録"
   },
   {
     "id": "AD_106",
@@ -3270,7 +3585,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告を見ること。",
+    "flavorText": "王国暦106年、布告「あなたの隠れた才能は？」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
+    "flavorType": "王国史"
   },
   {
     "id": "AD_107",
@@ -3300,7 +3618,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "毎日コップ。",
+    "flavorText": "議題：AIが選ぶ今日の商品\n結論：診断・選択完了。毎日コップ。\n\nなお、誰が提案したかは全員が否定した。",
+    "flavorType": "議事録"
   },
   {
     "id": "AD_108",
@@ -3330,7 +3651,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "謎の丸。",
+    "flavorText": "未来の顔を予測しました【名】\n信じる直前が最も魅力的に見える現象。\n用例：「謎の丸。」",
+    "flavorType": "辞書風"
   },
   {
     "id": "AD_109",
@@ -3360,7 +3684,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "根拠なし。",
+    "flavorText": "はじめに広告があり、広告は「あなたに最適な広告です」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
+    "flavorType": "神話風"
   },
   {
     "id": "AD_110",
@@ -3390,7 +3717,10 @@
       "diagnosis",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "押せる。",
+    "flavorText": "回収票 No.110\n品名：AI搭載ボタン\n状態：押せる。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
+    "flavorType": "回収報告"
   },
   {
     "id": "AD_111",
@@ -3420,7 +3750,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "最後まで広告。",
+    "flavorText": "「知らないと損！→知っても得しない」と書かれた看板を、旅人は疑わずにくぐった。\n\n最後まで広告。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
+    "flavorType": "寓話"
   },
   {
     "id": "AD_112",
@@ -3450,7 +3783,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "今がCM。",
+    "flavorText": "社内通達：衝撃の事実はCMのあと\n\n本件に関する質問は受け付けます。回答は受け付けません。",
+    "flavorType": "企業文書"
   },
   {
     "id": "AD_113",
@@ -3482,7 +3818,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "4秒。",
+    "flavorText": "この動画を最後まで見てくださいを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n詳しく見ても、4秒。",
+    "flavorType": "不気味"
   },
   {
     "id": "AD_114",
@@ -3512,7 +3851,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "全員架空。",
+    "flavorText": "動画・SNS風の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。",
+    "flavorType": "言葉遊び"
   },
   {
     "id": "AD_115",
@@ -3542,7 +3884,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告を見ました。",
+    "flavorText": "★★★★★\n人生変わりました！（何が？）のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
+    "flavorType": "口コミ"
   },
   {
     "id": "AD_116",
@@ -3574,7 +3919,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "何がとは言わない。",
+    "flavorText": "実験116日目。被験者は「たった3日でこうなった」を信じ続けている。\n\n何がとは言わない。\n\n対照群も、なぜか同じ広告を見ていた。",
+    "flavorType": "実験記録"
   },
   {
     "id": "AD_117",
@@ -3604,7 +3952,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告なので教える。",
+    "flavorText": "私は正直、教えたくありませんを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n詳しく見ても、広告なので教える。",
+    "flavorType": "独白"
   },
   {
     "id": "AD_118",
@@ -3634,7 +3985,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "ランキング公開中。",
+    "flavorText": "この町では、友達には秘密にしてくださいを見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
+    "flavorType": "噂話"
   },
   {
     "id": "AD_119",
@@ -3664,7 +4018,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "若者とは誰か。",
+    "flavorText": "119日目。今、若者の間で話題！にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
+    "flavorType": "日記"
   },
   {
     "id": "AD_120",
@@ -3696,7 +4053,10 @@
       "social",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "再生数表示だけ。",
+    "flavorText": "警告：1000万再生っぽい動画\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
+    "flavorType": "警告文"
   },
   {
     "id": "AD_121",
@@ -3726,7 +4086,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "重大。",
+    "flavorText": "むかしむかし、警告：広告が不足していますを本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
+    "flavorType": "昔話"
   },
   {
     "id": "AD_122",
@@ -3756,7 +4119,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "更新してください。",
+    "flavorText": "本日、あなたの広告は古くなっていますと発表されました。\n\n専門家は「更新してください。」と分析。\n提供元は次の広告へ移動しています。",
+    "flavorType": "ニュース"
   },
   {
     "id": "AD_123",
@@ -3788,7 +4154,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "自己増殖。",
+    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：残り1個！から増える在庫の実績です。",
+    "flavorType": "説明書"
   },
   {
     "id": "AD_124",
@@ -3818,7 +4187,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "今とは。",
+    "flavorText": "拝啓、あの日見た今だけ！毎日開催を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
+    "flavorType": "手紙"
   },
   {
     "id": "AD_125",
@@ -3850,7 +4222,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "終わらない。",
+    "flavorText": "tapを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n詳しく見ても、終わらない。",
+    "flavorType": "メタ"
   },
   {
     "id": "AD_126",
@@ -3882,7 +4257,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "終了しない。",
+    "flavorText": "あと5秒で終了します\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
+    "flavorType": "脱力"
   },
   {
     "id": "AD_127",
@@ -3914,7 +4292,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "永遠の99％。",
+    "flavorText": "第7研究所・資料127。\n99％で止まるアップデートは再現に成功したが、目的は再現できなかった。\n\n帳簿には「99％」とだけ残っている。",
+    "flavorType": "研究記録"
   },
   {
     "id": "AD_128",
@@ -3944,7 +4325,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "ストレージは正常。",
+    "flavorText": "王国暦128年、布告「容量が足りません（広告の）」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
+    "flavorType": "王国史"
   },
   {
     "id": "AD_129",
@@ -3974,7 +4358,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "何を失うのか不明。",
+    "flavorText": "議題：この広告を見逃すと損!?\n結論：詳しく見ても、何を失うのか不明。\n\nなお、誰が提案したかは全員が否定した。",
+    "flavorType": "議事録"
   },
   {
     "id": "AD_130",
@@ -4004,7 +4391,10 @@
       "warning",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告です。",
+    "flavorText": "緊急でも何でもない速報【名】\n信じる直前が最も魅力的に見える現象。\n用例：「広告です。」",
+    "flavorType": "辞書風"
   },
   {
     "id": "AD_131",
@@ -4032,7 +4422,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "メタ。",
+    "flavorText": "はじめに広告があり、広告は「広告を広告する広告」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
+    "flavorType": "神話風"
   },
   {
     "id": "AD_132",
@@ -4062,7 +4455,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "正直。",
+    "flavorText": "回収票 No.132\n品名：詳しく見る→詳細はありません\n状態：正直。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
+    "flavorType": "回収報告"
   },
   {
     "id": "AD_133",
@@ -4090,7 +4486,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "答え：不明。",
+    "flavorText": "「何の商品でしょう？」と書かれた看板を、旅人は疑わずにくぐった。\n\n答え：不明。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
+    "flavorType": "寓話"
   },
   {
     "id": "AD_134",
@@ -4118,7 +4517,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "内容より輝度。",
+    "flavorText": "社内通達：とにかく光る広告\n\n本件に関する質問は受け付けます。回答は受け付けません。",
+    "flavorType": "企業文書"
   },
   {
     "id": "AD_135",
@@ -4146,7 +4548,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "端末は揺れない。",
+    "flavorText": "とにかく揺れる広告を閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n端末は揺れない。",
+    "flavorType": "不気味"
   },
   {
     "id": "AD_136",
@@ -4174,7 +4579,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "説明終了。",
+    "flavorText": "意味不明の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。",
+    "flavorType": "言葉遊び"
   },
   {
     "id": "AD_137",
@@ -4202,7 +4610,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "まだ見つかっていない。",
+    "flavorText": "★★★★★\nこの広告には意味がありますのおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
+    "flavorType": "口コミ"
   },
   {
     "id": "AD_138",
@@ -4230,7 +4641,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "目的達成。",
+    "flavorText": "実験138日目。被験者は「広告を見るための広告」を信じ続けている。\n\n目的達成。\n\n対照群も、なぜか同じ広告を見ていた。",
+    "flavorType": "実験記録"
   },
   {
     "id": "AD_139",
@@ -4258,7 +4672,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "全品対象。",
+    "flavorText": "私は何も売らないセールを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n全品対象。",
+    "flavorType": "独白"
   },
   {
     "id": "AD_140",
@@ -4286,7 +4703,10 @@
       "meta",
       "rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "安心設計。",
+    "flavorText": "この町では、クリックする場所がありませんを見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
+    "flavorType": "噂話"
   },
   {
     "id": "AD_141",
@@ -4316,7 +4736,10 @@
       "legendary",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "見つけたら閉じたくない。",
+    "flavorText": "141日目。伝説の閉じるボタンにまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
+    "flavorType": "日記"
   },
   {
     "id": "AD_142",
@@ -4346,7 +4769,10 @@
       "legendary",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "広告を見続けた者の証。",
+    "flavorText": "警告：広告王の王冠\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
+    "flavorType": "警告文"
   },
   {
     "id": "AD_143",
@@ -4378,7 +4804,10 @@
       "sale",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "割引額を計算してはいけない。",
+    "flavorText": "むかしむかし、0.01％OFF祭を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
+    "flavorType": "昔話"
   },
   {
     "id": "AD_144",
@@ -4410,7 +4839,10 @@
       "warning",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "誰も買えない。",
+    "flavorText": "本日、幻の残り1個と発表されました。\n\n専門家は「誰も買えない。」と分析。\n提供元は次の広告へ移動しています。",
+    "flavorType": "ニュース"
   },
   {
     "id": "AD_145",
@@ -4442,7 +4874,10 @@
       "legendary",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "名前はまだない。",
+    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：SSRより上っぽい何かの実績です。",
+    "flavorType": "説明書"
   },
   {
     "id": "AD_146",
@@ -4472,7 +4907,10 @@
       "diagnosis",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "結論：広告だった。",
+    "flavorText": "拝啓、あの日見た広告博士・最終講義を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
+    "flavorType": "手紙"
   },
   {
     "id": "AD_147",
@@ -4502,7 +4940,10 @@
       "rescue",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "長かった。",
+    "flavorText": "pinPullを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\nSUCCESS! 王様、ついに助かる。",
+    "flavorType": "メタ"
   },
   {
     "id": "AD_148",
@@ -4532,7 +4973,10 @@
       "pack",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "中身：広告。",
+    "flavorText": "究極の広告パック\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
+    "flavorType": "脱力"
   },
   {
     "id": "AD_149",
@@ -4562,7 +5006,10 @@
       "meta",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "実際そう。",
+    "flavorText": "第7研究所・資料149。\n最後から2番目っぽい広告は再現に成功したが、目的は再現できなかった。\n\n帳簿には「最後から2番目」とだけ残っている。",
+    "flavorType": "研究記録"
   },
   {
     "id": "AD_150",
@@ -4594,7 +5041,10 @@
       "legendary",
       "super rare"
     ],
-    "unlockCondition": "通常抽選で出現"
+    "unlockCondition": "通常抽選で出現",
+    "discoveryText": "あと一つ。",
+    "flavorText": "王国暦150年、布告「広告図鑑、ほぼ完成！」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
+    "flavorType": "王国史"
   },
   {
     "id": "AD_151",
@@ -4626,6 +5076,9 @@
       "secret",
       "secret"
     ],
-    "unlockCondition": "AD_001〜AD_150をすべて発見"
+    "unlockCondition": "AD_001〜AD_150をすべて発見",
+    "discoveryText": "151種類を見つけた者だけが出会える、幻の広告。",
+    "flavorText": "百五十の広告を閉じた者だけが、最後の一匹に会える。\n\nアドゴンは火を吐かない。代わりに、まだ見ていない広告の匂いを吐く。\n\n図鑑は完成した。広告のほうは、そう思っていない。",
+    "flavorType": "議事録"
   }
 ]

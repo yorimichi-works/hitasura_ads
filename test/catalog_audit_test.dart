@@ -14,6 +14,29 @@ void main() {
     catalog = await AdCatalog.load();
   });
 
+  test('151件の初回短文と固有の図鑑フレーバーが分離されている', () {
+    expect(catalog.all.map((ad) => ad.flavorText).toSet(), hasLength(151));
+    expect(
+      catalog.all
+          .map((ad) => ad.discoveryText)
+          .every((text) => text.isNotEmpty),
+      isTrue,
+    );
+    expect(
+      catalog.all.map((ad) => ad.flavorText).every((text) => text.length >= 35),
+      isTrue,
+    );
+    expect(
+      catalog.all.every((ad) => ad.flavorText != ad.discoveryText),
+      isTrue,
+    );
+    expect(
+      catalog.all.map((ad) => ad.flavorType).toSet().length,
+      greaterThanOrEqualTo(20),
+    );
+    expect(catalog['AD_151'].flavorText, contains('百五十'));
+  });
+
   test('151件の名称・説明内の固定数値がfixedValuesへ登録されている', () {
     final missing = <String>[];
     final numericPattern = RegExp(r'\d[\d,]*(?:\.\d+)?');
