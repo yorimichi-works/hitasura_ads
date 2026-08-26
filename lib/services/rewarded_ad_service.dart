@@ -23,6 +23,50 @@ abstract class RewardedAdService extends ChangeNotifier {
   Future<RewardedAdResult> show();
 }
 
+/// Debug-only stand-in for platforms where the Google Mobile Ads SDK cannot
+/// display rewarded ads, notably Flutter Web.
+class DebugRewardedAdService extends RewardedAdService {
+  RewardedAdStatus _status = RewardedAdStatus.ready;
+  bool _showing = false;
+
+  @override
+  RewardedAdStatus get status => _status;
+
+  @override
+  bool get isSupported => kDebugMode;
+
+  @override
+  bool get usesTestAds => true;
+
+  @override
+  Future<void> initialize() async {
+    if (!kDebugMode) return;
+    _setStatus(RewardedAdStatus.ready);
+  }
+
+  @override
+  Future<RewardedAdResult> show() async {
+    if (!kDebugMode) return RewardedAdResult.unavailable;
+    if (_showing || _status != RewardedAdStatus.ready) {
+      return RewardedAdResult.loadFailed;
+    }
+    _showing = true;
+    _setStatus(RewardedAdStatus.showing);
+    debugPrint('[RewardedAd] WEB DEBUG pseudo reward started');
+    await Future<void>.delayed(const Duration(milliseconds: 650));
+    _showing = false;
+    _setStatus(RewardedAdStatus.ready);
+    debugPrint('[RewardedAd] WEB DEBUG pseudo reward earned');
+    return RewardedAdResult.rewarded;
+  }
+
+  void _setStatus(RewardedAdStatus value) {
+    if (_status == value) return;
+    _status = value;
+    notifyListeners();
+  }
+}
+
 class GoogleRewardedAdService extends RewardedAdService {
   GoogleRewardedAdService({
     TargetPlatform? platform,

@@ -13,21 +13,21 @@ class FirstLaunchScreen extends StatefulWidget {
 
 class _FirstLaunchScreenState extends State<FirstLaunchScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nickname = TextEditingController();
-  final _age = TextEditingController();
+  final _nickname = TextEditingController(text: '広告大好き');
+  int _age = 29;
+  String _gender = '男性';
   bool _saving = false;
 
   @override
   void dispose() {
     _nickname.dispose();
-    _age.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _saving = true);
-    await widget.controller.register(_nickname.text, int.parse(_age.text));
+    await widget.controller.register(_nickname.text, _age, _gender);
     if (mounted) setState(() => _saving = false);
   }
 
@@ -81,19 +81,46 @@ class _FirstLaunchScreenState extends State<FirstLaunchScreen> {
                               : null,
                         ),
                         const SizedBox(height: 12),
-                        TextFormField(
-                          controller: _age,
-                          keyboardType: TextInputType.number,
+                        DropdownButtonFormField<int>(
+                          key: const Key('first-launch-age'),
+                          initialValue: _age,
                           decoration: const InputDecoration(
                             labelText: '年齢',
                             border: OutlineInputBorder(),
                           ),
-                          validator: (value) {
-                            final age = int.tryParse(value ?? '');
-                            return age == null || age < 1 || age > 120
-                                ? '1〜120の数字で入力してください'
-                                : null;
-                          },
+                          items: [
+                            for (var age = 1; age <= 100; age++)
+                              DropdownMenuItem(
+                                value: age,
+                                child: Text('$age歳'),
+                              ),
+                          ],
+                          onChanged: (value) =>
+                              setState(() => _age = value ?? _age),
+                        ),
+                        const SizedBox(height: 12),
+                        const Text(
+                          '性別',
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 6),
+                        SegmentedButton<String>(
+                          key: const Key('first-launch-gender'),
+                          segments: const [
+                            ButtonSegment(
+                              value: '男性',
+                              label: Text('男'),
+                              icon: Icon(Icons.male),
+                            ),
+                            ButtonSegment(
+                              value: '女性',
+                              label: Text('女'),
+                              icon: Icon(Icons.female),
+                            ),
+                          ],
+                          selected: {_gender},
+                          onSelectionChanged: (values) =>
+                              setState(() => _gender = values.single),
                         ),
                         const SizedBox(height: 20),
                         FilledButton(
@@ -108,7 +135,7 @@ class _FirstLaunchScreenState extends State<FirstLaunchScreen> {
                         ),
                         const SizedBox(height: 12),
                         const Text(
-                          '探索プロフィールは実際の広告同意とは別に管理されます。',
+                          'プロフィールによって出現する広告が変わります。',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 12),
                         ),

@@ -15,4 +15,20 @@ void main() {
 
     service.dispose();
   });
+
+  test(
+    'debug pseudo reward rejects a concurrent show and becomes ready again',
+    () async {
+      final service = DebugRewardedAdService();
+
+      await service.initialize();
+      final first = service.show();
+      expect(service.status, RewardedAdStatus.showing);
+      expect(await service.show(), RewardedAdResult.loadFailed);
+      expect(await first, RewardedAdResult.rewarded);
+      expect(service.status, RewardedAdStatus.ready);
+
+      service.dispose();
+    },
+  );
 }

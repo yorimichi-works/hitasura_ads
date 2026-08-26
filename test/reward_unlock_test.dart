@@ -40,4 +40,24 @@ void main() {
     expect(unlock.type, RewardPurposeType.unlockAd);
     expect(unlock.adId, 'AD_042');
   });
+
+  test('debug unlock overlay never changes persisted discoveries', () async {
+    final catalog = await AdCatalog.load();
+    final store = MemoryAppStore();
+    final controller = await AppController.create(
+      store: store,
+      catalog: catalog,
+    );
+
+    await controller.unlockAdWithReward('AD_012');
+    controller.setDebugUnlockAll(true);
+    expect(controller.discoveredCount, 151);
+    expect(controller.isAdVisibleAsDiscovered('AD_151'), isTrue);
+    expect(store.snapshot.discoveredIds, {'AD_012'});
+
+    controller.setDebugUnlockAll(false);
+    expect(controller.discoveredCount, 1);
+    expect(controller.discoveredIds, {'AD_012'});
+    expect(store.snapshot.discoveredIds, {'AD_012'});
+  });
 }

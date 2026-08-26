@@ -58,6 +58,20 @@ void main() {
     expect(service.select(catalog.all, first150).isSecret, isFalse);
   });
 
+  test('探索条件は性別と年齢境界を判定する', () {
+    final service = AdSelectionService();
+    expect(
+      service.conditionsEligible(['男性', '20歳以上'], age: 20, gender: '男性'),
+      isTrue,
+    );
+    expect(
+      service.conditionsEligible(['男性', '20歳以上'], age: 19, gender: '男性'),
+      isFalse,
+    );
+    expect(service.conditionsEligible(['女性'], age: 29, gender: '男性'), isFalse);
+    expect(service.conditionsEligible(['女性'], age: 29, gender: '女性'), isTrue);
+  });
+
   testWidgets('初回設定後は日本語の3画面ナビゲーションを表示する', (tester) async {
     final controller = await AppController.create(
       store: MemoryAppStore(),
@@ -67,11 +81,15 @@ void main() {
     await tester.pumpWidget(HitasuraAdsApp(controller: controller));
 
     expect(find.text('ひたすら\n広告'), findsOneWidget);
-    await tester.enterText(find.byType(TextFormField).at(0), '広告王');
-    await tester.enterText(find.byType(TextFormField).at(1), '24');
+    expect(find.widgetWithText(TextFormField, '広告大好き'), findsOneWidget);
+    expect(find.byKey(const Key('first-launch-age')), findsOneWidget);
+    expect(find.byKey(const Key('first-launch-gender')), findsOneWidget);
     await tester.tap(find.text('はじめる'));
     await tester.pump(const Duration(milliseconds: 500));
 
+    expect(controller.user!.nickname, '広告大好き');
+    expect(controller.user!.age, 29);
+    expect(controller.profile.gender, '男性');
     expect(find.text('ホーム'), findsOneWidget);
     expect(find.text('記録'), findsOneWidget);
     expect(find.text('広告探索'), findsOneWidget);
@@ -298,6 +316,38 @@ void main() {
 
     expect(find.text('発見状況: 0 / 150'), findsOneWidget);
     expect(find.byKey(const Key('reward-unlock-AD_151')), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('debug panel exposes test environment and discovery controls', (
+    tester,
+  ) async {
+    final controller = await AppController.create(
+      store: MemoryAppStore(),
+      catalog: catalog,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: AppShell(
+          controller: controller,
+          rewardedAdService: _FakeRewardedAdService(RewardedAdResult.rewarded),
+        ),
+      ),
+    );
+
+    await tester.longPress(find.text('ひたすら広告'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('debug-ad-environment')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('debug-unlock-all-toggle')));
+    await tester.pump();
+    expect(controller.discoveredCount, 151);
+
+    await tester.longPress(find.text('ひたすら広告'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('debug-unlock-all-toggle')));
+    await tester.pump();
+    expect(controller.discoveredCount, 0);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 }

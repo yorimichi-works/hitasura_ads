@@ -201,7 +201,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   Widget build(BuildContext context) {
     final ads = _onlyDiscovered
         ? widget.controller.catalog.all
-              .where((ad) => widget.controller.discoveredIds.contains(ad.id))
+              .where((ad) => widget.controller.isAdVisibleAsDiscovered(ad.id))
               .toList()
         : widget.controller.catalog.all;
     return Scaffold(
@@ -236,7 +236,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
             itemCount: ads.length,
             itemBuilder: (context, index) {
               final ad = ads[index];
-              final found = widget.controller.discoveredIds.contains(ad.id);
+              final found = widget.controller.isAdVisibleAsDiscovered(ad.id);
               return _CatalogTile(
                 ad: ad,
                 found: found,

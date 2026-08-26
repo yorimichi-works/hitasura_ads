@@ -30,10 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ];
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nickname;
-  late final TextEditingController _age;
+  late int _age;
   late final TextEditingController _region;
   late final TextEditingController _language;
-  late String? _ageGroup;
   late String? _gender;
   late Set<String> _selected;
   bool _saving = false;
@@ -44,18 +43,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final user = widget.controller.user!;
     final profile = widget.controller.profile;
     _nickname = TextEditingController(text: user.nickname);
-    _age = TextEditingController(text: user.age.toString());
+    _age = user.age.clamp(1, 100);
     _region = TextEditingController(text: profile.region ?? '日本');
     _language = TextEditingController(text: profile.language ?? '日本語');
-    _ageGroup = profile.ageGroup;
-    _gender = profile.gender;
+    _gender = profile.gender == '女性' ? '女性' : '男性';
     _selected = {...profile.interests};
   }
 
   @override
   void dispose() {
     _nickname.dispose();
-    _age.dispose();
     _region.dispose();
     _language.dispose();
     super.dispose();
@@ -65,10 +62,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _saving = true);
     await widget.controller.updateProfile(
-      nickname: _nickname.text,
-      age: int.parse(_age.text),
+      nickname: _nickname.text.trim().isEmpty ? '広告大好き' : _nickname.text,
+      age: _age,
       explorationProfile: ExplorationProfile(
-        ageGroup: _ageGroup,
+        ageGroup: ageGroupFor(_age),
         gender: _gender,
         region: _region.text.trim().isEmpty ? null : _region.text.trim(),
         language: _language.text.trim().isEmpty ? null : _language.text.trim(),
@@ -129,19 +126,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         : null,
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
-                    controller: _age,
-                    keyboardType: TextInputType.number,
+                  DropdownButtonFormField<int>(
+                    key: const Key('profile-age'),
+                    initialValue: _age,
                     decoration: const InputDecoration(
                       labelText: '実年齢',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) {
-                      final age = int.tryParse(value ?? '');
-                      return age == null || age < 1 || age > 120
-                          ? '1〜120の数字で入力してください'
-                          : null;
-                    },
+                    items: [
+                      for (var age = 1; age <= 100; age++)
+                        DropdownMenuItem(value: age, child: Text('$age歳')),
+                    ],
+                    onChanged: (value) => setState(() => _age = value ?? _age),
                   ),
                 ],
               ),
@@ -159,45 +155,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
                   ),
                   const SizedBox(height: 14),
-                  DropdownButtonFormField<String>(
-                    initialValue: _ageGroup,
-                    decoration: const InputDecoration(
-                      labelText: '探索用の年齢層',
-                      border: OutlineInputBorder(),
-                    ),
-                    items:
-                        [
-                              '18歳未満',
-                              '18〜24歳',
-                              '25〜34歳',
-                              '35〜44歳',
-                              '45〜54歳',
-                              '55〜64歳',
-                              '65歳以上',
-                            ]
-                            .map(
-                              (value) => DropdownMenuItem(
-                                value: value,
-                                child: Text(value),
-                              ),
-                            )
-                            .toList(),
-                    onChanged: (value) => setState(() => _ageGroup = value),
+                  const Text(
+                    '性別',
+                    style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  const SizedBox(height: 12),
-                  DropdownButtonFormField<String>(
-                    initialValue: _gender,
-                    decoration: const InputDecoration(
-                      labelText: '探索用の性別設定',
-                      border: OutlineInputBorder(),
-                    ),
-                    items: const [
-                      DropdownMenuItem(value: '設定しない', child: Text('設定しない')),
-                      DropdownMenuItem(value: '女性', child: Text('女性')),
-                      DropdownMenuItem(value: '男性', child: Text('男性')),
-                      DropdownMenuItem(value: 'その他', child: Text('その他')),
+                  const SizedBox(height: 6),
+                  SegmentedButton<String>(
+                    key: const Key('profile-gender'),
+                    segments: const [
+                      ButtonSegment(
+                        value: '男性',
+                        label: Text('男'),
+                        icon: Icon(Icons.male),
+                      ),
+                      ButtonSegment(
+                        value: '女性',
+                        label: Text('女'),
+                        icon: Icon(Icons.female),
+                      ),
                     ],
-                    onChanged: (value) => setState(() => _gender = value),
+                    selected: {_gender!},
+                    onSelectionChanged: (values) =>
+                        setState(() => _gender = values.single),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(

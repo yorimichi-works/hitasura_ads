@@ -34,7 +34,11 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
-    _rewardedAds = widget.rewardedAdService ?? GoogleRewardedAdService();
+    _rewardedAds =
+        widget.rewardedAdService ??
+        (kDebugMode && kIsWeb
+            ? DebugRewardedAdService()
+            : GoogleRewardedAdService());
     _rewardedAds.addListener(_onRewardStatusChanged);
     unawaited(_rewardedAds.initialize());
     _energyTicker = Timer.periodic(const Duration(seconds: 1), (_) async {
@@ -104,7 +108,11 @@ class _AppShellState extends State<AppShell> {
       ),
     );
     if (result == null || !mounted) return;
-    final isNew = await widget.controller.completeAd(ad, result.activeSeconds);
+    final isNew = await widget.controller.completeAd(
+      ad,
+      result.activeSeconds,
+      allowDiscovery: !widget.controller.debugUnlockAll,
+    );
     if (!mounted || !isNew) return;
     await Future<void>.delayed(const Duration(milliseconds: 160));
     unawaited(
@@ -194,10 +202,16 @@ class _AppShellState extends State<AppShell> {
             children: [
               const ListTile(
                 title: Text(
-                  '広告デバッグ',
+                  'テスト環境',
                   style: TextStyle(fontWeight: FontWeight.w900),
                 ),
-                subtitle: Text('任意の広告を強制表示します'),
+                subtitle: Text('開発ビルド専用。通常の報酬導線を検証します'),
+              ),
+              ListTile(
+                key: const Key('debug-ad-environment'),
+                leading: const Icon(Icons.science_outlined),
+                title: const Text('Ad Environment: TEST'),
+                subtitle: Text(kIsWeb ? 'WEB DEBUG 疑似リワード' : 'Google公式テスト広告ID'),
               ),
               ListTile(
                 leading: const Icon(Icons.battery_5_bar),
@@ -210,6 +224,33 @@ class _AppShellState extends State<AppShell> {
                     PopupMenuItem(value: 1, child: Text('1/5にする')),
                     PopupMenuItem(value: 5, child: Text('5/5にする')),
                   ],
+                ),
+              ),
+              SwitchListTile(
+                key: const Key('debug-unlock-all-toggle'),
+                secondary: const Icon(Icons.visibility_outlined),
+                title: const Text('全開放デバッグモード'),
+                subtitle: Text(
+                  widget.controller.debugUnlockAll
+                      ? 'DEBUG：全広告表示中（保存データは変更しません）'
+                      : '本来の図鑑状態を表示中',
+                ),
+                value: widget.controller.debugUnlockAll,
+                onChanged: (value) {
+                  widget.controller.setDebugUnlockAll(value);
+                  setState(() {});
+                  Navigator.pop(context);
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: OutlinedButton(
+                  key: const Key('debug-lock-all'),
+                  onPressed: () async {
+                    await widget.controller.clearAllDiscoveryForDebug();
+                    if (context.mounted) Navigator.pop(context);
+                  },
+                  child: const Text('保存済み図鑑を全件未開放にする'),
                 ),
               ),
               const Divider(height: 1),
@@ -227,15 +268,13 @@ class _AppShellState extends State<AppShell> {
                       trailing: discovered
                           ? IconButton(
                               key: Key('reset-discovery-${item.id}'),
-                              tooltip: '発見状態を未発見に戻す',
+                              tooltip: '${item.displayNumber}を未発見に戻す',
                               icon: const Icon(Icons.restart_alt),
                               onPressed: () async {
                                 await widget.controller.resetDiscoveryForDebug(
                                   item.id,
                                 );
-                                if (context.mounted) {
-                                  Navigator.pop(context, item);
-                                }
+                                if (context.mounted) Navigator.pop(context);
                               },
                             )
                           : null,
@@ -257,7 +296,7 @@ class _AppShellState extends State<AppShell> {
     final pages = [
       HomeScreen(
         onPlay: _play,
-        onDebug: _openDebugPicker,
+        onDebug: kDebugMode ? _openDebugPicker : null,
         searchEnergy: widget.controller.searchEnergy,
         recoveryCountdown: _formatCountdown(
           widget.controller.timeUntilSearchRecovery,

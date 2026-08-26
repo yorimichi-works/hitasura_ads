@@ -65,11 +65,19 @@ class AppController extends ChangeNotifier {
   int _watchCount;
   bool _soundEffectsEnabled;
   SearchEnergyState _searchEnergyState;
+  bool _debugUnlockAll = false;
 
   UserProfile? get user => _user;
   ExplorationProfile get profile => _profile;
   Set<String> get discoveredIds => Set.unmodifiable(_discoveredIds);
-  int get discoveredCount => _discoveredIds.length;
+  Set<String> get visibleDiscoveredIds => _debugUnlockAll
+      ? Set.unmodifiable(catalog.all.map((ad) => ad.id).toSet())
+      : discoveredIds;
+  int get discoveredCount =>
+      _debugUnlockAll ? catalog.all.length : _discoveredIds.length;
+  bool get debugUnlockAll => kDebugMode && _debugUnlockAll;
+  bool isAdVisibleAsDiscovered(String adId) =>
+      debugUnlockAll || _discoveredIds.contains(adId);
   int get totalWatchSeconds => _totalWatchSeconds;
   int get todayWatchSeconds => _todayWatchSeconds;
   int get watchCount => _watchCount;
@@ -81,15 +89,19 @@ class AppController extends ChangeNotifier {
   bool get isRegistered => _user != null;
   bool get isComplete => _discoveredIds.length == catalog.all.length;
 
-  Future<void> register(String nickname, int age) async {
+  Future<void> register(String nickname, int age, String gender) async {
     final now = DateTime.now();
     _user = UserProfile(
       id: '${now.microsecondsSinceEpoch}-${Random().nextInt(999999)}',
-      nickname: nickname.trim(),
+      nickname: nickname.trim().isEmpty ? '広告大好き' : nickname.trim(),
       age: age,
       createdAt: now,
     );
-    _profile = ExplorationProfile(ageGroup: ageGroupFor(age), language: '日本語');
+    _profile = ExplorationProfile(
+      ageGroup: ageGroupFor(age),
+      gender: gender,
+      language: '日本語',
+    );
     await _persist();
     notifyListeners();
   }
@@ -105,11 +117,19 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  AdDefinition selectAd() =>
-      _selectionService.select(catalog.all, _discoveredIds);
+  AdDefinition selectAd() => _selectionService.select(
+    catalog.all,
+    _discoveredIds,
+    age: _user?.age,
+    gender: _profile.gender,
+  );
 
-  Future<bool> completeAd(AdDefinition ad, int activeSeconds) async {
-    final isNew = _discoveredIds.add(ad.id);
+  Future<bool> completeAd(
+    AdDefinition ad,
+    int activeSeconds, {
+    bool allowDiscovery = true,
+  }) async {
+    final isNew = allowDiscovery && _discoveredIds.add(ad.id);
     final safeSeconds = activeSeconds.clamp(0, 120);
     _totalWatchSeconds += safeSeconds;
     _todayWatchSeconds += safeSeconds;
@@ -175,6 +195,20 @@ class AppController extends ChangeNotifier {
 
   Future<void> resetDiscoveryForDebug(String adId) async {
     if (!kDebugMode || !_discoveredIds.remove(adId)) return;
+    await _persist();
+    notifyListeners();
+  }
+
+  void setDebugUnlockAll(bool enabled) {
+    if (!kDebugMode) return;
+    if (_debugUnlockAll == enabled) return;
+    _debugUnlockAll = enabled;
+    notifyListeners();
+  }
+
+  Future<void> clearAllDiscoveryForDebug() async {
+    if (!kDebugMode) return;
+    _discoveredIds.clear();
     await _persist();
     notifyListeners();
   }

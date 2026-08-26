@@ -7,7 +7,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     required this.onPlay,
-    required this.onDebug,
+    this.onDebug,
     required this.searchEnergy,
     required this.recoveryCountdown,
     required this.onSponsorReward,
@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
   });
 
   final VoidCallback onPlay;
-  final VoidCallback onDebug;
+  final VoidCallback? onDebug;
   final int searchEnergy;
   final String recoveryCountdown;
   final VoidCallback onSponsorReward;
