@@ -66,8 +66,21 @@ class _AppShellState extends State<AppShell> {
     }
   }
 
-  Future<void> _performPlay(AdDefinition? forcedAd) async {
-    if (!await widget.controller.consumeSearchEnergy()) {
+  Future<void> _replay(AdDefinition ad) async {
+    if (_playInProgress) return;
+    _playInProgress = true;
+    try {
+      await _performPlay(ad, consumeEnergy: false);
+    } finally {
+      _playInProgress = false;
+    }
+  }
+
+  Future<void> _performPlay(
+    AdDefinition? forcedAd, {
+    bool consumeEnergy = true,
+  }) async {
+    if (consumeEnergy && !await widget.controller.consumeSearchEnergy()) {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('探索回数が回復するまでお待ちください')));
@@ -260,6 +273,7 @@ class _AppShellState extends State<AppShell> {
       ),
       RecordsScreen(
         controller: widget.controller,
+        onReplay: _replay,
         onRewardUnlock: _unlockWithSponsor,
         rewardUnlockAvailable: _rewardedAds.isSupported,
         rewardInProgress: _rewardInProgress,

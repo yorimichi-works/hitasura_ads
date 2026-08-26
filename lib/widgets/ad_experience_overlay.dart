@@ -4,7 +4,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../models/ad_definition.dart';
+import '../models/ad_visual_assets.dart';
 import '../services/ad_audio_manager.dart';
+import 'ad_mini_game.dart';
 
 class AdPlaybackResult {
   const AdPlaybackResult(this.activeSeconds);
@@ -102,6 +104,7 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
   @override
   Widget build(BuildContext context) {
     final ad = widget.ad;
+    final visualAssets = AdVisualAssets.forAd(ad);
     return PopScope(
       canPop: _remaining == 0,
       child: Material(
@@ -135,6 +138,18 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
                     child: Stack(
                       children: [
                         Positioned.fill(
+                          child: Image.asset(
+                            visualAssets.backgroundAsset,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: ColoredBox(
+                            color: _backgroundFor(ad).withValues(alpha: .62),
+                          ),
+                        ),
+                        Positioned.fill(
                           child: CustomPaint(
                             painter: _AdBurstPainter(
                               color: ad.accentColor,
@@ -154,54 +169,42 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
                               _AdHeader(ad: ad),
                               SizedBox(height: compact ? 8 : 16),
                               Expanded(
-                                child: AnimatedBuilder(
-                                  animation: Listenable.merge([
-                                    _animation,
-                                    _spin,
-                                  ]),
-                                  builder: (context, _) => _AnimatedExperience(
-                                    ad: ad,
-                                    pulse: _animation.value,
-                                    spin: _spin.value,
-                                    interacted: _interacted,
-                                    scratchProgress: _scratchProgress,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: compact ? 8 : 14),
-                              if (ad.interactionType !=
-                                      AdInteractionType.none &&
-                                  !_interacted)
-                                FilledButton(
-                                  key: const Key('ad-interaction-button'),
-                                  onPressed: _interact,
-                                  style: FilledButton.styleFrom(
-                                    backgroundColor: ad.accentColor,
-                                    foregroundColor: _contrast(ad.accentColor),
-                                    minimumSize: Size(
-                                      double.infinity,
-                                      compact ? 46 : 56,
-                                    ),
-                                    shape: const BeveledRectangleBorder(
-                                      side: BorderSide(
-                                        color: Colors.black,
-                                        width: 3,
+                                child: Column(
+                                  children: [
+                                    Flexible(
+                                      flex: compact ? 1 : 2,
+                                      child: AnimatedBuilder(
+                                        animation: Listenable.merge([
+                                          _animation,
+                                          _spin,
+                                        ]),
+                                        builder: (context, _) => FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: SizedBox(
+                                            width: 620,
+                                            height: 240,
+                                            child: _AnimatedExperience(
+                                              ad: ad,
+                                              pulse: _animation.value,
+                                              spin: _spin.value,
+                                              interacted: _interacted,
+                                              scratchProgress: _scratchProgress,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    ad.interactionType ==
-                                            AdInteractionType.scratch
-                                        ? '${ad.ctaText} $_scratchProgress%'
-                                        : ad.ctaText,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w900,
+                                    const SizedBox(height: 8),
+                                    Expanded(
+                                      flex: 3,
+                                      child: AdMiniGame(
+                                        ad: ad,
+                                        onInteraction: _interact,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              else if (_interacted)
-                                _ResultStrip(ad: ad),
+                                  ],
+                                ),
+                              ),
                               SizedBox(height: compact ? 8 : 12),
                               if (_remaining > 0)
                                 Semantics(
@@ -486,27 +489,49 @@ class _PosterVisual extends StatelessWidget {
   final bool interacted;
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: 150,
-    height: 100,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      color: ad.accentColor,
-      border: Border.all(width: 5),
-      shape: ad.number.isEven ? BoxShape.rectangle : BoxShape.circle,
-    ),
-    child: Text(
-      interacted ? '完了!?' : ad.symbol,
-      textAlign: TextAlign.center,
-      maxLines: 3,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        color: _contrast(ad.accentColor),
-        fontSize: 20,
-        fontWeight: FontWeight.w900,
+  Widget build(BuildContext context) {
+    final visual = AdVisualAssets.forAd(ad);
+    return Container(
+      width: 150,
+      height: 100,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: ad.accentColor,
+        border: Border.all(width: 5),
+        shape: ad.number.isEven ? BoxShape.rectangle : BoxShape.circle,
       ),
-    ),
-  );
+      child: visual.foregroundAsset == null
+          ? Text(
+              interacted ? '完了!?' : ad.symbol,
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: _contrast(ad.accentColor),
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+              ),
+            )
+          : AnimatedScale(
+              duration: const Duration(milliseconds: 220),
+              scale: interacted ? 1.12 : 1,
+              child: Image.asset(
+                visual.foregroundAsset!,
+                fit: BoxFit.contain,
+                errorBuilder: (_, error, _) {
+                  assert(() {
+                    debugPrint(
+                      'Ad No.${ad.number}: failed to load '
+                      '${visual.foregroundAsset}: $error',
+                    );
+                    return true;
+                  }());
+                  return const Icon(Icons.image_not_supported, size: 48);
+                },
+              ),
+            ),
+    );
+  }
 }
 
 class _RescueVisual extends StatelessWidget {
@@ -515,46 +540,59 @@ class _RescueVisual extends StatelessWidget {
   final bool solved;
 
   @override
-  Widget build(BuildContext context) => FittedBox(
-    fit: BoxFit.scaleDown,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          solved ? '操作完了' : ad.symbol,
-          style: TextStyle(
-            fontSize: 42,
-            color: ad.accentColor,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 18),
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white, width: 4),
-          ),
-          child: Text(
-            solved ? '王\nSAFE' : '王\n!?',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
+  Widget build(BuildContext context) {
+    final visual = AdVisualAssets.forAd(ad);
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            solved ? '操作完了' : ad.symbol,
+            style: TextStyle(
+              fontSize: 42,
+              color: ad.accentColor,
               fontWeight: FontWeight.w900,
             ),
           ),
-        ),
-        Text(
-          solved ? '宝' : 'PIN',
-          style: TextStyle(
-            fontSize: 34,
-            color: ad.accentColor,
-            fontWeight: FontWeight.w900,
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 18),
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white, width: 4),
+            ),
+            child: visual.foregroundAsset == null
+                ? Text(
+                    solved ? 'SAFE' : '!?',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  )
+                : AnimatedScale(
+                    duration: const Duration(milliseconds: 220),
+                    scale: solved ? 1.12 : 1,
+                    child: Image.asset(
+                      visual.foregroundAsset!,
+                      width: 84,
+                      height: 84,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
           ),
-        ),
-      ],
-    ),
-  );
+          Text(
+            solved ? '宝' : 'PIN',
+            style: TextStyle(
+              fontSize: 34,
+              color: ad.accentColor,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _GateVisual extends StatelessWidget {
@@ -739,23 +777,6 @@ class _SecretVisual extends StatelessWidget {
         fontWeight: FontWeight.w900,
         letterSpacing: 4,
       ),
-    ),
-  );
-}
-
-class _ResultStrip extends StatelessWidget {
-  const _ResultStrip({required this.ad});
-  final AdDefinition ad;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(10),
-    color: Colors.black,
-    child: Text(
-      ad.resultText,
-      textAlign: TextAlign.center,
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
     ),
   );
 }

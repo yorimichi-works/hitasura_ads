@@ -68,6 +68,9 @@ flutter:
     - assets/images/complete_ads/sheet3/
     - assets/images/ad_backgrounds/sheet4/
     - assets/images/ad_backgrounds/sheet5/
+    - assets/images/generated/characters/
+    - assets/images/generated/game/
+    - assets/images/generated/backgrounds/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

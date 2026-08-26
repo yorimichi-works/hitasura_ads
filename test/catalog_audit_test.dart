@@ -148,20 +148,34 @@ void main() {
         reason: '${ad.id}: initial render',
       );
 
-      if (ad.interactionType != AdInteractionType.none) {
-        final button = find.byKey(const Key('ad-interaction-button'));
-        expect(button, findsOneWidget, reason: ad.id);
-        final tapCount = ad.interactionType == AdInteractionType.scratch
-            ? 3
-            : 1;
-        for (var tap = 0; tap < tapCount; tap++) {
-          await tester.tap(button);
-          await tester.pump(const Duration(milliseconds: 800));
-        }
-        expect(tester.takeException(), isNull, reason: '${ad.id}: interaction');
-      }
+      expect(
+        find.byKey(const Key('mini-game-instruction')),
+        findsOneWidget,
+        reason: '${ad.id}: mini game',
+      );
     }
 
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('AD_001〜AD_151をデスクトップ幅で描画してoverflowしない', (tester) async {
+    tester.view.physicalSize = const Size(1280, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    for (final ad in catalog.all) {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: AdExperienceOverlay(key: ValueKey('desktop-${ad.id}'), ad: ad),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 50));
+      expect(
+        tester.takeException(),
+        isNull,
+        reason: '${ad.id}: desktop render',
+      );
+    }
     await tester.pumpWidget(const SizedBox.shrink());
   });
 }

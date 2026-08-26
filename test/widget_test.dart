@@ -279,6 +279,7 @@ void main() {
       MaterialApp(
         home: CatalogScreen(
           controller: controller,
+          onReplay: (_) async {},
           onRewardUnlock: (_) async => true,
           rewardUnlockAvailable: true,
           rewardInProgress: false,

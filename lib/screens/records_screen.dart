@@ -10,6 +10,7 @@ class RecordsScreen extends StatelessWidget {
   const RecordsScreen({
     super.key,
     required this.controller,
+    required this.onReplay,
     required this.onRewardUnlock,
     required this.rewardUnlockAvailable,
     required this.rewardInProgress,
@@ -17,6 +18,7 @@ class RecordsScreen extends StatelessWidget {
   });
 
   final AppController controller;
+  final Future<void> Function(AdDefinition ad) onReplay;
   final Future<bool> Function(AdDefinition ad) onRewardUnlock;
   final bool rewardUnlockAvailable;
   final bool rewardInProgress;
@@ -37,6 +39,7 @@ class RecordsScreen extends StatelessWidget {
               MaterialPageRoute<void>(
                 builder: (_) => CatalogScreen(
                   controller: controller,
+                  onReplay: onReplay,
                   onRewardUnlock: onRewardUnlock,
                   rewardUnlockAvailable: rewardUnlockAvailable,
                   rewardInProgress: rewardInProgress,
@@ -172,6 +175,7 @@ class CatalogScreen extends StatefulWidget {
   const CatalogScreen({
     super.key,
     required this.controller,
+    required this.onReplay,
     required this.onRewardUnlock,
     required this.rewardUnlockAvailable,
     required this.rewardInProgress,
@@ -179,6 +183,7 @@ class CatalogScreen extends StatefulWidget {
   });
 
   final AppController controller;
+  final Future<void> Function(AdDefinition ad) onReplay;
   final Future<bool> Function(AdDefinition ad) onRewardUnlock;
   final bool rewardUnlockAvailable;
   final bool rewardInProgress;
@@ -335,6 +340,16 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 Chip(label: Text(ad.rarity)),
                 Chip(label: Text(ad.category)),
               ],
+            ),
+            const SizedBox(height: 18),
+            FilledButton.icon(
+              key: Key('catalog-replay-${ad.id}'),
+              onPressed: () async {
+                Navigator.pop(context);
+                await widget.onReplay(ad);
+              },
+              icon: const Icon(Icons.sports_esports),
+              label: const Text('この広告ゲームをもう一度遊ぶ'),
             ),
           ],
         ),
