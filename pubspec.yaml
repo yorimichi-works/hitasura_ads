@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.3
   audioplayers: ^6.5.1
+  google_mobile_ads: ^9.1.0
 
 dev_dependencies:
   flutter_test:
@@ -60,7 +61,13 @@ flutter:
   uses-material-design: true
   assets:
     - assets/data/ad_catalog.json
+    - assets/data/image_asset_catalog.json
     - assets/audio/
+    - assets/images/ad_parts/sheet1/
+    - assets/images/ad_parts/sheet2/
+    - assets/images/complete_ads/sheet3/
+    - assets/images/ad_backgrounds/sheet4/
+    - assets/images/ad_backgrounds/sheet5/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

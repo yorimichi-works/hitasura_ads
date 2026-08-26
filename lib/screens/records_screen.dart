@@ -3,12 +3,24 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../models/ad_definition.dart';
+import '../services/rewarded_ad_service.dart';
 import '../state/app_controller.dart';
 
 class RecordsScreen extends StatelessWidget {
-  const RecordsScreen({super.key, required this.controller});
+  const RecordsScreen({
+    super.key,
+    required this.controller,
+    required this.onRewardUnlock,
+    required this.rewardUnlockAvailable,
+    required this.rewardInProgress,
+    required this.rewardStatus,
+  });
 
   final AppController controller;
+  final Future<bool> Function(AdDefinition ad) onRewardUnlock;
+  final bool rewardUnlockAvailable;
+  final bool rewardInProgress;
+  final RewardedAdStatus rewardStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +31,17 @@ class RecordsScreen extends StatelessWidget {
         const SizedBox(height: 18),
         Card(
           child: InkWell(
+            key: const Key('catalog-open-button'),
             borderRadius: BorderRadius.circular(18),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (_) => CatalogScreen(controller: controller),
+                builder: (_) => CatalogScreen(
+                  controller: controller,
+                  onRewardUnlock: onRewardUnlock,
+                  rewardUnlockAvailable: rewardUnlockAvailable,
+                  rewardInProgress: rewardInProgress,
+                  rewardStatus: rewardStatus,
+                ),
               ),
             ),
             child: Padding(
@@ -150,9 +169,20 @@ class RecordsScreen extends StatelessWidget {
 }
 
 class CatalogScreen extends StatefulWidget {
-  const CatalogScreen({super.key, required this.controller});
+  const CatalogScreen({
+    super.key,
+    required this.controller,
+    required this.onRewardUnlock,
+    required this.rewardUnlockAvailable,
+    required this.rewardInProgress,
+    required this.rewardStatus,
+  });
 
   final AppController controller;
+  final Future<bool> Function(AdDefinition ad) onRewardUnlock;
+  final bool rewardUnlockAvailable;
+  final bool rewardInProgress;
+  final RewardedAdStatus rewardStatus;
 
   @override
   State<CatalogScreen> createState() => _CatalogScreenState();
@@ -204,11 +234,75 @@ class _CatalogScreenState extends State<CatalogScreen> {
               return _CatalogTile(
                 ad: ad,
                 found: found,
-                onTap: found ? () => _showDetail(context, ad) : null,
+                onTap: () => found
+                    ? _showDetail(context, ad)
+                    : _showLockedDetail(context, ad),
               );
             },
           );
         },
+      ),
+    );
+  }
+
+  void _showLockedDetail(BuildContext context, AdDefinition ad) {
+    final regularFound = widget.controller.catalog.all
+        .where((item) => !item.isSecret)
+        .where((item) => widget.controller.discoveredIds.contains(item.id))
+        .length;
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => Padding(
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              ad.displayNumber,
+              style: const TextStyle(fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '未発見の広告',
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              '通常の解放条件',
+              style: TextStyle(fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 4),
+            Text(ad.unlockCondition),
+            if (ad.isSecret) ...[
+              const SizedBox(height: 8),
+              Text('発見状況: $regularFound / 150'),
+            ],
+            if (!ad.isSecret && widget.rewardUnlockAvailable) ...[
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                key: Key('reward-unlock-${ad.id}'),
+                onPressed:
+                    widget.rewardInProgress ||
+                        (widget.rewardStatus != RewardedAdStatus.ready &&
+                            widget.rewardStatus != RewardedAdStatus.failed)
+                    ? null
+                    : () async {
+                        Navigator.pop(sheetContext);
+                        await widget.onRewardUnlock(ad);
+                        if (mounted) setState(() {});
+                      },
+                icon: const Icon(Icons.ondemand_video),
+                label: Text(
+                  widget.rewardStatus == RewardedAdStatus.loading
+                      ? 'スポンサー広告を準備中'
+                      : 'スポンサー広告を見てこの広告を解放',
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -264,6 +358,7 @@ class _CatalogTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final secret = ad.isSecret && !found;
     return Card(
+      key: Key('catalog-tile-${ad.id}'),
       color: secret
           ? const Color(0xFF111111)
           : found

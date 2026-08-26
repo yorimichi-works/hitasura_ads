@@ -12,9 +12,14 @@ class AdPlaybackResult {
 }
 
 class AdExperienceOverlay extends StatefulWidget {
-  const AdExperienceOverlay({super.key, required this.ad});
+  const AdExperienceOverlay({
+    super.key,
+    required this.ad,
+    this.soundEffectsEnabled = true,
+  });
 
   final AdDefinition ad;
+  final bool soundEffectsEnabled;
 
   @override
   State<AdExperienceOverlay> createState() => _AdExperienceOverlayState();
@@ -43,7 +48,12 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     if (widget.ad.isSecret) {
-      unawaited(_audio.playSecretSequence(widget.ad));
+      unawaited(
+        _audio.playSecretSequence(
+          widget.ad,
+          soundEffectsEnabled: widget.soundEffectsEnabled,
+        ),
+      );
     }
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!_foreground || !mounted) return;
@@ -70,7 +80,9 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
   }
 
   void _interact() {
-    unawaited(_audio.playInteraction(widget.ad));
+    unawaited(
+      _audio.playInteraction(widget.ad, enabled: widget.soundEffectsEnabled),
+    );
     if (widget.ad.interactionType == AdInteractionType.scratch) {
       setState(() {
         _scratchProgress = min(100, _scratchProgress + 34);

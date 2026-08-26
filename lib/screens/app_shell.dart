@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/ad_definition.dart';
+import '../models/reward_purpose.dart';
+import '../services/ad_audio_manager.dart';
+import '../services/rewarded_ad_service.dart';
 import '../state/app_controller.dart';
 import '../widgets/ad_experience_overlay.dart';
 import 'home_screen.dart';
@@ -9,9 +14,10 @@ import 'profile_screen.dart';
 import 'records_screen.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key, required this.controller});
+  const AppShell({super.key, required this.controller, this.rewardedAdService});
 
   final AppController controller;
+  final RewardedAdService? rewardedAdService;
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -19,8 +25,56 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _index = 0;
+  late final AdAudioManager _audio = AdAudioManager();
+  late final RewardedAdService _rewardedAds;
+  late final Timer _energyTicker;
+  bool _rewardInProgress = false;
+  bool _playInProgress = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _rewardedAds = widget.rewardedAdService ?? GoogleRewardedAdService();
+    _rewardedAds.addListener(_onRewardStatusChanged);
+    unawaited(_rewardedAds.initialize());
+    _energyTicker = Timer.periodic(const Duration(seconds: 1), (_) async {
+      await widget.controller.refreshSearchEnergy();
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_audio.dispose());
+    _energyTicker.cancel();
+    _rewardedAds.removeListener(_onRewardStatusChanged);
+    _rewardedAds.dispose();
+    super.dispose();
+  }
+
+  void _onRewardStatusChanged() {
+    if (mounted) setState(() {});
+  }
 
   Future<void> _play([AdDefinition? forcedAd]) async {
+    if (_playInProgress) return;
+    _playInProgress = true;
+    try {
+      await _performPlay(forcedAd);
+    } finally {
+      _playInProgress = false;
+    }
+  }
+
+  Future<void> _performPlay(AdDefinition? forcedAd) async {
+    if (!await widget.controller.consumeSearchEnergy()) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('探索回数が回復するまでお待ちください')));
+      }
+      return;
+    }
+    if (!mounted) return;
     final ad = forcedAd ?? widget.controller.selectAd();
     final result = await showGeneralDialog<AdPlaybackResult>(
       context: context,
@@ -31,16 +85,88 @@ class _AppShellState extends State<AppShell> {
         scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
         child: FadeTransition(opacity: animation, child: child),
       ),
-      pageBuilder: (context, _, _) => AdExperienceOverlay(ad: ad),
+      pageBuilder: (context, _, _) => AdExperienceOverlay(
+        ad: ad,
+        soundEffectsEnabled: widget.controller.soundEffectsEnabled,
+      ),
     );
     if (result == null || !mounted) return;
     final isNew = await widget.controller.completeAd(ad, result.activeSeconds);
     if (!mounted || !isNew) return;
+    await Future<void>.delayed(const Duration(milliseconds: 160));
+    unawaited(
+      _audio.playDiscovery(enabled: widget.controller.soundEffectsEnabled),
+    );
+    if (!mounted) return;
     await showDialog<void>(
       context: context,
       builder: (context) =>
           _DiscoveryDialog(ad: ad, complete: widget.controller.isComplete),
     );
+  }
+
+  Future<void> _restoreWithSponsor() async {
+    await _runReward(const RewardPurpose.restoreSearchEnergy());
+  }
+
+  Future<bool> _unlockWithSponsor(AdDefinition ad) =>
+      _runReward(RewardPurpose.unlockAd(ad.id));
+
+  Future<bool> _runReward(RewardPurpose purpose) async {
+    if (_rewardInProgress) return false;
+    setState(() => _rewardInProgress = true);
+    RewardedAdResult result;
+    var rewardApplied = false;
+    AdDefinition? unlockedAd;
+    try {
+      result = await _rewardedAds.show();
+      if (result == RewardedAdResult.rewarded) {
+        switch (purpose.type) {
+          case RewardPurposeType.restoreSearchEnergy:
+            await widget.controller.refillSearchEnergy();
+            rewardApplied = true;
+            break;
+          case RewardPurposeType.unlockAd:
+            final target = widget.controller.catalog.byId[purpose.adId];
+            if (target != null) {
+              rewardApplied = await widget.controller.unlockAdWithReward(
+                target.id,
+              );
+              if (rewardApplied) unlockedAd = target;
+            }
+            break;
+        }
+      }
+    } finally {
+      if (mounted) setState(() => _rewardInProgress = false);
+    }
+    if (!mounted) return rewardApplied;
+    if (unlockedAd != null) {
+      await Future<void>.delayed(const Duration(milliseconds: 160));
+      unawaited(
+        _audio.playDiscovery(enabled: widget.controller.soundEffectsEnabled),
+      );
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          builder: (context) => _DiscoveryDialog(
+            ad: unlockedAd!,
+            complete: widget.controller.isComplete,
+          ),
+        );
+      }
+      return true;
+    }
+    final message = switch (result) {
+      RewardedAdResult.rewarded when rewardApplied => '探索回数が5/5まで回復しました',
+      RewardedAdResult.rewarded => 'この広告はすでに発見済みです',
+      RewardedAdResult.notRewarded => '広告の視聴が完了しなかったため報酬はありません',
+      RewardedAdResult.unavailable => 'この環境ではスポンサー広告を利用できません',
+      RewardedAdResult.loadFailed => 'スポンサー広告を読み込めませんでした',
+    };
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+    return rewardApplied;
   }
 
   Future<void> _openDebugPicker() async {
@@ -60,15 +186,46 @@ class _AppShellState extends State<AppShell> {
                 ),
                 subtitle: Text('任意の広告を強制表示します'),
               ),
+              ListTile(
+                leading: const Icon(Icons.battery_5_bar),
+                title: Text('探索回数 ${widget.controller.searchEnergy}/5'),
+                trailing: PopupMenuButton<int>(
+                  tooltip: '探索回数をテスト変更',
+                  onSelected: widget.controller.setSearchEnergyForDebug,
+                  itemBuilder: (context) => const [
+                    PopupMenuItem(value: 0, child: Text('0/5にする')),
+                    PopupMenuItem(value: 1, child: Text('1/5にする')),
+                    PopupMenuItem(value: 5, child: Text('5/5にする')),
+                  ],
+                ),
+              ),
               const Divider(height: 1),
               Expanded(
                 child: ListView.builder(
                   itemCount: widget.controller.catalog.all.length,
                   itemBuilder: (context, index) {
                     final item = widget.controller.catalog.all[index];
+                    final discovered = widget.controller.discoveredIds.contains(
+                      item.id,
+                    );
                     return ListTile(
                       leading: Text(item.displayNumber),
                       title: Text(item.name),
+                      trailing: discovered
+                          ? IconButton(
+                              key: Key('reset-discovery-${item.id}'),
+                              tooltip: '発見状態を未発見に戻す',
+                              icon: const Icon(Icons.restart_alt),
+                              onPressed: () async {
+                                await widget.controller.resetDiscoveryForDebug(
+                                  item.id,
+                                );
+                                if (context.mounted) {
+                                  Navigator.pop(context, item);
+                                }
+                              },
+                            )
+                          : null,
                       onTap: () => Navigator.pop(context, item),
                     );
                   },
@@ -85,8 +242,29 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      HomeScreen(onPlay: _play, onDebug: _openDebugPicker),
-      RecordsScreen(controller: widget.controller),
+      HomeScreen(
+        onPlay: _play,
+        onDebug: _openDebugPicker,
+        searchEnergy: widget.controller.searchEnergy,
+        recoveryCountdown: _formatCountdown(
+          widget.controller.timeUntilSearchRecovery,
+        ),
+        onSponsorReward: _restoreWithSponsor,
+        sponsorLoading: _rewardInProgress,
+        sponsorAvailable: _rewardedAds.isSupported,
+        sponsorCanRequest:
+            _rewardedAds.status == RewardedAdStatus.ready ||
+            _rewardedAds.status == RewardedAdStatus.failed,
+        sponsorStatus: _rewardedAds.status.name.toUpperCase(),
+        sponsorUsesTestAds: _rewardedAds.usesTestAds,
+      ),
+      RecordsScreen(
+        controller: widget.controller,
+        onRewardUnlock: _unlockWithSponsor,
+        rewardUnlockAvailable: _rewardedAds.isSupported,
+        rewardInProgress: _rewardInProgress,
+        rewardStatus: _rewardedAds.status,
+      ),
       ProfileScreen(controller: widget.controller),
     ];
     return Scaffold(
@@ -115,6 +293,13 @@ class _AppShellState extends State<AppShell> {
         ],
       ),
     );
+  }
+
+  String _formatCountdown(Duration duration) {
+    final totalSeconds = duration.inSeconds.clamp(0, 20 * 60);
+    final minutes = totalSeconds ~/ 60;
+    final seconds = totalSeconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 }
 

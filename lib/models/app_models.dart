@@ -57,6 +57,9 @@ class AppSnapshot {
     this.totalWatchSeconds = 0,
     this.todayWatchSeconds = 0,
     this.watchCount = 0,
+    this.soundEffectsEnabled = true,
+    this.searchEnergy = 5,
+    this.searchEnergyRecoveryAnchor,
     this.statsDate,
   });
 
@@ -66,5 +69,8 @@ class AppSnapshot {
   final int totalWatchSeconds;
   final int todayWatchSeconds;
   final int watchCount;
+  final bool soundEffectsEnabled;
+  final int searchEnergy;
+  final DateTime? searchEnergyRecoveryAnchor;
   final String? statsDate;
 }

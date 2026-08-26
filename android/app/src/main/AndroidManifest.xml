@@ -3,6 +3,9 @@
         android:label="ひたすら広告"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${admobApplicationId}" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -117,6 +117,7 @@ void main() {
     expect(File('assets/audio/secret_se.wav').existsSync(), isTrue);
     expect(File('assets/audio/secret_bgm.wav').existsSync(), isTrue);
     expect(File('assets/audio/ui_click.wav').existsSync(), isTrue);
+    expect(File('assets/audio/discovery_se.wav').existsSync(), isTrue);
   });
 
   testWidgets('AD_001〜AD_151をスマホ幅で描画・操作してoverflowしない', (tester) async {

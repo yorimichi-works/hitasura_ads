@@ -1,12 +1,33 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.onPlay, required this.onDebug});
+  const HomeScreen({
+    super.key,
+    required this.onPlay,
+    required this.onDebug,
+    required this.searchEnergy,
+    required this.recoveryCountdown,
+    required this.onSponsorReward,
+    required this.sponsorLoading,
+    required this.sponsorAvailable,
+    required this.sponsorCanRequest,
+    required this.sponsorStatus,
+    required this.sponsorUsesTestAds,
+  });
 
   final VoidCallback onPlay;
   final VoidCallback onDebug;
+  final int searchEnergy;
+  final String recoveryCountdown;
+  final VoidCallback onSponsorReward;
+  final bool sponsorLoading;
+  final bool sponsorAvailable;
+  final bool sponsorCanRequest;
+  final String sponsorStatus;
+  final bool sponsorUsesTestAds;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -64,6 +85,24 @@ class _HomeScreenState extends State<HomeScreen>
                         style: TextStyle(fontWeight: FontWeight.w700),
                       ),
                       const Spacer(),
+                      Text(
+                        '新しい広告を探す  残り ${widget.searchEnergy} / 5',
+                        key: const Key('search-energy-label'),
+                        style: TextStyle(
+                          fontSize: compact ? 17 : 20,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      if (widget.searchEnergy < 5 &&
+                          widget.sponsorAvailable) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          '次の回復まで ${widget.recoveryCountdown}',
+                          key: const Key('search-recovery-countdown'),
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                      const SizedBox(height: 10),
                       AnimatedBuilder(
                         animation: _pulse,
                         builder: (context, child) => Transform.scale(
@@ -75,7 +114,9 @@ class _HomeScreenState extends State<HomeScreen>
                           height: buttonHeight,
                           child: FilledButton(
                             key: const Key('play-ad-button'),
-                            onPressed: widget.onPlay,
+                            onPressed: widget.searchEnergy > 0
+                                ? widget.onPlay
+                                : null,
                             style: FilledButton.styleFrom(
                               backgroundColor: const Color(0xFFFF2D00),
                               foregroundColor: Colors.white,
@@ -93,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '広告を再生する',
+                                  '新しい広告を探す',
                                   style: TextStyle(
                                     fontSize: compact ? 27 : 38,
                                     fontWeight: FontWeight.w900,
@@ -109,6 +150,32 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                       ),
+                      if (widget.searchEnergy < 5) ...[
+                        const SizedBox(height: 10),
+                        OutlinedButton.icon(
+                          key: const Key('sponsor-reward-button'),
+                          onPressed:
+                              widget.sponsorLoading || !widget.sponsorCanRequest
+                              ? null
+                              : widget.onSponsorReward,
+                          icon: const Icon(Icons.ondemand_video),
+                          label: Text(
+                            widget.sponsorLoading || !widget.sponsorCanRequest
+                                ? 'スポンサー広告を準備中...'
+                                : 'スポンサー広告を見て5/5に回復',
+                          ),
+                        ),
+                      ],
+                      if (kDebugMode && widget.sponsorAvailable)
+                        Text(
+                          'Ad Environment: ${widget.sponsorUsesTestAds ? 'TEST' : 'PRODUCTION'}  •  '
+                          'Rewarded Ad: ${widget.sponsorStatus}',
+                          key: const Key('rewarded-ad-debug-status'),
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.black54,
+                          ),
+                        ),
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(

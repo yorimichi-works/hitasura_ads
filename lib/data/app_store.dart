@@ -21,6 +21,9 @@ class PreferencesAppStore implements AppStore {
   static const _totalSeconds = 'total_watch_seconds';
   static const _todaySeconds = 'today_watch_seconds';
   static const _watchCount = 'watch_count';
+  static const _soundEffectsEnabled = 'sound_effects_enabled';
+  static const _searchEnergy = 'search_energy';
+  static const _searchEnergyRecoveryAnchor = 'search_energy_recovery_anchor';
   static const _statsDate = 'stats_date';
 
   @override
@@ -51,6 +54,11 @@ class PreferencesAppStore implements AppStore {
       totalWatchSeconds: prefs.getInt(_totalSeconds) ?? 0,
       todayWatchSeconds: prefs.getInt(_todaySeconds) ?? 0,
       watchCount: prefs.getInt(_watchCount) ?? 0,
+      soundEffectsEnabled: prefs.getBool(_soundEffectsEnabled) ?? true,
+      searchEnergy: prefs.getInt(_searchEnergy) ?? 5,
+      searchEnergyRecoveryAnchor: DateTime.tryParse(
+        prefs.getString(_searchEnergyRecoveryAnchor) ?? '',
+      ),
       statsDate: prefs.getString(_statsDate),
     );
   }
@@ -80,6 +88,12 @@ class PreferencesAppStore implements AppStore {
     await prefs.setInt(_totalSeconds, snapshot.totalWatchSeconds);
     await prefs.setInt(_todaySeconds, snapshot.todayWatchSeconds);
     await prefs.setInt(_watchCount, snapshot.watchCount);
+    await prefs.setBool(_soundEffectsEnabled, snapshot.soundEffectsEnabled);
+    await prefs.setInt(_searchEnergy, snapshot.searchEnergy);
+    await prefs.setString(
+      _searchEnergyRecoveryAnchor,
+      snapshot.searchEnergyRecoveryAnchor!.toIso8601String(),
+    );
     await _setNullable(prefs, _statsDate, snapshot.statsDate);
   }
 

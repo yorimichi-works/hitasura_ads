@@ -97,6 +97,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const _Notice(),
           const SizedBox(height: 16),
           Card(
+            child: SwitchListTile(
+              key: const Key('sound-effects-toggle'),
+              secondary: const Icon(Icons.volume_up_outlined),
+              title: const Text('効果音'),
+              subtitle: const Text('広告の操作音と新規発見音'),
+              value: widget.controller.soundEffectsEnabled,
+              onChanged: widget.controller.setSoundEffectsEnabled,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Card(
             child: Padding(
               padding: const EdgeInsets.all(18),
               child: Column(

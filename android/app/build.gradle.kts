@@ -30,10 +30,17 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            manifestPlaceholders["admobApplicationId"] =
+                "ca-app-pub-3940256099942544~3347511713"
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            manifestPlaceholders["admobApplicationId"] =
+                providers.gradleProperty("ADMOB_ANDROID_APP_ID").orNull
+                    ?: "ca-app-pub-3940256099942544~3347511713"
         }
     }
 }

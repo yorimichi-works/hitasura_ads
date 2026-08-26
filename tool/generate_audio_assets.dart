@@ -31,6 +31,18 @@ void main() {
       return chord / 1.9 * loopEnvelope;
     },
   );
+  _writeWave(
+    File('${output.path}/discovery_se.wav'),
+    seconds: .82,
+    sample: (time, progress) {
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      final noteIndex = min(notes.length - 1, (progress * 4).floor());
+      final noteProgress = (progress * 4) - noteIndex;
+      final envelope = sin(pi * noteProgress) * (1 - progress * .28);
+      final shimmer = .18 * sin(2 * pi * notes[noteIndex] * 2 * time);
+      return (sin(2 * pi * notes[noteIndex] * time) + shimmer) * envelope * .7;
+    },
+  );
 }
 
 void _writeWave(
