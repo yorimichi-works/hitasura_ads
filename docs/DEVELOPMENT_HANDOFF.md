@@ -195,7 +195,7 @@ git push origin main
 
 `main`へのpushは本番デプロイを起動します。未検証の変更、Secret、個人ファイル、大容量の一時ファイルを含めないでください。複数人で同時開発する場合は作業ブランチとPull Requestを使用し、検証後に`main`へマージする方が安全です。
 
-## 11. GitHub ActionsとVercel
+## 11. GitHub ActionsとGitHub Pages
 
 CI/CD定義は`.github/workflows/deploy-web.yml`です。`main`へのpush時に次を実行します。
 
@@ -204,23 +204,18 @@ CI/CD定義は`.github/workflows/deploy-web.yml`です。`main`へのpush時に�
 3. `flutter pub get`
 4. `flutter analyze`
 5. `flutter test`
-6. `flutter build web --release --base-href / --no-wasm-dry-run`
-7. SPA設定をビルド成果物へコピー
-8. 成功した成果物だけをVercel productionへデプロイ
+6. GitHub Pagesを設定
+7. `flutter build web --release --base-href /hitasura_ads/ --no-wasm-dry-run`
+8. ビルド成果物をPages artifactとしてアップロード
+9. 成功した成果物だけをGitHub Pagesへデプロイ
 
-解析、テスト、ビルドのいずれかが失敗した場合はデプロイ工程へ進まないため、既存の本番サイトは維持されます。Vercel側ではFlutterビルドを行いません。
+解析、テスト、ビルドのいずれかが失敗した場合はデプロイ工程へ進まないため、既存の本番サイトは維持されます。
 
-SPAの直接URLアクセスは`vercel.json`のrewriteで`/index.html`へ戻します。
+公開URLは `https://chikuzensaito-dev.github.io/hitasura_ads/` です。
 
-GitHubリポジトリの`Settings > Secrets and variables > Actions`に次のRepository Secretsが必要です。
+初回のみ、GitHubリポジトリの `Settings > Pages > Build and deployment > Source` で `GitHub Actions` を選択します。Vercel用Secretは不要です。
 
-| Secret | 取得元 |
-| --- | --- |
-| `VERCEL_TOKEN` | Vercel Account SettingsのToken |
-| `VERCEL_ORG_ID` | Vercelのteam/account ID |
-| `VERCEL_PROJECT_ID` | 対象Vercel project ID |
-
-これらはPCごとの設定ではなくGitHubリポジトリ側の設定です。すでに登録済みなら、新PCで再登録する必要はありません。Vercel側で同じGitリポジトリの自動デプロイも有効にすると二重デプロイになるため、この構成ではGitHub Actionsからのデプロイを正とします。
+Pages用の権限はワークフロー内の `pages: write` と `id-token: write` で宣言しています。
 
 ## 12. 現在未接続の機能
 
