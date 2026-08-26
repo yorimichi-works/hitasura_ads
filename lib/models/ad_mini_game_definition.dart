@@ -58,18 +58,18 @@ class AdMiniGameDefinition {
   final String? assetPath;
 
   static String _instruction(AdMiniGameType type) => switch (type) {
-    AdMiniGameType.tapChallenge => '光る対象を3回タップ',
-    AdMiniGameType.choice => '正しい選択肢を選ぶ',
+    AdMiniGameType.tapChallenge => '光る対象を追いかけてタップ',
+    AdMiniGameType.choice => 'お題と同じ記号を3問選ぶ',
     AdMiniGameType.pinPull => '安全な順番でピンを抜く',
     AdMiniGameType.numberGate => '増えるゲートを選ぶ',
     AdMiniGameType.drawPath => '指で安全な線を描く',
-    AdMiniGameType.dragSort => 'アイテムを正しい場所へドラッグ',
+    AdMiniGameType.dragSort => '3個のアイテムを正しい場所へドラッグ',
     AdMiniGameType.timing => '成功ゾーンで止める',
     AdMiniGameType.scratch => '銀色の面をこする',
-    AdMiniGameType.packOpen => 'パックを上へスワイプ',
+    AdMiniGameType.packOpen => '3つのパックを上へスワイプ',
     AdMiniGameType.countdownStop => '残り1秒で止める',
-    AdMiniGameType.reveal => '隠された広告を探してタップ',
-    AdMiniGameType.finale => '王冠を3回タップして完成させる',
+    AdMiniGameType.reveal => '移動する広告を3回見つける',
+    AdMiniGameType.finale => 'Lv995からLv999へ進化させる',
   };
 
   static String _success(AdMiniGameType type) => switch (type) {

@@ -6,14 +6,21 @@ import 'package:flutter/material.dart';
 import '../models/ad_definition.dart';
 import '../models/ad_mini_game_definition.dart';
 import '../models/ad_visual_assets.dart';
+import '../models/mini_game_rules.dart';
 
 enum MiniGamePhase { notStarted, playing, success, failure }
 
 class AdMiniGame extends StatefulWidget {
-  const AdMiniGame({super.key, required this.ad, required this.onInteraction});
+  const AdMiniGame({
+    super.key,
+    required this.ad,
+    required this.onInteraction,
+    this.seed,
+  });
 
   final AdDefinition ad;
   final VoidCallback onInteraction;
+  final int? seed;
 
   @override
   State<AdMiniGame> createState() => _AdMiniGameState();
@@ -23,6 +30,7 @@ class _AdMiniGameState extends State<AdMiniGame>
     with SingleTickerProviderStateMixin {
   late final AdMiniGameDefinition game = AdMiniGameDefinition.forAd(widget.ad);
   late final AdVisualAssets visualAssets = AdVisualAssets.forAd(widget.ad);
+  late final AdMiniGameRules rules = AdMiniGameRules.forAd(widget.ad);
   late final AnimationController _motion = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 1500),
@@ -35,11 +43,43 @@ class _AdMiniGameState extends State<AdMiniGame>
   final Set<int> _scratched = {};
   final Set<int> _removedPins = {};
   double _swipeDistance = 0;
+  int _run = 0;
+  late Random _random;
+  late int _value;
+  int _score = 0;
+  int _mistakes = 0;
+  late int _correctChoice;
+  late int _dragTarget;
+  late List<int> _pinOrder;
+  late List<NumberOperation> _gates;
+  String _packReward = '???';
+  String _scratchReward = '';
+  int _tapOffset = 0;
+  double _pathY = 0;
 
   @override
   void initState() {
     super.initState();
+    _prepareRun();
     if (game.type == AdMiniGameType.countdownStop) _startCountdown();
+  }
+
+  void _prepareRun() {
+    final seed = widget.seed ?? DateTime.now().microsecondsSinceEpoch;
+    _random = Random(seed + widget.ad.number * 997 + _run++);
+    _value = rules.initialValue;
+    _score = 0;
+    _mistakes = 0;
+    _correctChoice = _random.nextInt(3);
+    _dragTarget = _random.nextInt(2);
+    _pinOrder = [0, 1, 2]..shuffle(_random);
+    _gates = rules.gates(_random, round: _progress);
+    const scratchRewards = ['コイン 100', '装備 R', '経験値 999', 'ハズレ風の当たり'];
+    _packReward = '???';
+    _scratchReward = scratchRewards[_random.nextInt(scratchRewards.length)];
+    _tapOffset = _random.nextInt(5);
+    _pathY = -.45 + _random.nextDouble() * .9;
+    _motion.duration = Duration(milliseconds: 1100 + _random.nextInt(900));
   }
 
   @override
@@ -77,6 +117,7 @@ class _AdMiniGameState extends State<AdMiniGame>
       _scratched.clear();
       _removedPins.clear();
       _swipeDistance = 0;
+      _prepareRun();
     });
     _motion.repeat(reverse: true);
     if (game.type == AdMiniGameType.countdownStop) _startCountdown();
@@ -108,7 +149,21 @@ class _AdMiniGameState extends State<AdMiniGame>
               builder: (context, constraints) => Stack(
                 fit: StackFit.expand,
                 children: [
-                  _buildGame(constraints),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 38),
+                    child: _buildGame(constraints),
+                  ),
+                  Positioned(
+                    left: 8,
+                    right: 8,
+                    top: 6,
+                    child: _GameHud(
+                      progress: _progress,
+                      rounds: rules.rounds,
+                      value: _value,
+                      score: _score,
+                    ),
+                  ),
                   if (game.assetPath != null && _needsReactiveActor)
                     IgnorePointer(
                       child: Align(
@@ -133,7 +188,8 @@ class _AdMiniGameState extends State<AdMiniGame>
             MiniGamePhase.success => _ResultBanner(
               key: const Key('mini-game-success'),
               color: Colors.green,
-              text: 'CLEAR! ${widget.ad.resultText}',
+              text:
+                  '${rules.grade(mistakes: _mistakes, score: _score).name.toUpperCase()}! ${widget.ad.resultText}',
               onRetry: _reset,
             ),
             MiniGamePhase.failure => _ResultBanner(
@@ -182,12 +238,14 @@ class _AdMiniGameState extends State<AdMiniGame>
       const Alignment(-.7, -.4),
       const Alignment(.65, -.2),
       const Alignment(0, .55),
+      const Alignment(-.45, .45),
+      const Alignment(.5, -.5),
     ];
     return Stack(
       children: [
         AnimatedAlign(
           duration: const Duration(milliseconds: 220),
-          alignment: alignments[min(_progress, 2)],
+          alignment: alignments[(_progress + _tapOffset) % alignments.length],
           child: Semantics(
             button: true,
             label: '光る対象',
@@ -196,8 +254,12 @@ class _AdMiniGameState extends State<AdMiniGame>
               radius: 42,
               onTap: () {
                 _start();
-                setState(() => _progress++);
-                if (_progress >= 3) _finish(true);
+                setState(() {
+                  _progress++;
+                  _score += 100;
+                  _value += 1;
+                });
+                if (_progress >= rules.rounds) _finish(true);
               },
               child: AnimatedScale(
                 duration: const Duration(milliseconds: 140),
@@ -215,7 +277,7 @@ class _AdMiniGameState extends State<AdMiniGame>
                   ),
                   child: game.assetPath == null
                       ? Text(
-                          '${min(_progress + 1, 3)}/3',
+                          '${min(_progress + 1, rules.rounds)}/${rules.rounds}',
                           style: const TextStyle(fontWeight: FontWeight.w900),
                         )
                       : _Asset(
@@ -232,60 +294,78 @@ class _AdMiniGameState extends State<AdMiniGame>
   }
 
   Widget _choiceGame() {
-    final correct = widget.ad.number.isEven ? 0 : 1;
-    return Row(
+    const symbols = ['★', '◆', '●'];
+    return Column(
       children: [
-        for (var i = 0; i < 2; i++)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: FilledButton(
-                key: Key('mini-game-choice-$i'),
-                onPressed:
-                    _phase == MiniGamePhase.success ||
-                        _phase == MiniGamePhase.failure
-                    ? null
-                    : () => _finish(i == correct),
-                style: FilledButton.styleFrom(
-                  backgroundColor: i == 0 ? Colors.blue : Colors.orange,
-                  minimumSize: const Size.fromHeight(130),
-                  shape: const RoundedRectangleBorder(),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: 72,
-                      height: 72,
-                      child:
-                          (i == 0
-                                  ? game.assetPath
-                                  : visualAssets.secondaryAsset) !=
-                              null
-                          ? _Asset(
-                              path: (i == 0
-                                  ? game.assetPath
-                                  : visualAssets.secondaryAsset)!,
-                              adNumber: widget.ad.number,
-                            )
-                          : Icon(
-                              i == 0 ? Icons.checkroom : Icons.auto_fix_high,
-                              size: 42,
-                            ),
-                    ),
-                    Text(i == 0 ? 'Aを選ぶ' : 'Bを選ぶ'),
-                  ],
-                ),
-              ),
-            ),
+        Text(
+          'お題と同じ記号を選べ：${symbols[_correctChoice]}',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
           ),
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              for (var i = 0; i < 3; i++)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: FilledButton(
+                      key: Key('mini-game-choice-$i'),
+                      onPressed:
+                          _phase == MiniGamePhase.success ||
+                              _phase == MiniGamePhase.failure
+                          ? null
+                          : () {
+                              _start();
+                              if (i != _correctChoice) {
+                                _mistakes++;
+                                _finish(false);
+                                return;
+                              }
+                              setState(() {
+                                _progress++;
+                                _score += 100;
+                                _value += 3;
+                                _correctChoice = _random.nextInt(3);
+                              });
+                              if (_progress >= rules.rounds) _finish(true);
+                            },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Colors.primaries[i * 3],
+                        minimumSize: const Size.fromHeight(130),
+                        shape: const RoundedRectangleBorder(),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (i == 0 && game.assetPath != null)
+                            SizedBox(
+                              width: 58,
+                              height: 58,
+                              child: _Asset(
+                                path: game.assetPath!,
+                                adNumber: widget.ad.number,
+                              ),
+                            ),
+                          Text(
+                            symbols[i],
+                            style: const TextStyle(fontSize: 28),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
   Widget _pinGame() {
-    final firstSafe = widget.ad.number % 3;
-    final order = [firstSafe, (firstSafe + 1) % 3, (firstSafe + 2) % 3];
     return Row(
       children: [
         Expanded(
@@ -322,16 +402,22 @@ class _AdMiniGameState extends State<AdMiniGame>
                           ? null
                           : () {
                               _start();
-                              final expected = order[_removedPins.length];
+                              final expected = _pinOrder[_removedPins.length];
                               if (i != expected) {
+                                _mistakes++;
                                 _finish(false);
                                 return;
                               }
-                              setState(() => _removedPins.add(i));
+                              setState(() {
+                                _removedPins.add(i);
+                                _progress++;
+                                _score += 100;
+                                _value += 5;
+                              });
                               if (_removedPins.length == 3) _finish(true);
                             },
                       icon: const Icon(Icons.horizontal_rule),
-                      label: Text('PIN ${i + 1}'),
+                      label: Text('PIN ${i + 1}  順${_pinOrder.indexOf(i) + 1}'),
                     ),
                   ),
                 ),
@@ -343,50 +429,63 @@ class _AdMiniGameState extends State<AdMiniGame>
   }
 
   Widget _gateGame() {
-    final labels = widget.ad.fixedValues.values.toSet().take(2).toList();
-    while (labels.length < 2) {
-      labels.add(labels.isEmpty ? '＋10' : '×2');
-    }
-    final values = labels.map(_gateValue).toList();
-    final correct = values[0] >= values[1] ? 0 : 1;
-    return Row(
+    final results = _gates.map((gate) => gate.apply(_value)).toList();
+    final correct = results[0] >= results[1] ? 0 : 1;
+    return Column(
       children: [
-        for (var i = 0; i < 2; i++)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: InkWell(
-                key: Key('mini-game-gate-$i'),
-                onTap: () => _finish(i == correct),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: i == 0 ? Colors.green : Colors.deepOrange,
-                    border: Border.all(color: Colors.white, width: 5),
-                  ),
-                  child: Text(
-                    labels[i],
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w900,
+        SizedBox(height: 44, child: _ValueCrowd(value: _value)),
+        Expanded(
+          child: Row(
+            children: [
+              for (var i = 0; i < 2; i++)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: InkWell(
+                      key: Key('mini-game-gate-$i'),
+                      onTap:
+                          _phase == MiniGamePhase.success ||
+                              _phase == MiniGamePhase.failure
+                          ? null
+                          : () {
+                              _start();
+                              if (i != correct) {
+                                _mistakes++;
+                                _finish(false);
+                                return;
+                              }
+                              setState(() {
+                                _value = results[i].clamp(0, 999999);
+                                _progress++;
+                                _score += 100;
+                                _gates = rules.gates(_random, round: _progress);
+                              });
+                              if (_progress >= rules.rounds) _finish(true);
+                            },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: i == 0 ? Colors.green : Colors.deepOrange,
+                          border: Border.all(color: Colors.white, width: 5),
+                        ),
+                        child: Text(
+                          '${_gates[i].label}\n→ ${results[i]}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+            ],
           ),
+        ),
       ],
     );
-  }
-
-  int _gateValue(String label) {
-    final number =
-        int.tryParse(RegExp(r'\d+').firstMatch(label)?.group(0) ?? '0') ?? 0;
-    if (label.contains('×')) return 10 * number;
-    if (label.contains('÷')) return number == 0 ? 0 : 10 ~/ number;
-    if (label.contains('－') || label.contains('-')) return 10 - number;
-    return 10 + number;
   }
 
   Widget _drawGame(BoxConstraints constraints) {
@@ -410,7 +509,17 @@ class _AdMiniGameState extends State<AdMiniGame>
         final valid =
             start.dx < constraints.maxWidth * .3 &&
             end.dx > constraints.maxWidth * .7 &&
-            (start.dy - end.dy).abs() < constraints.maxHeight * .55;
+            (start.dy - end.dy).abs() < constraints.maxHeight * .3 &&
+            (start.dy / constraints.maxHeight * 2 - 1 - _pathY).abs() < .55;
+        if (valid) {
+          setState(() {
+            _progress = 1;
+            _score = 100;
+            _value += 10;
+          });
+        } else {
+          _mistakes++;
+        }
         _finish(valid);
       },
       child: Stack(
@@ -420,7 +529,7 @@ class _AdMiniGameState extends State<AdMiniGame>
             painter: _PathPainter(points: _line, color: widget.ad.accentColor),
           ),
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment(-1, _pathY),
             child: _StageObject(
               path: game.assetPath,
               adNumber: widget.ad.number,
@@ -429,7 +538,7 @@ class _AdMiniGameState extends State<AdMiniGame>
             ),
           ),
           Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment(1, _pathY),
             child: _StageObject(
               path: visualAssets.secondaryAsset,
               adNumber: widget.ad.number,
@@ -443,7 +552,6 @@ class _AdMiniGameState extends State<AdMiniGame>
   }
 
   Widget _dragGame() {
-    final correct = widget.ad.number.isEven ? 0 : 1;
     return Column(
       children: [
         Expanded(
@@ -477,7 +585,21 @@ class _AdMiniGameState extends State<AdMiniGame>
                 child: DragTarget<int>(
                   key: Key('mini-game-drop-$i'),
                   onWillAcceptWithDetails: (_) => true,
-                  onAcceptWithDetails: (_) => _finish(i == correct),
+                  onAcceptWithDetails: (_) {
+                    _start();
+                    if (i != _dragTarget) {
+                      _mistakes++;
+                      _finish(false);
+                      return;
+                    }
+                    setState(() {
+                      _progress++;
+                      _score += 100;
+                      _value += 2;
+                      _dragTarget = _random.nextInt(2);
+                    });
+                    if (_progress >= rules.rounds) _finish(true);
+                  },
                   builder: (context, candidates, _) => Container(
                     height: 82,
                     margin: const EdgeInsets.all(6),
@@ -486,7 +608,8 @@ class _AdMiniGameState extends State<AdMiniGame>
                         ? (i == 0 ? Colors.blueGrey : Colors.brown)
                         : Colors.green,
                     child: Text(
-                      i == 0 ? 'BOX A' : 'BOX B',
+                      '${i == 0 ? 'BOX A' : 'BOX B'}${i == _dragTarget ? '\nここへ' : ''}',
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w900,
@@ -514,13 +637,18 @@ class _AdMiniGameState extends State<AdMiniGame>
               const Align(
                 alignment: Alignment.center,
                 child: SizedBox(
+                  key: Key('mini-game-timing-zone'),
                   width: 90,
                   child: ColoredBox(color: Colors.green),
                 ),
               ),
               Align(
                 alignment: Alignment(_motion.value * 2 - 1, 0),
-                child: Container(width: 8, color: Colors.black),
+                child: Container(
+                  key: const Key('mini-game-timing-needle'),
+                  width: 8,
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
@@ -530,7 +658,17 @@ class _AdMiniGameState extends State<AdMiniGame>
           key: const Key('mini-game-timing-stop'),
           onPressed: () {
             _motion.stop();
-            _finish(_motion.value >= .4 && _motion.value <= .6);
+            final success = _motion.value >= .4 && _motion.value <= .6;
+            if (success) {
+              setState(() {
+                _progress = 1;
+                _score = 100;
+                _value += rules.rewardDelta;
+              });
+            } else {
+              _mistakes++;
+            }
+            _finish(success);
           },
           icon: const Icon(Icons.stop_circle),
           label: const Text('ここで止める'),
@@ -564,7 +702,14 @@ class _AdMiniGameState extends State<AdMiniGame>
         rows - 1,
       );
       setState(() => _scratched.add(y * columns + x));
-      if (_scratched.length >= 42) _finish(true);
+      if (_scratched.length >= 42 && _phase != MiniGamePhase.success) {
+        setState(() {
+          _progress = 1;
+          _score = 100;
+          _value += 100;
+        });
+        _finish(true);
+      }
     }
 
     return GestureDetector(
@@ -577,7 +722,10 @@ class _AdMiniGameState extends State<AdMiniGame>
           Container(
             alignment: Alignment.center,
             color: widget.ad.accentColor,
-            child: const Text('広告でした！', style: TextStyle(fontSize: 28)),
+            child: Text(
+              _scratchReward,
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+            ),
           ),
           CustomPaint(
             painter: _ScratchPainter(
@@ -597,7 +745,22 @@ class _AdMiniGameState extends State<AdMiniGame>
     onVerticalDragUpdate: (details) {
       if (details.delta.dy < 0) _swipeDistance -= details.delta.dy;
     },
-    onVerticalDragEnd: (_) => _finish(_swipeDistance >= 55),
+    onVerticalDragEnd: (_) {
+      if (_swipeDistance < 55) {
+        _mistakes++;
+        _finish(false);
+        return;
+      }
+      const rewards = ['コイン +50', '装備 GET', 'LEVEL +1', '謎アイテム'];
+      setState(() {
+        _progress++;
+        _score += 100;
+        _value += 50;
+        _packReward = rewards[_random.nextInt(rewards.length)];
+        _swipeDistance = 0;
+      });
+      if (_progress >= rules.rounds) _finish(true);
+    },
     child: AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       margin: const EdgeInsets.all(20),
@@ -614,7 +777,7 @@ class _AdMiniGameState extends State<AdMiniGame>
               child: _Asset(path: game.assetPath!, adNumber: widget.ad.number),
             ),
           const Icon(Icons.swipe_up, size: 48),
-          Text(_phase == MiniGamePhase.success ? 'OPEN!' : '上へスワイプ'),
+          Text(_packReward == '???' ? '上へスワイプ' : _packReward),
         ],
       ),
     ),
@@ -625,7 +788,17 @@ class _AdMiniGameState extends State<AdMiniGame>
       key: const Key('mini-game-countdown-stop'),
       onTap: () {
         _countdownTimer?.cancel();
-        _finish(_countdown == 1);
+        final success = _countdown == 1;
+        if (success) {
+          setState(() {
+            _progress = 1;
+            _score = 100;
+            _value += 1;
+          });
+        } else {
+          _mistakes++;
+        }
+        _finish(success);
       },
       child: Container(
         width: 150,
@@ -650,7 +823,15 @@ class _AdMiniGameState extends State<AdMiniGame>
       child: InkResponse(
         key: const Key('mini-game-reveal-target'),
         radius: 46,
-        onTap: () => _finish(true),
+        onTap: () {
+          _start();
+          setState(() {
+            _progress++;
+            _score += 100;
+            _value += 1;
+          });
+          if (_progress >= rules.rounds) _finish(true);
+        },
         child: Container(
           width: game.assetPath == null ? 82 : 104,
           height: game.assetPath == null ? 82 : 104,
@@ -670,8 +851,12 @@ class _AdMiniGameState extends State<AdMiniGame>
       radius: 90,
       onTap: () {
         _start();
-        setState(() => _progress++);
-        if (_progress >= 3) _finish(true);
+        setState(() {
+          _progress++;
+          _score += 100;
+          _value = min(999, _value + 1);
+        });
+        if (_progress >= rules.rounds) _finish(true);
       },
       child: Container(
         width: 170,
@@ -679,7 +864,7 @@ class _AdMiniGameState extends State<AdMiniGame>
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.black,
+          color: _value >= 999 ? Colors.amber.shade700 : Colors.black,
           border: Border.all(color: Colors.amber, width: 6),
           boxShadow: [
             BoxShadow(
@@ -689,7 +874,7 @@ class _AdMiniGameState extends State<AdMiniGame>
           ],
         ),
         child: Text(
-          'AD\nGON\n${min(_progress, 3)}/3',
+          _value >= 999 ? 'AD GON\nLv999\n広告王形態' : 'AD\nGON\nLv$_value',
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.amber,
@@ -700,6 +885,70 @@ class _AdMiniGameState extends State<AdMiniGame>
       ),
     ),
   );
+}
+
+class _GameHud extends StatelessWidget {
+  const _GameHud({
+    required this.progress,
+    required this.rounds,
+    required this.value,
+    required this.score,
+  });
+
+  final int progress;
+  final int rounds;
+  final int value;
+  final int score;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    height: 30,
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    color: value >= 9999 ? const Color(0xE6B8860B) : const Color(0xCC000000),
+    child: Row(
+      children: [
+        Text(
+          'ROUND ${min(progress + 1, rounds)}/$rounds',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const Spacer(),
+        Text(
+          value >= 9999
+              ? 'MAX $value  POWERED UP!'
+              : 'VALUE $value  SCORE $score',
+          key: const Key('mini-game-state-value'),
+          style: const TextStyle(
+            color: Colors.amber,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _ValueCrowd extends StatelessWidget {
+  const _ValueCrowd({required this.value});
+
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
+    final visible = min(24, max(3, sqrt(max(1, value)).round() * 2));
+    return Wrap(
+      key: const Key('mini-game-value-crowd'),
+      alignment: WrapAlignment.center,
+      spacing: 2,
+      runSpacing: 1,
+      children: [
+        for (var i = 0; i < visible; i++)
+          const Icon(Icons.person, size: 15, color: Colors.white),
+      ],
+    );
+  }
 }
 
 class AdGameStage extends StatelessWidget {
