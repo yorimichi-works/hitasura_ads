@@ -1,18 +1,10 @@
 # ひたすら広告
 
-> 広告を見る。それだけ。
+> 広告を見る。それだけ。以上。
 
-アプリ内で描画される全151種類の架空広告を見て、広告図鑑の完成を目指すFlutterアプリです。実在の広告ネットワークや広告クリック報酬とは分離されています。
+全151種類の架空広告を探索し、広告図鑑の完成を目指すFlutterアプリです。実在する広告ネットワークや広告クリック報酬とは分離されています。
 
-## 主な画面
-
-- ホーム: 中央の「広告を再生する」から探索広告を開始
-- 記録: 広告図鑑、探索時間、視聴回数、ランキング
-- 広告探索: 実際の広告同意とは分離された探索プロフィール
-
-No.151「幻の広告 ― アドゴン」は、No.001〜150をすべて発見した後だけ出現します。
-
-## ローカル実行
+## すぐに起動する
 
 ```powershell
 flutter pub get
@@ -24,23 +16,31 @@ flutter run -d chrome
 ```powershell
 flutter analyze
 flutter test
-flutter build web --release --base-href /
+flutter build web --release --base-href / --no-wasm-dry-run
 ```
 
-## データ構成
+## ドキュメント
 
-- `assets/data/ad_catalog.json`: 151広告の正式名称、説明、表示・操作・演出定義
-- `lib/data`: カタログと永続化境界
-- `lib/state`: アプリ状態と発見・視聴記録
-- `lib/services`: 通常広告とNo.151の抽選規則
-- `lib/widgets`: 広告オーバーレイと共通広告エンジン
-- `lib/screens`: ホーム、記録、図鑑、広告探索
+- [制作環境引き継ぎ説明書](docs/DEVELOPMENT_HANDOFF.md)
+- [151広告監査レポート](docs/ad_audit_151.md)
+- [仕様書⑥: 151広告・図鑑データの入力元](docs/specification_06_catalog_source.md)
+- [仕様書⑦: 現行プロダクト仕様](docs/specification_07_current_product.md)
 
-データはMVPでは端末内へ保存します。`AppStore`を実装すればFirebase等へ差し替えられます。
+## 主な構成
+
+- `assets/data/ad_catalog.json`: 151広告の実行時カタログ
+- `lib/data`: カタログ読み込みと端末内永続化
+- `lib/state`: アプリ状態、発見、視聴記録
+- `lib/services`: 広告選択と音声再生
+- `lib/widgets`: 広告オーバーレイと広告体験UI
+- `lib/screens`: 初回登録、ホーム、記録、探索プロフィール
+- `test`: 151広告を含む自動テスト
 
 ## 本番デプロイ
 
-`main`へのpush時にGitHub Actionsが解析、テスト、Webビルドを行い、成功した`build/web`だけをVercelへproduction deployします。GitHub Repository Secretsに以下が必要です。
+`main`へのpush時、GitHub Actionsが解析、テスト、Webビルドを順番に実行します。すべて成功した場合だけ、ビルド済みの`build/web`をVercelへ本番デプロイします。
+
+GitHub Repository Secretsには以下が必要です。Secret値はリポジトリへ保存しません。
 
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`

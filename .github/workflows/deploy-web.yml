@@ -33,7 +33,7 @@ jobs:
         run: flutter test
 
       - name: Build web
-        run: flutter build web --release --base-href /
+        run: flutter build web --release --base-href / --no-wasm-dry-run
 
       - name: Add Vercel SPA configuration to artifact
         run: cp vercel.json build/web/vercel.json
