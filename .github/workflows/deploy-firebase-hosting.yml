@@ -1,0 +1,68 @@
+name: Build and Deploy Flutter Web to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-hosting-production
+  cancel-in-progress: true
+
+jobs:
+  test-build-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://hitasura.yorimichi-works.jp
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
+
+      - name: Build production web
+        run: >-
+          flutter build web --release --base-href /
+          --no-wasm-dry-run
+          --dart-define=APP_ENV=production
+          --dart-define=ADMOB_MODE=disabled
+          --dart-define=APP_BASE_URL=https://hitasura.yorimichi-works.jp
+          --dart-define=GOOGLE_WEB_CLIENT_ID=${{ vars.GOOGLE_WEB_CLIENT_ID }}
+
+      - name: Deploy live channel
+        if: >-
+          ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS != '' &&
+              secrets.FIREBASE_PROJECT_ID != '' }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS }}
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+          channelId: live
+
+      - name: Report missing Firebase credentials
+        if: >-
+          ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS == '' ||
+              secrets.FIREBASE_PROJECT_ID == '' }}
+        run: >-
+          echo "::warning::Firebase deploy skipped. Configure
+          FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS."

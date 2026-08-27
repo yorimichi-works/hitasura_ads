@@ -16,6 +16,33 @@ void main() {
     service.dispose();
   });
 
+  test('release builds default to disabled without an explicit ad mode', () {
+    final service = GoogleRewardedAdService(
+      platform: TargetPlatform.android,
+      isWeb: false,
+      releaseMode: true,
+    );
+
+    expect(service.adNetworkMode, AdNetworkMode.disabled);
+    expect(service.isSupported, isFalse);
+    expect(service.usesTestAds, isFalse);
+    service.dispose();
+  });
+
+  test('friend testing can explicitly use official test ads', () {
+    final service = GoogleRewardedAdService(
+      platform: TargetPlatform.android,
+      isWeb: false,
+      releaseMode: true,
+      adNetworkMode: AdNetworkMode.test,
+    );
+
+    expect(service.adNetworkMode, AdNetworkMode.test);
+    expect(service.isSupported, isTrue);
+    expect(service.usesTestAds, isTrue);
+    service.dispose();
+  });
+
   test(
     'debug pseudo reward rejects a concurrent show and becomes ready again',
     () async {

@@ -5,6 +5,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 enum RewardedAdResult { rewarded, notRewarded, unavailable, loadFailed }
 
+enum AdNetworkMode { disabled, test, production }
+
 enum RewardedAdStatus {
   unsupported,
   idle,
@@ -72,9 +74,11 @@ class GoogleRewardedAdService extends RewardedAdService {
     TargetPlatform? platform,
     bool? isWeb,
     bool? releaseMode,
+    AdNetworkMode? adNetworkMode,
   }) : _platform = platform ?? defaultTargetPlatform,
        _isWeb = isWeb ?? kIsWeb,
-       _releaseMode = releaseMode ?? kReleaseMode;
+       _adNetworkMode =
+           adNetworkMode ?? _modeFromEnvironment(releaseMode ?? kReleaseMode);
 
   static const _androidTestId = 'ca-app-pub-3940256099942544/5224354917';
   static const _iosTestId = 'ca-app-pub-3940256099942544/1712485313';
@@ -84,6 +88,7 @@ class GoogleRewardedAdService extends RewardedAdService {
   static const _iosProductionId = String.fromEnvironment(
     'ADMOB_IOS_REWARDED_ID',
   );
+  static const _configuredMode = String.fromEnvironment('ADMOB_MODE');
 
   RewardedAd? _ad;
   RewardedAdStatus _status = RewardedAdStatus.idle;
@@ -91,7 +96,18 @@ class GoogleRewardedAdService extends RewardedAdService {
   bool _rewardGranted = false;
   final TargetPlatform _platform;
   final bool _isWeb;
-  final bool _releaseMode;
+  final AdNetworkMode _adNetworkMode;
+
+  static AdNetworkMode _modeFromEnvironment(bool releaseMode) {
+    return switch (_configuredMode.toLowerCase()) {
+      'test' => AdNetworkMode.test,
+      'production' => AdNetworkMode.production,
+      'disabled' => AdNetworkMode.disabled,
+      _ => releaseMode ? AdNetworkMode.disabled : AdNetworkMode.test,
+    };
+  }
+
+  AdNetworkMode get adNetworkMode => _adNetworkMode;
 
   @override
   RewardedAdStatus get status =>
@@ -100,15 +116,19 @@ class GoogleRewardedAdService extends RewardedAdService {
   @override
   bool get isSupported =>
       !_isWeb &&
+      _adNetworkMode != AdNetworkMode.disabled &&
       (_platform == TargetPlatform.android || _platform == TargetPlatform.iOS);
 
   @override
-  bool get usesTestAds => !_releaseMode;
+  bool get usesTestAds => _adNetworkMode == AdNetworkMode.test;
 
   String? get _adUnitId {
     if (!isSupported) return null;
     final isAndroid = _platform == TargetPlatform.android;
-    if (!_releaseMode) return isAndroid ? _androidTestId : _iosTestId;
+    if (_adNetworkMode == AdNetworkMode.test) {
+      return isAndroid ? _androidTestId : _iosTestId;
+    }
+    if (_adNetworkMode != AdNetworkMode.production) return null;
     final productionId = isAndroid ? _androidProductionId : _iosProductionId;
     return productionId.isEmpty ? null : productionId;
   }

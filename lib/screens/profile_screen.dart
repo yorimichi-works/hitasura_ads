@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../models/app_models.dart';
+import '../services/google_auth_service.dart';
 import '../state/app_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -36,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String? _gender;
   late Set<String> _selected;
   bool _saving = false;
+  final _googleAuth = GoogleAuthService();
 
   @override
   void initState() {
@@ -48,6 +52,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _language = TextEditingController(text: profile.language ?? '日本語');
     _gender = profile.gender == '女性' ? '女性' : '男性';
     _selected = {...profile.interests};
+    _googleAuth.addListener(_onGoogleAuthChanged);
+    unawaited(_googleAuth.initialize());
+  }
+
+  void _onGoogleAuthChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
@@ -55,6 +65,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _nickname.dispose();
     _region.dispose();
     _language.dispose();
+    _googleAuth.removeListener(_onGoogleAuthChanged);
+    _googleAuth.dispose();
     super.dispose();
   }
 
@@ -97,13 +109,104 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SwitchListTile(
               key: const Key('sound-effects-toggle'),
               secondary: const Icon(Icons.volume_up_outlined),
-              title: const Text('効果音'),
-              subtitle: const Text('広告の操作音と新規発見音'),
+              title: const Text('効果音・BGM'),
+              subtitle: const Text('広告の操作音・新規発見音・背景BGM（音楽：魔王魂）'),
               value: widget.controller.soundEffectsEnabled,
               onChanged: widget.controller.setSoundEffectsEnabled,
             ),
           ),
           const SizedBox(height: 14),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'アカウント',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text('Googleアカウントでログインできます。進行データの同期機能は今後対応予定です。'),
+                  const SizedBox(height: 14),
+                  if (!_googleAuth.isConfigured)
+                    const Text(
+                      'この環境ではまだGoogleログインが設定されていません（準備中）。',
+                      style: TextStyle(color: Colors.black54),
+                    )
+                  else if (_googleAuth.isSignedIn)
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: _googleAuth.account!.photoUrl != null
+                              ? NetworkImage(_googleAuth.account!.photoUrl!)
+                              : null,
+                          child: _googleAuth.account!.photoUrl == null
+                              ? const Icon(Icons.person)
+                              : null,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _googleAuth.account!.displayName ??
+                                    _googleAuth.account!.email,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              Text(
+                                _googleAuth.account!.email,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TextButton(
+                          key: const Key('google-sign-out-button'),
+                          onPressed: () => _googleAuth.signOut(),
+                          child: const Text('ログアウト'),
+                        ),
+                      ],
+                    )
+                  else
+                    OutlinedButton.icon(
+                      key: const Key('google-sign-in-button'),
+                      onPressed: () => _googleAuth.signIn(),
+                      icon: const Icon(Icons.login),
+                      label: const Text('Googleでログイン'),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          if (widget.controller.adminToolsEnabled) ...[
+            Card(
+              color: const Color(0xFFFFECEC),
+              child: SwitchListTile(
+                key: const Key('admin-unlock-all-toggle'),
+                secondary: const Icon(Icons.admin_panel_settings_outlined),
+                title: const Text('管理者用：全広告を表示（一時的）'),
+                subtitle: Text(
+                  widget.controller.adminUnlockAll
+                      ? '全151広告を表示中（保存データは変更されません）'
+                      : 'ONにすると図鑑を全件表示できます。確認用の一時機能です',
+                ),
+                value: widget.controller.adminUnlockAll,
+                onChanged: (value) {
+                  widget.controller.setAdminUnlockAll(value);
+                  setState(() {});
+                },
+              ),
+            ),
+            const SizedBox(height: 14),
+          ],
           Card(
             child: Padding(
               padding: const EdgeInsets.all(18),

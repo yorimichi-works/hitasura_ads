@@ -90,9 +90,9 @@ void main() {
     expect(controller.user!.nickname, '広告大好き');
     expect(controller.user!.age, 29);
     expect(controller.profile.gender, '男性');
-    expect(find.text('ホーム'), findsOneWidget);
+    expect(find.text('探索する'), findsOneWidget);
     expect(find.text('記録'), findsOneWidget);
-    expect(find.text('広告探索'), findsOneWidget);
+    expect(find.text('設定'), findsOneWidget);
     expect(find.byKey(const Key('play-ad-button')), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });

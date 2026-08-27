@@ -229,7 +229,21 @@ Pages用の権限はワークフロー内の `pages: write` と `id-token: write
 
 画面上の探索広告はアプリ内で作った架空コンテンツです。実広告SDKを導入する場合は、導入時点の最新ポリシー、同意管理、年齢要件、プライバシー要件を改めて確認し、探索プロフィールを本人属性として広告ネットワークへ送らないでください。
 
-## 13. トラブルシューティング
+## 13. Googleログイン（未設定）
+
+設定画面に`GoogleAuthService`（`lib/services/google_auth_service.dart`）経由のGoogleログインUIを追加済みですが、OAuth Web Client IDは未設定です。Google Cloud ConsoleでこのWebアプリ用のOAuthクライアントIDを発行し、ビルド時に以下のように渡すまで機能しません（設定するまでUIは「準備中」と表示されます）。
+
+```powershell
+flutter build web --dart-define=GOOGLE_WEB_CLIENT_ID=xxxxx.apps.googleusercontent.com
+```
+
+Android/iOS版を扱う場合は、各プラットフォーム用の設定（`google-services.json`等）も別途必要です。
+
+## 14. 背景BGM
+
+`assets/audio/bgm_ambient.mp3`は魔王魂（https://maou.audio/）の楽曲「ピアノ41 / Last daily sound 2」（作曲：森田交一）です。商用利用可・著作表記必須のライセンスのため、設定画面に「音楽：魔王魂」のクレジットを表示しています。詳細は`THIRD_PARTY_NOTICES.md`を参照してください。差し替える場合も同ライセンスの範囲を守ってください。
+
+## 15. トラブルシューティング
 
 依存関係がおかしい場合:
 

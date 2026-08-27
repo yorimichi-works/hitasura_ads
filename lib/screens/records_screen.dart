@@ -6,6 +6,7 @@ import '../models/ad_definition.dart';
 import '../services/rewarded_ad_service.dart';
 import '../state/app_controller.dart';
 import '../widgets/ad_thumbnail.dart';
+import '../widgets/responsive_sheet.dart';
 
 class RecordsScreen extends StatelessWidget {
   const RecordsScreen({
@@ -256,9 +257,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
         .where((item) => !item.isSecret)
         .where((item) => widget.controller.discoveredIds.contains(item.id))
         .length;
-    showModalBottomSheet<void>(
+    showResponsiveSheet<void>(
       context: context,
-      showDragHandle: true,
       builder: (sheetContext) => Padding(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
         child: Column(
@@ -302,8 +302,8 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 icon: const Icon(Icons.ondemand_video),
                 label: Text(
                   widget.rewardStatus == RewardedAdStatus.loading
-                      ? 'スポンサー広告を準備中'
-                      : 'スポンサー広告を見てこの広告を解放',
+                      ? '広告を準備中'
+                      : '広告を見て開放する',
                 ),
               ),
             ],
@@ -314,63 +314,56 @@ class _CatalogScreenState extends State<CatalogScreen> {
   }
 
   void _showDetail(BuildContext context, AdDefinition ad) {
-    showModalBottomSheet<void>(
+    showResponsiveSheet<void>(
       context: context,
-      showDragHandle: true,
       isScrollControlled: true,
-      builder: (context) => FractionallySizedBox(
-        heightFactor: .82,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                ad.displayNumber,
-                style: const TextStyle(fontWeight: FontWeight.w900),
+      builder: (context) => SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              ad.displayNumber,
+              style: const TextStyle(fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              ad.name,
+              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              children: [
+                Chip(label: Text(ad.rarity)),
+                Chip(label: Text(ad.category)),
+              ],
+            ),
+            const SizedBox(height: 18),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              child: Text(
+                ad.flavorText,
+                key: Key('catalog-flavor-${ad.id}'),
+                style: const TextStyle(fontSize: 17, height: 1.65),
               ),
-              const SizedBox(height: 8),
-              Text(
-                ad.name,
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w900,
-                ),
+            ),
+            const Divider(),
+            const SizedBox(height: 18),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                key: Key('catalog-replay-${ad.id}'),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await widget.onReplay(ad);
+                },
+                icon: const Icon(Icons.sports_esports),
+                label: const Text('この広告ゲームをもう一度遊ぶ'),
               ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                children: [
-                  Chip(label: Text(ad.rarity)),
-                  Chip(label: Text(ad.category)),
-                ],
-              ),
-              const SizedBox(height: 18),
-              const Divider(),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                child: Text(
-                  ad.flavorText,
-                  key: Key('catalog-flavor-${ad.id}'),
-                  style: const TextStyle(fontSize: 17, height: 1.65),
-                ),
-              ),
-              const Divider(),
-              const SizedBox(height: 18),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  key: Key('catalog-replay-${ad.id}'),
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    await widget.onReplay(ad);
-                  },
-                  icon: const Icon(Icons.sports_esports),
-                  label: const Text('この広告ゲームをもう一度遊ぶ'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -16,3 +16,11 @@ repositories were reviewed as architectural references only.
 Repositories without a clearly verified permissive license were not used as a
 source of code. No new runtime dependency was added, keeping Web size and the
 existing app lifecycle unchanged.
+
+## Background music
+
+| Asset | Source | Track | Composer | License | Credit shown in-app |
+| --- | --- | --- | --- | --- | --- |
+| `assets/audio/bgm_ambient.mp3` | 魔王魂 (https://maou.audio/) | ピアノ41「Last daily sound 2」 | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+
+魔王魂の利用規約に基づき、素材そのものの単体再配布は行っていません。

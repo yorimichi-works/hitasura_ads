@@ -70,14 +70,19 @@ class AppController extends ChangeNotifier {
   UserProfile? get user => _user;
   ExplorationProfile get profile => _profile;
   Set<String> get discoveredIds => Set.unmodifiable(_discoveredIds);
-  Set<String> get visibleDiscoveredIds => _debugUnlockAll
+  bool _adminUnlockAll = false;
+  static const _adminToolsCompiled = bool.fromEnvironment('ENABLE_ADMIN_TOOLS');
+  bool get adminToolsEnabled => kDebugMode || _adminToolsCompiled;
+  Set<String> get visibleDiscoveredIds => (debugUnlockAll || adminUnlockAll)
       ? Set.unmodifiable(catalog.all.map((ad) => ad.id).toSet())
       : discoveredIds;
-  int get discoveredCount =>
-      _debugUnlockAll ? catalog.all.length : _discoveredIds.length;
+  int get discoveredCount => (debugUnlockAll || adminUnlockAll)
+      ? catalog.all.length
+      : _discoveredIds.length;
   bool get debugUnlockAll => kDebugMode && _debugUnlockAll;
+  bool get adminUnlockAll => adminToolsEnabled && _adminUnlockAll;
   bool isAdVisibleAsDiscovered(String adId) =>
-      debugUnlockAll || _discoveredIds.contains(adId);
+      debugUnlockAll || _adminUnlockAll || _discoveredIds.contains(adId);
   int get totalWatchSeconds => _totalWatchSeconds;
   int get todayWatchSeconds => _todayWatchSeconds;
   int get watchCount => _watchCount;
@@ -203,6 +208,15 @@ class AppController extends ChangeNotifier {
     if (!kDebugMode) return;
     if (_debugUnlockAll == enabled) return;
     _debugUnlockAll = enabled;
+    notifyListeners();
+  }
+
+  /// Temporary admin-facing "show everything" toggle, usable in production
+  /// builds too. View-only: never persisted, never counts as real discovery.
+  void setAdminUnlockAll(bool enabled) {
+    if (!adminToolsEnabled) return;
+    if (_adminUnlockAll == enabled) return;
+    _adminUnlockAll = enabled;
     notifyListeners();
   }
 

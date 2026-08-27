@@ -45,6 +45,9 @@ class _AppShellState extends State<AppShell> {
       await widget.controller.refreshSearchEnergy();
       if (mounted) setState(() {});
     });
+    unawaited(
+      _audio.startAmbient(enabled: widget.controller.soundEffectsEnabled),
+    );
   }
 
   @override
@@ -93,6 +96,7 @@ class _AppShellState extends State<AppShell> {
     }
     if (!mounted) return;
     final ad = forcedAd ?? widget.controller.selectAd();
+    unawaited(_audio.duckAmbient());
     final result = await showGeneralDialog<AdPlaybackResult>(
       context: context,
       barrierDismissible: false,
@@ -107,11 +111,14 @@ class _AppShellState extends State<AppShell> {
         soundEffectsEnabled: widget.controller.soundEffectsEnabled,
       ),
     );
+    unawaited(_audio.unduckAmbient());
     if (result == null || !mounted) return;
     final isNew = await widget.controller.completeAd(
       ad,
       result.activeSeconds,
-      allowDiscovery: !widget.controller.debugUnlockAll,
+      allowDiscovery:
+          !widget.controller.debugUnlockAll &&
+          !widget.controller.adminUnlockAll,
     );
     if (!mounted || !isNew) return;
     await Future<void>.delayed(const Duration(milliseconds: 160));
@@ -293,6 +300,7 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
+    unawaited(_audio.setAmbientEnabled(widget.controller.soundEffectsEnabled));
     final pages = [
       HomeScreen(
         onPlay: _play,
@@ -321,29 +329,45 @@ class _AppShellState extends State<AppShell> {
       ProfileScreen(controller: widget.controller),
     ];
     return Scaffold(
-      body: SafeArea(
-        child: IndexedStack(index: _index, children: pages),
+      backgroundColor: const Color(0xFFE7D9B4),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: ColoredBox(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: SafeArea(
+              child: IndexedStack(index: _index, children: pages),
+            ),
+          ),
+        ),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (value) => setState(() => _index = value),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.smart_display_outlined),
-            selectedIcon: Icon(Icons.smart_display),
-            label: 'ホーム',
+      bottomNavigationBar: Align(
+        alignment: Alignment.bottomCenter,
+        heightFactor: 1,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: NavigationBar(
+            selectedIndex: _index,
+            onDestinationSelected: (value) => setState(() => _index = value),
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.smart_display_outlined),
+                selectedIcon: Icon(Icons.smart_display),
+                label: '探索する',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.auto_stories_outlined),
+                selectedIcon: Icon(Icons.auto_stories),
+                label: '記録',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.settings_outlined),
+                selectedIcon: Icon(Icons.settings),
+                label: '設定',
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.auto_stories_outlined),
-            selectedIcon: Icon(Icons.auto_stories),
-            label: '記録',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.tune),
-            selectedIcon: Icon(Icons.tune),
-            label: '広告探索',
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -365,6 +389,8 @@ class _DiscoveryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      elevation: 24,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       icon: Text(
         ad.isSecret
             ? '151 / 151'
@@ -392,6 +418,17 @@ class _DiscoveryDialog extends StatelessWidget {
             '「${ad.discoveryText}」',
             textAlign: TextAlign.center,
             style: const TextStyle(height: 1.5),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            ad.flavorText,
+            key: Key('discovery-flavor-${ad.id}'),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              height: 1.55,
+              fontStyle: FontStyle.italic,
+              color: Colors.black87,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
