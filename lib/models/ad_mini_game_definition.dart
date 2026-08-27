@@ -59,7 +59,7 @@ class AdMiniGameDefinition {
 
   static String _instruction(AdMiniGameType type) => switch (type) {
     AdMiniGameType.tapChallenge => '光る対象を追いかけてタップ',
-    AdMiniGameType.choice => 'お題と同じ記号を3問選ぶ',
+    AdMiniGameType.choice => '表示された記号を3問選ぶ',
     AdMiniGameType.pinPull => '安全な順番でピンを抜く',
     AdMiniGameType.numberGate => '増えるゲートを選ぶ',
     AdMiniGameType.drawPath => '指で安全な線を描く',

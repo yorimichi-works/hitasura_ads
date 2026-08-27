@@ -366,7 +366,7 @@ void main() {
     );
 
     await tester.longPress(find.text('ひたすら広告'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
     expect(find.byKey(const Key('debug-ad-environment')), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('debug-unlock-all-toggle')));
@@ -374,7 +374,7 @@ void main() {
     expect(controller.discoveredCount, 151);
 
     await tester.longPress(find.text('ひたすら広告'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
     await tester.tap(find.byKey(const Key('debug-unlock-all-toggle')));
     await tester.pump();
     expect(controller.discoveredCount, 0);

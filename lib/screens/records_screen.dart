@@ -157,7 +157,7 @@ class RecordsScreen extends StatelessWidget {
     final mine = controller.totalWatchSeconds;
     return [
       _RankingEntry('広告王', max(mine + 3600, 4920)),
-      _RankingEntry(controller.user!.nickname, mine),
+      _RankingEntry(controller.user?.nickname ?? 'あなた', mine),
       _RankingEntry('AD太郎', max(0, mine - 813)),
     ]..sort((a, b) => b.value.compareTo(a.value));
   }
@@ -166,7 +166,7 @@ class RecordsScreen extends StatelessWidget {
     final mine = controller.discoveredCount;
     return [
       _RankingEntry('広告王', min(151, max(mine + 12, 32))),
-      _RankingEntry(controller.user!.nickname, mine),
+      _RankingEntry(controller.user?.nickname ?? 'あなた', mine),
       _RankingEntry('広告大好き', max(0, mine - 7)),
     ]..sort((a, b) => b.value.compareTo(a.value));
   }

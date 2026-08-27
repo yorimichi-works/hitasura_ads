@@ -40,10 +40,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    final user = widget.controller.user!;
+    final user = widget.controller.user;
     final profile = widget.controller.profile;
-    _nickname = TextEditingController(text: user.nickname);
-    _age = user.age.clamp(1, 100);
+    _nickname = TextEditingController(text: user?.nickname ?? '');
+    _age = (user?.age ?? 20).clamp(1, 100);
     _region = TextEditingController(text: profile.region ?? '日本');
     _language = TextEditingController(text: profile.language ?? '日本語');
     _gender = profile.gender == '女性' ? '女性' : '男性';

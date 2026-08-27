@@ -216,7 +216,7 @@ class _AdMiniGameState extends State<AdMiniGame>
     AdMiniGameType.numberGate => _gateGame(),
     AdMiniGameType.drawPath => _drawGame(constraints),
     AdMiniGameType.dragSort => _dragGame(),
-    AdMiniGameType.timing => _timingGame(),
+    AdMiniGameType.timing => _timingGame(constraints.maxWidth),
     AdMiniGameType.scratch => _scratchGame(constraints),
     AdMiniGameType.packOpen => _packGame(),
     AdMiniGameType.countdownStop => _countdownGame(),
@@ -626,58 +626,71 @@ class _AdMiniGameState extends State<AdMiniGame>
     );
   }
 
-  Widget _timingGame() => AnimatedBuilder(
-    animation: _motion,
-    builder: (context, _) => Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 54,
-          child: Stack(
-            children: [
-              Positioned.fill(child: Container(color: Colors.red.shade300)),
-              const Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  key: Key('mini-game-timing-zone'),
-                  width: 90,
-                  child: ColoredBox(color: Colors.green),
+  static const _timingZoneWidth = 90.0;
+  static const _timingNeedleWidth = 8.0;
+
+  double _timingSuccessHalfWidth(double stageWidth) {
+    final travel = max(1.0, stageWidth - _timingNeedleWidth);
+    return (_timingZoneWidth / 2) / travel;
+  }
+
+  Widget _timingGame(double stageWidth) {
+    final halfWidth = _timingSuccessHalfWidth(stageWidth);
+    return AnimatedBuilder(
+      animation: _motion,
+      builder: (context, _) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 54,
+            child: Stack(
+              children: [
+                Positioned.fill(child: Container(color: Colors.red.shade300)),
+                const Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    key: Key('mini-game-timing-zone'),
+                    width: _timingZoneWidth,
+                    height: 54,
+                    child: ColoredBox(color: Colors.green),
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment(_motion.value * 2 - 1, 0),
-                child: Container(
-                  key: const Key('mini-game-timing-needle'),
-                  width: 8,
-                  color: Colors.black,
+                Align(
+                  alignment: Alignment(_motion.value * 2 - 1, 0),
+                  child: Container(
+                    key: const Key('mini-game-timing-needle'),
+                    width: _timingNeedleWidth,
+                    height: 54,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 18),
-        FilledButton.icon(
-          key: const Key('mini-game-timing-stop'),
-          onPressed: () {
-            _motion.stop();
-            final success = _motion.value >= .4 && _motion.value <= .6;
-            if (success) {
-              setState(() {
-                _progress = 1;
-                _score = 100;
-                _value += rules.rewardDelta;
-              });
-            } else {
-              _mistakes++;
-            }
-            _finish(success);
-          },
-          icon: const Icon(Icons.stop_circle),
-          label: const Text('ここで止める'),
-        ),
-      ],
-    ),
-  );
+          const SizedBox(height: 18),
+          FilledButton.icon(
+            key: const Key('mini-game-timing-stop'),
+            onPressed: () {
+              _motion.stop();
+              final success = (_motion.value - .5).abs() <= halfWidth;
+              if (success) {
+                setState(() {
+                  _progress = 1;
+                  _score = 100;
+                  _value += rules.rewardDelta;
+                });
+              } else {
+                _mistakes++;
+              }
+              _finish(success);
+            },
+            icon: const Icon(Icons.stop_circle),
+            label: const Text('ここで止める'),
+          ),
+        ],
+      ),
+    );
+  }
 
   IconData get _fallbackObjectIcon {
     if (widget.ad.number == 61 || widget.ad.number == 62) {
@@ -911,20 +924,28 @@ class _GameHud extends StatelessWidget {
       children: [
         Text(
           'ROUND ${min(progress + 1, rounds)}/$rounds',
+          overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w900,
+            fontSize: 12,
           ),
         ),
-        const Spacer(),
-        Text(
-          value >= 9999
-              ? 'MAX $value  POWERED UP!'
-              : 'VALUE $value  SCORE $score',
-          key: const Key('mini-game-state-value'),
-          style: const TextStyle(
-            color: Colors.amber,
-            fontWeight: FontWeight.w900,
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text(
+            value >= 9999
+                ? 'MAX $value  POWERED UP!'
+                : 'VALUE $value  SCORE $score',
+            key: const Key('mini-game-state-value'),
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: const TextStyle(
+              color: Colors.amber,
+              fontWeight: FontWeight.w900,
+              fontSize: 12,
+            ),
           ),
         ),
       ],
