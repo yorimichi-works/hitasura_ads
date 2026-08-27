@@ -16,6 +16,9 @@ concurrency:
 jobs:
   test-build-deploy:
     runs-on: ubuntu-latest
+    env:
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS }}
     environment:
       name: production
       url: https://hitasura.yorimichi-works.jp
@@ -50,19 +53,19 @@ jobs:
 
       - name: Deploy live channel
         if: >-
-          ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS != '' &&
-              secrets.FIREBASE_PROJECT_ID != '' }}
+          ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS != '' &&
+              env.FIREBASE_PROJECT_ID != '' }}
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS }}
-          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+          firebaseServiceAccount: ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS }}
+          projectId: ${{ env.FIREBASE_PROJECT_ID }}
           channelId: live
 
       - name: Report missing Firebase credentials
         if: >-
-          ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS == '' ||
-              secrets.FIREBASE_PROJECT_ID == '' }}
+          ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS == '' ||
+              env.FIREBASE_PROJECT_ID == '' }}
         run: >-
           echo "::warning::Firebase deploy skipped. Configure
           FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS."
