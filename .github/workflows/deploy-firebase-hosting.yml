@@ -17,8 +17,8 @@ jobs:
   test-build-deploy:
     runs-on: ubuntu-latest
     env:
-      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-      FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS }}
+      FIREBASE_PROJECT_ID: hitasuraads
+      FIREBASE_SERVICE_ACCOUNT_HITASURAADS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HITASURAADS }}
     environment:
       name: production
       url: https://hitasura.yorimichi-works.jp
@@ -52,20 +52,16 @@ jobs:
           --dart-define=GOOGLE_WEB_CLIENT_ID=${{ vars.GOOGLE_WEB_CLIENT_ID }}
 
       - name: Deploy live channel
-        if: >-
-          ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS != '' &&
-              env.FIREBASE_PROJECT_ID != '' }}
+        if: ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURAADS != '' }}
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS }}
+          firebaseServiceAccount: ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURAADS }}
           projectId: ${{ env.FIREBASE_PROJECT_ID }}
           channelId: live
 
       - name: Report missing Firebase credentials
-        if: >-
-          ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS == '' ||
-              env.FIREBASE_PROJECT_ID == '' }}
+        if: ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURAADS == '' }}
         run: >-
           echo "::warning::Firebase deploy skipped. Configure
-          FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS."
+          FIREBASE_SERVICE_ACCOUNT_HITASURAADS."

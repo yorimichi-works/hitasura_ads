@@ -18,8 +18,7 @@
 
 |Secret|値|
 |---|---|
-|`FIREBASE_PROJECT_ID`|Firebase Consoleに表示される実際のProject ID|
-|`FIREBASE_SERVICE_ACCOUNT_HITASURA_ADS`|サービスアカウントJSON全文|
+|`FIREBASE_SERVICE_ACCOUNT_HITASURAADS`|Firebase CLIがGitHubへ登録したサービスアカウントJSON|
 
 サービスアカウントJSONはリポジトリへ保存しない。GitHub Secrets以外へ貼り付けない。
 
