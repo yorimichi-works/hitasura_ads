@@ -12,10 +12,10 @@ void main() {
     final rewrites = hosting['rewrites'] as List<dynamic>;
 
     expect(hosting['public'], 'build/web');
-    expect(
-      rewrites,
-      contains(<String, dynamic>{'source': '**', 'destination': '/index.html'}),
-    );
+    expect(rewrites, hasLength(1));
+    final spaRewrite = rewrites.single as Map<String, dynamic>;
+    expect(spaRewrite['source'], '**');
+    expect(spaRewrite['destination'], '/index.html');
   });
 
   test('production web metadata uses the canonical custom domain', () {
