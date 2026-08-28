@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hitasura_ads/data/ad_catalog.dart';
 import 'package:hitasura_ads/models/ad_definition.dart';
+import 'package:hitasura_ads/services/ad_audio_manager.dart';
 import 'package:hitasura_ads/widgets/ad_experience_overlay.dart';
 
 void main() {
@@ -141,6 +142,23 @@ void main() {
     expect(File('assets/audio/secret_bgm.wav').existsSync(), isTrue);
     expect(File('assets/audio/ui_click.wav').existsSync(), isTrue);
     expect(File('assets/audio/discovery_se.wav').existsSync(), isTrue);
+  });
+
+  test('広告ゲームBGMは3曲を循環し待機BGMを持たない', () {
+    for (final bgmId in AdAudioManager.gameBgmIds) {
+      expect(File('assets/audio/$bgmId').existsSync(), isTrue, reason: bgmId);
+    }
+    expect(File('assets/audio/bgm_ambient.mp3').existsSync(), isFalse);
+    expect(
+      catalog.all.take(3).map(AdAudioManager.gameBgmFor),
+      AdAudioManager.gameBgmIds,
+    );
+    expect(AdAudioManager.gameBgmFor(catalog['AD_151']), 'secret_bgm.wav');
+  });
+
+  test('日本語フォントをアプリに同梱している', () {
+    expect(File('assets/fonts/KosugiMaru-Regular.ttf').existsSync(), isTrue);
+    expect(File('assets/fonts/KosugiMaru-LICENSE.txt').existsSync(), isTrue);
   });
 
   testWidgets('AD_001〜AD_151をスマホ幅で描画・操作してoverflowしない', (tester) async {

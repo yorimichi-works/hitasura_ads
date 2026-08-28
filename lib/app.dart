@@ -24,11 +24,12 @@ class HitasuraAdsApp extends StatelessWidget {
           surface: const Color(0xFFFFF7E8),
         ),
         scaffoldBackgroundColor: const Color(0xFFFFF7E8),
+        fontFamily: 'KosugiMaru',
         fontFamilyFallback: const ['Noto Sans JP', 'Yu Gothic', 'Meiryo'],
         textTheme: const TextTheme(
           displayLarge: TextStyle(
             fontWeight: FontWeight.w900,
-            letterSpacing: -2,
+            letterSpacing: 0,
           ),
           headlineMedium: TextStyle(fontWeight: FontWeight.w900),
           titleLarge: TextStyle(fontWeight: FontWeight.w900),

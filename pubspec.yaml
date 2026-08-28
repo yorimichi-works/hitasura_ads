@@ -72,6 +72,10 @@ flutter:
     - assets/images/generated/characters/
     - assets/images/generated/game/
     - assets/images/generated/backgrounds/
+  fonts:
+    - family: KosugiMaru
+      fonts:
+        - asset: assets/fonts/KosugiMaru-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

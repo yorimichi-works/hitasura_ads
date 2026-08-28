@@ -45,9 +45,6 @@ class _AppShellState extends State<AppShell> {
       await widget.controller.refreshSearchEnergy();
       if (mounted) setState(() {});
     });
-    unawaited(
-      _audio.startAmbient(enabled: widget.controller.soundEffectsEnabled),
-    );
   }
 
   @override
@@ -96,7 +93,6 @@ class _AppShellState extends State<AppShell> {
     }
     if (!mounted) return;
     final ad = forcedAd ?? widget.controller.selectAd();
-    unawaited(_audio.duckAmbient());
     final result = await showGeneralDialog<AdPlaybackResult>(
       context: context,
       barrierDismissible: false,
@@ -111,7 +107,6 @@ class _AppShellState extends State<AppShell> {
         soundEffectsEnabled: widget.controller.soundEffectsEnabled,
       ),
     );
-    unawaited(_audio.unduckAmbient());
     if (result == null || !mounted) return;
     final isNew = await widget.controller.completeAd(
       ad,
@@ -300,7 +295,6 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    unawaited(_audio.setAmbientEnabled(widget.controller.soundEffectsEnabled));
     final pages = [
       HomeScreen(
         onPlay: _play,

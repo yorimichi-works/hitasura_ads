@@ -56,6 +56,10 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
           soundEffectsEnabled: widget.soundEffectsEnabled,
         ),
       );
+    } else {
+      unawaited(
+        _audio.playGameBgm(widget.ad, enabled: widget.soundEffectsEnabled),
+      );
     }
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!_foreground || !mounted) return;

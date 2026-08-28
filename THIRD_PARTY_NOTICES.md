@@ -1,8 +1,9 @@
 # Third-Party Research Notices
 
-No third-party game code, images, or audio were copied or bundled for the
-mini-game upgrade. The implementation is original Dart/Flutter code. These
-repositories were reviewed as architectural references only.
+No third-party game code or images were copied for the mini-game upgrade. The
+implementation is original Dart/Flutter code. The audio and font assets bundled
+with the app are listed below with their licenses and required attribution.
+These repositories were reviewed as architectural references only.
 
 | Repository | URL | License | Reference | Direct code used | Attribution |
 | --- | --- | --- | --- | --- | --- |
@@ -21,6 +22,14 @@ existing app lifecycle unchanged.
 
 | Asset | Source | Track | Composer | License | Credit shown in-app |
 | --- | --- | --- | --- | --- | --- |
-| `assets/audio/bgm_ambient.mp3` | 魔王魂 (https://maou.audio/) | ピアノ41「Last daily sound 2」 | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_loop_bgm_8bit27.mp3` | 魔王魂 (https://maou.audio/) | 8bit27「キャロットマンステージ」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_loop_bgm_8bit28.mp3` | 魔王魂 (https://maou.audio/) | 8bit28「バーダックマン」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_loop_bgm_neorock82.mp3` | 魔王魂 (https://maou.audio/) | ネオロック82「君が見ていた世界の果て」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
 
 魔王魂の利用規約に基づき、素材そのものの単体再配布は行っていません。
+
+## Bundled Japanese font
+
+| Asset | Source | Font | License |
+| --- | --- | --- | --- |
+| `assets/fonts/KosugiMaru-Regular.ttf` | https://github.com/googlefonts/kosugi-maru | Kosugi Maru | Apache License 2.0; full text in `assets/fonts/KosugiMaru-LICENSE.txt` |

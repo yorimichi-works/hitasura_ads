@@ -109,8 +109,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SwitchListTile(
               key: const Key('sound-effects-toggle'),
               secondary: const Icon(Icons.volume_up_outlined),
-              title: const Text('効果音・BGM'),
-              subtitle: const Text('広告の操作音・新規発見音・背景BGM（音楽：魔王魂）'),
+              title: const Text('効果音・広告ゲームBGM'),
+              subtitle: const Text('待機中は無音／広告ゲーム中のみ再生（音楽：魔王魂）'),
               value: widget.controller.soundEffectsEnabled,
               onChanged: widget.controller.setSoundEffectsEnabled,
             ),
