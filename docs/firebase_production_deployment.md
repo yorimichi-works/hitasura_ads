@@ -22,10 +22,11 @@
 
 サービスアカウントJSONはリポジトリへ保存しない。GitHub Secrets以外へ貼り付けない。
 
-Googleログインを有効にする場合は、GitHub ActionsのRepository Variableとして
-`GOOGLE_WEB_CLIENT_ID`を登録する。未登録の場合、ログインUIは「準備中」と表示される。
-OAuthクライアントにはFirebase仮URLと`https://hitasura.yorimichi-works.jp`の実際の
-JavaScript生成元を登録する。
+GoogleログインのWeb OAuth Client IDは公開識別子としてアプリに設定済み。
+別のOAuthクライアントへ切り替える場合だけ、ビルド時に`GOOGLE_WEB_CLIENT_ID`を
+`--dart-define`で渡す。OAuthクライアントにはFirebase仮URLと
+`https://hitasura.yorimichi-works.jp`の実際のJavaScript生成元を登録する。
+クライアントシークレットはWebアプリ、GitHub Actions、Firebase Hostingへ保存しない。
 
 ## 最初のdeploy
 

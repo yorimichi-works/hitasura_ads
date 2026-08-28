@@ -49,7 +49,6 @@ jobs:
           --dart-define=APP_ENV=production
           --dart-define=ADMOB_MODE=disabled
           --dart-define=APP_BASE_URL=https://hitasura.yorimichi-works.jp
-          --dart-define=GOOGLE_WEB_CLIENT_ID=${{ vars.GOOGLE_WEB_CLIENT_ID }}
 
       - name: Deploy live channel
         if: ${{ env.FIREBASE_SERVICE_ACCOUNT_HITASURAADS != '' }}

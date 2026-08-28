@@ -229,15 +229,15 @@ Pages用の権限はワークフロー内の `pages: write` と `id-token: write
 
 画面上の探索広告はアプリ内で作った架空コンテンツです。実広告SDKを導入する場合は、導入時点の最新ポリシー、同意管理、年齢要件、プライバシー要件を改めて確認し、探索プロフィールを本人属性として広告ネットワークへ送らないでください。
 
-## 13. Googleログイン（未設定）
+## 13. Googleログイン
 
-設定画面に`GoogleAuthService`（`lib/services/google_auth_service.dart`）経由のGoogleログインUIを追加済みですが、OAuth Web Client IDは未設定です。Google Cloud ConsoleでこのWebアプリ用のOAuthクライアントIDを発行し、ビルド時に以下のように渡すまで機能しません（設定するまでUIは「準備中」と表示されます）。
+設定画面に`GoogleAuthService`（`lib/services/google_auth_service.dart`）経由のGoogleログインUIを実装済みです。Web版のOAuth Client IDは公開識別子として既定値を設定しています。別環境ではビルド時のdefineで上書きできます。
 
 ```powershell
 flutter build web --dart-define=GOOGLE_WEB_CLIENT_ID=xxxxx.apps.googleusercontent.com
 ```
 
-Android/iOS版を扱う場合は、各プラットフォーム用の設定（`google-services.json`等）も別途必要です。
+WebのOAuthクライアントには、実際に利用する各URLを「承認済みのJavaScript生成元」として登録します。クライアントシークレットはブラウザログインでは使用せず、ソースコードやGitHubへ保存しません。Android/iOS版を扱う場合は、各プラットフォーム用のOAuth設定も別途必要です。
 
 ## 14. 背景BGM
 

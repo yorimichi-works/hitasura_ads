@@ -6,16 +6,16 @@ import 'package:google_sign_in/google_sign_in.dart';
 /// Thin wrapper around `package:google_sign_in` shared by the Web and app
 /// builds, so both use the same account/session model.
 ///
-/// The OAuth Web Client ID is not something this codebase can generate on
-/// its own — it must be created in Google Cloud Console for this project's
-/// domain and supplied at build time:
+/// The OAuth Web Client ID is created in Google Cloud Console for this
+/// project's domains. The production ID is the default and can be overridden
+/// for another environment at build time:
 ///
 /// ```powershell
 /// flutter build web --dart-define=GOOGLE_WEB_CLIENT_ID=xxxxx.apps.googleusercontent.com
 /// ```
 ///
-/// Until a client ID is supplied, [isConfigured] is false and the UI shows
-/// an explanatory state instead of a non-functional button.
+/// Platform builds without their required client ID keep [isConfigured] false
+/// and show an explanatory state instead of a non-functional button.
 class GoogleAuthService extends ChangeNotifier {
   GoogleAuthService._();
 
@@ -23,7 +23,10 @@ class GoogleAuthService extends ChangeNotifier {
 
   factory GoogleAuthService() => instance;
 
-  static const _webClientId = String.fromEnvironment('GOOGLE_WEB_CLIENT_ID');
+  static const _webClientId = String.fromEnvironment(
+    'GOOGLE_WEB_CLIENT_ID',
+    defaultValue: '1083938872680-vflb3jbam995j26ncg891hhok2s9cirs.apps.googleusercontent.com',
+  );
   static const _androidServerClientId = String.fromEnvironment(
     'GOOGLE_ANDROID_SERVER_CLIENT_ID',
   );
