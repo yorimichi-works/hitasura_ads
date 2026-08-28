@@ -11,29 +11,42 @@ class GoogleAccountSignInButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool busy;
 
+  static final web.GSIButtonConfiguration _configuration =
+      web.GSIButtonConfiguration(
+        type: web.GSIButtonType.standard,
+        theme: web.GSIButtonTheme.outline,
+        size: web.GSIButtonSize.large,
+        text: web.GSIButtonText.signinWith,
+        shape: web.GSIButtonShape.rectangular,
+        logoAlignment: web.GSIButtonLogoAlignment.left,
+        minimumWidth: 260,
+        locale: 'ja',
+      );
+
   @override
   Widget build(BuildContext context) {
     if (busy) {
-      return const Center(
-        child: SizedBox.square(
-          dimension: 24,
-          child: CircularProgressIndicator(strokeWidth: 2),
+      return const SizedBox(
+        height: 44,
+        child: Center(
+          child: SizedBox.square(
+            dimension: 24,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
         ),
       );
     }
 
-    return Center(
-      key: const Key('google-sign-in-button'),
-      child: web.renderButton(
-        configuration: web.GSIButtonConfiguration(
-          type: web.GSIButtonType.standard,
-          theme: web.GSIButtonTheme.outline,
-          size: web.GSIButtonSize.large,
-          text: web.GSIButtonText.signinWith,
-          shape: web.GSIButtonShape.rectangular,
-          logoAlignment: web.GSIButtonLogoAlignment.left,
-          minimumWidth: 240,
-          locale: 'ja',
+    return SizedBox(
+      height: 44,
+      child: Center(
+        key: const Key('google-sign-in-button'),
+        child: SizedBox(
+          width: 260,
+          height: 44,
+          child: ClipRect(
+            child: web.renderButton(configuration: _configuration),
+          ),
         ),
       ),
     );
