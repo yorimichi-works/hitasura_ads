@@ -25,6 +25,7 @@ class PreferencesAppStore implements AppStore {
   static const _searchEnergy = 'search_energy';
   static const _searchEnergyRecoveryAnchor = 'search_energy_recovery_anchor';
   static const _statsDate = 'stats_date';
+  static const _cloudAccountUid = 'cloud_account_uid';
 
   @override
   Future<AppSnapshot> load() async {
@@ -40,6 +41,7 @@ class PreferencesAppStore implements AppStore {
             createdAt: createdAt ?? DateTime.now(),
           );
     return AppSnapshot(
+      cloudAccountUid: prefs.getString(_cloudAccountUid),
       user: user,
       explorationProfile: ExplorationProfile(
         ageGroup: prefs.getString(_ageGroup),
@@ -67,6 +69,7 @@ class PreferencesAppStore implements AppStore {
   Future<void> save(AppSnapshot snapshot) async {
     final prefs = await SharedPreferences.getInstance();
     final user = snapshot.user;
+    await _setNullable(prefs, _cloudAccountUid, snapshot.cloudAccountUid);
     if (user != null) {
       await prefs.setString(_userId, user.id);
       await prefs.setString(_nickname, user.nickname);

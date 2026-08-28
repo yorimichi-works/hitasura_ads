@@ -28,7 +28,7 @@
 | DevTools | 2.60.0 |
 | Web実行先 | Google Chrome |
 | Gitブランチ | `main` |
-| Git remote | `https://github.com/chikuzensaito-dev/hitasura_ads.git` |
+| Git remote | `https://github.com/yorimichi-works/hitasura_ads.git` |
 
 `pubspec.yaml`のDart SDK条件は`^3.13.1`です。再現性を優先する場合はFlutter 3.47.1を使用してください。将来のstableを使う場合は、必ず解析、全テスト、Webビルドを通してからpushします。
 
@@ -146,7 +146,7 @@ flutter test
 - `localhost`のポートや本番URLが変わると、別の保存領域として扱われる場合がある
 - ブラウザのサイトデータ削除やアプリのアンインストールで進捗が消える
 
-開発中に初回状態へ戻す場合は、Chrome DevToolsのApplicationから対象サイトのStorageを消去します。実ユーザーのデータ移行や複数端末同期が必要になった時は、`AppStore`実装をFirebase版へ差し替える方針です。探索プロフィールと広告・トラッキング同意は、将来も別データとして扱います。
+開発中に初回状態へ戻す場合は、Chrome DevToolsのApplicationから対象サイトのStorageを消去します。Googleログイン中の進行状況はFirestoreにも保存されるため、完全に初期化する場合は対象ユーザーの`users/{uid}`ドキュメントも削除します。探索プロフィールと広告・トラッキング同意は別データとして扱います。
 
 ## 9. テスト方針
 
@@ -221,23 +221,17 @@ Pages用の権限はワークフロー内の `pages: write` と `id-token: write
 
 引き継ぎ時点で、以下は意図的に未接続です。
 
-- Firebase Authentication
-- Cloud Firestore
 - オンラインの実ユーザーランキング
 - Google Mobile Ads SDK、AdMob等の実広告ネットワーク
-- 端末間の進捗同期とバックアップ
+- オフライン中の複数端末同時更新に対する厳密な加算競合解決
 
 画面上の探索広告はアプリ内で作った架空コンテンツです。実広告SDKを導入する場合は、導入時点の最新ポリシー、同意管理、年齢要件、プライバシー要件を改めて確認し、探索プロフィールを本人属性として広告ネットワークへ送らないでください。
 
 ## 13. Googleログイン
 
-設定画面に`GoogleAuthService`（`lib/services/google_auth_service.dart`）経由のGoogleログインUIを実装済みです。Web版のOAuth Client IDは公開識別子として既定値を設定しています。別環境ではビルド時のdefineで上書きできます。
+Web版はFirebase AuthのGoogleプロバイダを使用します。ログインしたFirebase UIDごとにFirestoreの`users/{uid}`へ、認証プロフィール（`uid`、`displayName`、`email`、`photoUrl`）と、図鑑の発見済みID、視聴回数・時間、探索スタミナと回復基準時刻、ゲーム内プロフィール、効果音設定を保存します。`createdAt`は初回作成時だけ設定し、以降は`updatedAt`だけ更新します。初回ログイン時は匿名の端末進行を引き継ぎ、同じアカウントでは発見済みIDを和集合で統合します。異なるアカウント間では進行を混ぜません。
 
-```powershell
-flutter build web --dart-define=GOOGLE_WEB_CLIENT_ID=xxxxx.apps.googleusercontent.com
-```
-
-WebのOAuthクライアントには、実際に利用する各URLを「承認済みのJavaScript生成元」として登録します。クライアントシークレットはブラウザログインでは使用せず、ソースコードやGitHubへ保存しません。Android/iOS版を扱う場合は、各プラットフォーム用のOAuth設定も別途必要です。
+Firebase ConsoleでGoogleプロバイダを有効化し、承認済みドメインへ`hitasuraads.web.app`、`hitasuraads.firebaseapp.com`、`hitasura.yorimichi-works.jp`を登録してください。OAuthクライアントシークレットはブラウザアプリ、GitHub、Firebase Hostingへ保存しません。Android/iOS版を同期対応させる場合は、各プラットフォーム用FlutterFire設定を別途追加します。
 
 ## 14. 背景BGM
 

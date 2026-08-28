@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,8 @@ import '../data/app_store.dart';
 import '../models/ad_definition.dart';
 import '../models/app_models.dart';
 import '../services/ad_selection_service.dart';
+import '../services/cloud_progress_service.dart';
+import '../services/google_auth_service.dart';
 import '../services/search_energy_service.dart';
 
 class AppController extends ChangeNotifier {
@@ -16,7 +19,10 @@ class AppController extends ChangeNotifier {
     required AppSnapshot snapshot,
     required this._selectionService,
     required SearchEnergyService searchEnergyService,
+    required this._authSession,
+    required this._cloudStore,
   }) : _user = snapshot.user,
+       _cloudAccountUid = snapshot.cloudAccountUid,
        _profile = snapshot.explorationProfile,
        _discoveredIds = {...snapshot.discoveredIds},
        _totalWatchSeconds = snapshot.totalWatchSeconds,
@@ -39,6 +45,8 @@ class AppController extends ChangeNotifier {
     AdCatalog? catalog,
     Random? random,
     DateTime Function()? clock,
+    AuthSession? authSession,
+    ProgressCloudStore? cloudStore,
   }) async {
     final actualStore = store ?? PreferencesAppStore();
     final searchEnergyService = SearchEnergyService(clock: clock);
@@ -48,8 +56,13 @@ class AppController extends ChangeNotifier {
       snapshot: await actualStore.load(),
       selectionService: AdSelectionService(random: random),
       searchEnergyService: searchEnergyService,
+      authSession: authSession,
+      cloudStore: cloudStore,
     );
-    await controller._persist();
+    await controller._store.save(controller._snapshot());
+    if (authSession != null && cloudStore != null) {
+      await controller._startCloudSync();
+    }
     return controller;
   }
 
@@ -57,7 +70,10 @@ class AppController extends ChangeNotifier {
   final AppStore _store;
   final AdSelectionService _selectionService;
   final SearchEnergyService _searchEnergyService;
+  final AuthSession? _authSession;
+  final ProgressCloudStore? _cloudStore;
   UserProfile? _user;
+  String? _cloudAccountUid;
   ExplorationProfile _profile;
   final Set<String> _discoveredIds;
   int _totalWatchSeconds;
@@ -66,6 +82,9 @@ class AppController extends ChangeNotifier {
   bool _soundEffectsEnabled;
   SearchEnergyState _searchEnergyState;
   bool _debugUnlockAll = false;
+  bool _cloudSyncing = false;
+  bool _cloudSynced = false;
+  String? _cloudSyncError;
 
   UserProfile? get user => _user;
   ExplorationProfile get profile => _profile;
@@ -93,6 +112,9 @@ class AppController extends ChangeNotifier {
       _searchEnergyService.untilNextRecovery(_searchEnergyState);
   bool get isRegistered => _user != null;
   bool get isComplete => _discoveredIds.length == catalog.all.length;
+  bool get cloudSyncing => _cloudSyncing;
+  bool get cloudSynced => _cloudSynced;
+  String? get cloudSyncError => _cloudSyncError;
 
   Future<void> register(String nickname, int age, String gender) async {
     final now = DateTime.now();
@@ -227,20 +249,208 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _persist() => _store.save(
-    AppSnapshot(
-      user: _user,
-      explorationProfile: _profile,
-      discoveredIds: _discoveredIds,
-      totalWatchSeconds: _totalWatchSeconds,
-      todayWatchSeconds: _todayWatchSeconds,
-      watchCount: _watchCount,
-      soundEffectsEnabled: _soundEffectsEnabled,
-      searchEnergy: _searchEnergyState.remaining,
-      searchEnergyRecoveryAnchor: _searchEnergyState.recoveryAnchor,
-      statsDate: _dateKey(DateTime.now()),
-    ),
+  Future<void> _startCloudSync() async {
+    _authSession!.addListener(_handleAuthStateChanged);
+    if (_authSession.isSignedIn) await _syncFromCloud();
+  }
+
+  void _handleAuthStateChanged() {
+    if (!_authSession!.isSignedIn) {
+      _cloudSynced = false;
+      _cloudSyncing = false;
+      _cloudSyncError = null;
+      notifyListeners();
+      return;
+    }
+    unawaited(_syncFromCloud());
+  }
+
+  Future<void> _syncFromCloud() async {
+    final uid = _authSession?.uid;
+    if (uid == null || _cloudStore == null || _cloudSyncing) return;
+    _cloudSyncing = true;
+    _cloudSyncError = null;
+    notifyListeners();
+    try {
+      final local = _snapshot();
+      final remote = await _cloudStore.load(uid);
+      final canMergeLocal =
+          local.cloudAccountUid == null || local.cloudAccountUid == uid;
+      final baseLocal = canMergeLocal ? local : const AppSnapshot();
+      final merged = _mergeSnapshots(baseLocal, remote, uid);
+      _applySnapshot(merged);
+      await _store.save(_snapshot());
+      final account = _authSession?.account;
+      if (account == null) return;
+      await _cloudStore.save(uid, _snapshot(), account: account);
+      _cloudSynced = true;
+    } on Exception catch (error) {
+      _cloudSynced = false;
+      _cloudSyncError = '進行状況をクラウドと同期できませんでした。';
+      debugPrint('Cloud progress sync failed: $error');
+    } finally {
+      _cloudSyncing = false;
+      notifyListeners();
+    }
+  }
+
+  AppSnapshot _mergeSnapshots(
+    AppSnapshot local,
+    AppSnapshot? remote,
+    String uid,
+  ) {
+    if (remote == null) return _copySnapshot(local, cloudAccountUid: uid);
+    final discovered = {...local.discoveredIds, ...remote.discoveredIds};
+    final sourceUser = remote.user ?? local.user;
+    final user = sourceUser == null
+        ? null
+        : UserProfile(
+            id: uid,
+            nickname: sourceUser.nickname,
+            age: sourceUser.age,
+            createdAt: sourceUser.createdAt,
+          );
+    final profile = _hasProfile(remote.explorationProfile)
+        ? remote.explorationProfile
+        : local.explorationProfile;
+    final sameStatsDate = local.statsDate == remote.statsDate;
+    final useLocalStats = _isLaterDate(local.statsDate, remote.statsDate);
+    final localAnchor = local.searchEnergyRecoveryAnchor;
+    final remoteAnchor = remote.searchEnergyRecoveryAnchor;
+    final useLocalEnergy =
+        remoteAnchor == null ||
+        localAnchor != null && localAnchor.isAfter(remoteAnchor);
+    return AppSnapshot(
+      cloudAccountUid: uid,
+      user: user,
+      explorationProfile: profile,
+      discoveredIds: discovered,
+      totalWatchSeconds: max(local.totalWatchSeconds, remote.totalWatchSeconds),
+      todayWatchSeconds: sameStatsDate
+          ? max(local.todayWatchSeconds, remote.todayWatchSeconds)
+          : useLocalStats
+          ? local.todayWatchSeconds
+          : remote.todayWatchSeconds,
+      watchCount: max(local.watchCount, remote.watchCount),
+      soundEffectsEnabled: remote.soundEffectsEnabled,
+      searchEnergy: useLocalEnergy ? local.searchEnergy : remote.searchEnergy,
+      searchEnergyRecoveryAnchor: useLocalEnergy ? localAnchor : remoteAnchor,
+      statsDate: useLocalStats
+          ? local.statsDate
+          : remote.statsDate ?? local.statsDate,
+    );
+  }
+
+  bool _hasProfile(ExplorationProfile profile) =>
+      profile.ageGroup != null ||
+      profile.gender != null ||
+      profile.region != null ||
+      profile.language != null ||
+      profile.interests.isNotEmpty;
+
+  bool _isLaterDate(String? left, String? right) {
+    if (left == null) return false;
+    if (right == null) return true;
+    final leftParts = left.split('-').map(int.tryParse).toList();
+    final rightParts = right.split('-').map(int.tryParse).toList();
+    if (leftParts.length != 3 ||
+        rightParts.length != 3 ||
+        leftParts.contains(null) ||
+        rightParts.contains(null)) {
+      return false;
+    }
+    final leftDate = DateTime(leftParts[0]!, leftParts[1]!, leftParts[2]!);
+    final rightDate = DateTime(rightParts[0]!, rightParts[1]!, rightParts[2]!);
+    return leftDate.isAfter(rightDate);
+  }
+
+  AppSnapshot _copySnapshot(
+    AppSnapshot snapshot, {
+    required String cloudAccountUid,
+  }) => AppSnapshot(
+    cloudAccountUid: cloudAccountUid,
+    user: snapshot.user == null
+        ? null
+        : UserProfile(
+            id: cloudAccountUid,
+            nickname: snapshot.user!.nickname,
+            age: snapshot.user!.age,
+            createdAt: snapshot.user!.createdAt,
+          ),
+    explorationProfile: snapshot.explorationProfile,
+    discoveredIds: snapshot.discoveredIds,
+    totalWatchSeconds: snapshot.totalWatchSeconds,
+    todayWatchSeconds: snapshot.todayWatchSeconds,
+    watchCount: snapshot.watchCount,
+    soundEffectsEnabled: snapshot.soundEffectsEnabled,
+    searchEnergy: snapshot.searchEnergy,
+    searchEnergyRecoveryAnchor: snapshot.searchEnergyRecoveryAnchor,
+    statsDate: snapshot.statsDate,
   );
+
+  void _applySnapshot(AppSnapshot snapshot) {
+    _cloudAccountUid = snapshot.cloudAccountUid;
+    _user = snapshot.user;
+    _profile = snapshot.explorationProfile;
+    _discoveredIds
+      ..clear()
+      ..addAll(snapshot.discoveredIds);
+    _totalWatchSeconds = snapshot.totalWatchSeconds;
+    _todayWatchSeconds = _isToday(snapshot.statsDate)
+        ? snapshot.todayWatchSeconds
+        : 0;
+    _watchCount = snapshot.watchCount;
+    _soundEffectsEnabled = snapshot.soundEffectsEnabled;
+    _searchEnergyState = _searchEnergyService.synchronize(
+      SearchEnergyState(
+        remaining: snapshot.searchEnergy,
+        recoveryAnchor:
+            snapshot.searchEnergyRecoveryAnchor ?? _searchEnergyService.now(),
+      ),
+    );
+  }
+
+  AppSnapshot _snapshot() => AppSnapshot(
+    cloudAccountUid: _cloudAccountUid,
+    user: _user,
+    explorationProfile: _profile,
+    discoveredIds: _discoveredIds,
+    totalWatchSeconds: _totalWatchSeconds,
+    todayWatchSeconds: _todayWatchSeconds,
+    watchCount: _watchCount,
+    soundEffectsEnabled: _soundEffectsEnabled,
+    searchEnergy: _searchEnergyState.remaining,
+    searchEnergyRecoveryAnchor: _searchEnergyState.recoveryAnchor,
+    statsDate: _dateKey(DateTime.now()),
+  );
+
+  Future<void> _persist() async {
+    final snapshot = _snapshot();
+    await _store.save(snapshot);
+    final uid = _authSession?.uid;
+    final account = _authSession?.account;
+    if (uid == null ||
+        account == null ||
+        _cloudStore == null ||
+        uid != _cloudAccountUid) {
+      return;
+    }
+    try {
+      await _cloudStore.save(uid, snapshot, account: account);
+      _cloudSynced = true;
+      _cloudSyncError = null;
+    } on Exception catch (error) {
+      _cloudSynced = false;
+      _cloudSyncError = '進行状況をクラウドへ保存できませんでした。';
+      debugPrint('Cloud progress save failed: $error');
+    }
+  }
+
+  @override
+  void dispose() {
+    _authSession?.removeListener(_handleAuthStateChanged);
+    super.dispose();
+  }
 
   static bool _isToday(String? value) => value == _dateKey(DateTime.now());
   static String _dateKey(DateTime date) =>

@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function hasValidIdentity() {
+        return request.resource.data.uid == userId
+          && request.resource.data.cloudAccountUid == userId
+          && request.resource.data.email == request.auth.token.email;
+      }
+
+      function hasExpectedFields() {
+        return request.resource.data.keys().hasAll([
+            'uid', 'displayName', 'email', 'photoUrl', 'createdAt', 'updatedAt',
+            'schemaVersion', 'cloudAccountUid', 'user', 'explorationProfile',
+            'discoveredIds', 'totalWatchSeconds', 'todayWatchSeconds',
+            'watchCount', 'soundEffectsEnabled', 'searchEnergy',
+            'searchEnergyRecoveryAnchor', 'statsDate'
+          ])
+          && request.resource.data.keys().hasOnly([
+            'uid', 'displayName', 'email', 'photoUrl', 'createdAt', 'updatedAt',
+            'schemaVersion', 'cloudAccountUid', 'user', 'explorationProfile',
+            'discoveredIds', 'totalWatchSeconds', 'todayWatchSeconds',
+            'watchCount', 'soundEffectsEnabled', 'searchEnergy',
+            'searchEnergyRecoveryAnchor', 'statsDate'
+          ]);
+      }
+
+      allow read, delete: if isOwner();
+      allow create: if isOwner()
+        && hasValidIdentity()
+        && hasExpectedFields()
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if isOwner()
+        && hasValidIdentity()
+        && hasExpectedFields()
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

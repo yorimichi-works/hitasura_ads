@@ -51,6 +51,7 @@ class AdWatchLog {
 
 class AppSnapshot {
   const AppSnapshot({
+    this.cloudAccountUid,
     this.user,
     this.explorationProfile = const ExplorationProfile(),
     this.discoveredIds = const <String>{},
@@ -63,6 +64,7 @@ class AppSnapshot {
     this.statsDate,
   });
 
+  final String? cloudAccountUid;
   final UserProfile? user;
   final ExplorationProfile explorationProfile;
   final Set<String> discoveredIds;

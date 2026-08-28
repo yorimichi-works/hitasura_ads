@@ -35,6 +35,7 @@ migrate_working_dir/
 
 # Firebase local aliases and credentials
 .firebaserc
+.firebase/
 firebase-debug.log
 firebase-service-account*.json
 *service-account-key*.json

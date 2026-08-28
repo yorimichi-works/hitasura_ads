@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in_web/web_only.dart' as web;
 
 class GoogleAccountSignInButton extends StatelessWidget {
   const GoogleAccountSignInButton({
@@ -11,44 +10,20 @@ class GoogleAccountSignInButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool busy;
 
-  static final web.GSIButtonConfiguration _configuration =
-      web.GSIButtonConfiguration(
-        type: web.GSIButtonType.standard,
-        theme: web.GSIButtonTheme.outline,
-        size: web.GSIButtonSize.large,
-        text: web.GSIButtonText.signinWith,
-        shape: web.GSIButtonShape.rectangular,
-        logoAlignment: web.GSIButtonLogoAlignment.left,
-        minimumWidth: 260,
-        locale: 'ja',
-      );
-
   @override
-  Widget build(BuildContext context) {
-    if (busy) {
-      return const SizedBox(
-        height: 44,
-        child: Center(
-          child: SizedBox.square(
-            dimension: 24,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
-        ),
-      );
-    }
-
-    return SizedBox(
-      height: 44,
-      child: Center(
-        key: const Key('google-sign-in-button'),
-        child: SizedBox(
-          width: 260,
-          height: 44,
-          child: ClipRect(
-            child: web.renderButton(configuration: _configuration),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SizedBox(
+    height: 46,
+    width: double.infinity,
+    child: OutlinedButton.icon(
+      key: const Key('google-sign-in-button'),
+      onPressed: busy ? null : onPressed,
+      icon: busy
+          ? const SizedBox.square(
+              dimension: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : const Icon(Icons.login),
+      label: Text(busy ? 'ログイン中…' : 'Googleでログイン'),
+    ),
+  );
 }

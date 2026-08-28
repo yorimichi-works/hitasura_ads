@@ -22,11 +22,14 @@
 
 サービスアカウントJSONはリポジトリへ保存しない。GitHub Secrets以外へ貼り付けない。
 
-GoogleログインのWeb OAuth Client IDは公開識別子としてアプリに設定済み。
-別のOAuthクライアントへ切り替える場合だけ、ビルド時に`GOOGLE_WEB_CLIENT_ID`を
-`--dart-define`で渡す。OAuthクライアントにはFirebase仮URLと
-`https://hitasura.yorimichi-works.jp`の実際のJavaScript生成元を登録する。
-クライアントシークレットはWebアプリ、GitHub Actions、Firebase Hostingへ保存しない。
+Firebase Webアプリ`hitasura-ads-web`をプロジェクト`hitasuraads`へ登録済み。
+Firebase AuthでGoogleプロバイダを有効化済み。承認済みドメインには
+`hitasuraads.web.app`、`hitasuraads.firebaseapp.com`、
+`hitasura.yorimichi-works.jp`を登録する。進行データはFirestoreの
+`users/{Firebase Auth uid}`へ認証プロフィールとゲーム進行を保存し、`firestore.rules`で本人以外のアクセスを拒否する。
+OAuthクライアントシークレットはWebアプリ、GitHub Actions、Firebase Hostingへ保存しない。
+
+Firestore `(default)`はStandard edition、`asia-northeast1`で作成済み。
 
 ## 最初のdeploy
 

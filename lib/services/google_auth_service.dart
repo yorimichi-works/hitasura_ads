@@ -1,32 +1,43 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-/// Thin wrapper around `package:google_sign_in` shared by the Web and app
-/// builds, so both use the same account/session model.
+import '../firebase_options.dart';
+
+abstract interface class AuthSession implements Listenable {
+  bool get isSignedIn;
+  String? get uid;
+  GoogleAccountInfo? get account;
+}
+
+class GoogleAccountInfo {
+  const GoogleAccountInfo({
+    required this.uid,
+    required this.email,
+    required this.displayName,
+    required this.photoUrl,
+  });
+
+  final String uid;
+  final String email;
+  final String? displayName;
+  final String? photoUrl;
+}
+
+/// Firebase Auth on Web, Google Sign-In on native platforms.
 ///
-/// The OAuth Web Client ID is created in Google Cloud Console for this
-/// project's domains. The production ID is the default and can be overridden
-/// for another environment at build time:
-///
-/// ```powershell
-/// flutter build web --dart-define=GOOGLE_WEB_CLIENT_ID=xxxxx.apps.googleusercontent.com
-/// ```
-///
-/// Platform builds without their required client ID keep [isConfigured] false
-/// and show an explanatory state instead of a non-functional button.
-class GoogleAuthService extends ChangeNotifier {
+/// Web progress is keyed by the Firebase Auth uid. OAuth client secrets are
+/// never used by or embedded in this client.
+class GoogleAuthService extends ChangeNotifier implements AuthSession {
   GoogleAuthService._();
 
   static final GoogleAuthService instance = GoogleAuthService._();
 
   factory GoogleAuthService() => instance;
 
-  static const _webClientId = String.fromEnvironment(
-    'GOOGLE_WEB_CLIENT_ID',
-    defaultValue: '1083938872680-vflb3jbam995j26ncg891hhok2s9cirs.apps.googleusercontent.com',
-  );
   static const _androidServerClientId = String.fromEnvironment(
     'GOOGLE_ANDROID_SERVER_CLIENT_ID',
   );
@@ -36,11 +47,12 @@ class GoogleAuthService extends ChangeNotifier {
   bool _initFailed = false;
   bool _busy = false;
   String? _errorMessage;
-  GoogleSignInAccount? _account;
-  StreamSubscription<GoogleSignInAuthenticationEvent>? _authSubscription;
+  GoogleAccountInfo? _account;
+  StreamSubscription<User?>? _firebaseSubscription;
+  StreamSubscription<GoogleSignInAuthenticationEvent>? _nativeSubscription;
 
   bool get isConfigured {
-    if (kIsWeb) return _webClientId.isNotEmpty;
+    if (kIsWeb) return true;
     return switch (defaultTargetPlatform) {
       TargetPlatform.android => _androidServerClientId.isNotEmpty,
       TargetPlatform.iOS || TargetPlatform.macOS => _iosClientId.isNotEmpty,
@@ -49,40 +61,56 @@ class GoogleAuthService extends ChangeNotifier {
   }
 
   bool get isInitialized => _initialized && !_initFailed;
+  @override
   bool get isSignedIn => _account != null;
-  GoogleSignInAccount? get account => _account;
+  @override
+  String? get uid => _account?.uid;
+  @override
+  GoogleAccountInfo? get account => _account;
   bool get initFailed => _initFailed;
   bool get isBusy => _busy;
   String? get errorMessage => _errorMessage;
 
   Future<void> initialize() async {
-    if (!isConfigured || _initialized) return;
+    if (!isConfigured || _initialized || _busy) return;
     _busy = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      await GoogleSignIn.instance.initialize(
-        clientId: kIsWeb
-            ? _webClientId
-            : switch (defaultTargetPlatform) {
-                TargetPlatform.iOS || TargetPlatform.macOS => _iosClientId,
-                _ => null,
-              },
-        serverClientId:
-            !kIsWeb && defaultTargetPlatform == TargetPlatform.android
-            ? _androidServerClientId
-            : null,
-      );
-      _authSubscription = GoogleSignIn.instance.authenticationEvents.listen(
-        _handleAuthenticationEvent,
-        onError: _handleAuthenticationError,
-      );
-      _account = await GoogleSignIn.instance.attemptLightweightAuthentication();
+      if (kIsWeb) {
+        if (Firebase.apps.isEmpty) {
+          await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
+        }
+        final auth = FirebaseAuth.instance;
+        _firebaseSubscription = auth.authStateChanges().listen(
+          _handleFirebaseUser,
+          onError: _handleAuthenticationError,
+        );
+        _handleFirebaseUser(auth.currentUser);
+      } else {
+        await GoogleSignIn.instance.initialize(
+          clientId: switch (defaultTargetPlatform) {
+            TargetPlatform.iOS || TargetPlatform.macOS => _iosClientId,
+            _ => null,
+          },
+          serverClientId: defaultTargetPlatform == TargetPlatform.android
+              ? _androidServerClientId
+              : null,
+        );
+        _nativeSubscription = GoogleSignIn.instance.authenticationEvents.listen(
+          _handleNativeAuthenticationEvent,
+          onError: _handleAuthenticationError,
+        );
+        _setNativeAccount(
+          await GoogleSignIn.instance.attemptLightweightAuthentication(),
+        );
+      }
       _initialized = true;
+      _initFailed = false;
     } on Exception catch (error) {
       _initFailed = true;
-      _errorMessage = 'Googleログインを初期化できませんでした。設定を確認してください。';
-      debugPrint('Google Sign-In initialization failed: $error');
+      _errorMessage = 'Googleログインを初期化できませんでした。Firebase設定を確認してください。';
+      debugPrint('Google/Firebase initialization failed: $error');
     } finally {
       _busy = false;
       notifyListeners();
@@ -90,20 +118,33 @@ class GoogleAuthService extends ChangeNotifier {
   }
 
   Future<void> signIn() async {
-    if (!isConfigured ||
-        _busy ||
-        !GoogleSignIn.instance.supportsAuthenticate()) {
-      return;
-    }
+    if (!isConfigured || _busy) return;
+    if (!_initialized) await initialize();
+    if (!isInitialized) return;
     _busy = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      _account = await GoogleSignIn.instance.authenticate();
+      if (kIsWeb) {
+        final provider = GoogleAuthProvider()
+          ..setCustomParameters({'prompt': 'select_account'});
+        final credential = await FirebaseAuth.instance.signInWithPopup(
+          provider,
+        );
+        _handleFirebaseUser(credential.user);
+      } else if (GoogleSignIn.instance.supportsAuthenticate()) {
+        _setNativeAccount(await GoogleSignIn.instance.authenticate());
+      }
+    } on FirebaseAuthException catch (error) {
+      if (error.code != 'popup-closed-by-user' &&
+          error.code != 'cancelled-popup-request') {
+        _errorMessage = _firebaseErrorMessage(error);
+        debugPrint('Firebase Google Sign-In failed: ${error.code} $error');
+      }
     } on GoogleSignInException catch (error) {
       if (error.code != GoogleSignInExceptionCode.canceled) {
         _errorMessage = 'Googleログインに失敗しました。もう一度お試しください。';
-        debugPrint('Google Sign-In failed: $error');
+        debugPrint('Native Google Sign-In failed: $error');
       }
     } finally {
       _busy = false;
@@ -117,7 +158,11 @@ class GoogleAuthService extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      await GoogleSignIn.instance.signOut();
+      if (kIsWeb) {
+        await FirebaseAuth.instance.signOut();
+      } else {
+        await GoogleSignIn.instance.signOut();
+      }
       _account = null;
     } on Exception catch (error) {
       _errorMessage = 'ログアウトに失敗しました。もう一度お試しください。';
@@ -128,15 +173,39 @@ class GoogleAuthService extends ChangeNotifier {
     }
   }
 
-  void _handleAuthenticationEvent(GoogleSignInAuthenticationEvent event) {
+  void _handleFirebaseUser(User? user) {
+    _account = user == null
+        ? null
+        : GoogleAccountInfo(
+            uid: user.uid,
+            email: user.email ?? '',
+            displayName: user.displayName,
+            photoUrl: user.photoURL,
+          );
+    _errorMessage = null;
+    notifyListeners();
+  }
+
+  void _handleNativeAuthenticationEvent(GoogleSignInAuthenticationEvent event) {
     switch (event) {
       case GoogleSignInAuthenticationEventSignIn():
-        _account = event.user;
-        _errorMessage = null;
+        _setNativeAccount(event.user);
       case GoogleSignInAuthenticationEventSignOut():
         _account = null;
     }
+    _errorMessage = null;
     notifyListeners();
+  }
+
+  void _setNativeAccount(GoogleSignInAccount? account) {
+    _account = account == null
+        ? null
+        : GoogleAccountInfo(
+            uid: account.id,
+            email: account.email,
+            displayName: account.displayName,
+            photoUrl: account.photoUrl,
+          );
   }
 
   void _handleAuthenticationError(Object error) {
@@ -145,9 +214,18 @@ class GoogleAuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _firebaseErrorMessage(FirebaseAuthException error) =>
+      switch (error.code) {
+        'operation-not-allowed' => 'Firebase ConsoleでGoogleログインを有効にしてください。',
+        'unauthorized-domain' => 'この公開ドメインがFirebase Authで許可されていません。',
+        'popup-blocked' => 'ブラウザがログイン画面をブロックしました。ポップアップを許可してください。',
+        _ => 'Googleログインに失敗しました（${error.code}）。',
+      };
+
   @override
   void dispose() {
-    unawaited(_authSubscription?.cancel());
+    unawaited(_firebaseSubscription?.cancel());
+    unawaited(_nativeSubscription?.cancel());
     super.dispose();
   }
 }

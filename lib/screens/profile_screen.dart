@@ -54,10 +54,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _gender = profile.gender == '女性' ? '女性' : '男性';
     _selected = {...profile.interests};
     _googleAuth.addListener(_onGoogleAuthChanged);
+    widget.controller.addListener(_onControllerChanged);
     unawaited(_googleAuth.initialize());
   }
 
   void _onGoogleAuthChanged() {
+    if (mounted) setState(() {});
+  }
+
+  void _onControllerChanged() {
     if (mounted) setState(() {});
   }
 
@@ -67,6 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _region.dispose();
     _language.dispose();
     _googleAuth.removeListener(_onGoogleAuthChanged);
+    widget.controller.removeListener(_onControllerChanged);
     super.dispose();
   }
 
@@ -182,6 +188,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
               : const Icon(Icons.logout),
           label: Text(_googleAuth.isBusy ? 'ログアウト中…' : 'ログアウト'),
         ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Icon(
+              widget.controller.cloudSyncError != null
+                  ? Icons.cloud_off
+                  : widget.controller.cloudSyncing
+                  ? Icons.cloud_sync
+                  : Icons.cloud_done,
+              size: 18,
+              color: widget.controller.cloudSyncError != null
+                  ? Colors.redAccent
+                  : Colors.green,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                widget.controller.cloudSyncError ??
+                    (widget.controller.cloudSyncing
+                        ? '進行状況を同期中…'
+                        : widget.controller.cloudSynced
+                        ? '図鑑・視聴記録・スタミナをGoogleアカウントへ保存済み'
+                        : 'クラウド同期を準備中…'),
+                style: const TextStyle(fontSize: 12),
+              ),
+            ),
+          ],
+        ),
         if (_googleAuth.errorMessage case final message?) ...[
           const SizedBox(height: 10),
           Text(message, style: const TextStyle(color: Colors.redAccent)),
@@ -227,7 +261,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
                   ),
                   const SizedBox(height: 4),
-                  const Text('Googleアカウントでログインできます。進行データの同期機能は今後対応予定です。'),
+                  const Text(
+                    'Googleでログインすると、図鑑・視聴記録・探索スタミナ・プロフィールをクラウドへ保存します。',
+                  ),
                   const SizedBox(height: 14),
                   _buildGoogleAccountArea(),
                 ],
