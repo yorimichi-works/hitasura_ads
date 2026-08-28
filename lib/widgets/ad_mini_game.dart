@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../models/ad_definition.dart';
 import '../models/ad_mini_game_definition.dart';
+import '../models/ad_sound_profile.dart';
 import '../models/ad_visual_assets.dart';
 import '../models/mini_game_rules.dart';
 
@@ -15,11 +16,13 @@ class AdMiniGame extends StatefulWidget {
     super.key,
     required this.ad,
     required this.onInteraction,
+    this.onSoundEvent,
     this.seed,
   });
 
   final AdDefinition ad;
   final VoidCallback onInteraction;
+  final ValueChanged<AdSoundEvent>? onSoundEvent;
   final int? seed;
 
   @override
@@ -93,6 +96,7 @@ class _AdMiniGameState extends State<AdMiniGame>
     if (_phase == MiniGamePhase.notStarted) {
       setState(() => _phase = MiniGamePhase.playing);
       widget.onInteraction();
+      widget.onSoundEvent?.call(AdSoundEvent.interaction);
     }
   }
 
@@ -100,10 +104,15 @@ class _AdMiniGameState extends State<AdMiniGame>
     if (_phase == MiniGamePhase.success || _phase == MiniGamePhase.failure) {
       return;
     }
-    _start();
+    if (_phase == MiniGamePhase.notStarted) {
+      widget.onInteraction();
+    }
     setState(() {
       _phase = success ? MiniGamePhase.success : MiniGamePhase.failure;
     });
+    widget.onSoundEvent?.call(
+      success ? AdSoundEvent.success : AdSoundEvent.failure,
+    );
     if (success) _motion.stop();
   }
 

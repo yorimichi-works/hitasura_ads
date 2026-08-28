@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../models/ad_definition.dart';
+import '../models/ad_sound_profile.dart';
 import '../models/ad_visual_assets.dart';
 import 'ad_mini_game.dart';
 
@@ -11,25 +12,40 @@ class AdExperienceHost extends StatelessWidget {
     super.key,
     required this.ad,
     required this.onInteraction,
+    this.onSoundEvent,
   });
 
   final AdDefinition ad;
   final VoidCallback onInteraction;
+  final ValueChanged<AdSoundEvent>? onSoundEvent;
 
   @override
   Widget build(BuildContext context) {
     if (ad.experienceFormat == AdExperienceFormat.playable) {
-      return AdMiniGame(ad: ad, onInteraction: onInteraction);
+      return AdMiniGame(
+        ad: ad,
+        onInteraction: onInteraction,
+        onSoundEvent: onSoundEvent,
+      );
     }
-    return _EditorialExperience(ad: ad, onInteraction: onInteraction);
+    return _EditorialExperience(
+      ad: ad,
+      onInteraction: onInteraction,
+      onSoundEvent: onSoundEvent,
+    );
   }
 }
 
 class _EditorialExperience extends StatefulWidget {
-  const _EditorialExperience({required this.ad, required this.onInteraction});
+  const _EditorialExperience({
+    required this.ad,
+    required this.onInteraction,
+    this.onSoundEvent,
+  });
 
   final AdDefinition ad;
   final VoidCallback onInteraction;
+  final ValueChanged<AdSoundEvent>? onSoundEvent;
 
   @override
   State<_EditorialExperience> createState() => _EditorialExperienceState();
@@ -50,6 +66,9 @@ class _EditorialExperienceState extends State<_EditorialExperience> {
       _started = true;
       widget.onInteraction();
     }
+    widget.onSoundEvent?.call(
+      _step >= 2 ? AdSoundEvent.success : AdSoundEvent.interaction,
+    );
     setState(() {
       _score += score;
       _step = min(3, _step + 1);
@@ -61,6 +80,7 @@ class _EditorialExperienceState extends State<_EditorialExperience> {
       _started = true;
       widget.onInteraction();
     }
+    widget.onSoundEvent?.call(AdSoundEvent.failure);
     setState(() => _wrongChoices++);
   }
 

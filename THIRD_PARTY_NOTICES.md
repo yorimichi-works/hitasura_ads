@@ -33,6 +33,21 @@ existing app lifecycle unchanged.
 
 魔王魂の利用規約に基づき、素材そのものの単体再配布は行っていません。
 
+## Sound effects
+
+The 25 MP3 files under `assets/audio/soundeffect_lab/` are from
+[効果音ラボ / Sound Effect Lab](https://soundeffect-lab.info/). They are used
+only as contextual operation, success, and failure sounds inside the 151 ad
+experiences. The app does not provide a soundboard, sampler, download UI, or
+other feature whose primary purpose is redistributing these files.
+
+Use is governed by the publisher's
+[terms](https://soundeffect-lab.info/agreement/) and
+[FAQ](https://soundeffect-lab.info/faq/). Both personal and commercial app use
+is permitted and attribution is optional. Copyright remains with Sound Effect
+Lab. The source files must not be extracted and redistributed as standalone
+sound material.
+
 ## Bundled Japanese font
 
 | Asset | Source | Font | License |

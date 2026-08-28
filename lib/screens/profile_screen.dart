@@ -244,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               key: const Key('sound-effects-toggle'),
               secondary: const Icon(Icons.volume_up_outlined),
               title: const Text('効果音・広告ゲームBGM'),
-              subtitle: const Text('待機中は無音／広告ゲーム中のみ再生（音楽：魔王魂）'),
+              subtitle: const Text('待機中は無音／広告ゲーム中のみ再生（音楽：魔王魂・効果音：効果音ラボ）'),
               value: widget.controller.soundEffectsEnabled,
               onChanged: widget.controller.setSoundEffectsEnabled,
             ),

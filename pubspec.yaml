@@ -67,6 +67,7 @@ flutter:
     - assets/data/ad_catalog.json
     - assets/data/image_asset_catalog.json
     - assets/audio/
+    - assets/audio/soundeffect_lab/
     - assets/images/ad_parts/sheet1/
     - assets/images/ad_parts/sheet2/
     - assets/images/complete_ads/sheet3/

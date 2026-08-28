@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../models/ad_definition.dart';
+import '../models/ad_sound_profile.dart';
 import '../models/ad_visual_assets.dart';
 import '../services/ad_audio_manager.dart';
 import 'ad_experience_host.dart';
@@ -86,9 +87,6 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
   }
 
   void _interact() {
-    unawaited(
-      _audio.playInteraction(widget.ad, enabled: widget.soundEffectsEnabled),
-    );
     if (widget.ad.interactionType == AdInteractionType.scratch) {
       setState(() {
         _scratchProgress = min(100, _scratchProgress + 34);
@@ -103,6 +101,12 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
       return;
     }
     setState(() => _interacted = true);
+  }
+
+  void _playSoundEvent(AdSoundEvent event) {
+    unawaited(
+      _audio.playEvent(widget.ad, event, enabled: widget.soundEffectsEnabled),
+    );
   }
 
   @override
@@ -208,6 +212,7 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
                                       child: AdExperienceHost(
                                         ad: ad,
                                         onInteraction: _interact,
+                                        onSoundEvent: _playSoundEvent,
                                       ),
                                     ),
                                   ],

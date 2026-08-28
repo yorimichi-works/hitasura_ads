@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 import '../models/ad_definition.dart';
 import '../models/ad_semantic_profile.dart';
+import '../models/ad_sound_profile.dart';
 
 class AdAudioManager {
   static const gameBgmIds = <String>[
@@ -61,8 +62,24 @@ class AdAudioManager {
   }
 
   Future<void> playInteraction(AdDefinition ad, {bool enabled = true}) async {
-    if (!enabled || ad.seIds.isEmpty) return;
-    await _safely(() => _sePlayer.play(AssetSource('audio/${ad.seIds.first}')));
+    await playEvent(ad, AdSoundEvent.interaction, enabled: enabled);
+  }
+
+  Future<void> playEvent(
+    AdDefinition ad,
+    AdSoundEvent event, {
+    bool enabled = true,
+  }) async {
+    if (!enabled) return;
+    final asset = AdSoundProfile.forAd(ad).assetFor(event);
+    final volume = switch (event) {
+      AdSoundEvent.interaction => .48,
+      AdSoundEvent.success => .68,
+      AdSoundEvent.failure => .58,
+    };
+    await _safely(
+      () => _sePlayer.play(AssetSource('audio/$asset'), volume: volume),
+    );
   }
 
   Future<void> playSecretSequence(
