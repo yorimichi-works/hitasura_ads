@@ -49,46 +49,46 @@
 |043|王様と絶対抜くなピン|pinPull|sheet1_02.png|stone_dungeon.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
 |044|王様の休日|reveal|sheet1_02.png|stone_dungeon.jpg|移動経路・HitArea|sheet1_02.png|移動する画像/対象をタップ|A|151件共通Widgetテスト対象|
 |045|王様FINALっぽい何か|pinPull|sheet1_02.png|stone_dungeon.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|046|＋10か×2か、それが問題だ|numberGate|sheet2_01.png|sheet5_06.png|ゲート・倍率・計算|sheet2_01.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|046|＋10か×2か、それが問題だ|numberGate|sheet2_03.png|sheet5_06.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
 |047|棒人間、増えすぎる|numberGate|sheet2_03.png|sheet5_10.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
-|048|1人から999999人へ|numberGate|sheet2_05.png|sheet4_03.png|ゲート・倍率・計算|sheet2_05.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
-|049|×100を選んだだけなのに|numberGate|sheet2_16.png|sheet5_06.png|ゲート・倍率・計算|sheet2_16.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
-|050|＋5の方が強かった|numberGate|sheet1_09.png|sheet5_10.png|ゲート・倍率・計算|sheet1_09.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
-|051|レベル1から宇宙王へ|numberGate|sheet2_01.png|sheet4_03.png|ゲート・倍率・計算|sheet2_01.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|048|1人から999999人へ|numberGate|sheet2_03.png|sheet4_03.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|049|×100を選んだだけなのに|numberGate|sheet2_03.png|sheet5_06.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|050|＋5の方が強かった|numberGate|sheet2_03.png|sheet5_10.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|051|レベル1から宇宙王へ|numberGate|sheet2_03.png|sheet4_03.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
 |052|LV.9999なのに弱い|numberGate|sheet2_03.png|sheet5_06.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
-|053|敵が急に巨大化しました|numberGate|sheet2_05.png|sheet5_10.png|ゲート・倍率・計算|sheet2_05.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
-|054|剣を拾ったら社長になった|numberGate|sheet2_16.png|sheet4_03.png|ゲート・倍率・計算|sheet2_16.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
-|055|棒人間帝国の終焉|numberGate|sheet1_09.png|sheet5_06.png|ゲート・倍率・計算|sheet1_09.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|053|敵が急に巨大化しました|numberGate|sheet2_03.png|sheet5_10.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|054|剣を拾ったら社長になった|numberGate|sheet2_05.png|sheet4_03.png|ゲート・倍率・計算|sheet2_05.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|055|棒人間帝国の終焉|numberGate|sheet2_03.png|sheet5_06.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
 |056|ネジを外すだけだったのに|dragSort|sheet1_03.png|sheet5_05.png|DragTarget・当たり判定|sheet1_03.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
 |057|そのネジ、そこじゃない|dragSort|sheet1_03.png|sheet4_08.png|DragTarget・当たり判定|sheet1_03.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
 |058|水をコップへ導け！|drawPath|なし|sheet4_06.png|線・経路判定|画像不要または専用素材なし。意味一致するコード描画|画像間をドラッグして線描画|B|151件共通Widgetテスト対象|
 |059|蜂から犬っぽい何かを守れ|drawPath|rescue_dog.png|sunny_grassland.jpg|線・経路判定|rescue_dog.png|画像間をドラッグして線描画|A|151件共通Widgetテスト対象|
 |060|線を引けば全部解決|drawPath|sheet1_14.png|sheet4_08.png|線・経路判定|sheet1_14.png|画像間をドラッグして線描画|A|151件共通Widgetテスト対象|
-|061|駐車場から出たいだけ|dragSort|なし|parking_lot.jpg|DragTarget・当たり判定|画像不要または専用素材なし。意味一致するコード描画|画像そのものをドラッグ&ドロップ|B|151件共通Widgetテスト対象|
-|062|赤い車だけ特別扱い|dragSort|なし|parking_lot.jpg|DragTarget・当たり判定|画像不要または専用素材なし。意味一致するコード描画|画像そのものをドラッグ&ドロップ|B|151件共通Widgetテスト対象|
+|061|駐車場から出たいだけ|dragSort|red_car.png|parking_lot.jpg|DragTarget・当たり判定|red_car.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
+|062|赤い車だけ特別扱い|dragSort|red_car.png|parking_lot.jpg|DragTarget・当たり判定|red_car.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
 |063|色を分けろ！何のために？|dragSort|sheet2_18.png|sheet4_08.png|DragTarget・当たり判定|sheet2_18.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
 |064|ボールを正しい穴へ|dragSort|sheet2_14.png|sheet4_06.png|DragTarget・当たり判定|sheet2_14.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
 |065|3秒で解けるIQ999パズル|dragSort|sheet1_14.png|sheet5_05.png|DragTarget・当たり判定|sheet1_14.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
-|066|汚れすぎた靴|choice|sheet2_04.png|dirty_room.jpg|選択枠・正誤判定|sheet2_04.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|067|この部屋をなんとかして！|choice|sheet2_02.png|renovated_room.jpg|選択枠・正誤判定|sheet2_02.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|068|掃除したら豪邸になった|choice|sheet2_12.png|dirty_room.jpg|選択枠・正誤判定|sheet2_12.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|069|貧乏から億万長者まで15秒|choice|sheet2_18.png|renovated_room.jpg|選択枠・正誤判定|sheet2_18.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|070|所持金3円から始めます|choice|sheet2_19.png|dirty_room.jpg|選択枠・正誤判定|sheet2_19.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|071|選ぶだけで人生逆転!?|choice|sheet2_04.png|renovated_room.jpg|選択枠・正誤判定|sheet2_04.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|072|服を着替えたら王族になった|choice|sheet2_02.png|dirty_room.jpg|選択枠・正誤判定|sheet2_02.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|073|ボロ家から宮殿へ|choice|sheet2_12.png|renovated_room.jpg|選択枠・正誤判定|sheet2_12.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|074|掃除力9999|choice|sheet2_18.png|dirty_room.jpg|選択枠・正誤判定|sheet2_18.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|075|AFTERが別人|choice|sheet2_19.png|renovated_room.jpg|選択枠・正誤判定|sheet2_19.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|076|小魚から海の王へ|timing|sheet2_14.png|sheet5_03.png|ゲージ・針・成功帯|sheet2_14.png|成功帯で停止|A|151件共通Widgetテスト対象|
-|077|魚が魚を超えた日|timing|sheet2_15.png|sheet5_06.png|ゲージ・針・成功帯|sheet2_15.png|成功帯で停止|A|151件共通Widgetテスト対象|
-|078|リンゴ＋リンゴ＝なぜかメロン|dragSort|sheet2_09.png|sheet4_10.png|DragTarget・当たり判定|sheet2_09.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
-|079|メロン＋メロン＝冷蔵庫|dragSort|sheet2_18.png|sheet5_03.png|DragTarget・当たり判定|sheet2_18.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
-|080|何でも合体させればいい|dragSort|sheet2_14.png|sheet5_06.png|DragTarget・当たり判定|sheet2_14.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
-|081|LV.1スライムっぽくない何か|tapChallenge|sheet2_15.png|sheet4_10.png|HitArea・進捗|sheet2_15.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|082|育てたら巨大になりすぎた|tapChallenge|sheet2_09.png|sheet5_03.png|HitArea・進捗|sheet2_09.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|083|ペット育成 8秒目|tapChallenge|sheet2_18.png|sheet5_06.png|HitArea・進捗|sheet2_18.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|084|卵から社長が生まれた|packOpen|sheet2_14.png|sheet4_10.png|スワイプ距離・開封枠|sheet2_14.png|画像付きパックを上へスワイプ|A|151件共通Widgetテスト対象|
-|085|進化先：広告|tapChallenge|sheet2_15.png|sheet5_03.png|HitArea・進捗|sheet2_15.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|066|汚れすぎた靴|choice|premium_shoe.png|dirty_room.jpg|選択枠・正誤判定|premium_shoe.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|067|この部屋をなんとかして！|choice|なし|renovated_room.jpg|選択枠・正誤判定|画像不要または専用素材なし。意味一致するコード描画|画像付き選択肢をタップ|B|151件共通Widgetテスト対象|
+|068|掃除したら豪邸になった|choice|なし|dirty_room.jpg|選択枠・正誤判定|画像不要または専用素材なし。意味一致するコード描画|画像付き選択肢をタップ|B|151件共通Widgetテスト対象|
+|069|貧乏から億万長者まで15秒|choice|sheet2_01.png|renovated_room.jpg|選択枠・正誤判定|sheet2_01.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|070|所持金3円から始めます|choice|sheet2_09.png|dirty_room.jpg|選択枠・正誤判定|sheet2_09.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|071|選ぶだけで人生逆転!?|choice|sheet2_03.png|renovated_room.jpg|選択枠・正誤判定|sheet2_03.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|072|服を着替えたら王族になった|choice|sheet1_02.png|dirty_room.jpg|選択枠・正誤判定|sheet1_02.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|073|ボロ家から宮殿へ|choice|なし|renovated_room.jpg|選択枠・正誤判定|画像不要または専用素材なし。意味一致するコード描画|画像付き選択肢をタップ|B|151件共通Widgetテスト対象|
+|074|掃除力9999|choice|なし|dirty_room.jpg|選択枠・正誤判定|画像不要または専用素材なし。意味一致するコード描画|画像付き選択肢をタップ|B|151件共通Widgetテスト対象|
+|075|AFTERが別人|choice|sheet2_02.png|renovated_room.jpg|選択枠・正誤判定|sheet2_02.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|076|小魚から海の王へ|timing|whole_fish.png|sheet4_12.png|ゲージ・針・成功帯|whole_fish.png|成功帯で停止|A|151件共通Widgetテスト対象|
+|077|魚が魚を超えた日|timing|whole_fish.png|sheet4_12.png|ゲージ・針・成功帯|whole_fish.png|成功帯で停止|A|151件共通Widgetテスト対象|
+|078|リンゴ＋リンゴ＝なぜかメロン|dragSort|red_apple.png|sheet4_10.png|DragTarget・当たり判定|red_apple.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
+|079|メロン＋メロン＝冷蔵庫|dragSort|green_melon.png|sheet5_03.png|DragTarget・当たり判定|green_melon.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
+|080|何でも合体させればいい|dragSort|なし|sheet5_06.png|DragTarget・当たり判定|画像不要または専用素材なし。意味一致するコード描画|画像そのものをドラッグ&ドロップ|B|151件共通Widgetテスト対象|
+|081|LV.1スライムっぽくない何か|tapChallenge|なし|sheet4_10.png|HitArea・進捗|画像不要または専用素材なし。意味一致するコード描画|画像/対象を3回タップ|B|151件共通Widgetテスト対象|
+|082|育てたら巨大になりすぎた|tapChallenge|なし|sheet5_03.png|HitArea・進捗|画像不要または専用素材なし。意味一致するコード描画|画像/対象を3回タップ|B|151件共通Widgetテスト対象|
+|083|ペット育成 8秒目|tapChallenge|rescue_dog.png|sheet5_06.png|HitArea・進捗|rescue_dog.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|084|卵から社長が生まれた|packOpen|hatching_egg.png|sheet4_10.png|スワイプ距離・開封枠|hatching_egg.png|画像付きパックを上へスワイプ|A|151件共通Widgetテスト対象|
+|085|進化先：広告|tapChallenge|なし|sheet5_03.png|HitArea・進捗|画像不要または専用素材なし。意味一致するコード描画|画像/対象を3回タップ|B|151件共通Widgetテスト対象|
 |086|777っぽいもの|timing|sheet1_18.png|sheet4_07.png|ゲージ・針・成功帯|sheet1_18.png|成功帯で停止|A|151件共通Widgetテスト対象|
 |087|超激熱っぽい！|timing|sheet1_18.png|sheet4_02.png|ゲージ・針・成功帯|sheet1_18.png|成功帯で停止|A|151件共通Widgetテスト対象|
 |088|大当たり!? たぶん！|timing|sheet1_18.png|sheet5_08.png|ゲージ・針・成功帯|sheet1_18.png|成功帯で停止|A|151件共通Widgetテスト対象|
@@ -158,8 +158,8 @@
 
 ## 評価集計
 
-- A: 137件
-- B: 14件
+- A: 131件
+- B: 20件
 - C: 0件
 - D: 0件
 

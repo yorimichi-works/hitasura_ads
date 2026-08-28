@@ -25,6 +25,11 @@ existing app lifecycle unchanged.
 | `assets/audio/maou_loop_bgm_8bit27.mp3` | 魔王魂 (https://maou.audio/) | 8bit27「キャロットマンステージ」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
 | `assets/audio/maou_loop_bgm_8bit28.mp3` | 魔王魂 (https://maou.audio/) | 8bit28「バーダックマン」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
 | `assets/audio/maou_loop_bgm_neorock82.mp3` | 魔王魂 (https://maou.audio/) | ネオロック82「君が見ていた世界の果て」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_bgm_piano04.mp3` | 魔王魂 (https://maou.audio/bgm_piano04/) | ピアノ04 | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_bgm_piano17.mp3` | 魔王魂 (https://maou.audio/bgm_piano17/) | ピアノ17 | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_loop_bgm_cyber41.mp3` | 魔王魂 (https://maou.audio/bgm_cyber41/) | サイバー41 loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_loop_bgm_cyber44.mp3` | 魔王魂 (https://maou.audio/bgm_cyber44/) | サイバー44 loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
+| `assets/audio/maou_loop_bgm_cyber45.mp3` | 魔王魂 (https://maou.audio/bgm_cyber45/) | サイバー45 loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
 
 魔王魂の利用規約に基づき、素材そのものの単体再配布は行っていません。
 

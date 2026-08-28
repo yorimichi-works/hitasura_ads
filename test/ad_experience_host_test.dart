@@ -145,6 +145,24 @@ void main() {
     }
     expect(find.byKey(const Key('experience-success')), findsOneWidget);
   });
+
+  testWidgets('No.016 cuts a whole fish and finishes as sashimi', (
+    tester,
+  ) async {
+    await _pumpExperience(tester, catalog['AD_016']);
+    expect(find.byKey(const Key('whole-fish')), findsOneWidget);
+    expect(find.byKey(const Key('sashimi-result')), findsNothing);
+
+    for (var step = 0; step < 3; step++) {
+      await tester.drag(
+        find.byKey(const Key('experience-product-object')),
+        const Offset(90, 0),
+      );
+      await tester.pump(const Duration(milliseconds: 220));
+    }
+    expect(find.byKey(const Key('sashimi-result')), findsOneWidget);
+    expect(find.byKey(const Key('experience-success')), findsOneWidget);
+  });
 }
 
 Future<void> _completeExperience(WidgetTester tester, AdDefinition ad) async {

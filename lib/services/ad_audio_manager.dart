@@ -3,19 +3,51 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 
 import '../models/ad_definition.dart';
+import '../models/ad_semantic_profile.dart';
 
 class AdAudioManager {
   static const gameBgmIds = <String>[
     'maou_loop_bgm_8bit27.mp3',
     'maou_loop_bgm_8bit28.mp3',
     'maou_loop_bgm_neorock82.mp3',
+    'maou_bgm_piano04.mp3',
+    'maou_bgm_piano17.mp3',
+    'maou_loop_bgm_cyber41.mp3',
+    'maou_loop_bgm_cyber44.mp3',
+    'maou_loop_bgm_cyber45.mp3',
   ];
 
   final AudioPlayer _sePlayer = AudioPlayer();
   final AudioPlayer _bgmPlayer = AudioPlayer();
 
-  static String gameBgmFor(AdDefinition ad) =>
-      ad.bgmId ?? gameBgmIds[(ad.number - 1) % gameBgmIds.length];
+  static AdBgmMood moodFor(AdDefinition ad) => ad.semantic.mood;
+
+  static String gameBgmFor(AdDefinition ad) {
+    if (ad.bgmId != null) return ad.bgmId!;
+    return switch (moodFor(ad)) {
+      AdBgmMood.energetic => switch (ad.number % 3) {
+        0 => 'maou_loop_bgm_8bit27.mp3',
+        1 => 'maou_loop_bgm_neorock82.mp3',
+        _ => 'maou_loop_bgm_8bit28.mp3',
+      },
+      AdBgmMood.retro =>
+        ad.number.isEven
+            ? 'maou_loop_bgm_8bit28.mp3'
+            : 'maou_loop_bgm_8bit27.mp3',
+      AdBgmMood.relaxed => 'maou_bgm_piano04.mp3',
+      AdBgmMood.serious => 'maou_bgm_piano17.mp3',
+      AdBgmMood.silly => 'maou_loop_bgm_cyber41.mp3',
+      AdBgmMood.puzzle => 'maou_loop_bgm_cyber44.mp3',
+      AdBgmMood.ominous => 'maou_loop_bgm_cyber45.mp3',
+      AdBgmMood.cyber => 'maou_loop_bgm_cyber44.mp3',
+    };
+  }
+
+  static double gameBgmVolumeFor(AdDefinition ad) => switch (moodFor(ad)) {
+    AdBgmMood.relaxed => .18,
+    AdBgmMood.serious || AdBgmMood.ominous => .20,
+    _ => .24,
+  };
 
   Future<void> playGameBgm(AdDefinition ad, {bool enabled = true}) async {
     if (!enabled) return;
@@ -23,7 +55,7 @@ class AdAudioManager {
       await _bgmPlayer.setReleaseMode(ReleaseMode.loop);
       await _bgmPlayer.play(
         AssetSource('audio/${gameBgmFor(ad)}'),
-        volume: .24,
+        volume: gameBgmVolumeFor(ad),
       );
     });
   }

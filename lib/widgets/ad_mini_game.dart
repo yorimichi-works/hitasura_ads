@@ -140,7 +140,16 @@ class _AdMiniGameState extends State<AdMiniGame>
           textAlign: TextAlign.center,
           style: const TextStyle(fontWeight: FontWeight.w900),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 2),
+        Text(
+          '${widget.ad.semantic.subject}  •  ${widget.ad.semantic.object}  •  ${widget.ad.semantic.setting}',
+          key: const Key('mini-game-semantic-context'),
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 6),
         Expanded(
           child: AdGameStage(
             ad: widget.ad,
@@ -536,7 +545,10 @@ class _AdMiniGameState extends State<AdMiniGame>
               path: game.assetPath,
               adNumber: widget.ad.number,
               fallback: widget.ad.number == 58 ? Icons.local_drink : Icons.pets,
-              label: '守る',
+              label: switch (widget.ad.number) {
+                35 || 40 => '王様',
+                _ => '守る',
+              },
             ),
           ),
           Align(
@@ -545,7 +557,12 @@ class _AdMiniGameState extends State<AdMiniGame>
               path: visualAssets.secondaryAsset,
               adNumber: widget.ad.number,
               fallback: Icons.flag,
-              label: widget.ad.number == 59 ? 'ハチ' : 'GOAL',
+              label: switch (widget.ad.number) {
+                35 => '岸',
+                40 => '謎の魚',
+                59 => 'ハチ',
+                _ => 'GOAL',
+              },
             ),
           ),
         ],
@@ -697,8 +714,16 @@ class _AdMiniGameState extends State<AdMiniGame>
       return Icons.directions_car;
     }
     return switch (widget.ad.category) {
+      '数字ゲート' => Icons.directions_run,
+      'パズル' => Icons.extension,
       '変身' => Icons.face_retouching_natural,
-      '成長・マージ' => Icons.merge,
+      '成長・マージ' => switch (widget.ad.number) {
+        78 => Icons.apple,
+        79 => Icons.kitchen,
+        83 => Icons.pets,
+        84 => Icons.egg,
+        _ => Icons.merge,
+      },
       '意味不明' => Icons.ads_click,
       _ => Icons.extension,
     };

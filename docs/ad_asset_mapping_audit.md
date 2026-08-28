@@ -43,52 +43,52 @@
 |037|王様、また燃える|timing|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet2_20.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |038|王様救出率2％|countdownStop|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |039|王様はそこじゃない|choice|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|040|王様と謎の魚|drawPath|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|040|王様と謎の魚|drawPath|王様（主人公）・ピン・宝・危険物|sheet1_02.png + whole_fish.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |041|王様、大富豪になる|numberGate|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |042|王様、地下100階へ|dragSort|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |043|王様と絶対抜くなピン|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_03.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |044|王様の休日|reveal|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |045|王様FINALっぽい何か|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|046|＋10か×2か、それが問題だ|numberGate|成長する人物・数値/グラフ|sheet2_01.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
+|046|＋10か×2か、それが問題だ|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
 |047|棒人間、増えすぎる|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_10.png|反映可能|差替え推奨|なし|反映済み|
-|048|1人から999999人へ|numberGate|成長する人物・数値/グラフ|sheet2_05.png + sheet2_16.png|sheet4_03.png|反映可能|差替え推奨|なし|反映済み|
-|049|×100を選んだだけなのに|numberGate|成長する人物・数値/グラフ|sheet2_16.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
-|050|＋5の方が強かった|numberGate|成長する人物・数値/グラフ|sheet1_09.png + sheet2_16.png|sheet5_10.png|反映可能|差替え推奨|なし|反映済み|
-|051|レベル1から宇宙王へ|numberGate|成長する人物・数値/グラフ|sheet2_01.png + sheet2_16.png|sheet4_03.png|反映可能|差替え推奨|なし|反映済み|
+|048|1人から999999人へ|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet4_03.png|反映可能|差替え推奨|なし|反映済み|
+|049|×100を選んだだけなのに|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
+|050|＋5の方が強かった|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_10.png|反映可能|差替え推奨|なし|反映済み|
+|051|レベル1から宇宙王へ|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet4_03.png|反映可能|差替え推奨|なし|反映済み|
 |052|LV.9999なのに弱い|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
-|053|敵が急に巨大化しました|numberGate|成長する人物・数値/グラフ|sheet2_05.png + sheet2_16.png|sheet5_10.png|反映可能|差替え推奨|なし|反映済み|
-|054|剣を拾ったら社長になった|numberGate|成長する人物・数値/グラフ|sheet2_16.png + sheet2_16.png|sheet4_03.png|反映可能|差替え推奨|なし|反映済み|
-|055|棒人間帝国の終焉|numberGate|成長する人物・数値/グラフ|sheet1_09.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
+|053|敵が急に巨大化しました|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_10.png|反映可能|差替え推奨|なし|反映済み|
+|054|剣を拾ったら社長になった|numberGate|成長する人物・数値/グラフ|sheet2_05.png + sheet2_16.png|sheet4_03.png|反映可能|差替え推奨|なし|反映済み|
+|055|棒人間帝国の終焉|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
 |056|ネジを外すだけだったのに|dragSort|ネジを外すだけだったのにのゲーム対象|sheet1_03.png|sheet5_05.png|反映可能|差替え推奨|なし|反映済み|
 |057|そのネジ、そこじゃない|dragSort|そのネジ、そこじゃないのゲーム対象|sheet1_03.png|sheet4_08.png|反映可能|差替え推奨|なし|反映済み|
 |058|水をコップへ導け！|drawPath|水をコップへ導け！のゲーム対象|なし|sheet4_06.png|適切な素材なし|差替え推奨|透明なコップと水流|反映済み|
 |059|蜂から犬っぽい何かを守れ|drawPath|蜂から犬っぽい何かを守れのゲーム対象|rescue_dog.png + bee_swarm.png|sunny_grassland.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |060|線を引けば全部解決|drawPath|線を引けば全部解決のゲーム対象|sheet1_14.png|sheet4_08.png|反映可能|差替え推奨|なし|反映済み|
-|061|駐車場から出たいだけ|dragSort|駐車場から出たいだけのゲーム対象|なし|parking_lot.jpg|適切な素材なし|専用背景を反映済み|正面または俯瞰の車|反映済み|
-|062|赤い車だけ特別扱い|dragSort|赤い車だけ特別扱いのゲーム対象|なし|parking_lot.jpg|適切な素材なし|専用背景を反映済み|正面または俯瞰の車|反映済み|
+|061|駐車場から出たいだけ|dragSort|駐車場から出たいだけのゲーム対象|red_car.png + red_car.png|parking_lot.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|062|赤い車だけ特別扱い|dragSort|赤い車だけ特別扱いのゲーム対象|red_car.png + red_car.png|parking_lot.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |063|色を分けろ！何のために？|dragSort|色を分けろ！何のために？のゲーム対象|sheet2_18.png|sheet4_08.png|反映可能|差替え推奨|なし|反映済み|
 |064|ボールを正しい穴へ|dragSort|ボールを正しい穴へのゲーム対象|sheet2_14.png|sheet4_06.png|反映可能|差替え推奨|なし|反映済み|
 |065|3秒で解けるIQ999パズル|dragSort|3秒で解けるIQ999パズルのゲーム対象|sheet1_14.png|sheet5_05.png|反映可能|差替え推奨|なし|反映済み|
-|066|汚れすぎた靴|choice|Before/After人物・衣服/清掃表現|sheet2_04.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|067|この部屋をなんとかして！|choice|Before/After人物・衣服/清掃表現|sheet2_02.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|068|掃除したら豪邸になった|choice|Before/After人物・衣服/清掃表現|sheet2_12.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|069|貧乏から億万長者まで15秒|choice|Before/After人物・衣服/清掃表現|sheet2_18.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|070|所持金3円から始めます|choice|Before/After人物・衣服/清掃表現|sheet2_19.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|071|選ぶだけで人生逆転!?|choice|Before/After人物・衣服/清掃表現|sheet2_04.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|072|服を着替えたら王族になった|choice|Before/After人物・衣服/清掃表現|sheet2_02.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|073|ボロ家から宮殿へ|choice|Before/After人物・衣服/清掃表現|sheet2_12.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|074|掃除力9999|choice|Before/After人物・衣服/清掃表現|sheet2_18.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|075|AFTERが別人|choice|Before/After人物・衣服/清掃表現|sheet2_19.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|076|小魚から海の王へ|timing|合成対象・成長エフェクト|sheet2_14.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
-|077|魚が魚を超えた日|timing|合成対象・成長エフェクト|sheet2_15.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
-|078|リンゴ＋リンゴ＝なぜかメロン|dragSort|合成対象・成長エフェクト|sheet2_09.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
-|079|メロン＋メロン＝冷蔵庫|dragSort|合成対象・成長エフェクト|sheet2_18.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
-|080|何でも合体させればいい|dragSort|合成対象・成長エフェクト|sheet2_14.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
-|081|LV.1スライムっぽくない何か|tapChallenge|合成対象・成長エフェクト|sheet2_15.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
-|082|育てたら巨大になりすぎた|tapChallenge|合成対象・成長エフェクト|sheet2_09.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
-|083|ペット育成 8秒目|tapChallenge|合成対象・成長エフェクト|sheet2_18.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
-|084|卵から社長が生まれた|packOpen|合成対象・成長エフェクト|sheet2_14.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
-|085|進化先：広告|tapChallenge|合成対象・成長エフェクト|sheet2_15.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
+|066|汚れすぎた靴|choice|Before/After人物・衣服/清掃表現|premium_shoe.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|067|この部屋をなんとかして！|choice|Before/After人物・衣服/清掃表現|なし|renovated_room.jpg|適切な素材なし|専用背景を反映済み|この部屋をなんとかして！に完全一致する専用商品・人物素材|反映済み|
+|068|掃除したら豪邸になった|choice|Before/After人物・衣服/清掃表現|なし|dirty_room.jpg|適切な素材なし|専用背景を反映済み|掃除したら豪邸になったに完全一致する専用商品・人物素材|反映済み|
+|069|貧乏から億万長者まで15秒|choice|Before/After人物・衣服/清掃表現|sheet2_01.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|070|所持金3円から始めます|choice|Before/After人物・衣服/清掃表現|sheet2_09.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|071|選ぶだけで人生逆転!?|choice|Before/After人物・衣服/清掃表現|sheet2_03.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|072|服を着替えたら王族になった|choice|Before/After人物・衣服/清掃表現|sheet1_02.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|073|ボロ家から宮殿へ|choice|Before/After人物・衣服/清掃表現|なし|renovated_room.jpg|適切な素材なし|専用背景を反映済み|ボロ家から宮殿へに完全一致する専用商品・人物素材|反映済み|
+|074|掃除力9999|choice|Before/After人物・衣服/清掃表現|なし|dirty_room.jpg|適切な素材なし|専用背景を反映済み|掃除力9999に完全一致する専用商品・人物素材|反映済み|
+|075|AFTERが別人|choice|Before/After人物・衣服/清掃表現|sheet2_02.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|076|小魚から海の王へ|timing|合成対象・成長エフェクト|whole_fish.png|sheet4_12.png|反映可能|差替え推奨|なし|反映済み|
+|077|魚が魚を超えた日|timing|合成対象・成長エフェクト|whole_fish.png|sheet4_12.png|反映可能|差替え推奨|なし|反映済み|
+|078|リンゴ＋リンゴ＝なぜかメロン|dragSort|合成対象・成長エフェクト|red_apple.png + green_melon.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
+|079|メロン＋メロン＝冷蔵庫|dragSort|合成対象・成長エフェクト|green_melon.png + cold_fridge.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
+|080|何でも合体させればいい|dragSort|合成対象・成長エフェクト|なし|sheet5_06.png|適切な素材なし|差替え推奨|何でも合体させればいいに完全一致する専用商品・人物素材|反映済み|
+|081|LV.1スライムっぽくない何か|tapChallenge|合成対象・成長エフェクト|なし|sheet4_10.png|適切な素材なし|差替え推奨|LV.1スライムっぽくない何かに完全一致する専用商品・人物素材|反映済み|
+|082|育てたら巨大になりすぎた|tapChallenge|合成対象・成長エフェクト|なし|sheet5_03.png|適切な素材なし|差替え推奨|育てたら巨大になりすぎたに完全一致する専用商品・人物素材|反映済み|
+|083|ペット育成 8秒目|tapChallenge|合成対象・成長エフェクト|rescue_dog.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
+|084|卵から社長が生まれた|packOpen|合成対象・成長エフェクト|hatching_egg.png + sheet2_05.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
+|085|進化先：広告|tapChallenge|合成対象・成長エフェクト|なし|sheet5_03.png|適切な素材なし|差替え推奨|進化先：広告に完全一致する専用商品・人物素材|反映済み|
 |086|777っぽいもの|timing|スロット/ガチャ・報酬物体|sheet1_18.png|sheet4_07.png|反映可能|差替え推奨|なし|反映済み|
 |087|超激熱っぽい！|timing|スロット/ガチャ・報酬物体|sheet1_18.png|sheet4_02.png|反映可能|差替え推奨|なし|反映済み|
 |088|大当たり!? たぶん！|timing|スロット/ガチャ・報酬物体|sheet1_18.png|sheet5_08.png|反映可能|差替え推奨|なし|反映済み|
@@ -161,38 +161,41 @@
 - `sheet1_12.png`: No.004, No.123, No.128
 - `sheet1_16.png`: No.005, No.006, No.143
 - `sheet1_14.png`: No.007, No.060, No.065, No.132, No.141
-- `sheet1_09.png`: No.008, No.050, No.055
-- `sheet2_19.png`: No.009, No.070, No.075, No.092, No.134, No.141, No.142, No.143, No.144, No.145, No.146, No.147, No.148, No.149, No.150, No.151
+- `sheet1_09.png`: No.008
+- `sheet2_19.png`: No.009, No.092, No.134, No.141, No.142, No.143, No.144, No.145, No.146, No.147, No.148, No.149, No.150, No.151
 - `water_glass.png`: No.011
 - `product_chair.png`: No.012
 - `locked_umbrella.png`: No.013
 - `empty_wallet.png`: No.014
 - `sleep_pillow.png`: No.015
 - `premium_knife.png`: No.016
-- `cold_fridge.png`: No.017
-- `premium_shoe.png`: No.018
+- `cold_fridge.png`: No.017, No.079
+- `premium_shoe.png`: No.018, No.066
 - `pro_bag.png`: No.019
 - `water_2026.png`: No.020
 - `sheet1_10.png`: No.021, No.025, No.029, No.150, No.151
-- `sheet2_16.png`: No.022, No.026, No.030, No.046, No.047, No.048, No.049, No.049, No.050, No.051, No.052, No.053, No.054, No.054, No.055
-- `sheet2_05.png`: No.023, No.027, No.048, No.053, No.104, No.108, No.114, No.118, No.146
+- `sheet2_16.png`: No.022, No.026, No.030, No.046, No.047, No.048, No.049, No.050, No.051, No.052, No.053, No.054, No.055
+- `sheet2_05.png`: No.023, No.027, No.054, No.084, No.104, No.108, No.114, No.118, No.146
 - `sheet1_17.png`: No.024, No.028, No.113, No.117, No.122, No.127, No.136
-- `sheet1_02.png`: No.031, No.032, No.033, No.034, No.035, No.036, No.037, No.038, No.039, No.040, No.041, No.042, No.043, No.044, No.045, No.142, No.147
-- `sheet1_01.png`: No.031, No.034, No.035, No.036, No.038, No.039, No.040, No.041, No.042, No.044, No.045
+- `sheet1_02.png`: No.031, No.032, No.033, No.034, No.035, No.036, No.037, No.038, No.039, No.040, No.041, No.042, No.043, No.044, No.045, No.072, No.142, No.147
+- `sheet1_01.png`: No.031, No.034, No.035, No.036, No.038, No.039, No.041, No.042, No.044, No.045
 - `sheet2_20.png`: No.032, No.037, No.135
 - `sheet1_03.png`: No.033, No.043, No.056, No.057
-- `sheet2_01.png`: No.046, No.051
-- `sheet2_03.png`: No.047, No.052
-- `rescue_dog.png`: No.059
+- `whole_fish.png`: No.040, No.076, No.077
+- `sheet2_03.png`: No.046, No.047, No.048, No.049, No.050, No.051, No.052, No.053, No.055, No.071
+- `rescue_dog.png`: No.059, No.083
 - `bee_swarm.png`: No.059
-- `sheet2_18.png`: No.063, No.069, No.074, No.079, No.083
-- `sheet2_14.png`: No.064, No.076, No.080, No.084, No.093, No.097
-- `sheet2_04.png`: No.066, No.071
-- `sheet2_02.png`: No.067, No.072, No.103, No.107, No.112, No.116, No.120
-- `sheet2_12.png`: No.068, No.073
-- `sheet2_15.png`: No.077, No.081, No.085, No.094, No.098, No.148
-- `sheet2_09.png`: No.078, No.082
+- `red_car.png`: No.061, No.061, No.062, No.062
+- `sheet2_18.png`: No.063
+- `sheet2_14.png`: No.064, No.093, No.097
+- `sheet2_01.png`: No.069
+- `sheet2_09.png`: No.070
+- `sheet2_02.png`: No.075, No.103, No.107, No.112, No.116, No.120
+- `red_apple.png`: No.078
+- `green_melon.png`: No.078, No.079
+- `hatching_egg.png`: No.084
 - `sheet1_18.png`: No.086, No.087, No.088, No.089, No.090, No.091
+- `sheet2_15.png`: No.094, No.098, No.148
 - `sheet2_11.png`: No.095, No.099
 - `sheet1_07.png`: No.096, No.100, No.145
 - `sheet2_07.png`: No.101, No.105, No.109
@@ -216,7 +219,7 @@
 - `sheet5_08.png`: No.023, No.026, No.029, No.088, No.091
 - `palace_treasure_hall.jpg`: No.031, No.032, No.033, No.034, No.035, No.036, No.037, No.038, No.039, No.040
 - `stone_dungeon.jpg`: No.041, No.042, No.043, No.044, No.045
-- `sheet5_06.png`: No.046, No.049, No.052, No.055, No.077, No.080, No.083
+- `sheet5_06.png`: No.046, No.049, No.052, No.055, No.080, No.083
 - `sheet5_10.png`: No.047, No.050, No.053
 - `sheet4_03.png`: No.048, No.051, No.054
 - `sheet5_05.png`: No.056, No.065
@@ -226,8 +229,9 @@
 - `parking_lot.jpg`: No.061, No.062
 - `dirty_room.jpg`: No.066, No.068, No.070, No.072, No.074
 - `renovated_room.jpg`: No.067, No.069, No.071, No.073, No.075
-- `sheet5_03.png`: No.076, No.079, No.082, No.085
+- `sheet4_12.png`: No.076, No.077
 - `sheet4_10.png`: No.078, No.081, No.084, No.131, No.134, No.137, No.140
+- `sheet5_03.png`: No.079, No.082, No.085
 - `delivery_warehouse.jpg`: No.093, No.094, No.095, No.096, No.097, No.098, No.099, No.100, No.123
 - `sheet5_02.png`: No.103, No.106, No.109
 - `sheet4_17.png`: No.111, No.114, No.117, No.120
@@ -245,15 +249,15 @@
 
 |Asset|種別|実際に使用した広告番号|
 |---|---|---|
-|sheet1_01|adPart|No.031, No.034, No.035, No.036, No.038, No.039, No.040, No.041, No.042, No.044, No.045|
-|sheet1_02|adPart|No.031, No.032, No.033, No.034, No.035, No.036, No.037, No.038, No.039, No.040, No.041, No.042, No.043, No.044, No.045, No.142, No.147|
+|sheet1_01|adPart|No.031, No.034, No.035, No.036, No.038, No.039, No.041, No.042, No.044, No.045|
+|sheet1_02|adPart|No.031, No.032, No.033, No.034, No.035, No.036, No.037, No.038, No.039, No.040, No.041, No.042, No.043, No.044, No.045, No.072, No.142, No.147|
 |sheet1_03|adPart|No.033, No.043, No.056, No.057|
 |sheet1_04|adPart|なし（完成広告は別導線用）|
 |sheet1_05|adPart|なし（完成広告は別導線用）|
 |sheet1_06|adPart|なし（完成広告は別導線用）|
 |sheet1_07|adPart|No.096, No.100, No.145|
 |sheet1_08|adPart|なし（完成広告は別導線用）|
-|sheet1_09|adPart|No.008, No.050, No.055|
+|sheet1_09|adPart|No.008|
 |sheet1_10|adPart|No.021, No.025, No.029, No.150, No.151|
 |sheet1_11|adPart|No.101, No.102, No.103, No.104, No.105, No.106, No.107, No.108, No.109, No.110|
 |sheet1_12|adPart|No.004, No.123, No.128|
@@ -265,25 +269,25 @@
 |sheet1_18|adPart|No.086, No.087, No.088, No.089, No.090, No.091|
 |sheet1_19|adPart|No.121, No.126|
 |sheet1_20|adPart|なし（完成広告は別導線用）|
-|sheet2_01|adPart|No.046, No.051|
-|sheet2_02|adPart|No.067, No.072, No.103, No.107, No.112, No.116, No.120|
-|sheet2_03|adPart|No.047, No.052|
-|sheet2_04|adPart|No.066, No.071|
-|sheet2_05|adPart|No.023, No.027, No.048, No.053, No.104, No.108, No.114, No.118, No.146|
+|sheet2_01|adPart|No.069|
+|sheet2_02|adPart|No.075, No.103, No.107, No.112, No.116, No.120|
+|sheet2_03|adPart|No.046, No.047, No.048, No.049, No.050, No.051, No.052, No.053, No.055, No.071|
+|sheet2_04|adPart|なし（完成広告は別導線用）|
+|sheet2_05|adPart|No.023, No.027, No.054, No.084, No.104, No.108, No.114, No.118, No.146|
 |sheet2_06|adPart|No.102, No.106, No.110, No.111, No.115, No.119|
 |sheet2_07|adPart|No.101, No.105, No.109|
 |sheet2_08|adPart|なし（完成広告は別導線用）|
-|sheet2_09|adPart|No.078, No.082|
+|sheet2_09|adPart|No.070|
 |sheet2_10|adPart|なし（完成広告は別導線用）|
 |sheet2_11|adPart|No.095, No.099|
-|sheet2_12|adPart|No.068, No.073|
+|sheet2_12|adPart|なし（完成広告は別導線用）|
 |sheet2_13|adPart|なし（完成広告は別導線用）|
-|sheet2_14|adPart|No.064, No.076, No.080, No.084, No.093, No.097|
-|sheet2_15|adPart|No.077, No.081, No.085, No.094, No.098, No.148|
+|sheet2_14|adPart|No.064, No.093, No.097|
+|sheet2_15|adPart|No.094, No.098, No.148|
 |sheet2_16|adPart|No.022, No.026, No.030, No.046, No.047, No.048, No.049, No.050, No.051, No.052, No.053, No.054, No.055|
 |sheet2_17|adPart|No.144|
-|sheet2_18|adPart|No.063, No.069, No.074, No.079, No.083|
-|sheet2_19|adPart|No.009, No.070, No.075, No.092, No.134, No.141, No.142, No.143, No.144, No.145, No.146, No.147, No.148, No.149, No.150, No.151|
+|sheet2_18|adPart|No.063|
+|sheet2_19|adPart|No.009, No.092, No.134, No.141, No.142, No.143, No.144, No.145, No.146, No.147, No.148, No.149, No.150, No.151|
 |sheet2_20|adPart|No.032, No.037, No.135|
 |sheet3_01|completeAd|なし（完成広告は別導線用）|
 |sheet3_02|completeAd|なし（完成広告は別導線用）|
@@ -316,7 +320,7 @@
 |sheet4_09|background|No.141, No.144, No.147, No.150|
 |sheet4_10|background|No.078, No.081, No.084, No.131, No.134, No.137, No.140|
 |sheet4_11|background|なし（完成広告は別導線用）|
-|sheet4_12|background|なし（完成広告は別導線用）|
+|sheet4_12|background|No.076, No.077|
 |sheet4_13|background|なし（完成広告は別導線用）|
 |sheet4_14|background|No.126, No.129|
 |sheet4_15|background|なし（完成広告は別導線用）|
@@ -327,10 +331,10 @@
 |sheet4_20|background|なし（完成広告は別導線用）|
 |sheet5_01|background|No.122, No.125, No.128|
 |sheet5_02|background|No.103, No.106, No.109|
-|sheet5_03|background|No.076, No.079, No.082, No.085|
+|sheet5_03|background|No.079, No.082, No.085|
 |sheet5_04|background|No.021, No.024, No.027, No.030, No.142, No.145, No.148|
 |sheet5_05|background|No.056, No.065|
-|sheet5_06|background|No.046, No.049, No.052, No.055, No.077, No.080, No.083|
+|sheet5_06|background|No.046, No.049, No.052, No.055, No.080, No.083|
 |sheet5_07|background|なし（完成広告は別導線用）|
 |sheet5_08|background|No.023, No.026, No.029, No.088, No.091|
 |sheet5_09|background|No.121, No.124, No.127, No.130|
@@ -352,7 +356,14 @@
 |---|---|---|---|
 |高|レトロWeb用カーソル・バナー部品|No.001, No.002, No.003, No.010|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
 |中|透明なコップと水流|No.058|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
-|中|正面または俯瞰の車|No.061, No.062|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|この部屋をなんとかして！に完全一致する専用商品・人物素材|No.067|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|掃除したら豪邸になったに完全一致する専用商品・人物素材|No.068|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|ボロ家から宮殿へに完全一致する専用商品・人物素材|No.073|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|掃除力9999に完全一致する専用商品・人物素材|No.074|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|何でも合体させればいいに完全一致する専用商品・人物素材|No.080|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|LV.1スライムっぽくない何かに完全一致する専用商品・人物素材|No.081|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|育てたら巨大になりすぎたに完全一致する専用商品・人物素材|No.082|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
+|中|進化先：広告に完全一致する専用商品・人物素材|No.085|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
 |高|広告メタ表現用の汎用バナー部品|No.131, No.133, No.137, No.138, No.139, No.140, No.149|正面または3/4視点、ゲーム広告風、単体、白または透過背景|
 
 ## 今後欲しい背景
@@ -368,8 +379,8 @@
 
 ## 集計
 
-- 前景画像反映: 137 / 151
+- 前景画像反映: 131 / 151
 - 背景画像反映: 151 / 151
-- 前景画像なし: 14 / 151
+- 前景画像なし: 20 / 151
 - 不良画像・背景: 0
 - 画像変更による広告ID・レアリティ・解放条件の変更: 0

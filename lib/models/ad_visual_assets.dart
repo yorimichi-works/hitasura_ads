@@ -71,27 +71,40 @@ class AdVisualAssets {
       return choices[(ad.number - 21) % choices.length];
     }
     if (ad.category == '数字ゲート') {
-      const choices = [1, 3, 5, 16, 9];
-      final item = choices[(ad.number - 46) % choices.length];
-      return item == 9 ? _part(1, 9) : _part(2, item);
+      return _part(2, ad.number == 54 ? 5 : 3);
     }
     if (ad.category == 'パズル') {
       return switch (ad.number) {
         56 || 57 => _part(1, 3),
         59 => '$_generated/characters/rescue_dog.png',
         60 || 65 => _part(1, 14),
+        61 || 62 => '$_generated/game/red_car.png',
         63 => _part(2, 18),
         64 => _part(2, 14),
         _ => null,
       };
     }
     if (ad.category == '変身') {
-      const choices = [4, 2, 12, 18, 19];
-      return _part(2, choices[(ad.number - 66) % choices.length]);
+      return switch (ad.number) {
+        66 => '$_generated/products/premium_shoe.png',
+        67 || 68 || 73 || 74 => null,
+        69 => _part(2, 1),
+        70 => _part(2, 9),
+        71 => _part(2, 3),
+        72 => _part(1, 2),
+        _ => _part(2, 2),
+      };
     }
     if (ad.category == '成長・マージ') {
-      const choices = [14, 15, 9, 18];
-      return _part(2, choices[(ad.number - 76) % choices.length]);
+      return switch (ad.number) {
+        76 || 77 => '$_generated/game/whole_fish.png',
+        78 => '$_generated/game/red_apple.png',
+        79 => '$_generated/game/green_melon.png',
+        80 || 81 || 82 || 85 => null,
+        83 => '$_generated/characters/rescue_dog.png',
+        84 => '$_generated/game/hatching_egg.png',
+        _ => null,
+      };
     }
     if (ad.category == '抽選') {
       return ad.number <= 91 ? _part(1, 18) : _part(2, 19);
@@ -142,6 +155,13 @@ class AdVisualAssets {
 
   static String? _secondaryFor(AdDefinition ad) {
     if (ad.number == 59) return '$_generated/game/bee_swarm.png';
+    if (ad.number == 40) return '$_generated/game/whole_fish.png';
+    if (ad.number == 61 || ad.number == 62) {
+      return '$_generated/game/red_car.png';
+    }
+    if (ad.number == 78) return '$_generated/game/green_melon.png';
+    if (ad.number == 79) return '$_generated/products/cold_fridge.png';
+    if (ad.number == 84) return _part(2, 5);
     if (ad.category == '王様救出') {
       if (ad.name.contains('ピン')) return _part(1, 3);
       if (ad.name.contains('燃') || ad.name.contains('炎')) {
@@ -162,6 +182,7 @@ class AdVisualAssets {
     if (ad.number == 61 || ad.number == 62) {
       return '$_generated/backgrounds/parking_lot.jpg';
     }
+    if (ad.number == 76 || ad.number == 77) return _background(4, 12);
     if (ad.number >= 31 && ad.number <= 45) {
       return ad.number >= 41
           ? '$_generated/backgrounds/stone_dungeon.jpg'

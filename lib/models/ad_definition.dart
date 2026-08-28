@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'ad_semantic_profile.dart';
+
 enum AdDisplayType {
   retro,
   sale,
@@ -159,6 +161,7 @@ class AdDefinition {
   final Map<String, String> experienceData;
 
   bool get isSecret => number == 151;
+  AdSemanticProfile get semantic => AdSemanticProfile.forNumber(number);
   bool get isRare =>
       rarity == 'RARE' || rarity == 'SUPER RARE' || rarity == 'SECRET';
   String get displayNumber => 'No.${number.toString().padLeft(3, '0')}';

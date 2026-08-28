@@ -170,6 +170,33 @@ void main() {
     expect(find.byKey(const Key('mini-game-success')), findsOneWidget);
   });
 
+  testWidgets('No.040 puts the king and mystery fish in the same game', (
+    tester,
+  ) async {
+    await _pumpGame(tester, catalog['AD_040']);
+    expect(find.text('王様'), findsOneWidget);
+    expect(find.text('謎の魚'), findsOneWidget);
+    for (final filename in ['sheet1_02.png', 'whole_fish.png']) {
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Image &&
+              widget.image is AssetImage &&
+              (widget.image as AssetImage).assetName.endsWith(filename),
+        ),
+        findsOneWidget,
+      );
+    }
+
+    final gesture = await tester.startGesture(
+      tester.getCenter(find.text('王様')),
+    );
+    await gesture.moveTo(tester.getCenter(find.text('謎の魚')));
+    await gesture.up();
+    await tester.pump();
+    expect(find.byKey(const Key('mini-game-success')), findsOneWidget);
+  });
+
   testWidgets('game stage integrates semantic background and target images', (
     tester,
   ) async {
@@ -200,7 +227,15 @@ void main() {
     }
 
     await _pumpGame(tester, catalog['AD_061']);
-    expect(find.byIcon(Icons.directions_car), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Image &&
+            widget.image is AssetImage &&
+            (widget.image as AssetImage).assetName.endsWith('red_car.png'),
+      ),
+      findsWidgets,
+    );
   });
 
   testWidgets('gate, drag, pack, reveal, and finale respond to direct input', (
@@ -318,12 +353,17 @@ Future<void> _clearAssignedGame(
         await tester.pump();
       }
     case AdMiniGameType.drawPath:
+      final startLabel = ad.number == 35 || ad.number == 40 ? '王様' : '守る';
+      final endLabel = switch (ad.number) {
+        35 => '岸',
+        40 => '謎の魚',
+        59 => 'ハチ',
+        _ => 'GOAL',
+      };
       final gesture = await tester.startGesture(
-        tester.getCenter(find.text('守る')),
+        tester.getCenter(find.text(startLabel)),
       );
-      await gesture.moveTo(
-        tester.getCenter(find.text(ad.number == 59 ? 'ハチ' : 'GOAL')),
-      );
+      await gesture.moveTo(tester.getCenter(find.text(endLabel)));
       await gesture.up();
       await tester.pump();
     case AdMiniGameType.dragSort:

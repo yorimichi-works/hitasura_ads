@@ -145,7 +145,15 @@ class _SemanticFallback extends StatelessWidget {
     final icon = switch (ad.number) {
       58 => Icons.local_drink,
       61 || 62 => Icons.directions_car,
+      76 || 77 => Icons.set_meal,
+      78 => Icons.apple,
+      79 => Icons.kitchen,
+      83 => Icons.pets,
+      84 => Icons.egg,
       _ => switch (ad.category) {
+        '数字ゲート' => Icons.directions_run,
+        '変身' => Icons.auto_fix_high,
+        '成長・マージ' => Icons.merge,
         '古のWeb' => Icons.ads_click,
         '意味不明' => Icons.campaign,
         _ => Icons.sports_esports,

@@ -144,16 +144,51 @@ void main() {
     expect(File('assets/audio/discovery_se.wav').existsSync(), isTrue);
   });
 
-  test('広告ゲームBGMは3曲を循環し待機BGMを持たない', () {
+  test('広告ゲームBGMは8曲を内容別に選び待機BGMを持たない', () {
+    expect(AdAudioManager.gameBgmIds, hasLength(8));
     for (final bgmId in AdAudioManager.gameBgmIds) {
       expect(File('assets/audio/$bgmId').existsSync(), isTrue, reason: bgmId);
     }
     expect(File('assets/audio/bgm_ambient.mp3').existsSync(), isFalse);
     expect(
-      catalog.all.take(3).map(AdAudioManager.gameBgmFor),
-      AdAudioManager.gameBgmIds,
+      AdAudioManager.gameBgmFor(catalog['AD_015']),
+      'maou_bgm_piano04.mp3',
+    );
+    expect(
+      AdAudioManager.gameBgmFor(catalog['AD_021']),
+      'maou_bgm_piano17.mp3',
+    );
+    expect(
+      AdAudioManager.gameBgmFor(catalog['AD_131']),
+      'maou_loop_bgm_cyber41.mp3',
+    );
+    expect(
+      AdAudioManager.gameBgmFor(catalog['AD_056']),
+      'maou_loop_bgm_cyber44.mp3',
+    );
+    expect(
+      AdAudioManager.gameBgmFor(catalog['AD_036']),
+      'maou_loop_bgm_cyber45.mp3',
     );
     expect(AdAudioManager.gameBgmFor(catalog['AD_151']), 'secret_bgm.wav');
+  });
+
+  test('No.1〜151は個別の意味コンテキストとBGMムードを持つ', () {
+    final semanticRows = <String>{};
+    final moods = <Object>{};
+    for (final ad in catalog.all) {
+      final semantic = ad.semantic;
+      expect(semantic.subject, isNotEmpty, reason: ad.id);
+      expect(semantic.object, isNotEmpty, reason: ad.id);
+      expect(semantic.action, isNotEmpty, reason: ad.id);
+      expect(semantic.setting, isNotEmpty, reason: ad.id);
+      semanticRows.add(
+        '${semantic.subject}|${semantic.object}|${semantic.action}|${semantic.setting}',
+      );
+      moods.add(semantic.mood);
+    }
+    expect(semanticRows, hasLength(151));
+    expect(moods, hasLength(8));
   });
 
   test('日本語フォントをアプリに同梱している', () {
