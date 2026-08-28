@@ -10,12 +10,33 @@ void main() {
     ) as Map<String, dynamic>;
     final hosting = config['hosting'] as Map<String, dynamic>;
     final rewrites = hosting['rewrites'] as List<dynamic>;
+    final headers = (hosting['headers'] as List<dynamic>)
+        .cast<Map<String, dynamic>>();
 
     expect(hosting['public'], 'build/web');
     expect(rewrites, hasLength(1));
     final spaRewrite = rewrites.single as Map<String, dynamic>;
     expect(spaRewrite['source'], '**');
     expect(spaRewrite['destination'], '/index.html');
+    final defaultHeaders = headers.singleWhere(
+      (entry) => entry['source'] == '**',
+    );
+    final defaultValues = (defaultHeaders['headers'] as List<dynamic>)
+        .cast<Map<String, dynamic>>()
+        .map((entry) => entry['value']);
+    expect(defaultValues, contains('no-cache'));
+    for (final source in [
+      '/index.html',
+      '/flutter_service_worker.js',
+      '/flutter_bootstrap.js',
+      '/version.json',
+    ]) {
+      final rule = headers.singleWhere((entry) => entry['source'] == source);
+      final values = (rule['headers'] as List<dynamic>)
+          .cast<Map<String, dynamic>>()
+          .map((entry) => entry['value']);
+      expect(values, contains('no-cache, no-store, must-revalidate'));
+    }
   });
 
   test('production web metadata uses the canonical custom domain', () {
