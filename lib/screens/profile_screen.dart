@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/app_models.dart';
 import '../services/google_auth_service.dart';
 import '../state/app_controller.dart';
+import '../widgets/google_sign_in_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.controller});
@@ -66,7 +67,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _region.dispose();
     _language.dispose();
     _googleAuth.removeListener(_onGoogleAuthChanged);
-    _googleAuth.dispose();
     super.dispose();
   }
 
@@ -88,6 +88,106 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() => _saving = false);
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('広告探索プロフィールを保存しました')));
+  }
+
+  Widget _buildGoogleAccountArea() {
+    if (!_googleAuth.isConfigured) {
+      return const Text(
+        'この環境ではGoogleログインのOAuth設定が完了していません。',
+        style: TextStyle(color: Colors.black54),
+      );
+    }
+
+    if (_googleAuth.initFailed) {
+      return const Text(
+        'Googleログインを開始できませんでした。しばらくしてから再読み込みしてください。',
+        style: TextStyle(color: Colors.redAccent),
+      );
+    }
+
+    if (!_googleAuth.isInitialized) {
+      return const Row(
+        children: [
+          SizedBox.square(
+            dimension: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          SizedBox(width: 12),
+          Text('Googleログインを準備中…'),
+        ],
+      );
+    }
+
+    if (!_googleAuth.isSignedIn) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          GoogleAccountSignInButton(
+            onPressed: () => unawaited(_googleAuth.signIn()),
+            busy: _googleAuth.isBusy,
+          ),
+          if (_googleAuth.errorMessage case final message?) ...[
+            const SizedBox(height: 10),
+            Text(message, style: const TextStyle(color: Colors.redAccent)),
+          ],
+        ],
+      );
+    }
+
+    final account = _googleAuth.account!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: account.photoUrl != null
+                  ? NetworkImage(account.photoUrl!)
+                  : null,
+              child: account.photoUrl == null ? const Icon(Icons.person) : null,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    account.displayName ?? account.email,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  Text(
+                    account.email,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        OutlinedButton.icon(
+          key: const Key('google-sign-out-button'),
+          onPressed: _googleAuth.isBusy
+              ? null
+              : () => unawaited(_googleAuth.signOut()),
+          icon: _googleAuth.isBusy
+              ? const SizedBox.square(
+                  dimension: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Icon(Icons.logout),
+          label: Text(_googleAuth.isBusy ? 'ログアウト中…' : 'ログアウト'),
+        ),
+        if (_googleAuth.errorMessage case final message?) ...[
+          const SizedBox(height: 10),
+          Text(message, style: const TextStyle(color: Colors.redAccent)),
+        ],
+      ],
+    );
   }
 
   @override
@@ -129,58 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 4),
                   const Text('Googleアカウントでログインできます。進行データの同期機能は今後対応予定です。'),
                   const SizedBox(height: 14),
-                  if (!_googleAuth.isConfigured)
-                    const Text(
-                      'この環境ではまだGoogleログインが設定されていません（準備中）。',
-                      style: TextStyle(color: Colors.black54),
-                    )
-                  else if (_googleAuth.isSignedIn)
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: _googleAuth.account!.photoUrl != null
-                              ? NetworkImage(_googleAuth.account!.photoUrl!)
-                              : null,
-                          child: _googleAuth.account!.photoUrl == null
-                              ? const Icon(Icons.person)
-                              : null,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _googleAuth.account!.displayName ??
-                                    _googleAuth.account!.email,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              Text(
-                                _googleAuth.account!.email,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        TextButton(
-                          key: const Key('google-sign-out-button'),
-                          onPressed: () => _googleAuth.signOut(),
-                          child: const Text('ログアウト'),
-                        ),
-                      ],
-                    )
-                  else
-                    OutlinedButton.icon(
-                      key: const Key('google-sign-in-button'),
-                      onPressed: () => _googleAuth.signIn(),
-                      icon: const Icon(Icons.login),
-                      label: const Text('Googleでログイン'),
-                    ),
+                  _buildGoogleAccountArea(),
                 ],
               ),
             ),
