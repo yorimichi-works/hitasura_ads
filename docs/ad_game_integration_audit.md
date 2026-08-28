@@ -14,16 +14,16 @@
 |008|ダウンロード率120％|tapChallenge|sheet1_09.png|sheet4_02.png|HitArea・進捗|sheet1_09.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
 |009|NEW！たぶんNEW！|tapChallenge|sheet2_19.png|sheet5_15.png|HitArea・進捗|sheet2_19.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
 |010|工事中なのに営業中|tapChallenge|なし|sheet4_01.png|HitArea・進捗|画像不要または専用素材なし。意味一致するコード描画|画像/対象を3回タップ|B|151件共通Widgetテスト対象|
-|011|水が入る！奇跡のコップ|tapChallenge|sheet2_12.png|sheet4_18.png|HitArea・進捗|sheet2_12.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|012|座れる椅子、ついに登場|tapChallenge|sheet2_10.png|sheet5_11.png|HitArea・進捗|sheet2_10.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|013|絶対に開かない傘|tapChallenge|sheet2_13.png|sheet5_19.png|HitArea・進捗|sheet2_13.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|014|何も入らない財布|tapChallenge|sheet2_11.png|sheet4_18.png|HitArea・進捗|sheet2_11.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|015|寝るためだけの枕|tapChallenge|sheet2_07.png|sheet5_11.png|HitArea・進捗|sheet2_07.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|016|切れる包丁・改|tapChallenge|sheet2_12.png|sheet5_19.png|HitArea・進捗|sheet2_12.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|017|冷たい冷蔵庫|tapChallenge|sheet2_10.png|sheet4_18.png|HitArea・進捗|sheet2_10.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|018|歩ける靴 PREMIUM|tapChallenge|sheet2_13.png|sheet5_11.png|HitArea・進捗|sheet2_13.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|019|持てるカバン PRO MAX|tapChallenge|sheet2_11.png|sheet5_19.png|HitArea・進捗|sheet2_11.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|020|飲める水 2026|tapChallenge|sheet2_07.png|sheet4_18.png|HitArea・進捗|sheet2_07.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|011|水が入る！奇跡のコップ|tapChallenge|water_glass.png|sheet4_18.png|HitArea・進捗|water_glass.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|012|座れる椅子、ついに登場|tapChallenge|product_chair.png|sheet5_11.png|HitArea・進捗|product_chair.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|013|絶対に開かない傘|tapChallenge|locked_umbrella.png|sheet5_19.png|HitArea・進捗|locked_umbrella.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|014|何も入らない財布|tapChallenge|empty_wallet.png|sheet4_18.png|HitArea・進捗|empty_wallet.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|015|寝るためだけの枕|tapChallenge|sleep_pillow.png|sheet5_11.png|HitArea・進捗|sleep_pillow.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|016|切れる包丁・改|tapChallenge|premium_knife.png|sheet5_19.png|HitArea・進捗|premium_knife.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|017|冷たい冷蔵庫|tapChallenge|cold_fridge.png|sheet4_18.png|HitArea・進捗|cold_fridge.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|018|歩ける靴 PREMIUM|tapChallenge|premium_shoe.png|sheet5_11.png|HitArea・進捗|premium_shoe.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|019|持てるカバン PRO MAX|tapChallenge|pro_bag.png|sheet5_19.png|HitArea・進捗|pro_bag.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|020|飲める水 2026|tapChallenge|water_2026.png|sheet4_18.png|HitArea・進捗|water_2026.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
 |021|専門家100人中1人が推薦|choice|sheet1_10.png|sheet5_04.png|選択枠・正誤判定|sheet1_10.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
 |022|堂々の第1位（1商品中）|choice|sheet2_16.png|sheet4_07.png|選択枠・正誤判定|sheet2_16.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
 |023|★★★★★ 0件のレビュー|choice|sheet2_05.png|sheet5_08.png|選択枠・正誤判定|sheet2_05.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
@@ -35,19 +35,19 @@
 |029|比較したら勝ってました|choice|sheet1_10.png|sheet5_08.png|選択枠・正誤判定|sheet1_10.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
 |030|口コミで話題！（口コミ1件）|choice|sheet2_16.png|sheet5_04.png|選択枠・正誤判定|sheet2_16.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
 |031|王様を助けろ！初級編|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|032|王様、炎上する|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
+|032|王様、炎上する|timing|sheet1_02.png|palace_treasure_hall.jpg|ゲージ・針・成功帯|sheet1_02.png|成功帯で停止|A|151件共通Widgetテスト対象|
 |033|王様と三本のピン|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|034|宝より王を選べ|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|035|王様、また溺れる|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|036|溶岩 VS 王様|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|037|王様、また燃える|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|038|王様救出率2％|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|039|王様はそこじゃない|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|040|王様と謎の魚|pinPull|sheet1_02.png|palace_treasure_hall.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|041|王様、大富豪になる|pinPull|sheet1_02.png|stone_dungeon.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|042|王様、地下100階へ|pinPull|sheet1_02.png|stone_dungeon.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
+|034|宝より王を選べ|choice|sheet1_02.png|palace_treasure_hall.jpg|選択枠・正誤判定|sheet1_02.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|035|王様、また溺れる|drawPath|sheet1_02.png|palace_treasure_hall.jpg|線・経路判定|sheet1_02.png|画像間をドラッグして線描画|A|151件共通Widgetテスト対象|
+|036|溶岩 VS 王様|timing|sheet1_02.png|palace_treasure_hall.jpg|ゲージ・針・成功帯|sheet1_02.png|成功帯で停止|A|151件共通Widgetテスト対象|
+|037|王様、また燃える|timing|sheet1_02.png|palace_treasure_hall.jpg|ゲージ・針・成功帯|sheet1_02.png|成功帯で停止|A|151件共通Widgetテスト対象|
+|038|王様救出率2％|countdownStop|sheet1_02.png|palace_treasure_hall.jpg|数字・タイマー|sheet1_02.png|残り1でタップ|A|151件共通Widgetテスト対象|
+|039|王様はそこじゃない|choice|sheet1_02.png|palace_treasure_hall.jpg|選択枠・正誤判定|sheet1_02.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
+|040|王様と謎の魚|drawPath|sheet1_02.png|palace_treasure_hall.jpg|線・経路判定|sheet1_02.png|画像間をドラッグして線描画|A|151件共通Widgetテスト対象|
+|041|王様、大富豪になる|numberGate|sheet1_02.png|stone_dungeon.jpg|ゲート・倍率・計算|sheet1_02.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
+|042|王様、地下100階へ|dragSort|sheet1_02.png|stone_dungeon.jpg|DragTarget・当たり判定|sheet1_02.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
 |043|王様と絶対抜くなピン|pinPull|sheet1_02.png|stone_dungeon.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
-|044|王様の休日|pinPull|sheet1_02.png|stone_dungeon.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
+|044|王様の休日|reveal|sheet1_02.png|stone_dungeon.jpg|移動経路・HitArea|sheet1_02.png|移動する画像/対象をタップ|A|151件共通Widgetテスト対象|
 |045|王様FINALっぽい何か|pinPull|sheet1_02.png|stone_dungeon.jpg|ピン・液体・順序判定|sheet1_02.png|ピンを順番にタップ|A|151件共通Widgetテスト対象|
 |046|＋10か×2か、それが問題だ|numberGate|sheet2_01.png|sheet5_06.png|ゲート・倍率・計算|sheet2_01.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
 |047|棒人間、増えすぎる|numberGate|sheet2_03.png|sheet5_10.png|ゲート・倍率・計算|sheet2_03.png|倍率ゲートをタップ|A|151件共通Widgetテスト対象|
@@ -79,15 +79,15 @@
 |073|ボロ家から宮殿へ|choice|sheet2_12.png|renovated_room.jpg|選択枠・正誤判定|sheet2_12.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
 |074|掃除力9999|choice|sheet2_18.png|dirty_room.jpg|選択枠・正誤判定|sheet2_18.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
 |075|AFTERが別人|choice|sheet2_19.png|renovated_room.jpg|選択枠・正誤判定|sheet2_19.png|画像付き選択肢をタップ|A|151件共通Widgetテスト対象|
-|076|小魚から海の王へ|tapChallenge|sheet2_14.png|sheet5_03.png|HitArea・進捗|sheet2_14.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|077|魚が魚を超えた日|tapChallenge|sheet2_15.png|sheet5_06.png|HitArea・進捗|sheet2_15.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|078|リンゴ＋リンゴ＝なぜかメロン|tapChallenge|sheet2_09.png|sheet4_10.png|HitArea・進捗|sheet2_09.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|079|メロン＋メロン＝冷蔵庫|tapChallenge|sheet2_18.png|sheet5_03.png|HitArea・進捗|sheet2_18.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|080|何でも合体させればいい|tapChallenge|sheet2_14.png|sheet5_06.png|HitArea・進捗|sheet2_14.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|076|小魚から海の王へ|timing|sheet2_14.png|sheet5_03.png|ゲージ・針・成功帯|sheet2_14.png|成功帯で停止|A|151件共通Widgetテスト対象|
+|077|魚が魚を超えた日|timing|sheet2_15.png|sheet5_06.png|ゲージ・針・成功帯|sheet2_15.png|成功帯で停止|A|151件共通Widgetテスト対象|
+|078|リンゴ＋リンゴ＝なぜかメロン|dragSort|sheet2_09.png|sheet4_10.png|DragTarget・当たり判定|sheet2_09.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
+|079|メロン＋メロン＝冷蔵庫|dragSort|sheet2_18.png|sheet5_03.png|DragTarget・当たり判定|sheet2_18.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
+|080|何でも合体させればいい|dragSort|sheet2_14.png|sheet5_06.png|DragTarget・当たり判定|sheet2_14.png|画像そのものをドラッグ&ドロップ|A|151件共通Widgetテスト対象|
 |081|LV.1スライムっぽくない何か|tapChallenge|sheet2_15.png|sheet4_10.png|HitArea・進捗|sheet2_15.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
 |082|育てたら巨大になりすぎた|tapChallenge|sheet2_09.png|sheet5_03.png|HitArea・進捗|sheet2_09.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
 |083|ペット育成 8秒目|tapChallenge|sheet2_18.png|sheet5_06.png|HitArea・進捗|sheet2_18.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
-|084|卵から社長が生まれた|tapChallenge|sheet2_14.png|sheet4_10.png|HitArea・進捗|sheet2_14.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
+|084|卵から社長が生まれた|packOpen|sheet2_14.png|sheet4_10.png|スワイプ距離・開封枠|sheet2_14.png|画像付きパックを上へスワイプ|A|151件共通Widgetテスト対象|
 |085|進化先：広告|tapChallenge|sheet2_15.png|sheet5_03.png|HitArea・進捗|sheet2_15.png|画像/対象を3回タップ|A|151件共通Widgetテスト対象|
 |086|777っぽいもの|timing|sheet1_18.png|sheet4_07.png|ゲージ・針・成功帯|sheet1_18.png|成功帯で停止|A|151件共通Widgetテスト対象|
 |087|超激熱っぽい！|timing|sheet1_18.png|sheet4_02.png|ゲージ・針・成功帯|sheet1_18.png|成功帯で停止|A|151件共通Widgetテスト対象|

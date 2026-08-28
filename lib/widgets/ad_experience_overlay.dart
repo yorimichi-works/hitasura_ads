@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../models/ad_definition.dart';
 import '../models/ad_visual_assets.dart';
 import '../services/ad_audio_manager.dart';
-import 'ad_mini_game.dart';
+import 'ad_experience_host.dart';
 
 class AdPlaybackResult {
   const AdPlaybackResult(this.activeSeconds);
@@ -175,33 +175,37 @@ class _AdExperienceOverlayState extends State<AdExperienceOverlay>
                               Expanded(
                                 child: Column(
                                   children: [
-                                    Flexible(
-                                      flex: compact ? 1 : 2,
-                                      child: AnimatedBuilder(
-                                        animation: Listenable.merge([
-                                          _animation,
-                                          _spin,
-                                        ]),
-                                        builder: (context, _) => FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          child: SizedBox(
-                                            width: 620,
-                                            height: 240,
-                                            child: _AnimatedExperience(
-                                              ad: ad,
-                                              pulse: _animation.value,
-                                              spin: _spin.value,
-                                              interacted: _interacted,
-                                              scratchProgress: _scratchProgress,
+                                    if (ad.experienceFormat ==
+                                        AdExperienceFormat.playable) ...[
+                                      Flexible(
+                                        flex: compact ? 1 : 2,
+                                        child: AnimatedBuilder(
+                                          animation: Listenable.merge([
+                                            _animation,
+                                            _spin,
+                                          ]),
+                                          builder: (context, _) => FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: SizedBox(
+                                              width: 620,
+                                              height: 240,
+                                              child: _AnimatedExperience(
+                                                ad: ad,
+                                                pulse: _animation.value,
+                                                spin: _spin.value,
+                                                interacted: _interacted,
+                                                scratchProgress:
+                                                    _scratchProgress,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 8),
+                                      const SizedBox(height: 8),
+                                    ],
                                     Expanded(
                                       flex: 3,
-                                      child: AdMiniGame(
+                                      child: AdExperienceHost(
                                         ad: ad,
                                         onInteraction: _interact,
                                       ),

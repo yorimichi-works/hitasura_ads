@@ -26,6 +26,7 @@ void main() {
       expect(thumbnail.secondaryAsset, visual.secondaryAsset, reason: ad.id);
       expect(thumbnail.backgroundAsset, visual.backgroundAsset, reason: ad.id);
       expect(thumbnail.gameType, game.type, reason: ad.id);
+      expect(thumbnail.experienceFormat, ad.experienceFormat, reason: ad.id);
       expect(File(thumbnail.backgroundAsset).existsSync(), isTrue);
       if (thumbnail.foregroundAsset case final path?) {
         expect(File(path).existsSync(), isTrue, reason: ad.id);
@@ -37,6 +38,10 @@ void main() {
   });
 
   test('semantic priority examples use the correct subjects', () {
+    expect(
+      AdThumbnailConfig.forAd(catalog['AD_011']).foregroundAsset,
+      endsWith('water_glass.png'),
+    );
     expect(
       AdThumbnailConfig.forAd(catalog['AD_031']).foregroundAsset,
       endsWith('sheet1_02.png'),
@@ -108,5 +113,28 @@ void main() {
     expect(find.byKey(const Key('thumbnail-stage-AD_031')), findsOneWidget);
     expect(find.byKey(const Key('thumbnail-cue-pinPull')), findsOneWidget);
     expect(find.byType(Image), findsWidgets);
+  });
+
+  testWidgets('editorial thumbnails show their actual experience cue', (
+    tester,
+  ) async {
+    for (final id in ['AD_011', 'AD_101', 'AD_112', 'AD_127']) {
+      final ad = catalog[id];
+      await tester.pumpWidget(
+        MaterialApp(
+          home: SizedBox(
+            width: 180,
+            height: 120,
+            child: AdThumbnail(ad: ad, discovered: true),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(
+        find.byKey(Key('thumbnail-cue-${ad.experienceFormat.name}')),
+        findsOneWidget,
+        reason: id,
+      );
+    }
   });
 }

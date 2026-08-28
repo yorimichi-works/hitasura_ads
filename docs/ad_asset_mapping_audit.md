@@ -14,16 +14,16 @@
 |008|ダウンロード率120％|tapChallenge|古のWebを表す広告部品|sheet1_09.png|sheet4_02.png|反映可能|差替え推奨|なし|反映済み|
 |009|NEW！たぶんNEW！|tapChallenge|古のWebを表す広告部品|sheet2_19.png|sheet5_15.png|反映可能|差替え推奨|なし|反映済み|
 |010|工事中なのに営業中|tapChallenge|古のWebを表す広告部品|なし|sheet4_01.png|適切な素材なし|差替え推奨|レトロWeb用カーソル・バナー部品|反映済み|
-|011|水が入る！奇跡のコップ|tapChallenge|商品・買い物/決済物体|sheet2_12.png + sheet2_10.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
-|012|座れる椅子、ついに登場|tapChallenge|商品・買い物/決済物体|sheet2_10.png + sheet2_10.png|sheet5_11.png|反映可能|差替え推奨|なし|反映済み|
-|013|絶対に開かない傘|tapChallenge|商品・買い物/決済物体|sheet2_13.png + sheet2_10.png|sheet5_19.png|反映可能|差替え推奨|なし|反映済み|
-|014|何も入らない財布|tapChallenge|商品・買い物/決済物体|sheet2_11.png + sheet2_10.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
-|015|寝るためだけの枕|tapChallenge|商品・買い物/決済物体|sheet2_07.png + sheet2_10.png|sheet5_11.png|反映可能|差替え推奨|なし|反映済み|
-|016|切れる包丁・改|tapChallenge|商品・買い物/決済物体|sheet2_12.png + sheet2_10.png|sheet5_19.png|反映可能|差替え推奨|なし|反映済み|
-|017|冷たい冷蔵庫|tapChallenge|商品・買い物/決済物体|sheet2_10.png + sheet2_10.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
-|018|歩ける靴 PREMIUM|tapChallenge|商品・買い物/決済物体|sheet2_13.png + sheet2_10.png|sheet5_11.png|反映可能|差替え推奨|なし|反映済み|
-|019|持てるカバン PRO MAX|tapChallenge|商品・買い物/決済物体|sheet2_11.png + sheet2_10.png|sheet5_19.png|反映可能|差替え推奨|なし|反映済み|
-|020|飲める水 2026|tapChallenge|商品・買い物/決済物体|sheet2_07.png + sheet2_10.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
+|011|水が入る！奇跡のコップ|tapChallenge|商品・買い物/決済物体|water_glass.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
+|012|座れる椅子、ついに登場|tapChallenge|商品・買い物/決済物体|product_chair.png|sheet5_11.png|反映可能|差替え推奨|なし|反映済み|
+|013|絶対に開かない傘|tapChallenge|商品・買い物/決済物体|locked_umbrella.png|sheet5_19.png|反映可能|差替え推奨|なし|反映済み|
+|014|何も入らない財布|tapChallenge|商品・買い物/決済物体|empty_wallet.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
+|015|寝るためだけの枕|tapChallenge|商品・買い物/決済物体|sleep_pillow.png|sheet5_11.png|反映可能|差替え推奨|なし|反映済み|
+|016|切れる包丁・改|tapChallenge|商品・買い物/決済物体|premium_knife.png|sheet5_19.png|反映可能|差替え推奨|なし|反映済み|
+|017|冷たい冷蔵庫|tapChallenge|商品・買い物/決済物体|cold_fridge.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
+|018|歩ける靴 PREMIUM|tapChallenge|商品・買い物/決済物体|premium_shoe.png|sheet5_11.png|反映可能|差替え推奨|なし|反映済み|
+|019|持てるカバン PRO MAX|tapChallenge|商品・買い物/決済物体|pro_bag.png|sheet5_19.png|反映可能|差替え推奨|なし|反映済み|
+|020|飲める水 2026|tapChallenge|商品・買い物/決済物体|water_2026.png|sheet4_18.png|反映可能|差替え推奨|なし|反映済み|
 |021|専門家100人中1人が推薦|choice|ランキングを表す広告部品|sheet1_10.png|sheet5_04.png|反映可能|差替え推奨|なし|反映済み|
 |022|堂々の第1位（1商品中）|choice|ランキングを表す広告部品|sheet2_16.png|sheet4_07.png|反映可能|差替え推奨|なし|反映済み|
 |023|★★★★★ 0件のレビュー|choice|ランキングを表す広告部品|sheet2_05.png|sheet5_08.png|反映可能|差替え推奨|なし|反映済み|
@@ -35,19 +35,19 @@
 |029|比較したら勝ってました|choice|ランキングを表す広告部品|sheet1_10.png|sheet5_08.png|反映可能|差替え推奨|なし|反映済み|
 |030|口コミで話題！（口コミ1件）|choice|ランキングを表す広告部品|sheet2_16.png|sheet5_04.png|反映可能|差替え推奨|なし|反映済み|
 |031|王様を助けろ！初級編|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|032|王様、炎上する|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet2_20.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|032|王様、炎上する|timing|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet2_20.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |033|王様と三本のピン|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_03.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|034|宝より王を選べ|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|035|王様、また溺れる|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|036|溶岩 VS 王様|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|037|王様、また燃える|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet2_20.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|038|王様救出率2％|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|039|王様はそこじゃない|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|040|王様と謎の魚|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|041|王様、大富豪になる|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|042|王様、地下100階へ|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|034|宝より王を選べ|choice|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|035|王様、また溺れる|drawPath|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|036|溶岩 VS 王様|timing|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|037|王様、また燃える|timing|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet2_20.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|038|王様救出率2％|countdownStop|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|039|王様はそこじゃない|choice|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|040|王様と謎の魚|drawPath|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|palace_treasure_hall.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|041|王様、大富豪になる|numberGate|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|042|王様、地下100階へ|dragSort|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |043|王様と絶対抜くなピン|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_03.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|044|王様の休日|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
+|044|王様の休日|reveal|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |045|王様FINALっぽい何か|pinPull|王様（主人公）・ピン・宝・危険物|sheet1_02.png + sheet1_01.png|stone_dungeon.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |046|＋10か×2か、それが問題だ|numberGate|成長する人物・数値/グラフ|sheet2_01.png + sheet2_16.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
 |047|棒人間、増えすぎる|numberGate|成長する人物・数値/グラフ|sheet2_03.png + sheet2_16.png|sheet5_10.png|反映可能|差替え推奨|なし|反映済み|
@@ -79,15 +79,15 @@
 |073|ボロ家から宮殿へ|choice|Before/After人物・衣服/清掃表現|sheet2_12.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |074|掃除力9999|choice|Before/After人物・衣服/清掃表現|sheet2_18.png|dirty_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
 |075|AFTERが別人|choice|Before/After人物・衣服/清掃表現|sheet2_19.png|renovated_room.jpg|反映可能|専用背景を反映済み|なし|反映済み|
-|076|小魚から海の王へ|tapChallenge|合成対象・成長エフェクト|sheet2_14.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
-|077|魚が魚を超えた日|tapChallenge|合成対象・成長エフェクト|sheet2_15.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
-|078|リンゴ＋リンゴ＝なぜかメロン|tapChallenge|合成対象・成長エフェクト|sheet2_09.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
-|079|メロン＋メロン＝冷蔵庫|tapChallenge|合成対象・成長エフェクト|sheet2_18.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
-|080|何でも合体させればいい|tapChallenge|合成対象・成長エフェクト|sheet2_14.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
+|076|小魚から海の王へ|timing|合成対象・成長エフェクト|sheet2_14.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
+|077|魚が魚を超えた日|timing|合成対象・成長エフェクト|sheet2_15.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
+|078|リンゴ＋リンゴ＝なぜかメロン|dragSort|合成対象・成長エフェクト|sheet2_09.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
+|079|メロン＋メロン＝冷蔵庫|dragSort|合成対象・成長エフェクト|sheet2_18.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
+|080|何でも合体させればいい|dragSort|合成対象・成長エフェクト|sheet2_14.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
 |081|LV.1スライムっぽくない何か|tapChallenge|合成対象・成長エフェクト|sheet2_15.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
 |082|育てたら巨大になりすぎた|tapChallenge|合成対象・成長エフェクト|sheet2_09.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
 |083|ペット育成 8秒目|tapChallenge|合成対象・成長エフェクト|sheet2_18.png|sheet5_06.png|反映可能|差替え推奨|なし|反映済み|
-|084|卵から社長が生まれた|tapChallenge|合成対象・成長エフェクト|sheet2_14.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
+|084|卵から社長が生まれた|packOpen|合成対象・成長エフェクト|sheet2_14.png|sheet4_10.png|反映可能|差替え推奨|なし|反映済み|
 |085|進化先：広告|tapChallenge|合成対象・成長エフェクト|sheet2_15.png|sheet5_03.png|反映可能|差替え推奨|なし|反映済み|
 |086|777っぽいもの|timing|スロット/ガチャ・報酬物体|sheet1_18.png|sheet4_07.png|反映可能|差替え推奨|なし|反映済み|
 |087|超激熱っぽい！|timing|スロット/ガチャ・報酬物体|sheet1_18.png|sheet4_02.png|反映可能|差替え推奨|なし|反映済み|
@@ -163,11 +163,16 @@
 - `sheet1_14.png`: No.007, No.060, No.065, No.132, No.141
 - `sheet1_09.png`: No.008, No.050, No.055
 - `sheet2_19.png`: No.009, No.070, No.075, No.092, No.134, No.141, No.142, No.143, No.144, No.145, No.146, No.147, No.148, No.149, No.150, No.151
-- `sheet2_12.png`: No.011, No.016, No.068, No.073
-- `sheet2_10.png`: No.011, No.012, No.012, No.013, No.014, No.015, No.016, No.017, No.017, No.018, No.019, No.020
-- `sheet2_13.png`: No.013, No.018
-- `sheet2_11.png`: No.014, No.019, No.095, No.099
-- `sheet2_07.png`: No.015, No.020, No.101, No.105, No.109
+- `water_glass.png`: No.011
+- `product_chair.png`: No.012
+- `locked_umbrella.png`: No.013
+- `empty_wallet.png`: No.014
+- `sleep_pillow.png`: No.015
+- `premium_knife.png`: No.016
+- `cold_fridge.png`: No.017
+- `premium_shoe.png`: No.018
+- `pro_bag.png`: No.019
+- `water_2026.png`: No.020
 - `sheet1_10.png`: No.021, No.025, No.029, No.150, No.151
 - `sheet2_16.png`: No.022, No.026, No.030, No.046, No.047, No.048, No.049, No.049, No.050, No.051, No.052, No.053, No.054, No.054, No.055
 - `sheet2_05.png`: No.023, No.027, No.048, No.053, No.104, No.108, No.114, No.118, No.146
@@ -184,10 +189,13 @@
 - `sheet2_14.png`: No.064, No.076, No.080, No.084, No.093, No.097
 - `sheet2_04.png`: No.066, No.071
 - `sheet2_02.png`: No.067, No.072, No.103, No.107, No.112, No.116, No.120
+- `sheet2_12.png`: No.068, No.073
 - `sheet2_15.png`: No.077, No.081, No.085, No.094, No.098, No.148
 - `sheet2_09.png`: No.078, No.082
 - `sheet1_18.png`: No.086, No.087, No.088, No.089, No.090, No.091
+- `sheet2_11.png`: No.095, No.099
 - `sheet1_07.png`: No.096, No.100, No.145
+- `sheet2_07.png`: No.101, No.105, No.109
 - `sheet1_11.png`: No.101, No.102, No.103, No.104, No.105, No.106, No.107, No.108, No.109, No.110
 - `sheet2_06.png`: No.102, No.106, No.110, No.111, No.115, No.119
 - `sheet1_19.png`: No.121, No.126
@@ -263,13 +271,13 @@
 |sheet2_04|adPart|No.066, No.071|
 |sheet2_05|adPart|No.023, No.027, No.048, No.053, No.104, No.108, No.114, No.118, No.146|
 |sheet2_06|adPart|No.102, No.106, No.110, No.111, No.115, No.119|
-|sheet2_07|adPart|No.015, No.020, No.101, No.105, No.109|
+|sheet2_07|adPart|No.101, No.105, No.109|
 |sheet2_08|adPart|なし（完成広告は別導線用）|
 |sheet2_09|adPart|No.078, No.082|
-|sheet2_10|adPart|No.011, No.012, No.013, No.014, No.015, No.016, No.017, No.018, No.019, No.020|
-|sheet2_11|adPart|No.014, No.019, No.095, No.099|
-|sheet2_12|adPart|No.011, No.016, No.068, No.073|
-|sheet2_13|adPart|No.013, No.018|
+|sheet2_10|adPart|なし（完成広告は別導線用）|
+|sheet2_11|adPart|No.095, No.099|
+|sheet2_12|adPart|No.068, No.073|
+|sheet2_13|adPart|なし（完成広告は別導線用）|
 |sheet2_14|adPart|No.064, No.076, No.080, No.084, No.093, No.097|
 |sheet2_15|adPart|No.077, No.081, No.085, No.094, No.098, No.148|
 |sheet2_16|adPart|No.022, No.026, No.030, No.046, No.047, No.048, No.049, No.050, No.051, No.052, No.053, No.054, No.055|

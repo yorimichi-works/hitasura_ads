@@ -73,6 +73,7 @@ flutter:
     - assets/images/generated/characters/
     - assets/images/generated/game/
     - assets/images/generated/backgrounds/
+    - assets/images/generated/products/
   fonts:
     - family: KosugiMaru
       fonts:

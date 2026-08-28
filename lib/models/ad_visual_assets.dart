@@ -53,8 +53,18 @@ class AdVisualAssets {
       };
     }
     if (ad.category == '怪しい通販') {
-      const choices = [12, 10, 13, 11, 7];
-      return _part(2, choices[(ad.number - 11) % choices.length]);
+      return switch (ad.number) {
+        11 => '$_generated/products/water_glass.png',
+        12 => '$_generated/products/product_chair.png',
+        13 => '$_generated/products/locked_umbrella.png',
+        14 => '$_generated/products/empty_wallet.png',
+        15 => '$_generated/products/sleep_pillow.png',
+        16 => '$_generated/products/premium_knife.png',
+        17 => '$_generated/products/cold_fridge.png',
+        18 => '$_generated/products/premium_shoe.png',
+        19 => '$_generated/products/pro_bag.png',
+        _ => '$_generated/products/water_2026.png',
+      };
     }
     if (ad.category == 'ランキング') {
       final choices = [_part(1, 10), _part(2, 16), _part(2, 5), _part(1, 17)];
@@ -140,7 +150,6 @@ class AdVisualAssets {
       return _part(1, 1);
     }
     if (ad.category == 'AI・診断') return _part(1, 11);
-    if (ad.category == '怪しい通販') return _part(2, 10);
     if (ad.category == '数字ゲート') return _part(2, 16);
     if (ad.category == '高レア' || ad.isSecret) return _part(2, 19);
     return null;

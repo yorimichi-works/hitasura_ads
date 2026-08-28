@@ -190,9 +190,15 @@ void main() {
       );
 
       expect(
-        find.byKey(const Key('mini-game-instruction')),
+        find.byKey(
+          Key(
+            ad.experienceFormat == AdExperienceFormat.playable
+                ? 'mini-game-instruction'
+                : 'experience-instruction',
+          ),
+        ),
         findsOneWidget,
-        reason: '${ad.id}: mini game',
+        reason: '${ad.id}: ${ad.experienceFormat.name}',
       );
     }
 

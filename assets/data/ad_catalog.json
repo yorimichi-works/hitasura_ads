@@ -31,8 +31,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "たぶん昨日も999,999人目。",
-    "flavorText": "「あなたは本日999,999人目！」と書かれた看板を、旅人は疑わずにくぐった。\n\nたぶん昨日も999,999人目。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
-    "flavorType": "寓話"
+    "flavorText": "広告検証ファイル No.001「あなたは本日999,999人目！」\n\n見出し、数字、比較条件を一つずつ調べた。たぶん昨日も999,999人目。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "数字監査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "あなたは本日999,999人目！",
+      "evidence1": "広告主資料：たぶん昨日も999,999人目。",
+      "evidence2": "調査番号 001：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「あなたは本日999,999人目！」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_002",
@@ -64,8 +73,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "押すなと言われると押したくなる。",
-    "flavorText": "社内通達：今すぐクリックしないでください！\n\n本件に関する質問は受け付けます。回答は受け付けません。",
-    "flavorType": "企業文書"
+    "flavorText": "Web考古学標本 No.002「今すぐクリックしないでください！」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。押すなと言われると押したくなる。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "バナー標本",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "今すぐ開く",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "今すぐクリックしないでください！ の罠を回避。押すなと言われると押したくなる。"
+    }
   },
   {
     "id": "AD_003",
@@ -97,8 +114,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "矢印が多すぎてどれか分からない。",
-    "flavorText": "この矢印の先に未来があるを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n詳しく見ても、矢印が多すぎてどれか分からない。",
-    "flavorType": "不気味"
+    "flavorText": "Web考古学標本 No.003「この矢印の先に未来がある」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。矢印が多すぎてどれか分からない。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "Web考古学",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "同意して閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "この矢印の先に未来がある の罠を回避。矢印が多すぎてどれか分からない。"
+    }
   },
   {
     "id": "AD_004",
@@ -130,8 +155,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "0になると10へ戻る。",
-    "flavorText": "古のWebの担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「残り10秒」とだけ残っている。",
-    "flavorType": "言葉遊び"
+    "flavorText": "広告局速報 No.004「残り時間、永遠の10秒」\n\n速報音とともに全国へ伝えられた。0になると10へ戻る。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "速報記録",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 004　広告局から臨時ニュース",
+      "lead": "残り時間、永遠の10秒",
+      "update1": "現場からの第一報：0になると10へ戻る。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_005",
@@ -165,8 +199,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "企業努力の結晶。",
-    "flavorText": "★★★★★\n驚異の1円OFF！のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
-    "flavorType": "口コミ"
+    "flavorText": "Web考古学標本 No.005「驚異の1円OFF！」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。企業努力の結晶。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "バナー標本",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "驚異の1円OFF！ の罠を回避。企業努力の結晶。"
+    }
   },
   {
     "id": "AD_006",
@@ -200,8 +242,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "震えているのは広告だけ。",
-    "flavorText": "実験6日目。被験者は「世界が震えた0.5％OFF」を信じ続けている。\n\n震えているのは広告だけ。\n\n対照群も、なぜか同じ広告を見ていた。",
-    "flavorType": "実験記録"
+    "flavorText": "広告検証ファイル No.006「世界が震えた0.5％OFF」\n\n見出し、数字、比較条件を一つずつ調べた。震えているのは広告だけ。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "広告検証",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "世界が震えた0.5％OFF",
+      "evidence1": "広告主資料：震えているのは広告だけ。",
+      "evidence2": "調査番号 006：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「世界が震えた0.5％OFF」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_007",
@@ -233,8 +284,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "×は逃げる。",
-    "flavorText": "私は閉じるボタンを探せ！を選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n詳しく見ても、×は逃げる。",
-    "flavorType": "独白"
+    "flavorText": "Web考古学標本 No.007「閉じるボタンを探せ！」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。×は逃げる。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "誘導調査",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "閉じるボタンを探せ！ の罠を回避。×は逃げる。"
+    }
   },
   {
     "id": "AD_008",
@@ -268,8 +327,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "何をダウンロードするのかは不明。",
-    "flavorText": "この町では、ダウンロード率120％を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
-    "flavorType": "噂話"
+    "flavorText": "広告検証ファイル No.008「ダウンロード率120％」\n\n見出し、数字、比較条件を一つずつ調べた。何をダウンロードするのかは不明。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "比較調査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "ダウンロード率120％",
+      "evidence1": "広告主資料：何をダウンロードするのかは不明。",
+      "evidence2": "調査番号 008：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「ダウンロード率120％」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_009",
@@ -301,8 +369,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "いつからNEWなのか誰も知らない。",
-    "flavorText": "9日目。NEW！たぶんNEW！にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
-    "flavorType": "日記"
+    "flavorText": "Web考古学標本 No.009「NEW！たぶんNEW！」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。いつからNEWなのか誰も知らない。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "Web考古学",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "同意して閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "NEW！たぶんNEW！ の罠を回避。いつからNEWなのか誰も知らない。"
+    }
   },
   {
     "id": "AD_010",
@@ -334,8 +410,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "永遠に完成しないWebサイト。",
-    "flavorText": "警告：工事中なのに営業中\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
-    "flavorType": "警告文"
+    "flavorText": "広告局速報 No.010「工事中なのに営業中」\n\n速報音とともに全国へ伝えられた。永遠に完成しないWebサイト。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "速報記録",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 010　広告局から臨時ニュース",
+      "lead": "工事中なのに営業中",
+      "update1": "現場からの第一報：永遠に完成しないWebサイト。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_011",
@@ -367,8 +452,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "驚くほど普通。",
-    "flavorText": "むかしむかし、水が入る！奇跡のコップを本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
-    "flavorType": "昔話"
+    "flavorText": "実演記録 No.011「水が入る！奇跡のコップ」\n\n担当者は、広告で約束された機能を三つとも試した。驚くほど普通。\n\n水が入る！奇跡のコップ の実演完了。驚くほど普通。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "水が入る！奇跡のコップ の実演完了。驚くほど普通。"
+    }
   },
   {
     "id": "AD_012",
@@ -400,8 +493,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "家具業界騒然。",
-    "flavorText": "本日、座れる椅子、ついに登場と発表されました。\n\n専門家は「家具業界騒然。」と分析。\n提供元は次の広告へ移動しています。",
-    "flavorType": "ニュース"
+    "flavorText": "実演記録 No.012「座れる椅子、ついに登場」\n\n担当者は、広告で約束された機能を三つとも試した。家具業界騒然。\n\n座れる椅子、ついに登場 の実演完了。家具業界騒然。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "実演記録",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "座れる椅子、ついに登場 の実演完了。家具業界騒然。"
+    }
   },
   {
     "id": "AD_013",
@@ -433,8 +534,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "雨にも使用者にも負けない。",
-    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：絶対に開かない傘の実績です。",
-    "flavorType": "説明書"
+    "flavorText": "実演記録 No.013「絶対に開かない傘」\n\n担当者は、広告で約束された機能を三つとも試した。雨にも使用者にも負けない。\n\n絶対に開かない傘 の実演完了。雨にも使用者にも負けない。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "使用報告",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "絶対に開かない傘 の実演完了。雨にも使用者にも負けない。"
+    }
   },
   {
     "id": "AD_014",
@@ -466,8 +575,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "究極のミニマリズム。",
-    "flavorText": "拝啓、あの日見た何も入らない財布を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
-    "flavorType": "手紙"
+    "flavorText": "実演記録 No.014「何も入らない財布」\n\n担当者は、広告で約束された機能を三つとも試した。究極のミニマリズム。\n\n何も入らない財布 の実演完了。究極のミニマリズム。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "何も入らない財布 の実演完了。究極のミニマリズム。"
+    }
   },
   {
     "id": "AD_015",
@@ -499,8 +616,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "ほぼ枕。",
-    "flavorText": "tapを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n詳しく見ても、ほぼ枕。",
-    "flavorType": "メタ"
+    "flavorText": "実演記録 No.015「寝るためだけの枕」\n\n担当者は、広告で約束された機能を三つとも試した。ほぼ枕。\n\n寝るためだけの枕 の実演完了。ほぼ枕。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "実演記録",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "寝るためだけの枕 の実演完了。ほぼ枕。"
+    }
   },
   {
     "id": "AD_016",
@@ -532,8 +657,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "包丁として正しい。",
-    "flavorText": "切れる包丁・改\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
-    "flavorType": "脱力"
+    "flavorText": "実演記録 No.016「切れる包丁・改」\n\n担当者は、広告で約束された機能を三つとも試した。包丁として正しい。\n\n切れる包丁・改 の実演完了。包丁として正しい。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "使用報告",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "切れる包丁・改 の実演完了。包丁として正しい。"
+    }
   },
   {
     "id": "AD_017",
@@ -565,8 +698,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "専門家も驚いた。",
-    "flavorText": "第7研究所・資料17。\n冷たい冷蔵庫は再現に成功したが、目的は再現できなかった。",
-    "flavorType": "研究記録"
+    "flavorText": "実演記録 No.017「冷たい冷蔵庫」\n\n担当者は、広告で約束された機能を三つとも試した。専門家も驚いた。\n\n冷たい冷蔵庫 の実演完了。専門家も驚いた。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "冷たい冷蔵庫 の実演完了。専門家も驚いた。"
+    }
   },
   {
     "id": "AD_018",
@@ -598,8 +739,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "左右セット！",
-    "flavorText": "王国暦18年、布告「歩ける靴 PREMIUM」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
-    "flavorType": "王国史"
+    "flavorText": "実演記録 No.018「歩ける靴 PREMIUM」\n\n担当者は、広告で約束された機能を三つとも試した。左右セット！\n\n歩ける靴 PREMIUM の実演完了。左右セット！ 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "実演記録",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "歩ける靴 PREMIUM の実演完了。左右セット！"
+    }
   },
   {
     "id": "AD_019",
@@ -631,8 +780,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "取っ手搭載。",
-    "flavorText": "議題：持てるカバン PRO MAX\n結論：詳しく見ても、取っ手搭載。\n\nなお、誰が提案したかは全員が否定した。",
-    "flavorType": "議事録"
+    "flavorText": "実演記録 No.019「持てるカバン PRO MAX」\n\n担当者は、広告で約束された機能を三つとも試した。取っ手搭載。\n\n持てるカバン PRO MAX の実演完了。取っ手搭載。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "使用報告",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "持てるカバン PRO MAX の実演完了。取っ手搭載。"
+    }
   },
   {
     "id": "AD_020",
@@ -666,8 +823,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "大型アップデート。",
-    "flavorText": "飲める水 2026【名】\n信じる直前が最も魅力的に見える現象。\n用例：「大型アップデート。」",
-    "flavorType": "辞書風"
+    "flavorText": "実演記録 No.020「飲める水 2026」\n\n担当者は、広告で約束された機能を三つとも試した。大型アップデート。\n\n飲める水 2026 の実演完了。大型アップデート。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "飲める水 2026 の実演完了。大型アップデート。"
+    }
   },
   {
     "id": "AD_021",
@@ -702,8 +867,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "選ばれし一人。",
-    "flavorText": "はじめに広告があり、広告は「専門家100人中1人が推薦」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
-    "flavorType": "神話風"
+    "flavorText": "広告検証ファイル No.021「専門家100人中1人が推薦」\n\n見出し、数字、比較条件を一つずつ調べた。選ばれし一人。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "広告検証",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "専門家100人中1人が推薦",
+      "evidence1": "広告主資料：選ばれし一人。",
+      "evidence2": "調査番号 021：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「専門家100人中1人が推薦」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_022",
@@ -738,8 +912,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "圧倒的首位。",
-    "flavorText": "回収票 No.22\n品名：堂々の第1位（1商品中）\n状態：圧倒的首位。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
-    "flavorType": "回収報告"
+    "flavorText": "広告検証ファイル No.022「堂々の第1位（1商品中）」\n\n見出し、数字、比較条件を一つずつ調べた。圧倒的首位。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "数字監査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "堂々の第1位（1商品中）",
+      "evidence1": "広告主資料：圧倒的首位。",
+      "evidence2": "調査番号 022：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「堂々の第1位（1商品中）」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_023",
@@ -774,8 +957,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "誰も評価していない高評価。",
-    "flavorText": "「★★★★★ 0件のレビュー」と書かれた看板を、旅人は疑わずにくぐった。\n\n誰も評価していない高評価。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
-    "flavorType": "寓話"
+    "flavorText": "広告検証ファイル No.023「★★★★★ 0件のレビュー」\n\n見出し、数字、比較条件を一つずつ調べた。誰も評価していない高評価。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "比較調査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "★★★★★ 0件のレビュー",
+      "evidence1": "広告主資料：誰も評価していない高評価。",
+      "evidence2": "調査番号 023：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「★★★★★ 0件のレビュー」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_024",
@@ -809,8 +1001,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "残り1％はどこから来た。",
-    "flavorText": "社内通達：満足度101％\n\n本件に関する質問は受け付けます。回答は受け付けません。\n\n帳簿には「101％」とだけ残っている。",
-    "flavorType": "企業文書"
+    "flavorText": "広告検証ファイル No.024「満足度101％」\n\n見出し、数字、比較条件を一つずつ調べた。残り1％はどこから来た。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "広告検証",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "満足度101％",
+      "evidence1": "広告主資料：残り1％はどこから来た。",
+      "evidence2": "調査番号 024：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「満足度101％」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_025",
@@ -844,8 +1045,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "一人が三回来た。",
-    "flavorText": "リピート率300％を閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n診断・選択完了。一人が三回来た。",
-    "flavorType": "不気味"
+    "flavorText": "広告検証ファイル No.025「リピート率300％」\n\n見出し、数字、比較条件を一つずつ調べた。一人が三回来た。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "数字監査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "リピート率300％",
+      "evidence1": "広告主資料：一人が三回来た。",
+      "evidence2": "調査番号 025：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「リピート率300％」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_026",
@@ -880,8 +1090,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "残り1％が気になる。",
-    "flavorText": "ランキングの担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「99％」とだけ残っている。",
-    "flavorType": "言葉遊び"
+    "flavorText": "広告検証ファイル No.026「利用者の99％が人間」\n\n見出し、数字、比較条件を一つずつ調べた。残り1％が気になる。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "比較調査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "利用者の99％が人間",
+      "evidence1": "広告主資料：残り1％が気になる。",
+      "evidence2": "調査番号 026：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「利用者の99％が人間」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_027",
@@ -913,8 +1132,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告博士とは。",
-    "flavorText": "★★★★★\n広告博士が認めた広告のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
-    "flavorType": "口コミ"
+    "flavorText": "広告検証ファイル No.027「広告博士が認めた広告」\n\n見出し、数字、比較条件を一つずつ調べた。広告博士とは。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "広告検証",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "広告博士が認めた広告",
+      "evidence1": "広告主資料：広告博士とは。",
+      "evidence2": "調査番号 027：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「広告博士が認めた広告」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_028",
@@ -946,8 +1174,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告賞受賞。",
-    "flavorText": "実験28日目。被験者は「今年最も広告だった広告」を信じ続けている。\n\n広告賞受賞。\n\n対照群も、なぜか同じ広告を見ていた。",
-    "flavorType": "実験記録"
+    "flavorText": "広告検証ファイル No.028「今年最も広告だった広告」\n\n見出し、数字、比較条件を一つずつ調べた。広告賞受賞。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "数字監査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "今年最も広告だった広告",
+      "evidence1": "広告主資料：広告賞受賞。",
+      "evidence2": "調査番号 028：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「今年最も広告だった広告」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_029",
@@ -979,8 +1216,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "比較対象は非公開。",
-    "flavorText": "私は比較したら勝ってましたを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n診断・選択完了。比較対象は非公開。",
-    "flavorType": "独白"
+    "flavorText": "広告検証ファイル No.029「比較したら勝ってました」\n\n見出し、数字、比較条件を一つずつ調べた。比較対象は非公開。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "比較調査",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "比較したら勝ってました",
+      "evidence1": "広告主資料：比較対象は非公開。",
+      "evidence2": "調査番号 029：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「比較したら勝ってました」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_030",
@@ -1014,8 +1260,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "その1件が強い。",
-    "flavorText": "この町では、口コミで話題！（口コミ1件）を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
-    "flavorType": "噂話"
+    "flavorText": "広告検証ファイル No.030「口コミで話題！（口コミ1件）」\n\n見出し、数字、比較条件を一つずつ調べた。その1件が強い。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "広告検証",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "口コミで話題！（口コミ1件）",
+      "evidence1": "広告主資料：その1件が強い。",
+      "evidence2": "調査番号 030：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「口コミで話題！（口コミ1件）」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_031",
@@ -1047,8 +1302,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "王様は今日も危険。",
-    "flavorText": "31日目。王様を助けろ！初級編にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
-    "flavorType": "日記"
+    "flavorText": "プレイ記録 No.031「王様を助けろ！初級編」\n\n説明を読む前に画面へ触れた。王様は今日も危険。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様を助けろ！初級編 をプレイ完了。王様は今日も危険。"
+    }
   },
   {
     "id": "AD_032",
@@ -1080,8 +1340,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "物理的に。",
-    "flavorText": "警告：王様、炎上する\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
-    "flavorType": "警告文"
+    "flavorText": "プレイ記録 No.032「王様、炎上する」\n\n説明を読む前に画面へ触れた。物理的に。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様、炎上する をプレイ完了。物理的に。"
+    }
   },
   {
     "id": "AD_033",
@@ -1115,8 +1380,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "抜く順番だけが人生。",
-    "flavorText": "むかしむかし、王様と三本のピンを本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
-    "flavorType": "昔話"
+    "flavorText": "プレイ記録 No.033「王様と三本のピン」\n\n説明を読む前に画面へ触れた。抜く順番だけが人生。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様と三本のピン をプレイ完了。抜く順番だけが人生。"
+    }
   },
   {
     "id": "AD_034",
@@ -1148,8 +1418,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "宝を選びがち。",
-    "flavorText": "本日、宝より王を選べと発表されました。\n\n専門家は「宝を選びがち。」と分析。\n提供元は次の広告へ移動しています。",
-    "flavorType": "ニュース"
+    "flavorText": "プレイ記録 No.034「宝より王を選べ」\n\n説明を読む前に画面へ触れた。宝を選びがち。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "宝より王を選べ をプレイ完了。宝を選びがち。"
+    }
   },
   {
     "id": "AD_035",
@@ -1181,8 +1456,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "前回から学んでいない。",
-    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：王様、また溺れるの実績です。",
-    "flavorType": "説明書"
+    "flavorText": "プレイ記録 No.035「王様、また溺れる」\n\n説明を読む前に画面へ触れた。前回から学んでいない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様、また溺れる をプレイ完了。前回から学んでいない。"
+    }
   },
   {
     "id": "AD_036",
@@ -1214,8 +1494,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "カードではない。",
-    "flavorText": "拝啓、あの日見た溶岩 VS 王様を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
-    "flavorType": "手紙"
+    "flavorText": "プレイ記録 No.036「溶岩 VS 王様」\n\n説明を読む前に画面へ触れた。カードではない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "溶岩 VS 王様 をプレイ完了。カードではない。"
+    }
   },
   {
     "id": "AD_037",
@@ -1247,8 +1532,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "正解を選んだはずなのに。",
-    "flavorText": "pinPullを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\nFAIL!! 正解を選んだはずなのに、王様はまた燃えました。",
-    "flavorType": "メタ"
+    "flavorText": "プレイ記録 No.037「王様、また燃える」\n\n説明を読む前に画面へ触れた。正解を選んだはずなのに。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様、また燃える をプレイ完了。正解を選んだはずなのに。"
+    }
   },
   {
     "id": "AD_038",
@@ -1282,8 +1572,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告主も驚いた低さ。",
-    "flavorText": "王様救出率2％\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
-    "flavorType": "脱力"
+    "flavorText": "プレイ記録 No.038「王様救出率2％」\n\n説明を読む前に画面へ触れた。広告主も驚いた低さ。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様救出率2％ をプレイ完了。広告主も驚いた低さ。"
+    }
   },
   {
     "id": "AD_039",
@@ -1315,8 +1610,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "ピンを抜く前に気づきたい。",
-    "flavorText": "第7研究所・資料39。\n王様はそこじゃないは再現に成功したが、目的は再現できなかった。",
-    "flavorType": "研究記録"
+    "flavorText": "プレイ記録 No.039「王様はそこじゃない」\n\n説明を読む前に画面へ触れた。ピンを抜く前に気づきたい。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様はそこじゃない をプレイ完了。ピンを抜く前に気づきたい。"
+    }
   },
   {
     "id": "AD_040",
@@ -1348,8 +1648,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "なぜ魚がいる。",
-    "flavorText": "王国暦40年、布告「王様と謎の魚」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
-    "flavorType": "王国史"
+    "flavorText": "プレイ記録 No.040「王様と謎の魚」\n\n説明を読む前に画面へ触れた。なぜ魚がいる。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様と謎の魚 をプレイ完了。なぜ魚がいる。"
+    }
   },
   {
     "id": "AD_041",
@@ -1381,8 +1686,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "救出しただけなのに。",
-    "flavorText": "議題：王様、大富豪になる\n結論：操作完了。救出しただけなのに。\n\nなお、誰が提案したかは全員が否定した。",
-    "flavorType": "議事録"
+    "flavorText": "プレイ記録 No.041「王様、大富豪になる」\n\n説明を読む前に画面へ触れた。救出しただけなのに。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様、大富豪になる をプレイ完了。救出しただけなのに。"
+    }
   },
   {
     "id": "AD_042",
@@ -1416,8 +1726,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "助ける気ある？",
-    "flavorText": "王様、地下100階へ【名】\n信じる直前が最も魅力的に見える現象。\n用例：「助ける気ある？」",
-    "flavorType": "辞書風"
+    "flavorText": "プレイ記録 No.042「王様、地下100階へ」\n\n説明を読む前に画面へ触れた。助ける気ある？\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様、地下100階へ をプレイ完了。助ける気ある？"
+    }
   },
   {
     "id": "AD_043",
@@ -1449,8 +1764,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "当然抜きたくなる。",
-    "flavorText": "はじめに広告があり、広告は「王様と絶対抜くなピン」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
-    "flavorType": "神話風"
+    "flavorText": "プレイ記録 No.043「王様と絶対抜くなピン」\n\n説明を読む前に画面へ触れた。当然抜きたくなる。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様と絶対抜くなピン をプレイ完了。当然抜きたくなる。"
+    }
   },
   {
     "id": "AD_044",
@@ -1482,8 +1802,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "それでもピンを抜かれる。",
-    "flavorText": "回収票 No.44\n品名：王様の休日\n状態：それでもピンを抜かれる。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
-    "flavorType": "回収報告"
+    "flavorText": "プレイ記録 No.044「王様の休日」\n\n説明を読む前に画面へ触れた。それでもピンを抜かれる。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様の休日 をプレイ完了。それでもピンを抜かれる。"
+    }
   },
   {
     "id": "AD_045",
@@ -1515,8 +1840,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "FINALではない。",
-    "flavorText": "「王様FINALっぽい何か」と書かれた看板を、旅人は疑わずにくぐった。\n\nFINALではない。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
-    "flavorType": "寓話"
+    "flavorText": "プレイ記録 No.045「王様FINALっぽい何か」\n\n説明を読む前に画面へ触れた。FINALではない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様FINALっぽい何か をプレイ完了。FINALではない。"
+    }
   },
   {
     "id": "AD_046",
@@ -1551,8 +1881,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "だいたい×2。",
-    "flavorText": "社内通達：＋10か×2か、それが問題だ\n\n本件に関する質問は受け付けます。回答は受け付けません。\n\n帳簿には「＋10」とだけ残っている。",
-    "flavorType": "企業文書"
+    "flavorText": "プレイ記録 No.046「＋10か×2か、それが問題だ」\n\n説明を読む前に画面へ触れた。だいたい×2。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "＋10か×2か、それが問題だ をプレイ完了。だいたい×2。"
+    }
   },
   {
     "id": "AD_047",
@@ -1584,8 +1919,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "端末は増やさない。",
-    "flavorText": "棒人間、増えすぎるを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\nゲート通過。端末は増やさない。",
-    "flavorType": "不気味"
+    "flavorText": "プレイ記録 No.047「棒人間、増えすぎる」\n\n説明を読む前に画面へ触れた。端末は増やさない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "棒人間、増えすぎる をプレイ完了。端末は増やさない。"
+    }
   },
   {
     "id": "AD_048",
@@ -1620,8 +1960,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "人口問題。",
-    "flavorText": "数字ゲートの担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「1人」とだけ残っている。",
-    "flavorType": "言葉遊び"
+    "flavorText": "プレイ記録 No.048「1人から999999人へ」\n\n説明を読む前に画面へ触れた。人口問題。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "1人から999999人へ をプレイ完了。人口問題。"
+    }
   },
   {
     "id": "AD_049",
@@ -1655,8 +2000,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "社会が崩壊。",
-    "flavorText": "★★★★★\n×100を選んだだけなのにのおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
-    "flavorType": "口コミ"
+    "flavorText": "プレイ記録 No.049「×100を選んだだけなのに」\n\n説明を読む前に画面へ触れた。社会が崩壊。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "×100を選んだだけなのに をプレイ完了。社会が崩壊。"
+    }
   },
   {
     "id": "AD_050",
@@ -1690,8 +2040,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "数学への挑戦。",
-    "flavorText": "実験50日目。被験者は「＋5の方が強かった」を信じ続けている。\n\n数学への挑戦。\n\n対照群も、なぜか同じ広告を見ていた。",
-    "flavorType": "実験記録"
+    "flavorText": "プレイ記録 No.050「＋5の方が強かった」\n\n説明を読む前に画面へ触れた。数学への挑戦。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "＋5の方が強かった をプレイ完了。数学への挑戦。"
+    }
   },
   {
     "id": "AD_051",
@@ -1726,8 +2081,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "所要時間12秒。",
-    "flavorText": "私はレベル1から宇宙王へを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\nゲート通過。所要時間12秒。",
-    "flavorType": "独白"
+    "flavorText": "プレイ記録 No.051「レベル1から宇宙王へ」\n\n説明を読む前に画面へ触れた。所要時間12秒。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "レベル1から宇宙王へ をプレイ完了。所要時間12秒。"
+    }
   },
   {
     "id": "AD_052",
@@ -1761,8 +2121,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "数字とは何だったのか。",
-    "flavorText": "この町では、LV.9999なのに弱いを見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
-    "flavorType": "噂話"
+    "flavorText": "プレイ記録 No.052「LV.9999なのに弱い」\n\n説明を読む前に画面へ触れた。数字とは何だったのか。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "LV.9999なのに弱い をプレイ完了。数字とは何だったのか。"
+    }
   },
   {
     "id": "AD_053",
@@ -1794,8 +2159,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告なので。",
-    "flavorText": "53日目。敵が急に巨大化しましたにまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
-    "flavorType": "日記"
+    "flavorText": "プレイ記録 No.053「敵が急に巨大化しました」\n\n説明を読む前に画面へ触れた。広告なので。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "敵が急に巨大化しました をプレイ完了。広告なので。"
+    }
   },
   {
     "id": "AD_054",
@@ -1827,8 +2197,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "キャリア形成。",
-    "flavorText": "警告：剣を拾ったら社長になった\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
-    "flavorType": "警告文"
+    "flavorText": "プレイ記録 No.054「剣を拾ったら社長になった」\n\n説明を読む前に画面へ触れた。キャリア形成。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "剣を拾ったら社長になった をプレイ完了。キャリア形成。"
+    }
   },
   {
     "id": "AD_055",
@@ -1862,8 +2237,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "開始から20秒。",
-    "flavorText": "むかしむかし、棒人間帝国の終焉を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
-    "flavorType": "昔話"
+    "flavorText": "プレイ記録 No.055「棒人間帝国の終焉」\n\n説明を読む前に画面へ触れた。開始から20秒。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "棒人間帝国の終焉 をプレイ完了。開始から20秒。"
+    }
   },
   {
     "id": "AD_056",
@@ -1895,8 +2275,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "板が増えた。",
-    "flavorText": "本日、ネジを外すだけだったのにと発表されました。\n\n専門家は「板が増えた。」と分析。\n提供元は次の広告へ移動しています。",
-    "flavorType": "ニュース"
+    "flavorText": "プレイ記録 No.056「ネジを外すだけだったのに」\n\n説明を読む前に画面へ触れた。板が増えた。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "ネジを外すだけだったのに をプレイ完了。板が増えた。"
+    }
   },
   {
     "id": "AD_057",
@@ -1928,8 +2313,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "でも入る。",
-    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：そのネジ、そこじゃないの実績です。",
-    "flavorType": "説明書"
+    "flavorText": "プレイ記録 No.057「そのネジ、そこじゃない」\n\n説明を読む前に画面へ触れた。でも入る。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "そのネジ、そこじゃない をプレイ完了。でも入る。"
+    }
   },
   {
     "id": "AD_058",
@@ -1961,8 +2351,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "水の物理は休暇中。",
-    "flavorText": "拝啓、あの日見た水をコップへ導け！を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
-    "flavorType": "手紙"
+    "flavorText": "プレイ記録 No.058「水をコップへ導け！」\n\n説明を読む前に画面へ触れた。水の物理は休暇中。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "水をコップへ導け！ をプレイ完了。水の物理は休暇中。"
+    }
   },
   {
     "id": "AD_059",
@@ -1994,8 +2389,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "犬かどうかも怪しい。",
-    "flavorText": "dragを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\nパズル完了。犬かどうかも怪しい。",
-    "flavorType": "メタ"
+    "flavorText": "プレイ記録 No.059「蜂から犬っぽい何かを守れ」\n\n説明を読む前に画面へ触れた。犬かどうかも怪しい。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "蜂から犬っぽい何かを守れ をプレイ完了。犬かどうかも怪しい。"
+    }
   },
   {
     "id": "AD_060",
@@ -2027,8 +2427,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "だいたい解決しない。",
-    "flavorText": "線を引けば全部解決\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
-    "flavorType": "脱力"
+    "flavorText": "プレイ記録 No.060「線を引けば全部解決」\n\n説明を読む前に画面へ触れた。だいたい解決しない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "線を引けば全部解決 をプレイ完了。だいたい解決しない。"
+    }
   },
   {
     "id": "AD_061",
@@ -2060,8 +2465,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "車が多すぎる。",
-    "flavorText": "第7研究所・資料61。\n駐車場から出たいだけは再現に成功したが、目的は再現できなかった。",
-    "flavorType": "研究記録"
+    "flavorText": "プレイ記録 No.061「駐車場から出たいだけ」\n\n説明を読む前に画面へ触れた。車が多すぎる。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "駐車場から出たいだけ をプレイ完了。車が多すぎる。"
+    }
   },
   {
     "id": "AD_062",
@@ -2093,8 +2503,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "主人公だから。",
-    "flavorText": "王国暦62年、布告「赤い車だけ特別扱い」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
-    "flavorType": "王国史"
+    "flavorText": "プレイ記録 No.062「赤い車だけ特別扱い」\n\n説明を読む前に画面へ触れた。主人公だから。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "赤い車だけ特別扱い をプレイ完了。主人公だから。"
+    }
   },
   {
     "id": "AD_063",
@@ -2126,8 +2541,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "説明はない。",
-    "flavorText": "議題：色を分けろ！何のために？\n結論：パズル完了。説明はない。\n\nなお、誰が提案したかは全員が否定した。",
-    "flavorType": "議事録"
+    "flavorText": "プレイ記録 No.063「色を分けろ！何のために？」\n\n説明を読む前に画面へ触れた。説明はない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "色を分けろ！何のために？ をプレイ完了。説明はない。"
+    }
   },
   {
     "id": "AD_064",
@@ -2159,8 +2579,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "全部同じ穴に見える。",
-    "flavorText": "ボールを正しい穴へ【名】\n信じる直前が最も魅力的に見える現象。\n用例：「全部同じ穴に見える。」",
-    "flavorType": "辞書風"
+    "flavorText": "プレイ記録 No.064「ボールを正しい穴へ」\n\n説明を読む前に画面へ触れた。全部同じ穴に見える。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "ボールを正しい穴へ をプレイ完了。全部同じ穴に見える。"
+    }
   },
   {
     "id": "AD_065",
@@ -2195,8 +2620,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "IQの定義が揺らぐ。",
-    "flavorText": "はじめに広告があり、広告は「3秒で解けるIQ999パズル」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
-    "flavorType": "神話風"
+    "flavorText": "プレイ記録 No.065「3秒で解けるIQ999パズル」\n\n説明を読む前に画面へ触れた。IQの定義が揺らぐ。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "3秒で解けるIQ999パズル をプレイ完了。IQの定義が揺らぐ。"
+    }
   },
   {
     "id": "AD_066",
@@ -2228,8 +2658,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "靴だったことに驚く。",
-    "flavorText": "回収票 No.66\n品名：汚れすぎた靴\n状態：靴だったことに驚く。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
-    "flavorType": "回収報告"
+    "flavorText": "実演記録 No.066「汚れすぎた靴」\n\n担当者は、広告で約束された機能を三つとも試した。靴だったことに驚く。\n\n汚れすぎた靴 の実演完了。靴だったことに驚く。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "実演記録",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "汚れすぎた靴 の実演完了。靴だったことに驚く。"
+    }
   },
   {
     "id": "AD_067",
@@ -2261,8 +2699,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "まず壁がない。",
-    "flavorText": "「この部屋をなんとかして！」と書かれた看板を、旅人は疑わずにくぐった。\n\nまず壁がない。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
-    "flavorType": "寓話"
+    "flavorText": "実演記録 No.067「この部屋をなんとかして！」\n\n担当者は、広告で約束された機能を三つとも試した。まず壁がない。\n\nこの部屋をなんとかして！ の実演完了。まず壁がない。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "使用報告",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "この部屋をなんとかして！ の実演完了。まず壁がない。"
+    }
   },
   {
     "id": "AD_068",
@@ -2294,8 +2740,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "清掃の力。",
-    "flavorText": "社内通達：掃除したら豪邸になった\n\n本件に関する質問は受け付けます。回答は受け付けません。",
-    "flavorType": "企業文書"
+    "flavorText": "実演記録 No.068「掃除したら豪邸になった」\n\n担当者は、広告で約束された機能を三つとも試した。清掃の力。\n\n掃除したら豪邸になった の実演完了。清掃の力。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "掃除したら豪邸になった の実演完了。清掃の力。"
+    }
   },
   {
     "id": "AD_069",
@@ -2329,8 +2783,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "投資助言ではありません。",
-    "flavorText": "貧乏から億万長者まで15秒を閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n診断・選択完了。投資助言ではありません。",
-    "flavorType": "不気味"
+    "flavorText": "実演記録 No.069「貧乏から億万長者まで15秒」\n\n担当者は、広告で約束された機能を三つとも試した。投資助言ではありません。\n\n貧乏から億万長者まで15秒 の実演完了。投資助言ではありません。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "実演記録",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "貧乏から億万長者まで15秒 の実演完了。投資助言ではありません。"
+    }
   },
   {
     "id": "AD_070",
@@ -2364,8 +2826,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "謎のリアリティ。",
-    "flavorText": "変身の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。\n\n帳簿には「所持金3円」とだけ残っている。",
-    "flavorType": "言葉遊び"
+    "flavorText": "実演記録 No.070「所持金3円から始めます」\n\n担当者は、広告で約束された機能を三つとも試した。謎のリアリティ。\n\n所持金3円から始めます の実演完了。謎のリアリティ。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "使用報告",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "所持金3円から始めます の実演完了。謎のリアリティ。"
+    }
   },
   {
     "id": "AD_071",
@@ -2397,8 +2867,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "寝るを選ぶと勝つ。",
-    "flavorText": "★★★★★\n選ぶだけで人生逆転!?のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
-    "flavorType": "口コミ"
+    "flavorText": "実演記録 No.071「選ぶだけで人生逆転!?」\n\n担当者は、広告で約束された機能を三つとも試した。寝るを選ぶと勝つ。\n\n選ぶだけで人生逆転!? の実演完了。寝るを選ぶと勝つ。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "選ぶだけで人生逆転!? の実演完了。寝るを選ぶと勝つ。"
+    }
   },
   {
     "id": "AD_072",
@@ -2430,8 +2908,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "身分制度が軽い。",
-    "flavorText": "実験72日目。被験者は「服を着替えたら王族になった」を信じ続けている。\n\n身分制度が軽い。\n\n対照群も、なぜか同じ広告を見ていた。",
-    "flavorType": "実験記録"
+    "flavorText": "実演記録 No.072「服を着替えたら王族になった」\n\n担当者は、広告で約束された機能を三つとも試した。身分制度が軽い。\n\n服を着替えたら王族になった の実演完了。身分制度が軽い。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "実演記録",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "服を着替えたら王族になった の実演完了。身分制度が軽い。"
+    }
   },
   {
     "id": "AD_073",
@@ -2463,8 +2949,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "建築確認は取っていない。",
-    "flavorText": "私はボロ家から宮殿へを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n診断・選択完了。建築確認は取っていない。",
-    "flavorType": "独白"
+    "flavorText": "実演記録 No.073「ボロ家から宮殿へ」\n\n担当者は、広告で約束された機能を三つとも試した。建築確認は取っていない。\n\nボロ家から宮殿へ の実演完了。建築確認は取っていない。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "使用報告",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "ボロ家から宮殿へ の実演完了。建築確認は取っていない。"
+    }
   },
   {
     "id": "AD_074",
@@ -2498,8 +2992,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "スポンジ一本。",
-    "flavorText": "この町では、掃除力9999を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
-    "flavorType": "噂話"
+    "flavorText": "実演記録 No.074「掃除力9999」\n\n担当者は、広告で約束された機能を三つとも試した。スポンジ一本。\n\n掃除力9999 の実演完了。スポンジ一本。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "掃除力9999 の実演完了。スポンジ一本。"
+    }
   },
   {
     "id": "AD_075",
@@ -2531,8 +3033,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "もはや比較不能。",
-    "flavorText": "75日目。AFTERが別人にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
-    "flavorType": "日記"
+    "flavorText": "実演記録 No.075「AFTERが別人」\n\n担当者は、広告で約束された機能を三つとも試した。もはや比較不能。\n\nAFTERが別人 の実演完了。もはや比較不能。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "実演記録",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "3つの改善を選び、広告のAFTERを完成させよう",
+      "step1": "片づける",
+      "step2": "着替える",
+      "step3": "仕上げる",
+      "verdict": "AFTERが別人 の実演完了。もはや比較不能。"
+    }
   },
   {
     "id": "AD_076",
@@ -2564,8 +3074,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "食物連鎖が速い。",
-    "flavorText": "警告：小魚から海の王へ\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
-    "flavorType": "警告文"
+    "flavorText": "プレイ記録 No.076「小魚から海の王へ」\n\n説明を読む前に画面へ触れた。食物連鎖が速い。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "小魚から海の王へ をプレイ完了。食物連鎖が速い。"
+    }
   },
   {
     "id": "AD_077",
@@ -2597,8 +3112,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "最後は宇宙船になる。",
-    "flavorText": "むかしむかし、魚が魚を超えた日を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
-    "flavorType": "昔話"
+    "flavorText": "プレイ記録 No.077「魚が魚を超えた日」\n\n説明を読む前に画面へ触れた。最後は宇宙船になる。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "魚が魚を超えた日 をプレイ完了。最後は宇宙船になる。"
+    }
   },
   {
     "id": "AD_078",
@@ -2630,8 +3150,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "進化。",
-    "flavorText": "本日、リンゴ＋リンゴ＝なぜかメロンと発表されました。\n\n専門家は「進化。」と分析。\n提供元は次の広告へ移動しています。",
-    "flavorType": "ニュース"
+    "flavorText": "プレイ記録 No.078「リンゴ＋リンゴ＝なぜかメロン」\n\n説明を読む前に画面へ触れた。進化。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "リンゴ＋リンゴ＝なぜかメロン をプレイ完了。進化。"
+    }
   },
   {
     "id": "AD_079",
@@ -2663,8 +3188,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "マージの限界。",
-    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：メロン＋メロン＝冷蔵庫の実績です。",
-    "flavorType": "説明書"
+    "flavorText": "プレイ記録 No.079「メロン＋メロン＝冷蔵庫」\n\n説明を読む前に画面へ触れた。マージの限界。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "メロン＋メロン＝冷蔵庫 をプレイ完了。マージの限界。"
+    }
   },
   {
     "id": "AD_080",
@@ -2696,8 +3226,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "思想。",
-    "flavorText": "拝啓、あの日見た何でも合体させればいいを覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
-    "flavorType": "手紙"
+    "flavorText": "プレイ記録 No.080「何でも合体させればいい」\n\n説明を読む前に画面へ触れた。思想。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "何でも合体させればいい をプレイ完了。思想。"
+    }
   },
   {
     "id": "AD_081",
@@ -2731,8 +3266,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "法的にもスライムではない。",
-    "flavorText": "tapを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n詳しく見ても、法的にもスライムではない。",
-    "flavorType": "メタ"
+    "flavorText": "プレイ記録 No.081「LV.1スライムっぽくない何か」\n\n説明を読む前に画面へ触れた。法的にもスライムではない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "LV.1スライムっぽくない何か をプレイ完了。法的にもスライムではない。"
+    }
   },
   {
     "id": "AD_082",
@@ -2764,8 +3304,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "画面外へ。",
-    "flavorText": "育てたら巨大になりすぎた\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
-    "flavorType": "脱力"
+    "flavorText": "プレイ記録 No.082「育てたら巨大になりすぎた」\n\n説明を読む前に画面へ触れた。画面外へ。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "育てたら巨大になりすぎた をプレイ完了。画面外へ。"
+    }
   },
   {
     "id": "AD_083",
@@ -2799,8 +3344,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "もう成人。",
-    "flavorText": "第7研究所・資料83。\nペット育成 8秒目は再現に成功したが、目的は再現できなかった。\n\n帳簿には「8秒目」とだけ残っている。",
-    "flavorType": "研究記録"
+    "flavorText": "プレイ記録 No.083「ペット育成 8秒目」\n\n説明を読む前に画面へ触れた。もう成人。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "ペット育成 8秒目 をプレイ完了。もう成人。"
+    }
   },
   {
     "id": "AD_084",
@@ -2832,8 +3382,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "生命の神秘。",
-    "flavorText": "王国暦84年、布告「卵から社長が生まれた」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
-    "flavorType": "王国史"
+    "flavorText": "プレイ記録 No.084「卵から社長が生まれた」\n\n説明を読む前に画面へ触れた。生命の神秘。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "卵から社長が生まれた をプレイ完了。生命の神秘。"
+    }
   },
   {
     "id": "AD_085",
@@ -2865,8 +3420,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "最終形態。",
-    "flavorText": "議題：進化先：広告\n結論：詳しく見ても、最終形態。\n\nなお、誰が提案したかは全員が否定した。",
-    "flavorType": "議事録"
+    "flavorText": "プレイ記録 No.085「進化先：広告」\n\n説明を読む前に画面へ触れた。最終形態。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "進化先：広告 をプレイ完了。最終形態。"
+    }
   },
   {
     "id": "AD_086",
@@ -2903,8 +3463,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "惜しいようで何も惜しくない。",
-    "flavorText": "777っぽいもの【名】\n信じる直前が最も魅力的に見える現象。\n用例：「惜しいようで何も惜しくない。」",
-    "flavorType": "辞書風"
+    "flavorText": "プレイ記録 No.086「777っぽいもの」\n\n説明を読む前に画面へ触れた。惜しいようで何も惜しくない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "777っぽいもの をプレイ完了。惜しいようで何も惜しくない。"
+    }
   },
   {
     "id": "AD_087",
@@ -2936,8 +3501,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "温度は常温。",
-    "flavorText": "はじめに広告があり、広告は「超激熱っぽい！」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
-    "flavorType": "神話風"
+    "flavorText": "プレイ記録 No.087「超激熱っぽい！」\n\n説明を読む前に画面へ触れた。温度は常温。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "超激熱っぽい！ をプレイ完了。温度は常温。"
+    }
   },
   {
     "id": "AD_088",
@@ -2969,8 +3539,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "何も当たらない。",
-    "flavorText": "回収票 No.88\n品名：大当たり!? たぶん！\n状態：何も当たらない。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
-    "flavorType": "回収報告"
+    "flavorText": "プレイ記録 No.088「大当たり!? たぶん！」\n\n説明を読む前に画面へ触れた。何も当たらない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "大当たり!? たぶん！ をプレイ完了。何も当たらない。"
+    }
   },
   {
     "id": "AD_089",
@@ -3004,8 +3579,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "使い道：なし。",
-    "flavorText": "「コイン＋999999」と書かれた看板を、旅人は疑わずにくぐった。\n\n使い道：なし。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
-    "flavorType": "寓話"
+    "flavorText": "プレイ記録 No.089「コイン＋999999」\n\n説明を読む前に画面へ触れた。使い道：なし。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "コイン＋999999 をプレイ完了。使い道：なし。"
+    }
   },
   {
     "id": "AD_090",
@@ -3037,8 +3617,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "スロット“風”。",
-    "flavorText": "社内通達：回せ！無料スロット風広告\n\n本件に関する質問は受け付けます。回答は受け付けません。",
-    "flavorType": "企業文書"
+    "flavorText": "プレイ記録 No.090「回せ！無料スロット風広告」\n\n説明を読む前に画面へ触れた。スロット“風”。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "回せ！無料スロット風広告 をプレイ完了。スロット“風”。"
+    }
   },
   {
     "id": "AD_091",
@@ -3070,8 +3655,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "ハズレも光っている。",
-    "flavorText": "全部当たりに見えるルーレットを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n抽選終了。ハズレも光っている。",
-    "flavorType": "不気味"
+    "flavorText": "プレイ記録 No.091「全部当たりに見えるルーレット」\n\n説明を読む前に画面へ触れた。ハズレも光っている。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "全部当たりに見えるルーレット をプレイ完了。ハズレも光っている。"
+    }
   },
   {
     "id": "AD_092",
@@ -3103,8 +3693,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "予想どおり。",
-    "flavorText": "抽選の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。",
-    "flavorType": "言葉遊び"
+    "flavorText": "プレイ記録 No.092「スクラッチしたら広告だった」\n\n説明を読む前に画面へ触れた。予想どおり。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "スクラッチしたら広告だった をプレイ完了。予想どおり。"
+    }
   },
   {
     "id": "AD_093",
@@ -3138,8 +3733,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "1口0円。",
-    "flavorText": "★★★★★\n超絶プレミアム広告パックのおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
-    "flavorType": "口コミ"
+    "flavorText": "プレイ記録 No.093「超絶プレミアム広告パック」\n\n説明を読む前に画面へ触れた。1口0円。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "超絶プレミアム広告パック をプレイ完了。1口0円。"
+    }
   },
   {
     "id": "AD_094",
@@ -3174,8 +3774,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "Rが出る。",
-    "flavorText": "実験94日目。被験者は「SSR大量封入っぽいパック」を信じ続けている。\n\nRが出る。\n\n対照群も、なぜか同じ広告を見ていた。",
-    "flavorType": "実験記録"
+    "flavorText": "プレイ記録 No.094「SSR大量封入っぽいパック」\n\n説明を読む前に画面へ触れた。Rが出る。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "SSR大量封入っぽいパック をプレイ完了。Rが出る。"
+    }
   },
   {
     "id": "AD_095",
@@ -3209,8 +3814,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "在庫概念への挑戦。",
-    "flavorText": "私は残り3口！（増えます）を選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n残り4口！ 本当に増えました。",
-    "flavorType": "独白"
+    "flavorText": "プレイ記録 No.095「残り3口！（増えます）」\n\n説明を読む前に画面へ触れた。在庫概念への挑戦。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "残り3口！（増えます） をプレイ完了。在庫概念への挑戦。"
+    }
   },
   {
     "id": "AD_096",
@@ -3244,8 +3854,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "何の市場かは不明。",
-    "flavorText": "この町では、市場価格999999円相当!?を見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
-    "flavorType": "噂話"
+    "flavorText": "プレイ記録 No.096「市場価格999999円相当!?」\n\n説明を読む前に画面へ触れた。何の市場かは不明。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "市場価格999999円相当!? をプレイ完了。何の市場かは不明。"
+    }
   },
   {
     "id": "AD_097",
@@ -3277,8 +3892,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "カードも広告。",
-    "flavorText": "97日目。幻の広告カード開封にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
-    "flavorType": "日記"
+    "flavorText": "プレイ記録 No.097「幻の広告カード開封」\n\n説明を読む前に画面へ触れた。カードも広告。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "幻の広告カード開封 をプレイ完了。カードも広告。"
+    }
   },
   {
     "id": "AD_098",
@@ -3312,8 +3932,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "まだ42口ある。",
-    "flavorText": "警告：ラストワンじゃない賞\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
-    "flavorType": "警告文"
+    "flavorText": "プレイ記録 No.098「ラストワンじゃない賞」\n\n説明を読む前に画面へ触れた。まだ42口ある。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "操作報告",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "ラストワンじゃない賞 をプレイ完了。まだ42口ある。"
+    }
   },
   {
     "id": "AD_099",
@@ -3347,8 +3972,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "絵柄が少し光る。",
-    "flavorText": "むかしむかし、UR『すごい水』を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
-    "flavorType": "昔話"
+    "flavorText": "プレイ記録 No.099「UR『すごい水』」\n\n説明を読む前に画面へ触れた。絵柄が少し光る。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "UR『すごい水』 をプレイ完了。絵柄が少し光る。"
+    }
   },
   {
     "id": "AD_100",
@@ -3382,8 +4012,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "おめでとう。",
-    "flavorText": "本日、100番記念・何も当たらない祭と発表されました。\n\n専門家は「おめでとう。」と分析。\n提供元は次の広告へ移動しています。",
-    "flavorType": "ニュース"
+    "flavorText": "プレイ記録 No.100「100番記念・何も当たらない祭」\n\n説明を読む前に画面へ触れた。おめでとう。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "100番記念・何も当たらない祭 をプレイ完了。おめでとう。"
+    }
   },
   {
     "id": "AD_101",
@@ -3417,8 +4052,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "だいたい27歳。",
-    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：AIがあなたの年齢を当てますの実績です。",
-    "flavorType": "説明書"
+    "flavorText": "診断カルテ No.101「AIがあなたの年齢を当てます」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。だいたい27歳。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "回答分析",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "AIがあなたの年齢を当てます と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_102",
@@ -3450,8 +4095,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "AIの文字が多い。",
-    "flavorText": "拝啓、あの日見たAIが考えたAI広告を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
-    "flavorType": "手紙"
+    "flavorText": "診断カルテ No.102「AIが考えたAI広告」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。AIの文字が多い。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "診断カルテ",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "AIが考えたAI広告 と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_103",
@@ -3483,8 +4138,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "結果：広告。",
-    "flavorText": "choiceを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n診断・選択完了。結果：広告。",
-    "flavorType": "メタ"
+    "flavorText": "診断カルテ No.103「あなたの広告タイプ診断」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。結果：広告。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "AI所見",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "あなたの広告タイプ診断 と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_104",
@@ -3518,8 +4183,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告を見るタイプ。",
-    "flavorText": "3秒で分かる性格診断\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
-    "flavorType": "脱力"
+    "flavorText": "診断カルテ No.104「3秒で分かる性格診断」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。広告を見るタイプ。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "回答分析",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "3秒で分かる性格診断 と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_105",
@@ -3554,8 +4229,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "1＋1。",
-    "flavorText": "第7研究所・資料105。\nIQ999の人だけ解けますは再現に成功したが、目的は再現できなかった。\n\n帳簿には「IQ999」とだけ残っている。",
-    "flavorType": "研究記録"
+    "flavorText": "診断カルテ No.105「IQ999の人だけ解けます」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。1＋1。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "診断カルテ",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "IQ999の人だけ解けます と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_106",
@@ -3587,8 +4272,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告を見ること。",
-    "flavorText": "王国暦106年、布告「あなたの隠れた才能は？」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
-    "flavorType": "王国史"
+    "flavorText": "診断カルテ No.106「あなたの隠れた才能は？」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。広告を見ること。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "AI所見",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "あなたの隠れた才能は？ と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_107",
@@ -3620,8 +4315,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "毎日コップ。",
-    "flavorText": "議題：AIが選ぶ今日の商品\n結論：診断・選択完了。毎日コップ。\n\nなお、誰が提案したかは全員が否定した。",
-    "flavorType": "議事録"
+    "flavorText": "診断カルテ No.107「AIが選ぶ今日の商品」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。毎日コップ。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "回答分析",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "AIが選ぶ今日の商品 と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_108",
@@ -3653,8 +4358,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "謎の丸。",
-    "flavorText": "未来の顔を予測しました【名】\n信じる直前が最も魅力的に見える現象。\n用例：「謎の丸。」",
-    "flavorType": "辞書風"
+    "flavorText": "診断カルテ No.108「未来の顔を予測しました」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。謎の丸。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "診断カルテ",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "未来の顔を予測しました と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_109",
@@ -3686,8 +4401,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "根拠なし。",
-    "flavorText": "はじめに広告があり、広告は「あなたに最適な広告です」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
-    "flavorType": "神話風"
+    "flavorText": "診断カルテ No.109「あなたに最適な広告です」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。根拠なし。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "AI所見",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "あなたに最適な広告です と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_110",
@@ -3719,8 +4444,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "押せる。",
-    "flavorText": "回収票 No.110\n品名：AI搭載ボタン\n状態：押せる。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
-    "flavorType": "回収報告"
+    "flavorText": "Web考古学標本 No.110「AI搭載ボタン」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。押せる。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "バナー標本",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "今すぐ開く",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "AI搭載ボタン の罠を回避。押せる。"
+    }
   },
   {
     "id": "AD_111",
@@ -3752,8 +4485,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "最後まで広告。",
-    "flavorText": "「知らないと損！→知っても得しない」と書かれた看板を、旅人は疑わずにくぐった。\n\n最後まで広告。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
-    "flavorType": "寓話"
+    "flavorText": "映像広告台本 No.111「知らないと損！→知っても得しない」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。最後まで広告。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "映像台本",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「知らないと損！→知っても得しない」を知らなかった昨日",
+      "scene2": "0:03　最後まで広告。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_112",
@@ -3785,8 +4526,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "今がCM。",
-    "flavorText": "社内通達：衝撃の事実はCMのあと\n\n本件に関する質問は受け付けます。回答は受け付けません。",
-    "flavorType": "企業文書"
+    "flavorText": "広告局速報 No.112「衝撃の事実はCMのあと」\n\n速報音とともに全国へ伝えられた。今がCM。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "速報記録",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 112　広告局から臨時ニュース",
+      "lead": "衝撃の事実はCMのあと",
+      "update1": "現場からの第一報：今がCM。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_113",
@@ -3820,8 +4570,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "4秒。",
-    "flavorText": "この動画を最後まで見てくださいを閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n詳しく見ても、4秒。",
-    "flavorType": "不気味"
+    "flavorText": "映像広告台本 No.113「この動画を最後まで見てください」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。4秒。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "SNS記録",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「この動画を最後まで見てください」を知らなかった昨日",
+      "scene2": "0:03　4秒。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_114",
@@ -3853,8 +4611,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "全員架空。",
-    "flavorText": "動画・SNS風の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。",
-    "flavorType": "言葉遊び"
+    "flavorText": "映像広告台本 No.114「コメント欄が全員絶賛」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。全員架空。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "映像台本",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「コメント欄が全員絶賛」を知らなかった昨日",
+      "scene2": "0:03　全員架空。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_115",
@@ -3886,8 +4652,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告を見ました。",
-    "flavorText": "★★★★★\n人生変わりました！（何が？）のおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
-    "flavorType": "口コミ"
+    "flavorText": "映像広告台本 No.115「人生変わりました！（何が？）」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。広告を見ました。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "視聴記録",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「人生変わりました！（何が？）」を知らなかった昨日",
+      "scene2": "0:03　広告を見ました。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_116",
@@ -3921,8 +4695,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "何がとは言わない。",
-    "flavorText": "実験116日目。被験者は「たった3日でこうなった」を信じ続けている。\n\n何がとは言わない。\n\n対照群も、なぜか同じ広告を見ていた。",
-    "flavorType": "実験記録"
+    "flavorText": "映像広告台本 No.116「たった3日でこうなった」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。何がとは言わない。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "SNS記録",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「たった3日でこうなった」を知らなかった昨日",
+      "scene2": "0:03　何がとは言わない。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_117",
@@ -3954,8 +4736,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告なので教える。",
-    "flavorText": "私は正直、教えたくありませんを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n詳しく見ても、広告なので教える。",
-    "flavorType": "独白"
+    "flavorText": "映像広告台本 No.117「正直、教えたくありません」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。広告なので教える。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "映像台本",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「正直、教えたくありません」を知らなかった昨日",
+      "scene2": "0:03　広告なので教える。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_118",
@@ -3987,8 +4777,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "ランキング公開中。",
-    "flavorText": "この町では、友達には秘密にしてくださいを見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
-    "flavorType": "噂話"
+    "flavorText": "映像広告台本 No.118「友達には秘密にしてください」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。ランキング公開中。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "視聴記録",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「友達には秘密にしてください」を知らなかった昨日",
+      "scene2": "0:03　ランキング公開中。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_119",
@@ -4020,8 +4818,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "若者とは誰か。",
-    "flavorText": "119日目。今、若者の間で話題！にまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
-    "flavorType": "日記"
+    "flavorText": "映像広告台本 No.119「今、若者の間で話題！」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。若者とは誰か。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "SNS記録",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「今、若者の間で話題！」を知らなかった昨日",
+      "scene2": "0:03　若者とは誰か。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_120",
@@ -4055,8 +4861,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "再生数表示だけ。",
-    "flavorText": "警告：1000万再生っぽい動画\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
-    "flavorType": "警告文"
+    "flavorText": "映像広告台本 No.120「1000万再生っぽい動画」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。再生数表示だけ。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "映像台本",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「1000万再生っぽい動画」を知らなかった昨日",
+      "scene2": "0:03　再生数表示だけ。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_121",
@@ -4088,8 +4902,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "重大。",
-    "flavorText": "むかしむかし、警告：広告が不足していますを本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
-    "flavorType": "昔話"
+    "flavorText": "広告局速報 No.121「警告：広告が不足しています」\n\n速報音とともに全国へ伝えられた。重大。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "速報記録",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 121　広告局から臨時ニュース",
+      "lead": "警告：広告が不足しています",
+      "update1": "現場からの第一報：重大。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_122",
@@ -4121,8 +4944,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "更新してください。",
-    "flavorText": "本日、あなたの広告は古くなっていますと発表されました。\n\n専門家は「更新してください。」と分析。\n提供元は次の広告へ移動しています。",
-    "flavorType": "ニュース"
+    "flavorText": "検査ログ No.122「あなたの広告は古くなっています」\n\n端末、通信、広告の順に検査した。更新してください。\n\n異常値を示したのは端末ではなく、あおり文句の濃度だった。",
+    "flavorType": "端末診断",
+    "experienceFormat": "systemScan",
+    "experienceData": {
+      "instruction": "3項目を検査して、警告の正体を突き止めよう",
+      "scan1": "端末の安全性",
+      "scan2": "広告の鮮度",
+      "scan3": "あおり文句の濃度",
+      "verdict": "あなたの広告は古くなっています の原因は、端末ではなく広告でした。"
+    }
   },
   {
     "id": "AD_123",
@@ -4156,8 +4987,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "自己増殖。",
-    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：残り1個！から増える在庫の実績です。",
-    "flavorType": "説明書"
+    "flavorText": "プレイ記録 No.123「残り1個！から増える在庫」\n\n説明を読む前に画面へ触れた。自己増殖。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "残り1個！から増える在庫 をプレイ完了。自己増殖。"
+    }
   },
   {
     "id": "AD_124",
@@ -4189,8 +5025,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "今とは。",
-    "flavorText": "拝啓、あの日見た今だけ！毎日開催を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
-    "flavorType": "手紙"
+    "flavorText": "広告局速報 No.124「今だけ！毎日開催」\n\n速報音とともに全国へ伝えられた。今とは。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "速報記録",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 124　広告局から臨時ニュース",
+      "lead": "今だけ！毎日開催",
+      "update1": "現場からの第一報：今とは。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_125",
@@ -4224,8 +5069,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "終わらない。",
-    "flavorText": "tapを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\n詳しく見ても、終わらない。",
-    "flavorType": "メタ"
+    "flavorText": "広告局速報 No.125「本日最終日・第438日目」\n\n速報音とともに全国へ伝えられた。終わらない。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "取材メモ",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 125　広告局から臨時ニュース",
+      "lead": "本日最終日・第438日目",
+      "update1": "現場からの第一報：終わらない。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_126",
@@ -4259,8 +5113,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "終了しない。",
-    "flavorText": "あと5秒で終了します\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
-    "flavorType": "脱力"
+    "flavorText": "検査ログ No.126「あと5秒で終了します」\n\n端末、通信、広告の順に検査した。終了しない。\n\n異常値を示したのは端末ではなく、あおり文句の濃度だった。",
+    "flavorType": "検査ログ",
+    "experienceFormat": "systemScan",
+    "experienceData": {
+      "instruction": "3項目を検査して、警告の正体を突き止めよう",
+      "scan1": "端末の安全性",
+      "scan2": "広告の鮮度",
+      "scan3": "あおり文句の濃度",
+      "verdict": "あと5秒で終了します の原因は、端末ではなく広告でした。"
+    }
   },
   {
     "id": "AD_127",
@@ -4294,8 +5156,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "永遠の99％。",
-    "flavorText": "第7研究所・資料127。\n99％で止まるアップデートは再現に成功したが、目的は再現できなかった。\n\n帳簿には「99％」とだけ残っている。",
-    "flavorType": "研究記録"
+    "flavorText": "検査ログ No.127「99％で止まるアップデート」\n\n端末、通信、広告の順に検査した。永遠の99％。\n\n異常値を示したのは端末ではなく、あおり文句の濃度だった。",
+    "flavorType": "警告解析",
+    "experienceFormat": "systemScan",
+    "experienceData": {
+      "instruction": "3項目を検査して、警告の正体を突き止めよう",
+      "scan1": "端末の安全性",
+      "scan2": "広告の鮮度",
+      "scan3": "あおり文句の濃度",
+      "verdict": "99％で止まるアップデート の原因は、端末ではなく広告でした。"
+    }
   },
   {
     "id": "AD_128",
@@ -4327,8 +5197,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "ストレージは正常。",
-    "flavorText": "王国暦128年、布告「容量が足りません（広告の）」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
-    "flavorType": "王国史"
+    "flavorText": "検査ログ No.128「容量が足りません（広告の）」\n\n端末、通信、広告の順に検査した。ストレージは正常。\n\n異常値を示したのは端末ではなく、あおり文句の濃度だった。",
+    "flavorType": "端末診断",
+    "experienceFormat": "systemScan",
+    "experienceData": {
+      "instruction": "3項目を検査して、警告の正体を突き止めよう",
+      "scan1": "端末の安全性",
+      "scan2": "広告の鮮度",
+      "scan3": "あおり文句の濃度",
+      "verdict": "容量が足りません（広告の） の原因は、端末ではなく広告でした。"
+    }
   },
   {
     "id": "AD_129",
@@ -4360,8 +5238,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "何を失うのか不明。",
-    "flavorText": "議題：この広告を見逃すと損!?\n結論：詳しく見ても、何を失うのか不明。\n\nなお、誰が提案したかは全員が否定した。",
-    "flavorType": "議事録"
+    "flavorText": "検査ログ No.129「この広告を見逃すと損!?」\n\n端末、通信、広告の順に検査した。何を失うのか不明。\n\n異常値を示したのは端末ではなく、あおり文句の濃度だった。",
+    "flavorType": "検査ログ",
+    "experienceFormat": "systemScan",
+    "experienceData": {
+      "instruction": "3項目を検査して、警告の正体を突き止めよう",
+      "scan1": "端末の安全性",
+      "scan2": "広告の鮮度",
+      "scan3": "あおり文句の濃度",
+      "verdict": "この広告を見逃すと損!? の原因は、端末ではなく広告でした。"
+    }
   },
   {
     "id": "AD_130",
@@ -4393,8 +5279,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告です。",
-    "flavorText": "緊急でも何でもない速報【名】\n信じる直前が最も魅力的に見える現象。\n用例：「広告です。」",
-    "flavorType": "辞書風"
+    "flavorText": "広告局速報 No.130「緊急でも何でもない速報」\n\n速報音とともに全国へ伝えられた。広告です。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "速報記録",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 130　広告局から臨時ニュース",
+      "lead": "緊急でも何でもない速報",
+      "update1": "現場からの第一報：広告です。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_131",
@@ -4424,8 +5319,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "メタ。",
-    "flavorText": "はじめに広告があり、広告は「広告を広告する広告」と告げた。\n\n人はボタンを押した。神々は計測を開始した。",
-    "flavorType": "神話風"
+    "flavorText": "Web考古学標本 No.131「広告を広告する広告」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。メタ。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "バナー標本",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "広告を広告する広告 の罠を回避。メタ。"
+    }
   },
   {
     "id": "AD_132",
@@ -4457,8 +5360,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "正直。",
-    "flavorText": "回収票 No.132\n品名：詳しく見る→詳細はありません\n状態：正直。\n\n返却理由の欄だけ、最初から塗りつぶされていた。",
-    "flavorType": "回収報告"
+    "flavorText": "Web考古学標本 No.132「詳しく見る→詳細はありません」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。正直。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "Web考古学",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "今すぐ開く",
+      "bait2": "同意して閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "詳しく見る→詳細はありません の罠を回避。正直。"
+    }
   },
   {
     "id": "AD_133",
@@ -4488,8 +5399,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "答え：不明。",
-    "flavorText": "「何の商品でしょう？」と書かれた看板を、旅人は疑わずにくぐった。\n\n答え：不明。\n\n疑うことを覚えたころ、入口はもう広告になっていた。",
-    "flavorType": "寓話"
+    "flavorText": "Web考古学標本 No.133「何の商品でしょう？」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。答え：不明。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "誘導調査",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "何の商品でしょう？ の罠を回避。答え：不明。"
+    }
   },
   {
     "id": "AD_134",
@@ -4519,8 +5438,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "内容より輝度。",
-    "flavorText": "社内通達：とにかく光る広告\n\n本件に関する質問は受け付けます。回答は受け付けません。",
-    "flavorType": "企業文書"
+    "flavorText": "Web考古学標本 No.134「とにかく光る広告」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。内容より輝度。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "バナー標本",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "今すぐ開く",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "とにかく光る広告 の罠を回避。内容より輝度。"
+    }
   },
   {
     "id": "AD_135",
@@ -4550,8 +5477,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "端末は揺れない。",
-    "flavorText": "とにかく揺れる広告を閉じた。\n\n翌朝、履歴には「まだ開いている」と記録されていた。\n\n端末は揺れない。",
-    "flavorType": "不気味"
+    "flavorText": "Web考古学標本 No.135「とにかく揺れる広告」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。端末は揺れない。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "Web考古学",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "同意して閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "とにかく揺れる広告 の罠を回避。端末は揺れない。"
+    }
   },
   {
     "id": "AD_136",
@@ -4581,8 +5516,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "説明終了。",
-    "flavorText": "意味不明の担当者は「盛っていない」と言った。\n\n盛ったのは数字ではなく、話のほうらしい。",
-    "flavorType": "言葉遊び"
+    "flavorText": "Web考古学標本 No.136「広告です！！！！！！」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。説明終了。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "誘導調査",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "今すぐ開く",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "広告です！！！！！！ の罠を回避。説明終了。"
+    }
   },
   {
     "id": "AD_137",
@@ -4612,8 +5555,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "まだ見つかっていない。",
-    "flavorText": "★★★★★\nこの広告には意味がありますのおかげで人生が変わりました。\n\nどちら向きに変わったかは、利用規約で回答を控えます。",
-    "flavorType": "口コミ"
+    "flavorText": "Web考古学標本 No.137「この広告には意味があります」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。まだ見つかっていない。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "バナー標本",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "この広告には意味があります の罠を回避。まだ見つかっていない。"
+    }
   },
   {
     "id": "AD_138",
@@ -4643,8 +5594,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "目的達成。",
-    "flavorText": "実験138日目。被験者は「広告を見るための広告」を信じ続けている。\n\n目的達成。\n\n対照群も、なぜか同じ広告を見ていた。",
-    "flavorType": "実験記録"
+    "flavorText": "Web考古学標本 No.138「広告を見るための広告」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。目的達成。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "Web考古学",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "今すぐ開く",
+      "bait2": "同意して閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "広告を見るための広告 の罠を回避。目的達成。"
+    }
   },
   {
     "id": "AD_139",
@@ -4674,8 +5633,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "全品対象。",
-    "flavorText": "私は何も売らないセールを選んだ。\n\n選ばされたのではない。そう書くようにも、選ばされていない。\n\n全品対象。",
-    "flavorType": "独白"
+    "flavorText": "Web考古学標本 No.139「何も売らないセール」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。全品対象。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "誘導調査",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "何も売らないセール の罠を回避。全品対象。"
+    }
   },
   {
     "id": "AD_140",
@@ -4705,8 +5672,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "安心設計。",
-    "flavorText": "この町では、クリックする場所がありませんを見た人ほど黙る。\n\nただし広告欄だけは、以前よりよくしゃべる。",
-    "flavorType": "噂話"
+    "flavorText": "Web考古学標本 No.140「クリックする場所がありません」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。安心設計。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "バナー標本",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "今すぐ開く",
+      "bait2": "あとで閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "クリックする場所がありません の罠を回避。安心設計。"
+    }
   },
   {
     "id": "AD_141",
@@ -4738,8 +5713,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "見つけたら閉じたくない。",
-    "flavorText": "141日目。伝説の閉じるボタンにまた会った。\n昨日とは違う広告だと言われた。\n\n昨日も同じ説明を受けた。",
-    "flavorType": "日記"
+    "flavorText": "Web考古学標本 No.141「伝説の閉じるボタン」\n\n押したくなるボタンと、押してはいけないボタンが同じ色で並ぶ。見つけたら閉じたくない。\n\n無事に戻れた閲覧者だけが、これも広告だったと気づく。",
+    "flavorType": "Web考古学",
+    "experienceFormat": "webTrap",
+    "experienceData": {
+      "instruction": "怪しいページを調べ、本物の終了ボタンを見つけよう",
+      "bait1": "無料で続ける",
+      "bait2": "同意して閉じる",
+      "safe": "広告の仕組みを見る",
+      "verdict": "伝説の閉じるボタン の罠を回避。見つけたら閉じたくない。"
+    }
   },
   {
     "id": "AD_142",
@@ -4771,8 +5754,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "広告を見続けた者の証。",
-    "flavorText": "警告：広告王の王冠\n\n危険の内容は、安全のため非公開です。\n閉じる場合は、まず開いてください。",
-    "flavorType": "警告文"
+    "flavorText": "プレイ記録 No.142「広告王の王冠」\n\n説明を読む前に画面へ触れた。広告を見続けた者の証。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "広告王の王冠 をプレイ完了。広告を見続けた者の証。"
+    }
   },
   {
     "id": "AD_143",
@@ -4806,8 +5794,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "割引額を計算してはいけない。",
-    "flavorText": "むかしむかし、0.01％OFF祭を本当に信じた人がいました。\n\n幸せになったかは不明です。レビューだけは満点でした。",
-    "flavorType": "昔話"
+    "flavorText": "実演記録 No.143「0.01％OFF祭」\n\n担当者は、広告で約束された機能を三つとも試した。割引額を計算してはいけない。\n\n0.01％OFF祭 の実演完了。割引額を計算してはいけない。 売れたのは商品よりも、試したくなる気持ちだった。",
+    "flavorType": "通販検証",
+    "experienceFormat": "productDemo",
+    "experienceData": {
+      "instruction": "商品の3つの機能を試し、誇大さを確かめよう",
+      "step1": "触ってみる",
+      "step2": "比較する",
+      "step3": "価格を見る",
+      "verdict": "0.01％OFF祭 の実演完了。割引額を計算してはいけない。"
+    }
   },
   {
     "id": "AD_144",
@@ -4841,8 +5837,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "誰も買えない。",
-    "flavorText": "本日、幻の残り1個と発表されました。\n\n専門家は「誰も買えない。」と分析。\n提供元は次の広告へ移動しています。",
-    "flavorType": "ニュース"
+    "flavorText": "広告局速報 No.144「幻の残り1個」\n\n速報音とともに全国へ伝えられた。誰も買えない。\n\n取材班が確認できた事実は、広告が予定どおり表示されたことだけだった。",
+    "flavorType": "広告ニュース",
+    "experienceFormat": "newsBulletin",
+    "experienceData": {
+      "instruction": "続報を開いて、見出しの真相を確認しよう",
+      "ticker": "速報 144　広告局から臨時ニュース",
+      "lead": "幻の残り1個",
+      "update1": "現場からの第一報：誰も買えない。",
+      "update2": "専門家は「広告なので落ち着いて」とコメント",
+      "verdict": "続報：緊急性は確認されませんでした。"
+    }
   },
   {
     "id": "AD_145",
@@ -4876,8 +5881,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "名前はまだない。",
-    "flavorText": "使用方法：画面の指示に従ってください。\n失敗した場合：あなたの操作です。\n成功した場合：SSRより上っぽい何かの実績です。",
-    "flavorType": "説明書"
+    "flavorText": "プレイ記録 No.145「SSRより上っぽい何か」\n\n説明を読む前に画面へ触れた。名前はまだない。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "SSRより上っぽい何か をプレイ完了。名前はまだない。"
+    }
   },
   {
     "id": "AD_146",
@@ -4909,8 +5919,18 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "結論：広告だった。",
-    "flavorText": "拝啓、あの日見た広告博士・最終講義を覚えていますか。\n\n私は忘れました。広告のほうは、私を覚えているようです。",
-    "flavorType": "手紙"
+    "flavorText": "診断カルテ No.146「広告博士・最終講義」\n\n三つの質問に正解はない。それでも広告は迷わず性格を決めた。結論：広告だった。\n\n結果より、どの選択肢で迷ったかのほうが本人らしい。",
+    "flavorType": "回答分析",
+    "experienceFormat": "personalityQuiz",
+    "experienceData": {
+      "instruction": "直感で3問答えると、この広告専用の診断結果が出ます",
+      "question1": "広告を閉じるボタンが見つからない。どうする？",
+      "question2": "広告博士・最終講義 と表示された。最初に疑うのは？",
+      "question3": "結果が期待と違ったときの反応は？",
+      "resultA": "慎重派：説明を最後まで読む広告耐性タイプ",
+      "resultB": "直感派：光った場所を先に押す探索タイプ",
+      "resultC": "観察派：広告そのものを楽しむ図鑑タイプ"
+    }
   },
   {
     "id": "AD_147",
@@ -4942,8 +5962,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "長かった。",
-    "flavorText": "pinPullを終えると、広告を遊んだことになる。\n\n広告を閉じると、広告に遊ばれていたことが分かる。\n\nSUCCESS! 王様、ついに助かる。",
-    "flavorType": "メタ"
+    "flavorText": "プレイ記録 No.147「王様、ついに助かる」\n\n説明を読む前に画面へ触れた。長かった。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "プレイ記録",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "王様、ついに助かる をプレイ完了。長かった。"
+    }
   },
   {
     "id": "AD_148",
@@ -4975,8 +6000,13 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "中身：広告。",
-    "flavorText": "究極の広告パック\n\n会議は三時間続いた。\n決まったのは、ボタンを赤くすることだけだった。",
-    "flavorType": "脱力"
+    "flavorText": "プレイ記録 No.148「究極の広告パック」\n\n説明を読む前に画面へ触れた。中身：広告。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "究極の広告パック をプレイ完了。中身：広告。"
+    }
   },
   {
     "id": "AD_149",
@@ -5008,8 +6038,16 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "実際そう。",
-    "flavorText": "第7研究所・資料149。\n最後から2番目っぽい広告は再現に成功したが、目的は再現できなかった。\n\n帳簿には「最後から2番目」とだけ残っている。",
-    "flavorType": "研究記録"
+    "flavorText": "映像広告台本 No.149「最後から2番目っぽい広告」\n\n冒頭三秒で事件が起き、六秒目で奇跡が起きた。実際そう。\n\n映像はそこで終了した。続きより先に、閉じるボタンが現れた。",
+    "flavorType": "SNS記録",
+    "experienceFormat": "storyReel",
+    "experienceData": {
+      "instruction": "タップで3カットの縦型広告を進めよう",
+      "scene1": "0:00　「最後から2番目っぽい広告」を知らなかった昨日",
+      "scene2": "0:03　実際そう。",
+      "scene3": "0:06　そして肝心なことはCMのあとへ",
+      "verdict": "視聴完了。映像は終わりましたが、疑問は続きます。"
+    }
   },
   {
     "id": "AD_150",
@@ -5043,8 +6081,17 @@
     ],
     "unlockCondition": "通常抽選で出現",
     "discoveryText": "あと一つ。",
-    "flavorText": "王国暦150年、布告「広告図鑑、ほぼ完成！」。\n\n民は歓声を上げた。歓声を上げなかった者には、もう一度表示された。",
-    "flavorType": "王国史"
+    "flavorText": "広告検証ファイル No.150「広告図鑑、ほぼ完成！」\n\n見出し、数字、比較条件を一つずつ調べた。あと一つ。\n\n編集部判定：数字は本当でも意味は別問題 判定後も見出しだけは自信満々に点滅している。",
+    "flavorType": "広告検証",
+    "experienceFormat": "factCheck",
+    "experienceData": {
+      "instruction": "広告の主張を3枚の証拠で検証しよう",
+      "claim": "広告図鑑、ほぼ完成！",
+      "evidence1": "広告主資料：あと一つ。",
+      "evidence2": "調査番号 150：比較対象は広告側が選定",
+      "evidence3": "編集部判定：数字は本当でも意味は別問題",
+      "verdict": "検証終了。「広告図鑑、ほぼ完成！」は広告表現として保存されました。"
+    }
   },
   {
     "id": "AD_151",
@@ -5078,7 +6125,12 @@
     ],
     "unlockCondition": "AD_001〜AD_150をすべて発見",
     "discoveryText": "151種類を見つけた者だけが出会える、幻の広告。",
-    "flavorText": "百五十の広告を閉じた者だけが、最後の一匹に会える。\n\nアドゴンは火を吐かない。代わりに、まだ見ていない広告の匂いを吐く。\n\n図鑑は完成した。広告のほうは、そう思っていない。",
-    "flavorType": "議事録"
+    "flavorText": "百五十の広告を越えた先の記録。\n\nプレイ記録 No.151「幻の広告 ― アドゴン」\n\n説明を読む前に画面へ触れた。151種類を見つけた者だけが出会える、幻の広告。\n\n操作の結果は手元で変わったが、広告の自信だけは最初から最後まで最大だった。",
+    "flavorType": "攻略メモ",
+    "experienceFormat": "playable",
+    "experienceData": {
+      "instruction": "画面の対象を直接操作して広告の結末を変えよう",
+      "verdict": "幻の広告 ― アドゴン をプレイ完了。151種類を見つけた者だけが出会える、幻の広告。"
+    }
   }
 ]

@@ -13,6 +13,7 @@ class AdThumbnailConfig {
     required this.secondaryAsset,
     required this.backgroundAsset,
     required this.gameType,
+    required this.experienceFormat,
   });
 
   factory AdThumbnailConfig.forAd(AdDefinition ad) {
@@ -22,6 +23,7 @@ class AdThumbnailConfig {
       secondaryAsset: visual.secondaryAsset,
       backgroundAsset: visual.backgroundAsset,
       gameType: AdMiniGameDefinition.forAd(ad).type,
+      experienceFormat: ad.experienceFormat,
     );
   }
 
@@ -29,6 +31,7 @@ class AdThumbnailConfig {
   final String? secondaryAsset;
   final String backgroundAsset;
   final AdMiniGameType gameType;
+  final AdExperienceFormat experienceFormat;
 }
 
 class AdThumbnail extends StatelessWidget {
@@ -89,7 +92,10 @@ class AdThumbnail extends StatelessWidget {
               Positioned(
                 right: 6,
                 bottom: 6,
-                child: _GameCue(type: config.gameType),
+                child: _ExperienceCue(
+                  gameType: config.gameType,
+                  format: config.experienceFormat,
+                ),
               ),
             ],
           );
@@ -155,13 +161,16 @@ class _SemanticFallback extends StatelessWidget {
   }
 }
 
-class _GameCue extends StatelessWidget {
-  const _GameCue({required this.type});
-  final AdMiniGameType type;
+class _ExperienceCue extends StatelessWidget {
+  const _ExperienceCue({required this.gameType, required this.format});
+  final AdMiniGameType gameType;
+  final AdExperienceFormat format;
 
   @override
   Widget build(BuildContext context) => Container(
-    key: Key('thumbnail-cue-${type.name}'),
+    key: Key(
+      'thumbnail-cue-${format == AdExperienceFormat.playable ? gameType.name : format.name}',
+    ),
     width: 42,
     height: 42,
     alignment: Alignment.center,
@@ -170,41 +179,50 @@ class _GameCue extends StatelessWidget {
       border: Border.all(color: Colors.white, width: 2),
       shape: BoxShape.circle,
     ),
-    child: switch (type) {
-      AdMiniGameType.pinPull => const Icon(
-        Icons.horizontal_rule,
-        color: Colors.white,
-      ),
-      AdMiniGameType.drawPath => const Icon(Icons.gesture, color: Colors.white),
-      AdMiniGameType.dragSort => const Icon(
-        Icons.open_with,
-        color: Colors.white,
-      ),
-      AdMiniGameType.numberGate => const Text(
-        'x2',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
-      ),
-      AdMiniGameType.timing || AdMiniGameType.countdownStop => const Icon(
-        Icons.timer,
-        color: Colors.white,
-      ),
-      AdMiniGameType.scratch => const Icon(
-        Icons.auto_fix_high,
-        color: Colors.white,
-      ),
-      AdMiniGameType.packOpen => const Icon(
-        Icons.swipe_up,
-        color: Colors.white,
-      ),
-      AdMiniGameType.choice => const Icon(Icons.rule, color: Colors.white),
-      AdMiniGameType.finale => const Icon(
-        Icons.workspace_premium,
-        color: Colors.amber,
-      ),
-      AdMiniGameType.tapChallenge ||
-      AdMiniGameType.reveal => const Icon(Icons.touch_app, color: Colors.white),
-    },
+    child: format == AdExperienceFormat.playable
+        ? _gameIcon(gameType)
+        : Icon(_formatIcon(format), color: Colors.white, size: 22),
   );
+
+  Widget _gameIcon(AdMiniGameType type) => switch (type) {
+    AdMiniGameType.pinPull => const Icon(
+      Icons.horizontal_rule,
+      color: Colors.white,
+    ),
+    AdMiniGameType.drawPath => const Icon(Icons.gesture, color: Colors.white),
+    AdMiniGameType.dragSort => const Icon(Icons.open_with, color: Colors.white),
+    AdMiniGameType.numberGate => const Text(
+      'x2',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+    ),
+    AdMiniGameType.timing || AdMiniGameType.countdownStop => const Icon(
+      Icons.timer,
+      color: Colors.white,
+    ),
+    AdMiniGameType.scratch => const Icon(
+      Icons.auto_fix_high,
+      color: Colors.white,
+    ),
+    AdMiniGameType.packOpen => const Icon(Icons.swipe_up, color: Colors.white),
+    AdMiniGameType.choice => const Icon(Icons.rule, color: Colors.white),
+    AdMiniGameType.finale => const Icon(
+      Icons.workspace_premium,
+      color: Colors.amber,
+    ),
+    AdMiniGameType.tapChallenge ||
+    AdMiniGameType.reveal => const Icon(Icons.touch_app, color: Colors.white),
+  };
+
+  IconData _formatIcon(AdExperienceFormat value) => switch (value) {
+    AdExperienceFormat.productDemo => Icons.shopping_bag,
+    AdExperienceFormat.factCheck => Icons.fact_check,
+    AdExperienceFormat.personalityQuiz => Icons.psychology,
+    AdExperienceFormat.storyReel => Icons.smart_display,
+    AdExperienceFormat.newsBulletin => Icons.newspaper,
+    AdExperienceFormat.systemScan => Icons.health_and_safety,
+    AdExperienceFormat.webTrap => Icons.ads_click,
+    AdExperienceFormat.playable => Icons.sports_esports,
+  };
 }
 
 class _LockedThumbnail extends StatelessWidget {

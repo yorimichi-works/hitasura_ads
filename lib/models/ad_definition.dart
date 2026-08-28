@@ -34,6 +34,17 @@ enum AdInteractionType {
   packOpen,
 }
 
+enum AdExperienceFormat {
+  playable,
+  productDemo,
+  factCheck,
+  personalityQuiz,
+  storyReel,
+  newsBulletin,
+  systemScan,
+  webTrap,
+}
+
 enum AdAnimationPreset {
   blink,
   pulse,
@@ -72,6 +83,8 @@ class AdDefinition {
     required this.bgmId,
     required this.targetTags,
     required this.unlockCondition,
+    required this.experienceFormat,
+    required this.experienceData,
   });
 
   factory AdDefinition.fromJson(Map<String, dynamic> json) {
@@ -107,6 +120,13 @@ class AdDefinition {
       bgmId: json['bgmId'] as String?,
       targetTags: List<String>.from(json['targetTags'] as List<dynamic>),
       unlockCondition: json['unlockCondition'] as String,
+      experienceFormat: AdExperienceFormat.values.byName(
+        (json['experienceFormat'] ?? 'playable') as String,
+      ),
+      experienceData: Map<String, String>.from(
+        (json['experienceData'] ?? const <String, dynamic>{})
+            as Map<String, dynamic>,
+      ),
     );
   }
 
@@ -135,6 +155,8 @@ class AdDefinition {
   final String? bgmId;
   final List<String> targetTags;
   final String unlockCondition;
+  final AdExperienceFormat experienceFormat;
+  final Map<String, String> experienceData;
 
   bool get isSecret => number == 151;
   bool get isRare =>
