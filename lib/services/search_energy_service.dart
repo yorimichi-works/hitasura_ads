@@ -13,7 +13,7 @@ class SearchEnergyService {
     : _clock = clock ?? DateTime.now;
 
   static const maxEnergy = 5;
-  static const recoveryInterval = Duration(minutes: 20);
+  static const recoveryInterval = Duration(minutes: 3);
 
   final DateTime Function() _clock;
 

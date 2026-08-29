@@ -38,7 +38,7 @@ store so restart behavior can be checked.
 
 ## Automated coverage
 
-- Search consumption, 20-minute recovery, upper bound, and persistence
+- Search consumption, 3-minute recovery, upper bound, and persistence
 - Rewarded search refill and incomplete-view no-reward behavior
 - Selected catalog unlock without changing search energy
 - No.1 and No.150 unlock support; No.151 rejection

@@ -8,7 +8,7 @@ import 'package:hitasura_ads/state/app_controller.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('consumes one energy and recovers one every 20 minutes', () {
+  test('consumes one energy and recovers one every 3 minutes', () {
     var now = DateTime.utc(2026, 8, 26, 12);
     final service = SearchEnergyService(clock: () => now);
     var state = SearchEnergyState(remaining: 5, recoveryAnchor: now);
@@ -16,7 +16,7 @@ void main() {
     state = service.consume(state)!;
     expect(state.remaining, 4);
 
-    now = now.add(const Duration(minutes: 19, seconds: 59));
+    now = now.add(const Duration(minutes: 2, seconds: 59));
     state = service.synchronize(state);
     expect(state.remaining, 4);
     expect(service.untilNextRecovery(state), const Duration(seconds: 1));
@@ -43,10 +43,10 @@ void main() {
     final service = SearchEnergyService(clock: () => now);
     var state = SearchEnergyState(remaining: 0, recoveryAnchor: now);
 
-    now = now.add(const Duration(minutes: 65));
+    now = now.add(const Duration(minutes: 10));
     state = service.synchronize(state);
     expect(state.remaining, 3);
-    expect(service.untilNextRecovery(state), const Duration(minutes: 15));
+    expect(service.untilNextRecovery(state), const Duration(minutes: 2));
 
     now = now.add(const Duration(days: 2));
     state = service.synchronize(state);
@@ -71,7 +71,7 @@ void main() {
       expect(controller.searchEnergy, 1);
       expect(store.snapshot.searchEnergy, 1);
 
-      now = now.add(const Duration(minutes: 41));
+      now = now.add(const Duration(minutes: 7));
       controller = await AppController.create(
         store: store,
         catalog: catalog,
