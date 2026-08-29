@@ -52,6 +52,8 @@ void main() {
     expect(index, contains('$origin/'));
     expect(index, contains('property="og:title"'));
     expect(index, contains('name="description"'));
+    expect(index, contains('name="google-adsense-account"'));
+    expect(index, contains('src="rewarded_ads.js"'));
     expect(robots, contains('$origin/sitemap.xml'));
     expect(sitemap, contains('<loc>$origin/</loc>'));
     expect(manifest['name'], 'ひたすら広告');
@@ -60,14 +62,23 @@ void main() {
     expect(File('web/og-image.png').lengthSync(), greaterThan(0));
   });
 
-  test('production workflow disables mobile ads on web', () {
-    final workflow = File('.github/workflows/deploy-firebase-hosting.yml')
-        .readAsStringSync();
+  test(
+    'production web uses Ad Placement API while mobile SDK stays disabled',
+    () {
+      final workflow = File('.github/workflows/deploy-firebase-hosting.yml')
+          .readAsStringSync();
+      final rewardedBridge = File('web/rewarded_ads.js').readAsStringSync();
 
-    expect(workflow, contains('flutter analyze'));
-    expect(workflow, contains('flutter test'));
-    expect(workflow, contains('flutter build web --release --base-href /'));
-    expect(workflow, contains('--dart-define=ADMOB_MODE=disabled'));
-    expect(workflow, contains('channelId: live'));
-  });
+      expect(workflow, contains('flutter analyze'));
+      expect(workflow, contains('flutter test'));
+      expect(workflow, contains('flutter build web --release --base-href /'));
+      expect(workflow, contains('--dart-define=ADMOB_MODE=disabled'));
+      expect(workflow, contains('channelId: live'));
+      expect(rewardedBridge, contains('type: "reward"'));
+      expect(rewardedBridge, contains('adViewed'));
+      expect(rewardedBridge, contains('adDismissed'));
+      expect(rewardedBridge, contains('adBreakDone'));
+      expect(rewardedBridge, contains('ca-pub-3186852093801241'));
+    },
+  );
 }

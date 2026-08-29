@@ -4,8 +4,8 @@
 
 | Purpose | Entry point | Reward condition | Result |
 | --- | --- | --- | --- |
-| Search recovery | Home sponsor button | `onUserEarnedReward` | Search energy becomes 5/5 |
-| Catalog unlock | Locked No.1-150 detail | `onUserEarnedReward` | Only the selected ad is discovered |
+| Search recovery | Home sponsor button | Mobile: `onUserEarnedReward`; Web: `adViewed` | Search energy becomes 5/5 |
+| Catalog unlock | Locked No.1-150 detail | Mobile: `onUserEarnedReward`; Web: `adViewed` | Only the selected ad is discovered |
 
 `RewardPurpose.restoreSearchEnergy` and `RewardPurpose.unlockAd(adId)` remain
 separate through the full UI flow. No.151 has no reward button and is also
@@ -17,9 +17,11 @@ rejected by `AppController.unlockAdWithReward`.
   `ca-app-pub-3940256099942544/5224354917`
 - iOS debug: Google official rewarded test ID
   `ca-app-pub-3940256099942544/1712485313`
-- Web debug: clearly labelled in-app pseudo reward using the same reward
-  application path
-- Release: no debug controls or Web pseudo reward
+- Web localhost: Google Ad Placement API official test mode
+  (`data-adbreak-test="on"`); no real ad requests
+- Web production: AdSense Ad Placement API rewarded inventory; test mode is
+  never enabled on the production hostname
+- Release: no pseudo reward implementation
 
 ## Debug controls
 
@@ -40,7 +42,7 @@ store so restart behavior can be checked.
 - Rewarded search refill and incomplete-view no-reward behavior
 - Selected catalog unlock without changing search energy
 - No.1 and No.150 unlock support; No.151 rejection
-- Web debug pseudo reward concurrency guard and ready-state restoration
+- Web reward viewed, dismissed, no-fill, and concurrency callbacks
 - Debug catalog bulk and individual state controls
 
 Local `dart analyze` passes. Flutter tests and release Web build are also run by

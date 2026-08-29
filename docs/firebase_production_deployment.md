@@ -94,14 +94,25 @@ flutter build appbundle --release `
 
 iOSは `ADMOB_IOS_REWARDED_ID` を使用する。IDをソースコードへコミットしない。
 
-### 無効化
+### Flutter Web
+
+WebはGoogle Mobile Ads SDKを無効化し、AdSenseのAd Placement APIを使用する。
+`web/rewarded_ads.js`は、本番ホストでは実広告、`localhost`ではGoogle公式
+テスト広告を要求する。報酬は`adViewed`の受信時だけ付与する。
+
+AdSense側でサイト審査、広告配信、プライバシーとメッセージの設定が完了して
+いない場合や広告在庫がない場合は、アプリは報酬を付与せず「利用できない」と
+表示する。
+
+### モバイルSDKの無効化
 
 ```powershell
 flutter build web --release --dart-define=ADMOB_MODE=disabled
 ```
 
 Releaseビルドで `ADMOB_MODE` を省略した場合も安全側の `disabled` になる。
-Flutter WebではGoogle Mobile AdsのモバイルSDKを呼ばない。
+Flutter WebではGoogle Mobile AdsのモバイルSDKを呼ばないが、Web用Ad Placement
+APIは独立して動作する。
 
 ## ローカル確認
 

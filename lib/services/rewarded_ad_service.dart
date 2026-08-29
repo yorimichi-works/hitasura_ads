@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'rewarded_ad_web_bridge_stub.dart'
+    if (dart.library.js_interop) 'rewarded_ad_web_bridge_web.dart';
+
 enum RewardedAdResult { rewarded, notRewarded, unavailable, loadFailed }
 
 enum AdNetworkMode { disabled, test, production }
@@ -22,11 +25,10 @@ abstract class RewardedAdService extends ChangeNotifier {
   bool get isSupported;
   bool get usesTestAds;
   Future<void> initialize();
-  Future<RewardedAdResult> show();
+  Future<RewardedAdResult> show({String placementName = 'reward'});
 }
 
-/// Debug-only stand-in for platforms where the Google Mobile Ads SDK cannot
-/// display rewarded ads, notably Flutter Web.
+/// Debug-only stand-in used by isolated widget and service tests.
 class DebugRewardedAdService extends RewardedAdService {
   RewardedAdStatus _status = RewardedAdStatus.ready;
   bool _showing = false;
@@ -47,7 +49,7 @@ class DebugRewardedAdService extends RewardedAdService {
   }
 
   @override
-  Future<RewardedAdResult> show() async {
+  Future<RewardedAdResult> show({String placementName = 'reward'}) async {
     if (!kDebugMode) return RewardedAdResult.unavailable;
     if (_showing || _status != RewardedAdStatus.ready) {
       return RewardedAdResult.loadFailed;
@@ -60,6 +62,63 @@ class DebugRewardedAdService extends RewardedAdService {
     _setStatus(RewardedAdStatus.ready);
     debugPrint('[RewardedAd] WEB DEBUG pseudo reward earned');
     return RewardedAdResult.rewarded;
+  }
+
+  void _setStatus(RewardedAdStatus value) {
+    if (_status == value) return;
+    _status = value;
+    notifyListeners();
+  }
+}
+
+class WebRewardedAdService extends RewardedAdService {
+  WebRewardedAdService({WebRewardedAdBridge? bridge, bool? isWeb})
+    : _bridge = bridge ?? WebRewardedAdBridge(),
+      _isWeb = isWeb ?? kIsWeb;
+
+  final WebRewardedAdBridge _bridge;
+  final bool _isWeb;
+  RewardedAdStatus _status = RewardedAdStatus.idle;
+  bool _showing = false;
+
+  @override
+  RewardedAdStatus get status =>
+      isSupported ? _status : RewardedAdStatus.unsupported;
+
+  @override
+  bool get isSupported => _isWeb && _bridge.isSupported;
+
+  @override
+  bool get usesTestAds => isSupported && _bridge.usesTestAds;
+
+  @override
+  Future<void> initialize() async {
+    _setStatus(
+      isSupported ? RewardedAdStatus.ready : RewardedAdStatus.unsupported,
+    );
+  }
+
+  @override
+  Future<RewardedAdResult> show({String placementName = 'reward'}) async {
+    if (!isSupported) return RewardedAdResult.unavailable;
+    if (_showing) return RewardedAdResult.loadFailed;
+    _showing = true;
+    _setStatus(RewardedAdStatus.showing);
+    try {
+      final result = await _bridge.show(placementName);
+      return switch (result) {
+        'rewarded' => RewardedAdResult.rewarded,
+        'notRewarded' => RewardedAdResult.notRewarded,
+        'unavailable' => RewardedAdResult.unavailable,
+        _ => RewardedAdResult.loadFailed,
+      };
+    } on Object catch (error) {
+      if (kDebugMode) debugPrint('[RewardedAd] WEB failed: $error');
+      return RewardedAdResult.loadFailed;
+    } finally {
+      _showing = false;
+      _setStatus(RewardedAdStatus.ready);
+    }
   }
 
   void _setStatus(RewardedAdStatus value) {
@@ -185,7 +244,7 @@ class GoogleRewardedAdService extends RewardedAdService {
   }
 
   @override
-  Future<RewardedAdResult> show() async {
+  Future<RewardedAdResult> show({String placementName = 'reward'}) async {
     if (!isSupported) return RewardedAdResult.unavailable;
     if (status == RewardedAdStatus.failed || status == RewardedAdStatus.idle) {
       await initialize();

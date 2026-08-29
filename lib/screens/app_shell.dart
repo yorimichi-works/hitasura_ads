@@ -36,9 +36,7 @@ class _AppShellState extends State<AppShell> {
     super.initState();
     _rewardedAds =
         widget.rewardedAdService ??
-        (kDebugMode && kIsWeb
-            ? DebugRewardedAdService()
-            : GoogleRewardedAdService());
+        (kIsWeb ? WebRewardedAdService() : GoogleRewardedAdService());
     _rewardedAds.addListener(_onRewardStatusChanged);
     unawaited(_rewardedAds.initialize());
     _energyTicker = Timer.periodic(const Duration(seconds: 1), (_) async {
@@ -142,7 +140,7 @@ class _AppShellState extends State<AppShell> {
     var rewardApplied = false;
     AdDefinition? unlockedAd;
     try {
-      result = await _rewardedAds.show();
+      result = await _rewardedAds.show(placementName: purpose.placementName);
       if (result == RewardedAdResult.rewarded) {
         switch (purpose.type) {
           case RewardPurposeType.restoreSearchEnergy:
@@ -213,7 +211,13 @@ class _AppShellState extends State<AppShell> {
                 key: const Key('debug-ad-environment'),
                 leading: const Icon(Icons.science_outlined),
                 title: const Text('Ad Environment: TEST'),
-                subtitle: Text(kIsWeb ? 'WEB DEBUG 疑似リワード' : 'Google公式テスト広告ID'),
+                subtitle: Text(
+                  kIsWeb
+                      ? (_rewardedAds.usesTestAds
+                            ? 'Google公式Webテスト広告'
+                            : 'Google AdSense リワード広告')
+                      : 'Google公式テスト広告ID',
+                ),
               ),
               ListTile(
                 leading: const Icon(Icons.battery_5_bar),

@@ -186,6 +186,7 @@ void main() {
 
     expect(controller.searchEnergy, 5);
     expect(rewardedAds.showCount, 1);
+    expect(rewardedAds.placementNames, ['restore_search_energy']);
     expect(find.byKey(const Key('rewarded-ad-debug-status')), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
   });
@@ -235,6 +236,7 @@ void main() {
       expect(controller.discoveredCount, 1);
       expect(controller.searchEnergy, 2);
       expect(rewardedAds.showCount, 1);
+      expect(rewardedAds.placementNames, ['unlock_ad_001']);
       await tester.pumpWidget(const SizedBox.shrink());
     },
   );
@@ -387,6 +389,7 @@ class _FakeRewardedAdService extends RewardedAdService {
 
   final RewardedAdResult result;
   int showCount = 0;
+  final List<String> placementNames = [];
 
   @override
   RewardedAdStatus get status => RewardedAdStatus.ready;
@@ -401,8 +404,9 @@ class _FakeRewardedAdService extends RewardedAdService {
   Future<void> initialize() async {}
 
   @override
-  Future<RewardedAdResult> show() async {
+  Future<RewardedAdResult> show({String placementName = 'reward'}) async {
     showCount += 1;
+    placementNames.add(placementName);
     return result;
   }
 }
