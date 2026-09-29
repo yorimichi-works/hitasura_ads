@@ -221,9 +221,13 @@ class G070 extends MiniGame {
     for (var i = 0; i < 3; i++) {
       final x = _srcX(i);
       final w = _windUp[i];
-      D.person(c, Offset(x, 190), 70, _shirts[i],
-          face: w > 0 ? Face.angry : Face.smug, armsUp: w > 0 ? 1 : 0, hair: const Color(0xFF2A1A10));
-      if (w > 0) _ball(c, Offset(x - 4, 190 - 70 - 6 - w * 8), 13);
+      D.person(c, Offset(x, 192), 84, _shirts[i],
+          face: w > 0 ? Face.angry : Face.smug,
+          armsUp: w > 0 ? 1 : 0,
+          hair: const Color(0xFF2A1A10),
+          running: true,
+          run: .5 + sin(_t * 3 + i) * .2);
+      if (w > 0) _ball(c, Offset(x - 4, 192 - 84 - 8 - w * 10), 15);
     }
 
     // balls in flight (far ones first)
@@ -305,8 +309,8 @@ class G070 extends MiniGame {
         face: won ? Face.happy : (danger ? Face.shocked : Face.neutral),
         hair: const Color(0xFFE0B040),
         armsUp: won ? 1 : (danger ? .6 : 0),
-        running: _hop > .1,
-        run: _t * 20);
+        running: true,
+        run: _hop > .1 ? _t * 20 : .55);
     c.restore();
     if (danger && !won) {
       // sweat drops

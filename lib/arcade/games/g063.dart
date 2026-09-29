@@ -185,9 +185,11 @@ class G063 extends MiniGame {
       }
     }
 
+    final crashed = _resolved && !_caught;
     _drawHands(c, back: true);
-    _drawPhone(c);
+    if (!crashed) _drawPhone(c);
     _drawHands(c, back: false);
+    if (crashed) _drawPhone(c);
 
     if (host.time < 1.8 && !_resolved) {
       D.hand(c, Offset(_handsX + 40, 590), _t, size: 38);

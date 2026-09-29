@@ -63,7 +63,7 @@ class G122 extends MiniGame {
   void _spawn() {
     final m = (_stage - 1) * _perStage + _killsInStage;
     if (_boss) {
-      _maxHp = max(4000.0, _estDps * 4.2);
+      _maxHp = max(4000.0, _estDps * 5);
       _kind = 99;
       _bossT = _bossTime;
     } else {

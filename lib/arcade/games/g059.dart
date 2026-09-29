@@ -79,10 +79,10 @@ class G059 extends MiniGame {
       final p = _pl[i];
       p.think -= dt;
       if (p.think <= 0) {
-        p.think = (i == 3 ? .45 : .25) * rand(.8, 1.3);
+        p.think = (i == 3 ? .5 : .35) * rand(.8, 1.3);
         p.goal = _cpuGoal(p);
       }
-      final sp = (i == 1 ? 285.0 : (i == 2 ? 265.0 : 215.0)) * sqrt(host.speed);
+      final sp = (i == 1 ? 195.0 : (i == 2 ? 190.0 : 170.0)) * sqrt(host.speed);
       _move(p, p.goal, sp, dt);
     }
 
@@ -155,7 +155,10 @@ class G059 extends MiniGame {
       final reach = dx / 260;
       if (it.kind == 3) continue;
       final v = _value[it.kind].toDouble();
-      final score = reach < tFall ? v * 3 - dx * .02 : v - dx * .05 - 3;
+      var score = reach < tFall ? v * 3 - dx * .02 : v - dx * .05 - 3;
+      // each rival works its own patch of sidewalk
+      const home = [180.0, 180.0, 90.0, 270.0];
+      score -= (it.pos.dx - home[p.id]).abs() * (p.id == 1 ? .01 : .03);
       if (score > bestScore) {
         bestScore = score;
         bestX = it.pos.dx;
@@ -428,7 +431,7 @@ class G059 extends MiniGame {
       }
       D.text(c, '${p.shown.round()}', Offset(322, y + 1), size: 16, color: Pal.white, stroke: Pal.ink, strokeWidth: 4);
       if (p.money == top && top > 0) {
-        final cx = 44 + max(w, 18.0) - 4;
+        final double cx = 44 + (w < 18 ? 18.0 : w) - 4;
         c.drawPath(
             Path()
               ..moveTo(cx - 8, y - 6)

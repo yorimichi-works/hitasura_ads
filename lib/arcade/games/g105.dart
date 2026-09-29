@@ -41,7 +41,7 @@ class G105 extends MiniGame {
     scene.fogColor = const Color(0xFFE89AB0);
     scene.fogNear = 30;
     scene.fogFar = 80;
-    const w1 = Color(0xFFFFFFFF), w2 = Color(0xFFE6EEFF), w3 = Color(0xFFCAD6F4);
+    const w1 = Color(0xFFFFFFFF), w2 = Color(0xFFFFD6E8), w3 = Color(0xFFFF8AB8);
     _plane = Mesh([
       const V3(0, 0, 1.3), // 0 nose
       const V3(-1.05, .18, -.9), // 1 left tip
@@ -143,28 +143,36 @@ class G105 extends MiniGame {
       ..add(Face3([a, b, c, dd], col))
       ..add(Face3([ff, e, hh, g], col))
       ..add(Face3([b, ff, g, c], dark));
-    // facade grid (faces -x)
-    final nz = max(2, (d / 1.7).round()), ny = max(3, (h / 1.9).round());
-    final base = v.length;
-    for (var j = 0; j <= ny; j++) {
-      for (var i = 0; i <= nz; i++) {
-        v.add(V3(x0, h * j / ny, z0 + d * i / nz));
-      }
+    // facade (faces -x): per floor a wall band + a row of windows between piers
+    final nw = max(2, (d / 2.2).round());
+    final floorH = 1.9;
+    final floors = max(3, (h / floorH).floor());
+    final fh = h / floors;
+    void quad(double ya, double yb, double za, double zb, Color cc) {
+      final q0 = add(V3(x0, ya, za)), q1 = add(V3(x0, yb, za)), q2 = add(V3(x0, yb, zb)), q3 = add(V3(x0, ya, zb));
+      f.add(Face3([q0, q1, q2, q3], cc));
     }
+
     final lit = [const Color(0xFFFFD27A), const Color(0xFFFFE7A8), const Color(0xFF7AE8FF), const Color(0xFFFF9AD0)];
-    for (var j = 0; j < ny; j++) {
-      for (var i = 0; i < nz; i++) {
-        final q = base + j * (nz + 1) + i;
-        Color cc;
-        if (j == 0) {
-          cc = chance(.5) ? const Color(0xFF3A2A50) : Color.lerp(col, Pal.ink, .5)!;
-        } else if ((i + j) % 2 == 0 || chance(.2)) {
-          cc = Color.lerp(col, const Color(0xFF3A2A60), .15)!;
-        } else {
-          cc = chance(.55) ? pick(lit) : const Color(0xFF3B3566);
-        }
-        f.add(Face3([q, q + nz + 1, q + nz + 2, q + 1], cc));
+    final wall = Color.lerp(col, const Color(0xFF3A2A60), .1)!;
+    final pier = d / (nw * 3 + 1);
+    for (var j = 0; j < floors; j++) {
+      final fy = j * fh;
+      if (j == 0) {
+        quad(fy, fy + fh, z0, z1, Color.lerp(col, Pal.ink, .45)!);
+        continue;
       }
+      final wy0 = fy + fh * .28, wy1 = fy + fh * .9;
+      quad(fy, wy0, z0, z1, wall);
+      quad(wy1, fy + fh, z0, z1, wall);
+      var z = z0;
+      for (var i = 0; i < nw; i++) {
+        quad(wy0, wy1, z, z + pier, wall);
+        z += pier;
+        quad(wy0, wy1, z, z + pier * 2, chance(.6) ? pick(lit) : const Color(0xFF3B3566));
+        z += pier * 2;
+      }
+      quad(wy0, wy1, z, z1, wall);
     }
     final m = Mesh(v, f);
     // fix normals: all faces should point outward from the center
@@ -374,7 +382,7 @@ class G105 extends MiniGame {
         case _ObT.billboard:
           final h = o.top - o.pos.y;
           scene.add(Mesh.box(o.halfW * 2, h, .35, o.color, colors: [
-            o.color, o.color, Pal.white, o.color, Color.lerp(o.color, Pal.ink, .3)!, Color.lerp(o.color, Pal.ink, .3)!
+            o.color, o.color, Color.lerp(o.color, Pal.white, .55)!, o.color, Color.lerp(o.color, Pal.ink, .3)!, Color.lerp(o.color, Pal.ink, .3)!
           ]), pos: o.pos + V3(0, h / 2, 0));
           final postH = 14 - o.top;
           final sideX = o.pos.x.sign * (_street + 1.1);
@@ -448,7 +456,7 @@ class G105 extends MiniGame {
 
   void _adText(Canvas c, Offset s, double k, _Ob o) {
     final size = (k * .9).clamp(3.0, 70.0);
-    D.text(c, host.tr('sale', 'SALE'), s, size: size, color: o.color, stroke: Pal.ink, strokeWidth: size * .15);
+    D.text(c, host.tr('sale', 'SALE'), s, size: size, color: Pal.white, stroke: Pal.red, strokeWidth: size * .18);
   }
 
   Mesh _streetMesh(double fz) {

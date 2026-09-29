@@ -82,8 +82,8 @@ class G016 extends MiniGame {
       ..add(_Node(const Offset(52, 548), false))
       ..add(_Node(const Offset(308, 190), true))
       ..add(_Node(const Offset(308, 548), true));
-    const homes = [Offset(152, 438), Offset(208, 438), Offset(132, 452), Offset(228, 452)];
-    for (var i = 0; i < 4; i++) {
+    const homes = [Offset(152, 440), Offset(208, 440), Offset(180, 454)];
+    for (var i = 0; i < 3; i++) {
       _workers.add(_Worker(homes[i]));
     }
     for (var i = 0; i < 150; i++) {
@@ -97,21 +97,14 @@ class G016 extends MiniGame {
   // ------------------------------------------------------------ update ---
 
   @override
-  double _botT = 0;
   void update(double dt) {
     _t += dt;
-    _botT += dt;
-    if (_botT > .3 && !host.finished) { _botT = 0;
-      final idle = _workers.where((w) => w.state == _WState.idle).length;
-      if (_orders.length < idle) onDown(_nodes[randInt(4)].pos);
-      if (_heat < 80 && _coal + _wood > 0) _feed();
-    }
     final sp = host.speed;
     final bz = _bzAmount;
 
     if (!host.finished) {
       // heat decay
-      final decay = (4.4 + 6.8 * bz) * sp;
+      final decay = (5.6 + 8.4 * bz) * sp;
       _heat = math.max(0, _heat - decay * dt);
 
       // blizzard announcement
@@ -234,7 +227,7 @@ class G016 extends MiniGame {
 
   void _updateWorker(_Worker w, double dt) {
     final sp = host.speed;
-    const speed = 165.0;
+    const speed = 120.0;
     switch (w.state) {
       case _WState.idle:
         w.pos = M.approachO(w.pos, w.home, 8, dt);
@@ -272,7 +265,7 @@ class G016 extends MiniGame {
         }
         if (w.timer >= .75) {
           w.state = _WState.back;
-          w.carry = _nodes[w.node].coal ? 2 : 3;
+          w.carry = _nodes[w.node].coal ? 1 : 2;
           w.carryCoal = _nodes[w.node].coal;
           host.sfx(Sfx.pickup, volume: .6);
         }
@@ -353,18 +346,18 @@ class G016 extends MiniGame {
   void onDown(Offset p) {
     if (host.finished) return;
     // furnace
-    if ((p - (_c + const Offset(0, -18))).distance < 58 ||
+    if ((p - (_c + const Offset(0, -18))).distance < 50 ||
         Rect.fromLTRB(_c.dx - 20, _c.dy - 140, _c.dx + 20, _c.dy - 40).contains(p) ||
-        Rect.fromLTRB(100, 380, 260, 420).contains(p)) {
+        Rect.fromLTRB(106, 384, 254, 416).contains(p)) {
       _feed();
       return;
     }
     // resource nodes
     for (var i = 0; i < _nodes.length; i++) {
       final n = _nodes[i];
-      if ((p - n.pos).distance < 58) {
+      if ((p - n.pos).distance < 46) {
         final busy = _workers.where((w) => w.state != _WState.idle).length;
-        if (_orders.length + busy >= 8) {
+        if (_orders.length + busy >= 6) {
           host.sfx(Sfx.tick);
           return;
         }
@@ -589,7 +582,7 @@ class G016 extends MiniGame {
     D.circle(c, const Offset(28, 86), 8, hot, border: Pal.white, borderWidth: 2);
     final t = _tempC.round();
     final wob = _heat < _freezeLine ? math.sin(_t * 30) * 1.5 : 0.0;
-    D.text(c, '${t > 0 ? '+' : ''}$t°C', Offset(48 + wob, 69), size: 26, color: hot, stroke: Pal.ink, strokeWidth: 6,
+    D.text(c, '${t > 0 ? '+' : ''}$t°', Offset(48 + wob, 69), size: 26, color: hot, stroke: Pal.ink, strokeWidth: 6,
         anchor: Alignment.centerLeft);
 
     // survivors

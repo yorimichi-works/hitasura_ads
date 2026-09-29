@@ -68,7 +68,7 @@ class G118 extends MiniGame {
     }
     switch (_ph) {
       case _Ph.calendar:
-        if (_idle > 2.6 || (_auto && _phT > .6)) _claim();
+        if (_idle > 2.6 || (_auto && _phT > .2)) _claim();
       case _Ph.zoom:
         _zoom = M.approach(_zoom, 1, 7, dt);
         if (_phT > .45) _go(_Ph.box);
@@ -88,7 +88,7 @@ class G118 extends MiniGame {
         if (_stopping) {
           _angV = max(0, _angV - _decel * dt);
           if (_angV <= 0) _landWheel();
-        } else if (_idle > 2.8 || (_auto && _segAt(_angle + _stopDist) == 5)) {
+        } else if (_idle > 2.8 || (_auto && _phT > 1.5 && _segAt(_angle + _stopDist) == 5)) {
           _stopWheel();
         }
         final s = _segAt(_angle);
@@ -250,6 +250,17 @@ class G118 extends MiniGame {
     if (_ph == _Ph.zoom || _ph == _Ph.box) _box(c);
     if (_ph == _Ph.wheel || _ph == _Ph.result) _wheel(c);
 
+    if (_ph == _Ph.trap && _flip >= 1) {
+      final k = M.easeOutBack(((_phT - 1.1) * 3).clamp(0, 1));
+      c.save();
+      c.translate(180, 590);
+      c.scale(k);
+      c.rotate(-.05);
+      D.rrect(c, Rect.fromCenter(center: Offset.zero, width: 250, height: 58), 10, Pal.white, border: Pal.pink, borderWidth: 4);
+      D.text(c, '${host.tr('day', 'Day')} 7:', const Offset(-78, 0), size: 18, color: Pal.ink);
+      D.text(c, host.tr('login_bonus', 'LOGIN BONUS'), const Offset(38, 0), size: 20, color: Pal.pink, maxWidth: 160);
+      c.restore();
+    }
     if (_ph == _Ph.calendar && host.time < 3) {
       D.hand(c, _dayRect(5).center + const Offset(0, 10), _t);
     }
@@ -276,19 +287,31 @@ class G118 extends MiniGame {
   }
 
   void _mascot(Canvas c) {
-    final angry = _ph == _Ph.calendar && _idle > 1.3;
+    if (_ph == _Ph.wheel || _ph == _Ph.result || _ph == _Ph.box) return;
+    final angry = _ph == _Ph.calendar && (_idle > 1.3 || _mascotBounce > .3);
     final trap = _ph == _Ph.trap && _phT > 1.2;
-    final o = Offset(326, 128 - _mascotBounce * 14 + sin(_t * 4) * 3);
-    D.blob(c, o, 24, Pal.pink,
-        face: trap ? Face.smug : (angry || _mascotBounce > .3 && _ph == _Ph.calendar ? Face.angry : Face.happy),
-        squash: 1 + _mascotBounce * .2);
+    final o = Offset(84, 520 - _mascotBounce * 20 + sin(_t * 4) * 4);
+    D.shadow(c, const Offset(84, 572), 80, 14);
+    D.blob(c, o, 44, Pal.pink, face: trap ? Face.smug : (angry ? Face.angry : Face.happy), squash: 1 + _mascotBounce * .2);
     // tiny calendar held up
-    D.rrect(c, Rect.fromCenter(center: o + const Offset(-30, 8), width: 18, height: 18), 3, Pal.white,
-        border: Pal.ink, borderWidth: 2);
-    c.drawRect(Rect.fromCenter(center: o + const Offset(-30, 2), width: 18, height: 5), D.fill(Pal.red));
-    if (angry) {
-      D.text(c, '!!', o + const Offset(-8, -38), size: 22, color: Pal.red, stroke: Pal.ink);
-    }
+    final cal = o + const Offset(40, -30);
+    D.rrect(c, Rect.fromCenter(center: cal, width: 30, height: 30), 5, Pal.white, border: Pal.ink, borderWidth: 2.5);
+    c.drawRect(Rect.fromCenter(center: cal + const Offset(0, -10), width: 28, height: 8), D.fill(Pal.red));
+    D.text(c, trap ? '7' : '6', cal + const Offset(0, 4), size: 14, color: Pal.ink);
+    // speech bubble
+    final r = Rect.fromLTWH(150, 460, 190, 60);
+    D.bubble(c, r, color: Pal.white);
+    c.drawPath(
+        Path()
+          ..moveTo(150, 500)
+          ..lineTo(128, 512)
+          ..lineTo(152, 486)
+          ..close(),
+        D.fill(Pal.white));
+    final msg = trap
+        ? host.tr('see_you_tomorrow', 'See you tomorrow!')
+        : (angry ? '!!!' : host.tr('log_in_every_day', 'Log in every day!'));
+    D.text(c, msg, r.center, size: angry && !trap ? 30 : 17, color: angry && !trap ? Pal.red : Pal.ink, maxWidth: 176);
   }
 
   void _calendar(Canvas c) {
@@ -309,7 +332,7 @@ class G118 extends MiniGame {
       final x = 50 + i * 52.0;
       D.rrect(c, Rect.fromCenter(center: Offset(x, 132), width: 8, height: 22), 4, const Color(0xFFDDDDEE), border: Pal.ink, borderWidth: 2);
     }
-    D.text(c, '${host.tr('login_bonus', 'LOGIN BONUS')}', const Offset(180, 152), size: 18, color: Pal.white, stroke: Pal.ink);
+    D.text(c, host.tr('login_bonus', 'LOGIN BONUS'), const Offset(180, 152), size: 18, color: Pal.white, stroke: Pal.ink);
     for (var i = 0; i < 7; i++) {
       _day(c, i);
     }
@@ -492,7 +515,7 @@ class G118 extends MiniGame {
     c.drawPath(pt, D.stroke(Pal.ink, 3.5));
     D.text(c, host.tr('bonus', 'BONUS'), Offset(_wheelC.dx, _wheelC.dy - _wheelR - 56), size: 28, color: Pal.yellow, stroke: Pal.ink);
     if (land) {
-      D.title(c, '${M.big(_gems)}', const Offset(180, 560), size: 40 + 6 * M.wave(_t, 2), color: Pal.sky);
+      D.title(c, M.big(_gems), const Offset(180, 560), size: 40 + 6 * M.wave(_t, 2), color: Pal.sky);
     }
   }
 }

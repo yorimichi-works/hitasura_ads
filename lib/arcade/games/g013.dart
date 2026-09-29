@@ -241,7 +241,6 @@ class G013 extends MiniGame {
     host.sfx(o.type <= 1 ? Sfx.pop : (o.type <= 3 ? Sfx.chomp : Sfx.hitHeavy),
         volume: .6, rate: 1 + min(_comboN, 12) * .04 - o.size * .08);
     if (_comboN >= 5 && _comboN % 5 == 0) {
-      host.fx.pop('${host.tr('combo', 'COMBO')} x$_comboN', const Offset(180, 170), color: Pal.pink, size: 28);
       host.sfx(Sfx.combo, rate: 1 + _comboN * .02);
     }
     _pulse = min(1, _pulse + .3 + o.size * .2);
@@ -305,7 +304,7 @@ class G013 extends MiniGame {
   void render(Canvas c) {
     D.gradientBg(c, const [Color(0xFF9EDBFF), Color(0xFFBFEFD0), Color(0xFF9AD98A)]);
     final r = _r;
-    final camH = 12.0 + r * 3.0;
+    final camH = 11.0 + r * 4.2;
     scene.cam
       ..center = const Offset(180, 330)
       ..focal = 440

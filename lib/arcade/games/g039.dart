@@ -37,6 +37,7 @@ class G039 extends MiniGame {
   double _badT = 0;
   double _endT = 0;
   bool _won = false;
+  double _nudge = 0;
 
   static final Paint _pp = Paint()..isAntiAlias = false;
   static void _px(Canvas c, double x, double y, double w, double h, Color col) {
@@ -174,6 +175,7 @@ class G039 extends MiniGame {
       _cardErr[i] = M.approach(_cardErr[i], 0, 5, dt);
     }
     _badT = max(0, _badT - dt);
+    _nudge = M.approach(_nudge, 0, 4, dt);
     _chainT -= dt;
     if (_chainT <= 0) _chain = 0;
     for (final b in _blds.values) {
@@ -396,20 +398,11 @@ class G039 extends MiniGame {
   void _tapTile(int c, int r) {
     if (_sel < 0) {
       if (_buildable(c, r)) {
-        // auto pick the priciest thing we can afford — feels like a smart shortcut
-        for (var i = 3; i >= 0; i--) {
-          if (_cash >= _kinds[i].cost) {
-            _sel = i;
-            break;
-          }
-        }
-        if (_sel < 0) {
-          host.sfx(Sfx.buzzer, volume: .4);
-          return;
-        }
-      } else {
-        return;
+        // nothing selected: nudge the build menu
+        _nudge = 1;
+        host.sfx(Sfx.tap, volume: .4);
       }
+      return;
     }
     if (!_buildable(c, r)) {
       _bad = (c, r);
@@ -444,7 +437,7 @@ class G039 extends MiniGame {
 
   @override
   void onTimeUp() {
-    if (_cash >= _target * .85 && _happy >= _needHappy - 10) {
+    if (_cash >= _target * .92 && _happy >= _needHappy - 5) {
       _won = true;
       host.fx.confetti();
       host.win(stars: 1);
@@ -758,6 +751,7 @@ class G039 extends MiniGame {
       if (sel) r = r.shift(Offset(0, -6 - 2 * sin(_selBob * 8)));
       final err = _cardErr[i];
       if (err > .01) r = r.shift(Offset(sin(err * 40) * 5 * err, 0));
+      if (_nudge > .01 && can) r = r.shift(Offset(0, -sin(_nudge * pi * 3 + i) * 8 * _nudge));
       _px(c, r.left, r.top + 5, r.width, r.height, const Color(0xFF0B0818));
       _px(c, r.left, r.top, r.width, r.height, sel ? Pal.yellow : (err > .1 ? Pal.red : const Color(0xFF5B4E99)));
       _px(c, r.left + 4, r.top + 4, r.width - 8, r.height - 8, can ? const Color(0xFF8FD0FF) : const Color(0xFF4A4560));

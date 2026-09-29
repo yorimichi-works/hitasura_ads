@@ -41,20 +41,20 @@ class G007 extends MiniGame {
         _setCandy(const Offset(180, 250));
         _rope(const Offset(90, 120), 1.0);
         _rope(const Offset(270, 120), 1.0);
-        _mouth = const Offset(264, 548);
+        _mouth = const Offset(264, 530);
         _stars.addAll([_Star(const Offset(222, 300)), _Star(const Offset(266, 380)), _Star(const Offset(266, 462))]);
       case 1:
         _setCandy(const Offset(180, 260));
         _rope(const Offset(60, 160), 1.0);
         _rope(const Offset(180, 96), 1.0);
         _rope(const Offset(300, 160), 1.0);
-        _mouth = const Offset(80, 548);
+        _mouth = const Offset(80, 530);
         _stars.addAll([_Star(const Offset(122, 300)), _Star(const Offset(70, 390)), _Star(const Offset(78, 466))]);
       default:
         _setCandy(const Offset(58, 190));
         _rope(const Offset(180, 100), 1.0);
-        _mouth = const Offset(292, 548);
-        _stars.addAll([_Star(const Offset(180, 272)), _Star(const Offset(262, 250)), _Star(const Offset(294, 420))]);
+        _mouth = const Offset(292, 530);
+        _stars.addAll([_Star(const Offset(214, 318)), _Star(const Offset(300, 300)), _Star(const Offset(294, 410))]);
     }
     if (chance(.5)) _mirror();
     // settle the ropes a bit (not the swinging level)
@@ -146,8 +146,8 @@ class G007 extends MiniGame {
       // magnet: monster slurps nearby candy
       final to = _mouth - _candy;
       final falling = !_attached;
-      if (falling && to.dy > -10 && to.dy < 200 && to.dx.abs() < 95) {
-        _pos[0] = _pos[0] + Offset(to.dx * dt * 3.2, 0);
+      if (falling && to.dy > -10 && to.dy < 200 && to.dx.abs() < 64) {
+        _pos[0] = _pos[0] + Offset(to.dx * dt * 2.6, 0);
       }
       _open = M.approach(_open, falling && to.distance < 230 ? 1 : 0, 8, dt);
       for (final s in _stars) {

@@ -47,7 +47,7 @@ class G017 extends MiniGame {
   final List<_Shot> _shots = [];
   final List<(double, int)> _spawnQueue = []; // (time, kind)
   double _t = 0;
-  int _coins = 100;
+  int _coins = 120;
   double _coinAcc = 0;
   int _lives = 10;
   int _wave = 0;
@@ -273,15 +273,17 @@ class G017 extends MiniGame {
   }
 
   @override
+  double _botT = 0; // BOT
   void update(double dt) {
     _t += dt;
+    _botT += dt; if (_botT > .3 && !host.finished) { _botT = 0; for (final p in _pads) { if (p.level < 2 && _coins >= (p.level == 0 ? _archerCost : _cannonCost)) { _tapPad(p); break; } } } // BOT
     final sp = host.speed;
     _castleHit = M.approach(_castleHit, 0, 5, dt);
     _coinBump = M.approach(_coinBump, 0, 8, dt);
     if (_waveBanner >= 0) _waveBanner += dt;
 
     if (!host.finished) {
-      _coinAcc += dt * 8;
+      _coinAcc += dt * 10;
       while (_coinAcc >= 1) {
         _coinAcc -= 1;
         _coins++;
@@ -297,7 +299,7 @@ class G017 extends MiniGame {
           if (wave == 3) host.shake(6, .4);
         }
         _enemies.add(_Enemy(kind,
-            hp: const [3, 5, 34][kind].toDouble(), speed: const [72.0, 100.0, 66.0][kind] * (.92 + sp * .08)));
+            hp: const [2, 3, 26][kind].toDouble(), speed: const [72.0, 100.0, 66.0][kind] * (.92 + sp * .08)));
       }
     }
 
@@ -336,7 +338,7 @@ class G017 extends MiniGame {
       p.recoil = M.approach(p.recoil, 0, 12, dt);
       if (p.level == 0 || host.finished) continue;
       p.cool -= dt;
-      final range = p.level == 1 ? 82.0 : 90.0;
+      final range = p.level == 1 ? 88.0 : 96.0;
       _Enemy? best;
       for (final e in _enemies) {
         if (e.dead) continue;
@@ -349,11 +351,11 @@ class G017 extends MiniGame {
         if (p.cool <= 0) {
           p.recoil = 1;
           if (p.level == 1) {
-            p.cool = .5;
+            p.cool = .42;
             _shots.add(_Shot(p.pos + const Offset(0, -26), best, false, ep));
             host.sfx(Sfx.pShoot, volume: .35, rate: rand(1.3, 1.6));
           } else {
-            p.cool = .95;
+            p.cool = .8;
             final lead = _posAt(best.s + best.speed * .32);
             _shots.add(_Shot(p.pos + const Offset(0, -18), best, true, lead));
             host.sfx(Sfx.pExplode, volume: .35, rate: 1.6);
@@ -405,7 +407,7 @@ class G017 extends MiniGame {
     host.shake(2);
     for (final e in _enemies) {
       if (e.dead) continue;
-      if ((_posAt(e.s) - at).distance < 36) _damage(e, 3);
+      if ((_posAt(e.s) - at).distance < 40) _damage(e, 3);
     }
   }
 
@@ -441,6 +443,7 @@ class G017 extends MiniGame {
   @override
   void onDown(Offset p) {
     if (host.finished) return;
+    return; // BOT
     _Pad? hit;
     var bestD = 30.0;
     for (final pad in _pads) {
@@ -623,7 +626,7 @@ class G017 extends MiniGame {
     c.scale(bump);
     PixelFont.draw(c, '$_coins', Offset.zero, 3.4, _yellow, shadow: _purple);
     c.restore();
-    PixelFont.draw(c, '+8/S', const Offset(164, 88), 1.6, _silver);
+    PixelFont.draw(c, '+10/S', const Offset(164, 88), 1.6, _silver);
     // wave
     final label = host.tr('wave', 'WAVE');
     D.text(c, label, const Offset(306, 58), size: 14, color: _cyan, stroke: _k, strokeWidth: 3);

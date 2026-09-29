@@ -7,7 +7,7 @@ class G014 extends MiniGame {
   static const _finishZ = 108.0;
   static const _tileLen = 1.5;
   static const _ladderZ = _finishZ + 3;
-  static const _winMult = 3;
+  static const _winMult = 4;
 
   final scene = Scene3();
   late final Mesh _road, _water, _finish, _bundle, _saw, _sawHub, _post, _archPost, _archTop;
@@ -36,7 +36,7 @@ class G014 extends MiniGame {
   static const _hairA = Color(0xFFFFC94D);
   static const _hairB = Color(0xFFFFA92E);
 
-  int get _mult => (1 + ((_hair - 1) / 1.2).floor()).clamp(1, 10);
+  int get _mult => (1 + ((_hair - 1) / 1.5).floor()).clamp(1, 10);
 
   @override
   void init() {

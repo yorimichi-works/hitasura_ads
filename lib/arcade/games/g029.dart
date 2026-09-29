@@ -32,9 +32,9 @@ class G029 extends MiniGame {
   @override
   void init() {
     _towers
-      ..add(_Tower(2, const Offset(80, 128), false))
-      ..add(_Tower(2, const Offset(280, 128), false))
-      ..add(_Tower(2, const Offset(180, 78), true))
+      ..add(_Tower(2, const Offset(80, 146), false))
+      ..add(_Tower(2, const Offset(280, 146), false))
+      ..add(_Tower(2, const Offset(180, 98), true))
       ..add(_Tower(1, const Offset(80, 482), false))
       ..add(_Tower(1, const Offset(280, 482), false))
       ..add(_Tower(1, const Offset(180, 532), true));
@@ -381,7 +381,7 @@ class G029 extends MiniGame {
     for (final bx in _bridges) {
       c.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(bx - 22, 110, 44, 400), const Radius.circular(20)), path);
     }
-    c.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(60, 60, 240, 50), const Radius.circular(20)), path);
+    c.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(60, 76, 240, 50), const Radius.circular(20)), path);
     c.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(60, 500, 240, 50), const Radius.circular(20)), path);
     // river
     c.drawRect(const Rect.fromLTWH(0, _riverY - 16, 360, 32), D.fill(const Color(0xFF3FA9F5)));
@@ -507,11 +507,11 @@ class G029 extends MiniGame {
       D.text(c, '${_cost[i]}', Offset(r.left + 10, r.top + 14), size: 13, stroke: Pal.ink);
     }
     // crowns
-    D.rrect(c, const Rect.fromLTWH(262, 42, 92, 30), 15, const Color(0xAA1B1530));
-    _drawCrown(c, const Offset(280, 57), _blue);
-    D.text(c, '$_crownsBlue', const Offset(298, 57), size: 18, stroke: Pal.ink);
-    _drawCrown(c, const Offset(322, 57), _red);
-    D.text(c, '$_crownsRed', const Offset(340, 57), size: 18, stroke: Pal.ink);
+    D.rrect(c, const Rect.fromLTWH(6, 42, 92, 30), 15, const Color(0xAA1B1530));
+    _drawCrown(c, const Offset(24, 57), _blue);
+    D.text(c, '$_crownsBlue', const Offset(42, 57), size: 18, stroke: Pal.ink);
+    _drawCrown(c, const Offset(66, 57), _red);
+    D.text(c, '$_crownsRed', const Offset(84, 57), size: 18, stroke: Pal.ink);
   }
 
   void _drawDrop(Canvas c, Offset o, double r) {

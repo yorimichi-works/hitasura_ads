@@ -117,7 +117,7 @@ class G066 extends MiniGame {
     if (_state == 0) {
       final pulse = M.wave(_t, 2);
       c.drawOval(Rect.fromCenter(center: Offset(_needleX, _eyeY), width: 60 + pulse * 16, height: _eyeH + 40 + pulse * 16),
-          D.fill(const Color(0x33FFF3A0)));
+          D.fill(const Color(0x66FFF3A0)));
     }
 
     _drawNeedle(c);
@@ -145,9 +145,9 @@ class G066 extends MiniGame {
     final shock = _state == 2 ? sin(_endT * 50) * 3 * max(0, 1 - _endT * 2) : 0.0;
     c.save();
     c.translate(shock, 0);
-    const hw = 11.0;
+    const hw = 15.0;
     final eye = RRect.fromRectAndRadius(
-        Rect.fromCenter(center: Offset(_needleX, ey), width: 10, height: _eyeH), const Radius.circular(5));
+        Rect.fromCenter(center: Offset(_needleX, ey), width: 13, height: _eyeH), const Radius.circular(6.5));
     final body = Path()
       ..fillType = PathFillType.evenOdd
       ..moveTo(_needleX - hw, ey - _eyeH / 2 - 30)
@@ -197,8 +197,8 @@ class G066 extends MiniGame {
       ..moveTo(spool.dx, spool.dy)
       ..quadraticBezierTo(ctrl.dx, ctrl.dy, tip.dx - 10, tip.dy);
     path.lineTo(tip.dx, tip.dy);
-    c.drawPath(path, D.stroke(Pal.ink, 9));
-    c.drawPath(path, D.stroke(_thread, 5));
+    c.drawPath(path, D.stroke(Pal.ink, 11));
+    c.drawPath(path, D.stroke(_thread, 6.5));
     // tip: stiff waxed end, or frayed after bonk
     if (_state == 2) {
       for (var i = 0; i < 5; i++) {

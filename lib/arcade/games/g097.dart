@@ -86,20 +86,20 @@ class G097 extends MiniGame {
     final dx = to.dx - from.dx;
     // power from flick length (and a bit of speed)
     final speed = (to - from).distance / max(secs, .06);
-    var p = ((dy / 210) * .75 + (speed / 1400) * .25).clamp(.55, 1.5);
-    p = 1 + (p - 1) * .42; // gentle assist
+    var p = ((dy / 180) * .8 + (speed / 1500) * .2).clamp(.55, 1.6);
+    p = 1 + (p - 1) * .1; // generous assist
     const flight = 1.0;
     final hxAtArrival = _hoopXAt(host.time + flight);
-    var aimX = (dx / max(dy, 30)) * 2.6;
-    if ((aimX - hxAtArrival).abs() < 1.3) aimX += (hxAtArrival - aimX) * .55;
-    final target = V3(aimX, _rimY + .02, _rimZ);
+    var aimX = (dx / max(dy, 30)) * 2.2;
+    if ((aimX - hxAtArrival).abs() < 1.4) aimX += (hxAtArrival - aimX) * .72;
+    final target = V3(aimX, _rimY + .02, _rimZ + .05);
     final d = target - _start;
     final vy = (d.y + .5 * _g * flight * flight) / flight;
     ball
       ..flying = true
-      ..vel = V3(d.x / flight, vy, d.z / flight * p) * (.92 + .08 * p)
+      ..vel = V3(d.x / flight, vy, d.z / flight * p)
       ..spin = -8;
-    ball.vel = V3(ball.vel.x, ball.vel.y * (.9 + .1 * p), ball.vel.z);
+    ball.vel = V3(ball.vel.x, ball.vel.y * (.95 + .05 * p), ball.vel.z);
     _ready = 0;
     host.sfx(Sfx.throwIt, volume: .9, rate: .9 + p * .2);
     host.sfx(Sfx.whoosh, volume: .4);

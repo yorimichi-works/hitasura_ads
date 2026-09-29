@@ -41,16 +41,17 @@ class G068 extends MiniGame {
     if (_strike < 0) return _swingHead;
     final sdx = _strikeX - _pivot.dx;
     final from = Offset(_strikeX, _pivot.dy + sqrt(max(0.0, _len * _len - sdx * sdx)));
-    final target = Offset(_strikeX, _impactY);
+    final dxs = _strikeX - _nailX;
+    final target = Offset(dxs < -20 && dxs > -80 ? _nailX - 26 : _strikeX, _impactY);
     if (_strike < .07) return Offset.lerp(from, target, M.clamp01(_strike / .07))!;
-    if (_strike < .2) return target;
+    if (_strike < .2 || _thumb) return target;
     return Offset.lerp(target, from, M.clamp01((_strike - .2) / .15))!;
   }
 
   double get _impactY {
     final dx = _strikeX - _nailX;
     if (dx.abs() <= 20) return _nailTop;
-    if (dx < 0) return _boardY - 60; // thumb height
+    if (dx < 0 && dx > -80) return _boardY - 60; // thumb height
     return _boardY;
   }
 
@@ -65,7 +66,7 @@ class G068 extends MiniGame {
         _resolvedStrike = true;
         _impact();
       }
-      if (_strike > .35) _strike = -1;
+      if (_strike > .35 && !_thumb) _strike = -1;
     } else if (!_done && !_thumb) {
       _swingT += dt;
     }
@@ -73,7 +74,7 @@ class G068 extends MiniGame {
 
   void _impact() {
     final dx = _strikeX - _nailX;
-    final at = Offset(_strikeX, _impactY);
+    final at = Offset(dx < -20 && dx > -80 ? _nailX - 26 : _strikeX, _impactY);
     if (dx.abs() <= 20) {
       _hits++;
       final perfect = dx.abs() <= 8;
@@ -97,7 +98,7 @@ class G068 extends MiniGame {
         host.fx.sparkle(Offset(_nailX, _boardY - 6), count: 16, radius: 40, color: Pal.white);
         host.win(stars: _perfects >= 2 ? 3 : (_perfects == 1 ? 2 : 1));
       }
-    } else if (dx < 0) {
+    } else if (dx < 0 && dx > -80) {
       _thumb = true;
       host.sfx(Sfx.punch);
       host.sfx(Sfx.hurt);
@@ -170,6 +171,19 @@ class G068 extends MiniGame {
     // workbench
     c.drawRect(const Rect.fromLTWH(0, _boardY + 50, 360, 200), D.fill(const Color(0xFF6A3A1A)));
     D.line(c, const Offset(0, _boardY + 50), const Offset(360, _boardY + 50), Pal.ink, 4);
+    for (var i = 0; i < 3; i++) {
+      final y = _boardY + 84 + i * 34.0;
+      D.line(c, Offset(0, y), Offset(360, y), const Color(0x55000000), 3);
+      for (final x in [30.0, 330.0]) {
+        c.drawCircle(Offset(x, y - 17), 4, D.fill(const Color(0xFF3A2010)));
+      }
+    }
+    // cheering / wincing crowd of screws in a jar
+    D.rrect(c, const Rect.fromLTWH(262, _boardY + 70, 70, 80), 12, const Color(0x88BFE8FF), border: Pal.ink, borderWidth: 3);
+    for (var i = 0; i < 6; i++) {
+      c.drawCircle(Offset(278 + (i % 3) * 18.0, _boardY + 128 - (i ~/ 3) * 18.0), 7, D.fill(const Color(0xFFB0B6C8)));
+    }
+    D.face(c, const Offset(297, _boardY + 104), 22, _thumb ? Face.shocked : (_done ? Face.happy : Face.neutral), blush: false);
     // board
     final board = Rect.fromLTWH(20, _boardY, 320, 50);
     D.rrect(c, board, 6, const Color(0xFFE8B070), border: Pal.ink, borderWidth: 4);

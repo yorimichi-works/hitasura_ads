@@ -3,6 +3,7 @@ import '../engine/engine.dart';
 /// No.140 Sumo Slam — nail the tachiai timing, then mash LEFT/RIGHT
 /// alternately to push. Tap the "!" to resist counter-attacks.
 class G140 extends MiniGame {
+  static const _bot = bool.fromEnvironment('ARCADE_BOT');
   static const _ringL = 44.0; // tawara (straw bale) edges
   static const _ringR = 316.0;
 
@@ -67,6 +68,7 @@ class G140 extends MiniGame {
 
     switch (_ph) {
       case _Ph.tachiai:
+        if (_bot && (_needle - _zoneC).abs() < .02) _tachiai();
         _needle += _needleDir * dt * 1.25 * host.speed;
         if (_needle > 1) {
           _needle = 2 - _needle;
@@ -94,6 +96,10 @@ class G140 extends MiniGame {
   }
 
   void _updatePush(double dt) {
+    if (_bot) {
+      if (_counterT > .3) _resist();
+      if ((_pt * 7).floor() != ((_pt - dt) * 7).floor()) _mash(_lastSide == 0 ? 1 : 0);
+    }
     // CPU pushes back constantly, harder over time
     _press = 1 + _pt * .06;
     _pos -= dt * .1 * host.speed * _press;
@@ -265,6 +271,7 @@ class G140 extends MiniGame {
   // ------------------------------------------------------------- input ---
   @override
   void onDown(Offset p) {
+    if (_bot) return;
     switch (_ph) {
       case _Ph.tachiai:
         _tachiai();
@@ -280,6 +287,7 @@ class G140 extends MiniGame {
 
   @override
   void onKey(String key, bool down) {
+    if (_bot) return;
     if (!down) return;
     if (_ph == _Ph.tachiai && (key == 'action' || key == 'up')) {
       _tachiai();
@@ -439,13 +447,13 @@ class G140 extends MiniGame {
       D.line(c, Offset(-8 + i * 7.0, -44), Offset(-10 + i * 7.0, -24), Color.lerp(mawashi, Pal.ink, .3)!, 4);
     }
     // arm pushing forward
-    final reach = 60 + _pushAnim * (facingRight ? 10 : 0);
+    final reach = 74 + _pushAnim * (facingRight ? 12 : 0);
     D.line(c, const Offset(30, -150), Offset(reach, -126), Pal.ink, 26);
     D.line(c, const Offset(30, -150), Offset(reach, -126), skin, 20);
     c.drawCircle(Offset(reach + 6, -126), 14, D.fill(skin));
     c.drawCircle(Offset(reach + 6, -126), 14, D.stroke(Pal.ink, 3));
     // head with topknot
-    const hp = Offset(40, -190);
+    const hp = Offset(22, -192);
     c.drawCircle(hp, 30, D.fill(skin));
     c.drawCircle(hp, 30, D.stroke(Pal.ink, 3.5));
     c.drawArc(Rect.fromCircle(center: hp, radius: 31), pi * 1.05, pi * .9, true, D.fill(Pal.ink));
@@ -456,10 +464,10 @@ class G140 extends MiniGame {
 
   void _wrestlers(Canvas c) {
     final x = 180 + _posShow * 112;
-    var you = Offset(x - 70, 432);
-    var cpu = Offset(x + 70, 432);
-    var youLean = .35 + _pushAnim * .06 - _stagger * .2;
-    var cpuLean = .35 + (_counterT >= 0 ? .1 : 0);
+    var you = Offset(x - 84, 432);
+    var cpu = Offset(x + 84, 432);
+    var youLean = .24 + _pushAnim * .06 - _stagger * .2;
+    var cpuLean = .24 + (_counterT >= 0 ? .1 : 0);
     var cpuSpin = 0.0, youSpin = 0.0;
     if (_ph == _Ph.tachiai) {
       // crouched at the shikiri lines, bobbing

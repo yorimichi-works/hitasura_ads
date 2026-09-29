@@ -19,7 +19,6 @@ class G095 extends MiniGame {
   // phases: 0 drop-in, 1 choose, 2 reveal
   int _phase = 0;
   double _pt0 = 0;
-  int _picked = -1;
   double _heroShock = 0, _heroCheer = 0;
   final _pops = _Pops();
   final List<Offset> _dust = [];
@@ -52,7 +51,6 @@ class G095 extends MiniGame {
     }
     _phase = 0;
     _pt0 = 0;
-    _picked = -1;
   }
 
   // --------------------------------------------------------------- input ---
@@ -79,7 +77,6 @@ class G095 extends MiniGame {
   void _open(_Chest ch) {
     _phase = 2;
     _pt0 = 0;
-    _picked = ch.i;
     ch.opened = true;
     final at = Offset(_xs[ch.i], _cy - 40);
     if (ch.mimic) {

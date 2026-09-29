@@ -170,7 +170,7 @@ class G073 extends MiniGame {
     D.rrect(c, const Rect.fromLTWH(140, 360, 80, 24), 12, Pal.white, border: Pal.ink, borderWidth: 3);
 
     final tremble = _state == 3 ? sin(_t * 70) * 4 : (_state == 1 ? sin(_t * 30) * _ah * 1.5 : 0.0);
-    final back = _state == 4 ? -(1 - M.clamp01(_endT * 5)) * 30 + 30 * M.clamp01(_endT * 5) : _ah;
+    final back = _state == 4 ? -1.2 * (1 - M.clamp01((_endT - .15) * 3)) : _ah;
     final h = _head + Offset(tremble, -back * 20);
     c.save();
     c.translate(h.dx, h.dy);
@@ -214,8 +214,14 @@ class G073 extends MiniGame {
         D.line(c, e + Offset(-16 * s, -10), e + Offset(10 * s, 0), Pal.ink, 6);
         D.line(c, e + Offset(10 * s, 0), e + Offset(-16 * s, 10), Pal.ink, 6);
       } else if (_state == 4) {
-        final f = _saved ? Face.happy : Face.shocked;
-        D.face(c, e + const Offset(0, 6), 60, f, blush: false);
+        if (_saved) {
+          c.drawArc(Rect.fromCenter(center: e + const Offset(0, 8), width: 40, height: 30), pi, pi, false,
+              D.stroke(Pal.ink, 6));
+        } else {
+          c.drawCircle(e, 26, D.fill(Pal.white));
+          c.drawCircle(e, 26, D.stroke(Pal.ink, 4));
+          c.drawCircle(e, 6, D.fill(Pal.ink));
+        }
       } else {
         final open = 1 - _ah * .75;
         c.drawOval(Rect.fromCenter(center: e, width: 44, height: 40 * open + 4), D.fill(Pal.white));
@@ -280,14 +286,14 @@ class G073 extends MiniGame {
     }
     // birthday kid watching the cake
     final kidFace = _state == 4 ? (_saved ? Face.love : Face.cry) : (_state == 3 ? Face.shocked : Face.happy);
-    D.blob(c, const Offset(40, 580), 30, Pal.yellow, face: kidFace, look: const Offset(1, -1));
+    D.blob(c, const Offset(318, 590), 30, Pal.yellow, face: kidFace, look: const Offset(-1, -1));
   }
 
   void _drawArm(Canvas c) {
     final a = M.easeOutBack(_arm.clamp(0, 1));
     const shoulder = Offset(84, 410);
-    final elbow = Offset.lerp(const Offset(60, 520), const Offset(200, 318), a)!;
-    final hand = Offset.lerp(const Offset(100, 600), const Offset(330, 252), a)!;
+    final elbow = Offset.lerp(const Offset(30, 540), const Offset(200, 318), a)!;
+    final hand = Offset.lerp(const Offset(40, 660), const Offset(330, 252), a)!;
     final path = Path()
       ..moveTo(shoulder.dx, shoulder.dy)
       ..lineTo(elbow.dx, elbow.dy)

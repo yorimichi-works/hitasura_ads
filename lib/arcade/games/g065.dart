@@ -52,7 +52,7 @@ class G065 extends MiniGame {
         _ang += _spin * dt;
         if (_vel.dy > 0 && _pos.dy >= _panY - 8 && _pos.dy - _vel.dy * dt < _panY - 8) {
           final off = _pos.dx - _panX;
-          if (off.abs() < 62) {
+          if (off.abs() < 54) {
             _catch(off);
             return;
           }
@@ -85,7 +85,7 @@ class G065 extends MiniGame {
     _gravity = 1300 * sp;
     final air = 2 * vy / _gravity;
     _spin = 3 * pi / air; // lands golden side up after 1.5 turns
-    var vx = rand(80, 150) * sqrt(sp) * (chance(.5) ? 1 : -1);
+    var vx = rand(100, 170) * sqrt(sp) * (chance(.5) ? 1 : -1);
     final land = _pos.dx + vx * air;
     if (land < 60 || land > 300) vx = -vx;
     _vel = Offset(vx, -vy);
@@ -261,6 +261,11 @@ class G065 extends MiniGame {
         D.flame(c, o + const Offset(-40, 36), 26, _t);
         D.flame(c, o + const Offset(30, 38), 32, _t + 1);
       }
+    } else {
+      // front lip of the pan over the pancake
+      final outer = Rect.fromCenter(center: o, width: 180, height: 56);
+      c.drawArc(outer.deflate(4), .15, pi - .3, false, D.stroke(Pal.ink, 13));
+      c.drawArc(outer.deflate(4), .15, pi - .3, false, D.stroke(const Color(0xFF3B3650), 7));
     }
   }
 

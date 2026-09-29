@@ -37,18 +37,18 @@ class G116 extends MiniGame {
     final kinds = [_Kind.bear, _Kind.bunny, _Kind.cat, _Kind.chick, _Kind.slime, _Kind.bear, _Kind.cat, _Kind.bunny];
     kinds.shuffle(rng);
     // bottom row
-    var x = 128.0;
+    var x = 146.0;
     for (var i = 0; i < 5; i++) {
       final r = rand(20, 24);
       _toys.add(_Toy(kinds[i], x, _floor - r, r, _toyColor(kinds[i])));
-      x += r * 2 + rand(-2, 3);
+      x += r * 2 - 4 + rand(-2, 2);
     }
     // top row
-    x = 152;
+    x = 168;
     for (var i = 5; i < 8; i++) {
       final r = rand(19, 22);
       _toys.add(_Toy(kinds[i], x + rand(-4, 4), 300, r, _toyColor(kinds[i])));
-      x += 52;
+      x += 48;
     }
     // THE prize: golden crown bear on top of the pile
     _toys.add(_Toy(_Kind.prize, rand(200, 280), 250, 25, Pal.gold));
@@ -99,7 +99,7 @@ class G116 extends MiniGame {
         _cy = M.approach(_cy, 150, 8, dt);
         _open = M.approach(_open, .6, 8, dt);
         if (_holding) {
-          _cx += _dir * 125 * host.speed * dt;
+          _cx += _dir * 150 * host.speed * dt;
           _holdMoved += dt;
           if (_cx > 322) {
             _cx = 322;
@@ -236,7 +236,7 @@ class G116 extends MiniGame {
     t.gripOff = (t.x - _cx);
     _gripQ = (a / .95).clamp(0.0, 1.0);
     final heavy = t.kind == _Kind.prize ? .2 : 0.0;
-    final slipChance = pity ? 0.0 : (a < .35 ? .08 + heavy : (a < .65 ? .45 + heavy : .8));
+    final slipChance = pity ? 0.0 : (a < .3 ? .08 + heavy : (a < .6 ? .6 + heavy : .9));
     if (chance(slipChance)) {
       // slips during lift (near the top = maximum pain) or during carry
       _slipAt = chance(.55) ? rand(.55, .95) : rand(1.0, 1.9);
@@ -245,7 +245,7 @@ class G116 extends MiniGame {
     }
     host.sfx(Sfx.squish, rate: 1.1);
     host.fx.sparkle(Offset(t.x, t.y), count: 6, radius: 20);
-    if (a < .35) {
+    if (a < .3) {
       host.fx.pop(host.tr('perfect', 'PERFECT!'), Offset(_cx, _cy - 40), color: Pal.yellow, size: 26);
       host.sfx(Sfx.correct, volume: .6);
     } else {
@@ -309,6 +309,7 @@ class G116 extends MiniGame {
     if (!_holding) return;
     _holding = false;
     if (_st != _St.aim) return;
+    if (_cx < _chuteRight + 12) return; // barely moved: don't waste a credit
     _tries--;
     _tryNo++;
     // find what's below

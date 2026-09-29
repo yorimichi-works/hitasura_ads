@@ -469,9 +469,9 @@ class G136 extends MiniGame {
     c.rotate(d * pi / 2);
     final p = D.fill(Pal.white);
     for (var row = 0; row < 4; row++) {
-      c.drawRect(Rect.fromLTWH(-3.0 * (row * 2 + 1), -10 + row * 4.0, 6.0 * (row * 2 + 1), 4), p);
+      c.drawRect(Rect.fromLTWH(-2.0 * (row * 2 + 1), -12 + row * 4.0, 4.0 * (row * 2 + 1), 4), p);
     }
-    c.drawRect(const Rect.fromLTWH(-4, 6, 8, 8), p);
+    c.drawRect(const Rect.fromLTWH(-5, 4, 10, 10), p);
     c.restore();
   }
 

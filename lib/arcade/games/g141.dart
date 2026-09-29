@@ -6,7 +6,7 @@ class G141 extends MiniGame {
   static const _bot = bool.fromEnvironment('ARCADE_BOT');
   static const _gates = 12;
   static const _gap = 16.0;
-  static const _gateHalf = 1.8;
+  static const _gateHalf = 1.5;
   static const _slope = .2;
   static const _startZ = 14.0;
 
@@ -256,11 +256,13 @@ class G141 extends MiniGame {
   // ------------------------------------------------------------- input ---
   @override
   void onDown(Offset p) {
+    if (_bot) return;
     _anchorX = p.dx;
   }
 
   @override
   void onMove(Offset p) {
+    if (_bot) return;
     final a = _anchorX;
     if (a == null) return;
     var d = (p.dx - a) / 60;
@@ -274,12 +276,14 @@ class G141 extends MiniGame {
 
   @override
   void onUp(Offset p) {
+    if (_bot) return;
     _anchorX = null;
     _steerTarget = 0;
   }
 
   @override
   void onKey(String key, bool down) {
+    if (_bot) return;
     if (key == 'left') _keyDir = down ? -1 : (_keyDir == -1 ? 0 : _keyDir);
     if (key == 'right') _keyDir = down ? 1 : (_keyDir == 1 ? 0 : _keyDir);
     if (!down && _keyDir == 0) _steerTarget = 0;
@@ -482,7 +486,7 @@ class G141 extends MiniGame {
     if (_done) {
       final k = M.clamp01(_z - _finishZ);
       c.save();
-      c.translate(180, 250);
+      c.translate(180, 450);
       c.scale(M.easeOutBack(k));
       D.rrect(c, const Rect.fromLTWH(-110, -34, 220, 68), 16, const Color(0xE6121530), border: Pal.yellow, borderWidth: 3);
       D.text(c, _race.toStringAsFixed(2), Offset.zero, size: 44, color: Pal.yellow, stroke: Pal.ink);

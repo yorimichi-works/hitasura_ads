@@ -289,10 +289,13 @@ class G138 extends MiniGame {
   }
 
   @override
-  void onDown(Offset p) => _swingNow();
+  void onDown(Offset p) {
+    if (!_bot) _swingNow();
+  }
 
   @override
   void onKey(String key, bool down) {
+    if (_bot) return;
     if (down && (key == 'action' || key == 'up')) _swingNow();
   }
 

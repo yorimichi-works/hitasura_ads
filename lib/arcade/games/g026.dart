@@ -37,7 +37,7 @@ class G026 extends MiniGame {
 
   @override
   void init() {
-    const x0 = 222.0, cw = 22.0, bh = 22.0;
+    const x0 = 236.0, cw = 22.0, bh = 22.0;
     const heights = [3, 3, 6, 3, 3];
     for (var col = 0; col < heights.length; col++) {
       for (var r = 0; r < heights[col]; r++) {
@@ -123,7 +123,7 @@ class G026 extends MiniGame {
           continue;
         }
         _knock(b, _bVel * .55 + Offset(0, -120));
-        _bVel = _bVel * (b.mat == 1 ? .78 : .62);
+        _bVel = _bVel * (b.mat == 1 ? .7 : .5);
         host.sfx(b.mat == 1 ? Sfx.crack : Sfx.hitHeavy, rate: rand(.9, 1.2));
         host.shake(6);
         host.hitStop(.04);
@@ -286,12 +286,13 @@ class G026 extends MiniGame {
         var ny = g.pos.dy + g.vy * dt;
         if (ny >= sup) {
           ny = sup;
-          if (g.fall > 30 || sup >= _groundY) {
+          if (g.fall > 40 || sup >= _groundY) {
             g.pos = Offset(g.pos.dx, ny);
             _launchGuy(g, Offset(rand(-40, 40), -120));
             continue;
           }
           g.vy = 0;
+          g.fall = 0;
         }
         g.pos = Offset(g.pos.dx, ny);
       }
@@ -317,8 +318,11 @@ class G026 extends MiniGame {
     if (!_aiming) return;
     _aiming = false;
     _aimCur = p;
-    if ((_aimStart - _aimCur).distance < 18) {
+    final pullV = _aimStart - _aimCur;
+    if (pullV.distance < 30 || pullV.dx < 4 || pullV.dy > -2) {
+      // must pull back (down-left) to fire
       _armTarget = -2.4;
+      host.sfx(Sfx.boing, volume: .4);
       return;
     }
     final v = _launchVel();
@@ -406,12 +410,12 @@ class G026 extends MiniGame {
     _drawCatapult(c);
 
     // trajectory preview
-    if (_aiming && (_aimStart - _aimCur).distance >= 18) {
+    if (_aiming && (_aimStart - _aimCur).distance >= 30 && (_aimStart - _aimCur).dx >= 4 && (_aimStart - _aimCur).dy <= -2) {
       final v = _launchVel();
       var p = _pivot + Offset(cos(-1.3), sin(-1.3)) * _armLen;
       var vel = v;
       final dp = Paint()..color = const Color(0xDDFFFFFF);
-      for (var i = 0; i < 16; i++) {
+      for (var i = 0; i < 9; i++) {
         for (var k = 0; k < 4; k++) {
           vel = Offset(vel.dx, vel.dy + _grav / 60);
           p += vel / 60;

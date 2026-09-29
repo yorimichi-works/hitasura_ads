@@ -370,7 +370,7 @@ class G098 extends MiniGame {
     for (final co in _coins) {
       if (co.got && co.pop > .5) continue;
       final lift = co.got ? co.pop * 3 : .32 + sin(_t * 3 + co.x) * .05;
-      scene.add(_coin, pos: _w(co.x, lift, co.z), rotZ: pi / 2, rotY: _t * 3 + co.z, scale: co.got ? 1 - co.pop * 1.6 : 1);
+      scene.add(_coin, pos: _w(co.x, lift, co.z), rotX: .5 + sin(_t * 4 + co.z) * .45, rotZ: sin(_t * 3 + co.x) * .3, scale: co.got ? 1 - co.pop * 1.6 : 1);
     }
     // goal flag
     final fp = _w(_goal.dx + .42, .55, _goal.dy + .2);

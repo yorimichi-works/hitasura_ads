@@ -52,7 +52,7 @@ class G069 extends MiniGame {
     if (pour && _dropCd <= 0 && _state == 0) {
       _dropCd = 1 / 40;
       final s = _spout;
-      _drops.add(_Drop(s + Offset(rand(-3, 3), rand(-3, 3)), Offset(rand(140, 190), rand(-30, 20))));
+      _drops.add(_Drop(s + Offset(rand(-3, 3), rand(-3, 3)), Offset(rand(15, 45), rand(-20, 10))));
     }
     _splashCd -= dt;
     final perDrop = .0105 * pow(host.speed, .5);

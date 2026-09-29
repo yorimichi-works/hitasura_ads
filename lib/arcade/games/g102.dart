@@ -405,6 +405,8 @@ class G102 extends MiniGame {
     // pass 1: table + felt art + shadows
     scene.clear();
     scene.add(_base, pos: const V3(0, -.62, 0));
+    scene.render(c);
+    scene.clear();
     scene.add(_felt, pos: const V3(0, .001, 0));
     scene.render(c);
     _feltArt(c, cam);

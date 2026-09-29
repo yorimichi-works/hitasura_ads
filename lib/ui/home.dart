@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: K.ink,
-        content: Text('${L10n.ui('daily_bonus')}  +$amount  ·  ${L10n.ui('streak', {'n': c.arcade.streak})}', style: K.t(15, color: K.yellow)),
+        content: Text('${L10n.ui('daily_bonus')}  +$amount / ${L10n.ui('streak', {'n': c.arcade.streak})}', style: K.t(15, color: K.yellow)),
       ));
     }
   }
@@ -374,7 +374,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return _modeCard(
       title: L10n.ui('rush'),
       sub: unlocked
-          ? '${L10n.ui('rush_best')}: ${c.arcade.rushBest}  ·  ${L10n.ui('rush_desc')}'
+          ? '${L10n.ui('rush_best')}: ${c.arcade.rushBest} / ${L10n.ui('rush_desc')}'
           : L10n.ui('rush_locked', {'n': need}),
       icon: Icons.bolt_rounded,
       color: K.red,
@@ -401,7 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final available = c.dailyAvailable;
     return _modeCard(
       title: L10n.ui('daily_bonus'),
-      sub: available ? L10n.ui('claim') : '${L10n.ui('claimed')}  ·  ${L10n.ui('streak', {'n': c.arcade.streak})}',
+      sub: available ? L10n.ui('claim') : '${L10n.ui('claimed')} / ${L10n.ui('streak', {'n': c.arcade.streak})}',
       icon: available ? Icons.card_giftcard_rounded : Icons.check_circle_rounded,
       color: available ? K.orange : const Color(0xFF6B5E8E),
       onTap: _daily,
@@ -410,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _capsuleCard() => _modeCard(
         title: L10n.ui('ad_capsule'),
-        sub: '${AppController.capsuleCost} ${L10n.ui('coins')}  ·  ${L10n.ui('ad_capsule_desc')}',
+        sub: '${AppController.capsuleCost} ${L10n.ui('coins')} / ${L10n.ui('ad_capsule_desc')}',
         icon: Icons.egg_alt_rounded,
         color: K.cyan.withValues(alpha: 1),
         onTap: _capsule,

@@ -236,7 +236,7 @@ class _Bunker {
 }
 
 class G082 extends MiniGame {
-  static const _cols = 8, _rowsN = 5;
+  static const _cols = 8, _rowsN = 4;
   static const double _sx = 38, _sy = 32, _aw = 33, _ah = 27;
   static const double _shipY = 566;
   final _aliens = <_Alien>[];
@@ -275,7 +275,7 @@ class G082 extends MiniGame {
   void init() {
     for (var r = 0; r < _rowsN; r++) {
       for (var c = 0; c < _cols; c++) {
-        _aliens.add(_Alien(c, r, r == 0 ? 0 : (r < 3 ? 1 : 2)));
+        _aliens.add(_Alien(c, r, r == 0 ? 0 : (r < 2 ? 1 : 2)));
       }
     }
     for (var i = 0; i < 4; i++) {
@@ -326,7 +326,7 @@ class G082 extends MiniGame {
     if (_enter > .9 && !_cleared && alive > 0) {
       _stepT -= dt;
       if (_stepT <= 0) {
-        _stepT = (.045 + .42 * alive / 40) / host.speed;
+        _stepT = (.045 + .42 * alive / 32) / host.speed;
         _frame++;
         _stepNote = (_stepNote + 1) % 4;
         host.sfx(Sfx.tick, volume: .35, rate: const [.62, .56, .5, .45][_stepNote]);
@@ -352,7 +352,7 @@ class G082 extends MiniGame {
     if (playing) {
       _fireT -= dt;
       if (_fireT <= 0) {
-        _fireT = .17;
+        _fireT = .14;
         _shots.add(_Shot(_shipX, _shipY - 10, 0, -820));
         if (_spread > 0) {
           _shots.add(_Shot(_shipX - 6, _shipY - 8, -200, -780));
@@ -579,7 +579,7 @@ class G082 extends MiniGame {
 
   @override
   void onTimeUp() {
-    if (_alive <= 4) {
+    if (_alive <= 6) {
       host.win(stars: 1);
     } else {
       host.lose();

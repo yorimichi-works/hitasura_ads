@@ -1,0 +1,1167 @@
+{
+ "ui": {
+  "app_title": "Nur Werbung",
+  "app_sub": "151 WERBE-DEMOS",
+  "tagline": "Jede Fake-Werbung des Universums. Spielbar.",
+  "watch_next": "NÄCHSTE WERBUNG",
+  "watch_sub": "Kostet 1 Ticket",
+  "tickets": "Werbe-Tickets",
+  "refill_in": "+1 in {t}",
+  "full": "VOLL",
+  "out_of_tickets": "Keine Tickets mehr!",
+  "sponsor_refill": "Sponsor ansehen zum Auffüllen",
+  "refilled": "Tickets aufgefüllt!",
+  "sponsor_unavailable": "Sponsor-Werbung ist hier nicht verfügbar",
+  "sponsor_failed": "Sponsor-Werbung konnte nicht geladen werden",
+  "sponsor_incomplete": "Nicht zu Ende geschaut. Keine Belohnung.",
+  "collection": "Sammlung",
+  "discovered": "Entdeckt",
+  "rush": "AD RUSH",
+  "rush_desc": "Mini-Werbungen am Stück. Schneller. SCHNELLER.",
+  "rush_locked": "Finde noch {n} kurze Werbungen zum Freischalten",
+  "rush_best": "Rekord",
+  "rush_start": "START",
+  "rush_stage": "STUFE",
+  "speed_up": "TEMPO!",
+  "game_over": "GAME OVER",
+  "new_record": "NEUER REKORD!",
+  "lives": "Leben",
+  "home": "Start",
+  "settings": "Einstellungen",
+  "language": "Sprache",
+  "sound": "Sound",
+  "on": "AN",
+  "off": "AUS",
+  "nickname": "Spitzname",
+  "nickname_hint": "Dein Name",
+  "start": "LOS",
+  "welcome": "Willkommen im Werbe-Universum",
+  "welcome_body": "151 absurde Werbe-Demos warten. Anschauen. Spielen. Alle sammeln!",
+  "level": "Lv",
+  "coins": "Münzen",
+  "xp": "XP",
+  "new_ad": "NEUE WERBUNG ENTDECKT!",
+  "rarity_common": "GEWÖHNLICH",
+  "rarity_uncommon": "UNGEWÖHNLICH",
+  "rarity_rare": "SELTEN",
+  "rarity_superRare": "SUPER SELTEN",
+  "rarity_secret": "GEHEIM",
+  "cat_hyper": "Hyper-Casual",
+  "cat_strategy": "Strategie",
+  "cat_tycoon": "Tycoon",
+  "cat_party": "Party",
+  "cat_micro": "Minispiel",
+  "cat_retro": "Retro-Pixel",
+  "cat_threeD": "3D",
+  "cat_gacha": "Gacha & Glück",
+  "cat_rpg": "RPG & Aufleveln",
+  "cat_puzzle": "Puzzle",
+  "cat_sports": "Sport",
+  "cat_asmr": "Befriedigend",
+  "cat_meta": "Werbeparodie",
+  "cat_secret": "Geheim",
+  "install": "INSTALLIEREN",
+  "installed_joke": "Du spielst es schon.",
+  "reviews": "{n} Bewertungen",
+  "review_1": "„Hab's nur wegen der Werbung geladen. Die Werbung war das Spiel.“",
+  "review_2": "„Mein Daumen war noch nie so glücklich.“",
+  "review_3": "„10/10, würde diese Werbung wieder schauen.“",
+  "review_4": "„Level 3 ist unmöglich. Es gibt kein Level 3.“",
+  "review_5": "„Wollte 5 Sekunden spielen. Jetzt ist es 4 Uhr nachts.“",
+  "review_6": "„Meine Katze spielt das auch.“",
+  "review_7": "„Endlich eine Werbung, die mich respektiert. So halbwegs.“",
+  "review_8": "„Das beste Spiel, das ich nie installiert habe.“",
+  "next_ad": "NÄCHSTE",
+  "replay": "NOCHMAL",
+  "play": "SPIELEN",
+  "back": "Zurück",
+  "close": "Schließen",
+  "score": "Punkte",
+  "best": "Rekord",
+  "plays": "Runden",
+  "locked_hint": "Schau weiter Werbung, um sie zu entdecken",
+  "secret_hint": "Entdecke alle 150 Werbungen, um sie zu beschwören…",
+  "ad_capsule": "Werbe-Kapsel",
+  "ad_capsule_desc": "Schalte eine zufällige neue Werbung frei",
+  "not_enough_coins": "Nicht genug Münzen",
+  "all_found": "Alles entdeckt!",
+  "level_up": "LEVEL UP!",
+  "cloud": "Cloud-Speicher",
+  "sign_in": "Mit Google anmelden",
+  "sign_out": "Abmelden",
+  "synced": "Synchronisiert",
+  "sync_error": "Fortschritt nicht synchronisiert",
+  "credits": "Credits",
+  "complete": "KOMPLETT! Du hast jede Werbung gesehen.",
+  "clear": "GESCHAFFT!!",
+  "fail": "VERLOREN…",
+  "ad": "AD",
+  "tap_skip": "Tippen zum Überspringen",
+  "sponsored": "Gesponsert",
+  "filter_all": "Alle",
+  "tap_continue": "Tippen zum Fortfahren",
+  "now_showing": "LÄUFT JETZT",
+  "reward": "Belohnung",
+  "result_win": "Du hast die Werbung besiegt!",
+  "result_lose": "Die Werbung hat dich besiegt…",
+  "free_replay": "Nochmal spielen ist gratis",
+  "daily_bonus": "Tagesbonus",
+  "claim": "HOLEN",
+  "claimed": "Komm morgen wieder!",
+  "streak": "{n} Tage in Folge",
+  "channel": "CH",
+  "mode_random": "Zufallswerbung",
+  "stats": "Statistik",
+  "total_plays": "Runden gesamt",
+  "wins": "Siege",
+  "stars_total": "Sterne",
+  "rush_ready": "Bereit machen…",
+  "rush_desc_long": "Deine entdeckten Kurzwerbungen laufen am Stück. Schaff sie, bevor die Zeit abläuft. 4 Leben.",
+  "progress_title": "Werbejäger",
+  "version": "Version"
+ },
+ "games": {
+  "1": [
+   "Zieh den Pin!",
+   "ZIEH!",
+   "99 % der Spieler SCHEITERN an diesem Level!"
+  ],
+  "2": [
+   "Tor-Renner x100",
+   "LENK!",
+   "Nur Genies wählen die richtigen Tore"
+  ],
+  "3": [
+   "Flüssigkeiten Sortieren",
+   "SORTIER!",
+   "So befriedigend… nur noch EINE Runde!"
+  ],
+  "4": [
+   "Stapeln bis zum Himmel",
+   "STAPEL!",
+   "Wie hoch schaffst DU es?"
+  ],
+  "5": [
+   "Parkplatz-Chaos",
+   "RAUS!",
+   "Kriegst du das rote Auto raus?"
+  ],
+  "6": [
+   "Zeichne & Rette den Hund",
+   "ZEICHNE!",
+   "EINE Linie. Rette den Hund."
+  ],
+  "7": [
+   "Schneid das Seil",
+   "SCHNEID!",
+   "Er hat SO einen Hunger…"
+  ],
+  "8": [
+   "Obst-Fusion",
+   "VEREINE!",
+   "Schaffst du die WASSERMELONE?"
+  ],
+  "9": [
+   "Pfeil-Flucht",
+   "TIPP!",
+   "Tipp in der richtigen Reihenfolge…"
+  ],
+  "10": [
+   "Bis zur Linie",
+   "GIESS!",
+   "Stopp GENAU an der Linie"
+  ],
+  "11": [
+   "Messerwurf",
+   "WIRF!",
+   "Triff nicht die anderen Messer!"
+  ],
+  "12": [
+   "Helix-Sturz",
+   "DREH!",
+   "Fall bis ganz nach unten!"
+  ],
+  "13": [
+   "Schwarzes-Loch-Stadt",
+   "SCHLUCK!",
+   "Friss die GANZE Stadt!"
+  ],
+  "14": [
+   "Haar-Challenge",
+   "WACHS!",
+   "Die längsten Haare gewinnen!"
+  ],
+  "15": [
+   "Schrauben-Chaos",
+   "SCHRAUB!",
+   "Dreh alles raus!"
+  ],
+  "16": [
+   "Frost-Ofen",
+   "ÜBERLEBE!",
+   "-60 °C. Deine Stadt braucht DICH."
+  ],
+  "17": [
+   "Pixel Tower Defense",
+   "VERTEIDIGE!",
+   "Türme bauen. Königreich retten."
+  ],
+  "18": [
+   "Armee-Zahlenkampf",
+   "WÄHL!",
+   "Wähl den richtigen Weg, General!"
+  ],
+  "19": [
+   "Burg-Bogenschützen",
+   "ZIEL!",
+   "Sie klettern die Mauern hoch!!"
+  ],
+  "20": [
+   "Der letzte Trupp",
+   "FEUER!",
+   "Wähl das BESTE Upgrade!"
+  ],
+  "21": [
+   "Heldenturm",
+   "ABSORBIER!",
+   "Kämpf nur gegen SCHWÄCHERE Gegner!"
+  ],
+  "22": [
+   "Die Steuer des Mini-Königs",
+   "HERRSCHE!",
+   "Gierig oder gütig? DU entscheidest."
+  ],
+  "23": [
+   "Erobere die Karte",
+   "EROBERE!",
+   "Färb die ganze Karte BLAU"
+  ],
+  "24": [
+   "Floß-Überleben",
+   "ANGEL!",
+   "Tag 1 auf offener See…"
+  ],
+  "25": [
+   "Bunker-Bauer",
+   "GRAB!",
+   "Die Oberfläche ist weg. Grab."
+  ],
+  "26": [
+   "Katapult-Belagerung",
+   "FEUER!",
+   "Reiß den Turm um!"
+  ],
+  "27": [
+   "Mars-Kolonie in Not",
+   "BALANCIER!",
+   "Halte 100 Siedler auf dem Mars am Leben"
+  ],
+  "28": [
+   "Geschütz-Fusion",
+   "VEREINE!",
+   "Kanonen fusionieren. Horde stoppen."
+  ],
+  "29": [
+   "Clash-Bahn",
+   "SCHICK!",
+   "Zerstör ihren Turm in 20 s!"
+  ],
+  "30": [
+   "Noahs letztes Boot",
+   "LADE!",
+   "Die Flut kommt! Wer darf an Bord?"
+  ],
+  "31": [
+   "Ramen-Rush",
+   "SERVIER!",
+   "Schaffst du den Mittagsansturm?"
+  ],
+  "32": [
+   "Kiosk-Kasse",
+   "SCANN!",
+   "Piep piep piep! Schneller!"
+  ],
+  "33": [
+   "Burger-Turm",
+   "FANG!",
+   "Bau die Bestellung GENAU nach"
+  ],
+  "34": [
+   "Idle-Goldmine",
+   "UPGRADE!",
+   "Von 0 € zum MILLIARDÄR"
+  ],
+  "35": [
+   "Latte-Art-Meister",
+   "GIESS!",
+   "Barista-Test: ein perfektes Herz"
+  ],
+  "36": [
+   "Hotel-Rush",
+   "EINCHECKEN!",
+   "5-Sterne-Service in 20 Sekunden"
+  ],
+  "37": [
+   "Parkplatz-Tycoon",
+   "PARK!",
+   "Jedes Auto = Geld"
+  ],
+  "38": [
+   "Sushi-Band",
+   "SCHNAPP!",
+   "Schnapp dir den richtigen Teller!"
+  ],
+  "39": [
+   "Mini-Freizeitpark",
+   "BAU!",
+   "Lass sie KREISCHEN (vor Freude)"
+  ],
+  "40": [
+   "Pixel-Farm",
+   "ERNTE!",
+   "Pflanzen. Ernten. WIEDERHOLEN."
+  ],
+  "41": [
+   "Pizza-Gerechtigkeit",
+   "SCHNEID!",
+   "4 Kinder. 1 Pizza. KEIN Streit."
+  ],
+  "42": [
+   "Notaufnahme",
+   "BEHANDLE!",
+   "Doktor! Wir brauchen Sie SOFORT!"
+  ],
+  "43": [
+   "Limonaden-Mogul",
+   "VERKAUF!",
+   "Vom Stand zum IMPERIUM"
+  ],
+  "44": [
+   "Waschsalon-Panik",
+   "SORTIER!",
+   "Mach das Weiße nicht ROSA"
+  ],
+  "45": [
+   "Liefer-Sprint",
+   "LIEFERE!",
+   "Heißes Essen. 5 Sterne. LOS!"
+  ],
+  "46": [
+   "Hämmer-Sprint",
+   "HÄMMER!",
+   "Deine Finger sind nicht schnell genug"
+  ],
+  "47": [
+   "Stopp bei 10.00",
+   "STOPP!",
+   "NIEMAND hat je 10.00 geschafft"
+  ],
+  "48": [
+   "Samurai-Duell",
+   "ZIEH!",
+   "Einmal blinzeln und du VERLIERST"
+  ],
+  "49": [
+   "Heiße Kartoffel",
+   "GIB AB!",
+   "Halt sie nicht beim BUMM"
+  ],
+  "50": [
+   "Ballon-Mutprobe",
+   "PUMP!",
+   "Größer… größer… GRÖSSER…"
+  ],
+  "51": [
+   "Tauziehen",
+   "ZIEH!",
+   "Zieh um dein LEBEN"
+  ],
+  "52": [
+   "Leuchtspeicher",
+   "MERK DIR!",
+   "Simon sagt… du vergisst es eh"
+  ],
+  "53": [
+   "Küken zählen",
+   "ZÄHL!",
+   "Leicht? Dann ZÄHL sie."
+  ],
+  "54": [
+   "Mini-Sternparty",
+   "WÜRFEL!",
+   "4 Spieler. 1 Stern. Freundschaft vorbei."
+  ],
+  "55": [
+   "Reise nach Jerusalem",
+   "SETZ DICH!",
+   "Wenn die Musik stoppt… SETZEN!"
+  ],
+  "56": [
+   "Hütchenspiel",
+   "SCHAU!",
+   "Lass die Münze nicht aus den Augen"
+  ],
+  "57": [
+   "Autoscooter-Sumo",
+   "RAMM!",
+   "Wer zuletzt im Ring bleibt, GEWINNT"
+  ],
+  "58": [
+   "Hexa-Fall",
+   "LAUF!",
+   "Der Boden STÜRZT EIN"
+  ],
+  "59": [
+   "Münzregen-Gerangel",
+   "SCHNAPP!",
+   "Es regnet GELD"
+  ],
+  "60": [
+   "Sahnetorten-Roulette",
+   "DRÜCKEN?",
+   "Einer dieser Knöpfe ist eine TORTE"
+  ],
+  "61": [
+   "Popel es!",
+   "POPEL!",
+   "Ärzte HASSEN diesen Trick"
+  ],
+  "62": [
+   "Klatsch sie!",
+   "KLATSCH!",
+   "Sssssss…"
+  ],
+  "63": [
+   "Fang das Handy!",
+   "FANG!",
+   "Kein gesprungenes DISPLAY"
+  ],
+  "64": [
+   "Reißverschluss zu!",
+   "ZIPP!",
+   "Bevor es jemand merkt…"
+  ],
+  "65": [
+   "Wende ihn!",
+   "WENDE!",
+   "Meisterwerk oder Desaster?"
+  ],
+  "66": [
+   "Einfädeln!",
+   "FÄDEL!",
+   "Ruhig… ganz ruhig…"
+  ],
+  "67": [
+   "Rasier dich!",
+   "RASIER!",
+   "Glatt wie ein Babypopo"
+  ],
+  "68": [
+   "Nagel rein!",
+   "HAU!",
+   "3 Schläge. Keine Daumen."
+  ],
+  "69": [
+   "Gieß sie!",
+   "GIESS!",
+   "Nicht zu viel!"
+  ],
+  "70": [
+   "Ausweichen!",
+   "WEICH AUS!",
+   "Völkerball-Champion?"
+  ],
+  "71": [
+   "Schneid's in der Mitte!",
+   "SCHNEID!",
+   "Die Geschwister schauen zu…"
+  ],
+  "72": [
+   "Steck's ein!",
+   "STECK!",
+   "Akku 1 %!!!"
+  ],
+  "73": [
+   "Halt dir den Mund zu!",
+   "HALT ZU!",
+   "Ha… haa… HATSCHI…"
+  ],
+  "74": [
+   "Knall die Folie!",
+   "PLOPP!",
+   "Pure Befriedigung"
+  ],
+  "75": [
+   "Wach auf!",
+   "AUFSTEHEN!",
+   "Du bist ZU SPÄT!"
+  ],
+  "76": [
+   "Finde den Unterschied!",
+   "FINDE!",
+   "Nur 1 von 100 sieht es"
+  ],
+  "77": [
+   "Putz sie!",
+   "PUTZ!",
+   "Zahnärzte empfehlen diese Werbung"
+  ],
+  "78": [
+   "Stempel drauf!",
+   "STEMPEL!",
+   "Büroleben-Simulator"
+  ],
+  "79": [
+   "Kriege die Bahn!",
+   "RENN!",
+   "Türen schließen…"
+  ],
+  "80": [
+   "Füttere die Katze!",
+   "FÜTTER!",
+   "Miau miau miau miau"
+  ],
+  "81": [
+   "Super Pixel Bros",
+   "SPRING!",
+   "Ein Klassiker. Oder eine Klage."
+  ],
+  "82": [
+   "Invasoren-Panik",
+   "BALLER!",
+   "Sie kamen aus dem Werbebanner"
+  ],
+  "83": [
+   "Block-Brecher",
+   "BRICH!",
+   "Zerbrich jeden Block!"
+  ],
+  "84": [
+   "Snake",
+   "SCHLÄNGEL!",
+   "Wie auf deinem alten Handy"
+  ],
+  "85": [
+   "Schleim-Quest",
+   "KÄMPF!",
+   "Eine wilde WERBUNG erscheint!"
+  ],
+  "86": [
+   "Pixel-Flipper",
+   "FLIPP!",
+   "TILT! TILT! TILT!"
+  ],
+  "87": [
+   "Kugelhimmel",
+   "WEICH AUS!",
+   "Nur die winzige Hitbox zählt"
+  ],
+  "88": [
+   "Pixel-Angeln",
+   "KURBEL!",
+   "Ein legendärer Fisch wartet"
+  ],
+  "89": [
+   "Hüpf rüber",
+   "HÜPF!",
+   "Warum ging der Frosch über die Straße?"
+  ],
+  "90": [
+   "Pixel Kart GP",
+   "FAHR!",
+   "Mode-7-Nostalgie"
+  ],
+  "91": [
+   "Labyrinth-Mampfer",
+   "MAMPF!",
+   "Waka waka waka"
+  ],
+  "92": [
+   "Block-Fall",
+   "LASS FALLEN!",
+   "Lösch 3 Reihen!"
+  ],
+  "93": [
+   "Ninja-Wandkletterer",
+   "KLETTER!",
+   "Ein Ninja fällt nie"
+  ],
+  "94": [
+   "Entenjagd",
+   "SCHIESS!",
+   "Triff nicht den Hund"
+  ],
+  "95": [
+   "Mimic-Truhe",
+   "ÖFFNE!",
+   "Ist es ein Schatz… oder ZÄHNE?"
+  ],
+  "96": [
+   "Strike Bowling 3D",
+   "WIRF!",
+   "STRIKE oder gar nichts"
+  ],
+  "97": [
+   "Korbwurf 3D",
+   "WIRF!",
+   "Nur Netz"
+  ],
+  "98": [
+   "Murmel-Labyrinth 3D",
+   "KIPP!",
+   "Bring die Murmel ins Ziel"
+  ],
+  "99": [
+   "Himmelsringe",
+   "FLIEG!",
+   "Nur für Piloten"
+  ],
+  "100": [
+   "Neon-Highway 3D",
+   "RAST!",
+   "Synthwave. Speed. Keine Bremsen."
+  ],
+  "101": [
+   "Dungeon-Flucht FPS",
+   "FLIEH!",
+   "Finde den Ausgang, bevor ER dich findet"
+  ],
+  "102": [
+   "Glückswürfel 3D",
+   "WÜRFEL!",
+   "Würfel eine 7 und gewinn GROSS"
+  ],
+  "103": [
+   "Farbroller-Würfel",
+   "ROLL!",
+   "Mal jedes Feld an!"
+  ],
+  "104": [
+   "Pinguin-Rutsche",
+   "RUTSCH!",
+   "Auf dem Bauch zum Ruhm"
+  ],
+  "105": [
+   "Papierflieger-Stadt",
+   "GLEIT!",
+   "Wie weit fliegt er?"
+  ],
+  "106": [
+   "Warp-Tunnel",
+   "WEICH AUS!",
+   "Schneller als das Licht"
+  ],
+  "107": [
+   "Abrissbirne",
+   "ZERSCHMETTER!",
+   "Zerstören ist SO befriedigend"
+  ],
+  "108": [
+   "Minigolf 3D",
+   "EINLOCHEN!",
+   "Hole-in-One? Leicht… oder?"
+  ],
+  "109": [
+   "10x Mega-Gacha",
+   "ZIEH!",
+   "SSR-Rate ERHÖHT!!! (0,0001 %)"
+  ],
+  "110": [
+   "Triple-7-Slots",
+   "DREH!",
+   "Der JACKPOT ist SO nah…"
+  ],
+  "111": [
+   "Rubbellos",
+   "RUBBEL!",
+   "3 gleiche = 1.000.000 € GEWINN!"
+  ],
+  "112": [
+   "Holo-Booster",
+   "REISS AUF!",
+   "Ist das die 10.000-€-Karte?"
+  ],
+  "113": [
+   "Lootbox-Rausch",
+   "ÖFFNE!",
+   "Nur noch eine Box…"
+  ],
+  "114": [
+   "Glücksrad",
+   "STOPP!",
+   "Wo bleibt es stehen?"
+  ],
+  "115": [
+   "Plinko-Pachinko",
+   "LASS FALLEN!",
+   "Unten wartet das große Geld"
+  ],
+  "116": [
+   "Greifautomat",
+   "GREIF!",
+   "Der Greifer ist absichtlich schwach"
+  ],
+  "117": [
+   "Münzschieber",
+   "SCHIEB!",
+   "Gleich fällt es RUNTER…"
+  ],
+  "118": [
+   "Tägliches Bonusrad",
+   "HOLEN!",
+   "Log dich JEDEN Tag ein. Sonst…"
+  ],
+  "119": [
+   "Lv.1 vs. Boss Lv.999",
+   "POWER UP!",
+   "Unmöglich? (Nein.)"
+  ],
+  "120": [
+   "Von der Zelle zur Galaxie",
+   "ENTWICKLE!",
+   "Werde in 20 Sekunden zum GOTT"
+  ],
+  "121": [
+   "Schwertschmiede",
+   "SCHMIEDE!",
+   "Fusionier bis LEGENDÄR"
+  ],
+  "122": [
+   "Tap-Titan",
+   "TIPP!",
+   "Schaden: 1 → 1.000.000.000"
+  ],
+  "123": [
+   "Taschen-Haustier",
+   "ZIEH AUF!",
+   "Zieh es gut auf… sonst"
+  ],
+  "124": [
+   "Überlebenshorde",
+   "ÜBERLEBE!",
+   "10.000 Gegner. 1 Held."
+  ],
+  "125": [
+   "Wirbelklingen",
+   "DREH!",
+   "Mehr Schwerter. MEHR."
+  ],
+  "126": [
+   "Schleim-Fusion",
+   "VEREINE!",
+   "Fusionier Schleime zum KÖNIG"
+  ],
+  "127": [
+   "Trankbrauer",
+   "BRAU!",
+   "Blubber, blubber, Hexenkessel…"
+  ],
+  "128": [
+   "Drachenei",
+   "BRÜTE!",
+   "Halt es warm… es bewegt sich!"
+  ],
+  "129": [
+   "Candy Match 3",
+   "KOMBINIER!",
+   "Süß! Lecker! GÖTTLICH!"
+  ],
+  "130": [
+   "Schiebepuzzle",
+   "SCHIEB!",
+   "8 Teile. 1 Lücke. Unendliche Wut."
+  ],
+  "131": [
+   "Finde 3 Fehler",
+   "FINDE!",
+   "Nur für Genie-Augen"
+  ],
+  "132": [
+   "Nur 1 % schafft es",
+   "LÖSE!",
+   "Nur 1 % kann das lösen!"
+  ],
+  "133": [
+   "Rohre verbinden",
+   "VERBINDE!",
+   "Bring das Wasser zum Fließen"
+  ],
+  "134": [
+   "Block Blast",
+   "SETZ!",
+   "Macht süchtig. Echt jetzt."
+  ],
+  "135": [
+   "CAPTCHA-Hölle",
+   "BESTÄTIGE!",
+   "Beweise, dass du kein Roboter bist. Schon wieder."
+  ],
+  "136": [
+   "Kistenschieber",
+   "SCHIEB!",
+   "Das Lager braucht dich"
+  ],
+  "137": [
+   "Elfmeter",
+   "SCHIESS!",
+   "Die WM liegt in DEINEN Füßen"
+  ],
+  "138": [
+   "Homerun-Derby",
+   "SCHLAG!",
+   "Hau ihn bis zum MOND"
+  ],
+  "139": [
+   "Wind-Bogenschießen",
+   "SCHIESS!",
+   "Achte auf den Wind…"
+  ],
+  "140": [
+   "Sumo-Crash",
+   "SCHIEB!",
+   "HAKKEYOI!"
+  ],
+  "141": [
+   "Slalom-Ski 3D",
+   "CARVE!",
+   "Fahr durch jedes Tor!"
+  ],
+  "142": [
+   "Box-Champ",
+   "SCHLAG!",
+   "Schwebe wie ein Schmetterling"
+  ],
+  "143": [
+   "Tiefenreinigung ASMR",
+   "PUTZ!",
+   "Seltsam befriedigend…"
+  ],
+  "144": [
+   "Glow-Up-Makeover",
+   "GLOW UP!",
+   "Von NULL auf HELD"
+  ],
+  "145": [
+   "Hochdruckreiniger",
+   "WASCH!",
+   "Schlamm → Spiegelglanz"
+  ],
+  "146": [
+   "Seife schneiden",
+   "SCHNEID!",
+   "Knusprig knusprig befriedigend"
+  ],
+  "147": [
+   "Lädt… 99 %",
+   "LADE!",
+   "Fast geschafft… (für immer)"
+  ],
+  "148": [
+   "Schließ diese Werbung",
+   "SCHLIESS!",
+   "Finde das ECHTE X"
+  ],
+  "149": [
+   "VIRUS ERKANNT!!!",
+   "SCANN!",
+   "Dein Gerät hat 39 Viren!!"
+  ],
+  "150": [
+   "Du bist Besucher 999.999!",
+   "HOLEN!",
+   "GLÜCKWUNSCH!!! Hol dir deinen Preis!"
+  ],
+  "151": [
+   "DER WERBEKÖNIG",
+   "BESIEGE!",
+   "Die letzte Werbung. Die Werbung aller Werbungen."
+  ]
+ },
+ "words": {
+  "oops": "HOPPLA!",
+  "win": "SIEG!",
+  "tap": "TIPP!",
+  "great": "KLASSE!",
+  "nice": "SUPER!",
+  "perfect": "PERFEKT!",
+  "goal": "TOR!",
+  "move": "ZÜGE",
+  "go": "LOS!",
+  "ouch": "AUA!",
+  "safe": "GERETTET!",
+  "draw": "ZEICHNE!",
+  "yummy": "LECKER!",
+  "swipe": "WISCHEN!",
+  "combo": "COMBO",
+  "wow": "WOW!",
+  "next": "WEITER",
+  "danger": "GEFAHR!",
+  "clear": "GESCHAFFT!",
+  "good": "GUT",
+  "miss": "DANEBEN",
+  "hold": "HALTEN",
+  "fever": "FIEBER!",
+  "level": "LEVEL",
+  "drag": "ZIEHEN",
+  "full": "VOLL!",
+  "max": "MAX",
+  "no_fuel": "Kein Sprit!",
+  "freezing": "EISKALT!",
+  "blizzard": "SCHNEESTURM!",
+  "boss": "BOSS",
+  "build": "BAUEN!",
+  "upgrade": "UPGRADE!",
+  "wave": "WELLE",
+  "headshot": "KOPFTREFFER!",
+  "ko": "KO",
+  "lose": "VERLOREN",
+  "overthrown": "GESTÜRZT!",
+  "yes": "JA",
+  "no": "NEIN",
+  "bonus": "BONUS!",
+  "strike": "STRIKE!",
+  "power": "Strom",
+  "food": "Essen",
+  "merge": "FUSION!",
+  "money": "GELD",
+  "buy": "KAUFEN",
+  "angry": "SAUER!",
+  "wrong": "FALSCH!",
+  "too_much": "ZU VIEL!",
+  "change": "WECHSELGELD",
+  "total": "SUMME",
+  "scan": "PIEP!",
+  "order_up": "BESTELLUNG!",
+  "yuck": "IGITT!",
+  "new": "NEU!",
+  "auto": "AUTO!",
+  "billionaire": "MILLIARDÄR!",
+  "unlock": "FREISCHALTEN",
+  "hire": "EINSTELLEN",
+  "empty": "LEER!",
+  "milk": "MILCH",
+  "serve": "SERVIEREN",
+  "dirty": "DRECKIG!",
+  "crash": "CRASH!",
+  "jackpot": "JACKPOT!",
+  "scream": "KREISCH!",
+  "harvest": "ERNTE!",
+  "fair": "FAIR!",
+  "unfair": "UNFAIR!",
+  "time": "ZEIT!",
+  "cured": "GEHEILT!",
+  "busy": "BELEGT!",
+  "free": "FREI",
+  "xray": "RÖNTGEN",
+  "clinic": "KLINIK",
+  "dental": "ZAHNARZT",
+  "cardio": "KARDIO",
+  "empire": "IMPERIUM!",
+  "bankrupt": "PLEITE",
+  "day": "TAG",
+  "clean": "BLITZBLANK!",
+  "white": "WEISS",
+  "color": "BUNT",
+  "dark": "DUNKEL",
+  "late": "ZU SPÄT!",
+  "delivered": "GELIEFERT!",
+  "refill": "AUFFÜLLEN!",
+  "you": "DU",
+  "stop": "STOPP!",
+  "cpu": "CPU",
+  "wait": "WARTE...",
+  "foul": "FOUL!",
+  "round": "RUNDE",
+  "pop": "PENG!",
+  "bank": "SICHERN",
+  "pull": "ZIEH!",
+  "watch": "SCHAU",
+  "repeat": "WIEDERHOLE!",
+  "out": "RAUS",
+  "count": "ZÄHLEN!",
+  "star": "STERN!",
+  "lucky": "GLÜCK!",
+  "steal": "GEKLAUT!",
+  "final": "FINALE",
+  "too_early": "ZU FRÜH!",
+  "haha": "HAHA!",
+  "which": "WELCHER?",
+  "bump": "RUMMS!",
+  "dash": "SPRINT",
+  "run": "LAUF!",
+  "dodge": "AUSWEICHEN!",
+  "your_turn": "DU BIST DRAN",
+  "bingo": "BINGO!",
+  "crispy": "KNUSPRIG...",
+  "burnt": "VERBRANNT!",
+  "catch": "FANG!",
+  "smooth": "SAUBER!",
+  "bloom": "BLÜTE!",
+  "more": "MEHR!",
+  "ah": "AH...",
+  "mph": "MPH!",
+  "achoo": "HATSCHI!",
+  "scrub": "SCHRUBB!",
+  "yum": "MJAM!",
+  "jump": "SPRUNG",
+  "course_clear": "STRECKE GESCHAFFT!",
+  "score": "PUNKTE",
+  "world": "WELT",
+  "boom": "BUMM",
+  "multi": "MULTI",
+  "wide": "BREIT",
+  "fire": "FEUER",
+  "balls": "BÄLLE",
+  "game_over": "GAME OVER",
+  "hero": "HELD",
+  "mage": "MAGIER",
+  "cleric": "PRIESTER",
+  "critical": "KRITISCH",
+  "attack": "ANGRIFF",
+  "heal": "HEILEN",
+  "defend": "ABWEHR",
+  "item": "ITEM",
+  "mega_slam": "MEGASCHLAG",
+  "guard": "BLOCK",
+  "charge": "AUFLADEN",
+  "magic": "MAGIE",
+  "level_up": "LEVEL UP!",
+  "graze": "STREIFER",
+  "hit": "TREFFER!",
+  "snap": "GERISSEN!",
+  "slack": "LOCKER",
+  "cast": "AUSWERFEN!",
+  "let_go": "LOCKER LASSEN!",
+  "reel": "KURBELN!",
+  "legendary": "LEGENDÄR!",
+  "splat": "PLATSCH!",
+  "splash": "PLATSCH!",
+  "bonk": "BONK!",
+  "boost": "BOOST!",
+  "lines": "REIHEN",
+  "double": "DOPPELT!",
+  "why": "WARUM?!",
+  "fly_away": "FLIEG!",
+  "shot": "WURF",
+  "chomp": "HAPS!",
+  "treasure": "SCHATZ!",
+  "gutter": "RINNE…",
+  "spare": "SPARE!",
+  "swish": "NETZ!",
+  "on_fire": "HEISS GELAUFEN!",
+  "brick": "ZIEGEL!",
+  "airball": "AIRBALL",
+  "near_miss": "KNAPP VORBEI!",
+  "nitro": "NITRO!",
+  "smash": "SMASH!",
+  "key": "SCHLÜSSEL!",
+  "escape": "ENTKOMMEN!",
+  "locked": "VERSCHLOSSEN!",
+  "exit": "AUSGANG",
+  "so_close": "SO KNAPP!",
+  "up": "HOCH!",
+  "sale": "SALE",
+  "speed_up": "SCHNELLER!",
+  "release": "LOSLASSEN",
+  "blocked": "BLOCKIERT!",
+  "lip_out": "LIP-OUT!",
+  "hole_in_one": "HOLE-IN-ONE!",
+  "birdie": "BIRDIE!",
+  "par": "PAR!",
+  "gold": "GOLD!",
+  "limited": "LIMITIERT",
+  "rate_up": "RATE UP!!",
+  "turn": "UMDREHEN!",
+  "complete": "KOMPLETT!",
+  "reach": "FAST!",
+  "revive": "WIEDERBELEBT!!",
+  "spin": "DREHEN!",
+  "match_3": "3 GLEICHE = GEWINN",
+  "scratch": "RUBBELN!",
+  "rip": "REISSEN!",
+  "hp": "KP",
+  "value": "WERT",
+  "rub": "REIBEN!",
+  "common": "GEWÖHNLICH",
+  "rare": "SELTEN",
+  "epic": "EPISCH",
+  "again": "NOCHMAL!",
+  "noooo": "NEEEIN!",
+  "get": "ERHALTEN!!",
+  "last": "LETZTE!",
+  "out_of_coins": "KEINE MÜNZEN",
+  "big_coin": "GROSSE MÜNZE!",
+  "chance": "CHANCE!",
+  "login_bonus": "LOGIN-BONUS",
+  "today": "HEUTE!",
+  "too_strong": "ZU STARK!",
+  "weak": "SCHWACH...",
+  "retry": "NOCHMAL",
+  "stage": "STUFE",
+  "sword": "SCHWERT",
+  "hatch": "GESCHLÜPFT!",
+  "cute": "SÜSS!",
+  "ugly": "HÄSSLICH...",
+  "fun": "SPASS",
+  "magnet": "Magnet",
+  "magic_bolt": "Magiegeschoss",
+  "holy_book": "Heiliges Buch",
+  "aura": "Aura",
+  "thunder": "Donner",
+  "speed": "Tempo",
+  "king": "KÖNIG!",
+  "overflow": "ÜBERGELAUFEN!",
+  "kaboom": "KAWUMM!",
+  "stir": "RÜHREN!",
+  "recipe": "REZEPT",
+  "brew": "BRAUEN!",
+  "cold": "KALT!",
+  "fried": "SPIEGELEI...",
+  "chick": "KÜKEN?!",
+  "too_hot": "ZU HEISS!",
+  "hot": "HEISS",
+  "cozy": "KUSCHELIG",
+  "sweet": "Süß!",
+  "tasty": "Lecker!",
+  "delicious": "Köstlich!",
+  "divine": "Göttlich!",
+  "shuffle": "Mischen!",
+  "moves": "Züge",
+  "top": "TOP",
+  "connect": "VERBUNDEN!",
+  "excellent": "Exzellent!",
+  "unbelievable": "Unglaublich!",
+  "no_moves": "Keine Züge!",
+  "human_probably": "Mensch. Vermutlich.",
+  "try_again": "Erneut versuchen",
+  "robot_detected": "Roboter erkannt!",
+  "not_robot": "Ich bin kein Roboter",
+  "select_all": "Wähle alle",
+  "traffic_lights": "Ampeln",
+  "buses": "Busse",
+  "robots": "Roboter",
+  "until_none": "bis keine mehr übrig sind",
+  "verify": "BESTÄTIGEN",
+  "save": "GEHALTEN!",
+  "post": "PFOSTEN!",
+  "fastball": "FASTBALL",
+  "curve": "CURVEBALL",
+  "changeup": "CHANGE-UP",
+  "home_run": "HOMERUN!!",
+  "shaky": "WACKELIG!",
+  "open": "LÜCKE!",
+  "counter": "KONTER!",
+  "wrong_way": "GEISTERFAHRER!",
+  "block": "BLOCK",
+  "nice_shot": "GUTER SCHUSS!",
+  "before": "VORHER",
+  "after": "NACHHER",
+  "peel": "ABZIEHEN!",
+  "hair": "HAARE",
+  "lips": "LIPPEN",
+  "popup_storm": "POPUP-STURM!",
+  "install_barrage": "INSTALL-GEWITTER!",
+  "press_skip": "DRÜCK ÜBERSPRINGEN!!",
+  "ad_king": "DER WERBEKÖNIG"
+ }
+}

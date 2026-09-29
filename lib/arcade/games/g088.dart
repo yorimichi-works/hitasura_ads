@@ -119,8 +119,8 @@ class G088 extends MiniGame {
   void _pickTarget({double delay = .5}) {
     _s = _St.wait;
     _st = 0;
-    _delay = delay + rand(.1, .5);
-    _nibbles = randInt(2) + 1;
+    _delay = delay * .5 + rand(0, .3);
+    _nibbles = randInt(2);
     _nibbleT = 0;
     if (_bigTurn) {
       _target = _fish.firstWhere((f) => f.big);
@@ -129,7 +129,7 @@ class G088 extends MiniGame {
       if (cand.isEmpty) {
         _target = _fish.firstWhere((f) => !f.big);
       } else {
-        cand.sort((a, b) => (a.x - _castX).abs().compareTo((b.x - _castX).abs()));
+        cand.sort((a, b) => (Offset(a.x, a.y) - Offset(_castX, _hookY)).distance.compareTo((Offset(b.x, b.y) - Offset(_castX, _hookY)).distance));
         _target = cand.first;
       }
     }
@@ -201,7 +201,7 @@ class G088 extends MiniGame {
           final d = goal - Offset(f.x, f.y);
           if (d.distance > 3) {
             f.dir = d.dx >= 0 ? 1 : -1;
-            final v = d / d.distance * min(d.distance, (f.big ? 70 : 95) * dt * host.speed);
+            final v = d / d.distance * min(d.distance, (f.big ? 120 : 150) * dt * host.speed);
             f.x += v.dx;
             f.y += v.dy;
           } else {
@@ -232,7 +232,10 @@ class G088 extends MiniGame {
       case _St.fight:
         _updateFight(dt);
       case _St.show:
-        break;
+        if (!_showBig && _st > 1.0) {
+          _s = _St.aim;
+          _st = 0;
+        }
     }
   }
 
@@ -252,7 +255,7 @@ class G088 extends MiniGame {
     final sp = sqrt(host.speed);
     if (hold) {
       _tension += (.36 + _pull * .5) * dt * sp;
-      _prog += (big ? .2 : .36) * dt * (_tension > .12 ? 1 : .4);
+      _prog += (big ? .46 : .66) * dt * (_tension > .12 ? 1 : .4);
       _tick -= dt;
       if (_tick <= 0) {
         _tick = .09;
@@ -260,7 +263,7 @@ class G088 extends MiniGame {
       }
     } else {
       _tension -= (.7 - _pull * .3) * dt;
-      _prog -= .05 * _pull * dt;
+      _prog -= .03 * _pull * dt;
     }
     _tension = max(0, _tension);
     _prog = _prog.clamp(0.0, 1.0);
@@ -550,10 +553,6 @@ class G088 extends MiniGame {
       _ptext(c, label, const Offset(180, 400), 4, _showBig ? Pal.gold : Pal.white);
       final cm = _showBig ? '151CM' : '32CM';
       PixelFont.draw(c, cm, const Offset(180, 424), 3, const Color(0xFFBFEFFF), align: 0, shadow: Pal.ink);
-    }
-    if (!_showBig && _st > 1.3) {
-      _s = _St.aim;
-      _st = 0;
     }
   }
 

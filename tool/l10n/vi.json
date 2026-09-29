@@ -1,0 +1,1167 @@
+{
+ "ui": {
+  "app_title": "Toàn Là Quảng Cáo",
+  "app_sub": "151 DEMO QUẢNG CÁO",
+  "tagline": "Mọi quảng cáo giả trong vũ trụ. Chơi được hết.",
+  "watch_next": "XEM QC TIẾP THEO",
+  "watch_sub": "Tốn 1 vé",
+  "tickets": "Vé Quảng Cáo",
+  "refill_in": "+1 sau {t}",
+  "full": "ĐẦY",
+  "out_of_tickets": "Hết vé rồi!",
+  "sponsor_refill": "Xem tài trợ để nạp lại",
+  "refilled": "Đã nạp đầy vé!",
+  "sponsor_unavailable": "Quảng cáo tài trợ không khả dụng ở đây",
+  "sponsor_failed": "Không tải được quảng cáo tài trợ",
+  "sponsor_incomplete": "Chưa xem hết. Không có thưởng.",
+  "collection": "Bộ Sưu Tập",
+  "discovered": "Đã tìm thấy",
+  "rush": "AD RUSH",
+  "rush_desc": "Quảng cáo mini liên tục. Nhanh. NHANH HƠN.",
+  "rush_locked": "Tìm thêm {n} QC nhanh để mở khóa",
+  "rush_best": "Kỷ lục",
+  "rush_start": "BẮT ĐẦU",
+  "rush_stage": "MÀN",
+  "speed_up": "TĂNG TỐC!",
+  "game_over": "GAME OVER",
+  "new_record": "KỶ LỤC MỚI!",
+  "lives": "Mạng",
+  "home": "Trang chủ",
+  "settings": "Cài đặt",
+  "language": "Ngôn ngữ",
+  "sound": "Âm thanh",
+  "on": "BẬT",
+  "off": "TẮT",
+  "nickname": "Biệt danh",
+  "nickname_hint": "Tên của bạn",
+  "start": "BẮT ĐẦU",
+  "welcome": "Chào mừng đến vũ trụ quảng cáo",
+  "welcome_body": "151 demo quảng cáo lầy lội đang chờ. Xem đi. Chơi đi. Sưu tầm hết đi.",
+  "level": "Lv",
+  "coins": "Xu",
+  "xp": "XP",
+  "new_ad": "PHÁT HIỆN QC MỚI!",
+  "rarity_common": "THƯỜNG",
+  "rarity_uncommon": "KHÁ HIẾM",
+  "rarity_rare": "HIẾM",
+  "rarity_superRare": "SIÊU HIẾM",
+  "rarity_secret": "BÍ MẬT",
+  "cat_hyper": "Hyper Casual",
+  "cat_strategy": "Chiến Thuật",
+  "cat_tycoon": "Kinh Doanh",
+  "cat_party": "Party",
+  "cat_micro": "Game Mini",
+  "cat_retro": "Pixel Cổ Điển",
+  "cat_threeD": "3D",
+  "cat_gacha": "Gacha & Nhân Phẩm",
+  "cat_rpg": "RPG & Cày Cấp",
+  "cat_puzzle": "Giải Đố",
+  "cat_sports": "Thể Thao",
+  "cat_asmr": "Đã Mắt",
+  "cat_meta": "Nhại Quảng Cáo",
+  "cat_secret": "Bí Mật",
+  "install": "CÀI ĐẶT",
+  "installed_joke": "Bạn đang chơi nó rồi mà.",
+  "reviews": "{n} đánh giá",
+  "review_1": "“Tải về chỉ vì quảng cáo. Hóa ra quảng cáo chính là game.”",
+  "review_2": "“Ngón cái tôi chưa bao giờ hạnh phúc thế này.”",
+  "review_3": "“10/10, sẽ xem lại quảng cáo này.”",
+  "review_4": "“Màn 3 bất khả thi. Làm gì có màn 3.”",
+  "review_5": "“Định chơi 5 giây. Giờ là 4 giờ sáng.”",
+  "review_6": "“Mèo nhà tôi cũng chơi game này.”",
+  "review_7": "“Cuối cùng cũng có QC tôn trọng tôi. Kiểu vậy.”",
+  "review_8": "“Game hay nhất mà tôi chưa từng cài.”",
+  "next_ad": "QC TIẾP THEO",
+  "replay": "CHƠI LẠI",
+  "play": "CHƠI",
+  "back": "Quay lại",
+  "close": "Đóng",
+  "score": "Điểm",
+  "best": "Kỷ lục",
+  "plays": "Lượt chơi",
+  "locked_hint": "Cứ xem quảng cáo tiếp để tìm ra cái này",
+  "secret_hint": "Tìm đủ 150 quảng cáo để triệu hồi…",
+  "ad_capsule": "Viên Nang QC",
+  "ad_capsule_desc": "Mở ngẫu nhiên một QC chưa tìm thấy",
+  "not_enough_coins": "Không đủ xu",
+  "all_found": "Đã tìm thấy tất cả!",
+  "level_up": "LÊN CẤP!",
+  "cloud": "Lưu đám mây",
+  "sign_in": "Đăng nhập bằng Google",
+  "sign_out": "Đăng xuất",
+  "synced": "Đã đồng bộ",
+  "sync_error": "Không đồng bộ được tiến trình",
+  "credits": "Ghi công",
+  "complete": "HOÀN THÀNH! Bạn đã xem mọi quảng cáo.",
+  "clear": "QUA MÀN!!",
+  "fail": "THẤT BẠI…",
+  "ad": "AD",
+  "tap_skip": "Chạm để bỏ qua",
+  "sponsored": "Được tài trợ",
+  "filter_all": "Tất cả",
+  "tap_continue": "Chạm để tiếp tục",
+  "now_showing": "ĐANG CHIẾU",
+  "reward": "Phần thưởng",
+  "result_win": "Bạn đã hạ gục quảng cáo!",
+  "result_lose": "Quảng cáo đã hạ gục bạn…",
+  "free_replay": "Chơi lại miễn phí",
+  "daily_bonus": "Quà Hằng Ngày",
+  "claim": "NHẬN",
+  "claimed": "Mai quay lại nhé",
+  "streak": "Chuỗi {n} ngày",
+  "channel": "CH",
+  "mode_random": "QC Ngẫu Nhiên",
+  "stats": "Thống kê",
+  "total_plays": "Tổng lượt chơi",
+  "wins": "Thắng",
+  "stars_total": "Sao",
+  "rush_ready": "Chuẩn bị…",
+  "rush_desc_long": "Các QC ngắn bạn đã tìm thấy sẽ phát liên tục. Vượt qua trước khi hết giờ. 4 mạng.",
+  "progress_title": "Thợ Săn QC",
+  "version": "Phiên bản"
+ },
+ "games": {
+  "1": [
+   "Rút Chốt Đi!",
+   "RÚT!",
+   "99% người chơi THẤT BẠI ở màn này!"
+  ],
+  "2": [
+   "Chạy Qua Cổng x100",
+   "LÁI!",
+   "Chỉ thiên tài mới chọn đúng cổng"
+  ],
+  "3": [
+   "Xếp Nước Màu",
+   "XẾP!",
+   "Đã quá… thêm MỘT màn nữa thôi!"
+  ],
+  "4": [
+   "Chồng Tới Trời",
+   "CHỒNG!",
+   "BẠN xếp được cao bao nhiêu?"
+  ],
+  "5": [
+   "Kẹt Bãi Đỗ Xe",
+   "THOÁT!",
+   "Bạn đưa được xe đỏ ra ngoài không?"
+  ],
+  "6": [
+   "Vẽ Cứu Cún Doge",
+   "VẼ!",
+   "Vẽ MỘT nét. Cứu chú cún."
+  ],
+  "7": [
+   "Cắt Dây",
+   "CẮT!",
+   "Nó đói LẮM rồi…"
+  ],
+  "8": [
+   "Ghép Trái Cây",
+   "GHÉP!",
+   "Bạn ghép ra được QUẢ DƯA HẤU không?"
+  ],
+  "9": [
+   "Thoát Mũi Tên",
+   "CHẠM!",
+   "Chạm đúng thứ tự…"
+  ],
+  "10": [
+   "Rót Tới Vạch",
+   "RÓT!",
+   "Dừng CHÍNH XÁC ở vạch"
+  ],
+  "11": [
+   "Phóng Dao",
+   "PHÓNG!",
+   "Đừng trúng mấy con dao kia!"
+  ],
+  "12": [
+   "Xoắn Ốc Rơi",
+   "XOAY!",
+   "Rơi xuống tận đáy!"
+  ],
+  "13": [
+   "Thành Phố Hố Đen",
+   "NUỐT!",
+   "Ăn sạch CẢ thành phố!"
+  ],
+  "14": [
+   "Thử Thách Tóc Dài",
+   "MỌC!",
+   "Tóc dài nhất thắng!"
+  ],
+  "15": [
+   "Kẹt Ốc Vít",
+   "VẶN!",
+   "Tháo hết mọi con ốc!"
+  ],
+  "16": [
+   "Lò Sưởi Bão Tuyết",
+   "SỐNG SÓT!",
+   "-60°C. Thành phố cần BẠN."
+  ],
+  "17": [
+   "Thủ Thành Pixel",
+   "PHÒNG THỦ!",
+   "Đặt tháp. Cứu vương quốc."
+  ],
+  "18": [
+   "Đại Chiến Quân Số",
+   "CHỌN!",
+   "Chọn đúng đường đi, Tướng quân!"
+  ],
+  "19": [
+   "Cung Thủ Lâu Đài",
+   "NGẮM!",
+   "Chúng đang leo tường!!"
+  ],
+  "20": [
+   "Biệt Đội Cuối Cùng",
+   "BẮN!",
+   "Chọn nâng cấp XỊN NHẤT!"
+  ],
+  "21": [
+   "Anh Hùng Hấp Thụ",
+   "HẤP THỤ!",
+   "Chỉ đánh kẻ YẾU HƠN!"
+  ],
+  "22": [
+   "Thuế Của Vua Tí Hon",
+   "CAI TRỊ!",
+   "Tham lam hay nhân từ? BẠN quyết định."
+  ],
+  "23": [
+   "Chinh Phục Bản Đồ",
+   "CHINH PHỤC!",
+   "Tô cả bản đồ thành màu XANH"
+  ],
+  "24": [
+   "Sinh Tồn Trên Bè",
+   "MÓC!",
+   "Ngày 1 giữa đại dương…"
+  ],
+  "25": [
+   "Xây Hầm Trú Ẩn",
+   "ĐÀO!",
+   "Mặt đất không còn. Đào đi."
+  ],
+  "26": [
+   "Công Thành Máy Bắn Đá",
+   "BẮN!",
+   "Hạ gục tòa tháp!"
+  ],
+  "27": [
+   "Khủng Hoảng Sao Hỏa",
+   "CÂN BẰNG!",
+   "Giữ 100 người sống sót trên Sao Hỏa"
+  ],
+  "28": [
+   "Ghép Súng Thủ Thành",
+   "GHÉP!",
+   "Ghép súng. Chặn đứng bầy quái."
+  ],
+  "29": [
+   "Clash Lane",
+   "THẢ QUÂN!",
+   "Phá tháp địch trong 20 giây!"
+  ],
+  "30": [
+   "Con Thuyền Cuối Cùng",
+   "CHẤT!",
+   "Lũ tới rồi! Ai được lên thuyền?"
+  ],
+  "31": [
+   "Quán Ramen Tất Bật",
+   "PHỤC VỤ!",
+   "Bạn trụ nổi giờ cao điểm trưa không?"
+  ],
+  "32": [
+   "Thu Ngân Cửa Hàng Tiện Lợi",
+   "QUÉT!",
+   "Bíp bíp bíp! Nhanh lên!"
+  ],
+  "33": [
+   "Tháp Burger",
+   "BẮT!",
+   "Làm đúng CHÍNH XÁC đơn hàng"
+  ],
+  "34": [
+   "Mỏ Vàng Idle",
+   "NÂNG CẤP!",
+   "Từ 0đ thành TỶ PHÚ"
+  ],
+  "35": [
+   "Bậc Thầy Latte Art",
+   "RÓT!",
+   "Thử thách barista: vẽ trái tim hoàn hảo"
+  ],
+  "36": [
+   "Khách Sạn Tất Bật",
+   "CHECK-IN!",
+   "Dịch vụ 5 sao trong 20 giây"
+  ],
+  "37": [
+   "Trùm Bãi Đỗ Xe",
+   "ĐỖ!",
+   "Mỗi chiếc xe = tiền"
+  ],
+  "38": [
+   "Sushi Băng Chuyền",
+   "LẤY!",
+   "Lấy đúng đĩa!"
+  ],
+  "39": [
+   "Công Viên Mini",
+   "XÂY!",
+   "Làm họ HÉT lên (vì vui)"
+  ],
+  "40": [
+   "Nông Trại Pixel",
+   "THU HOẠCH!",
+   "Trồng. Thu hoạch. LẶP LẠI."
+  ],
+  "41": [
+   "Công Lý Chia Pizza",
+   "CẮT!",
+   "4 đứa trẻ. 1 cái pizza. CẤM cãi nhau."
+  ],
+  "42": [
+   "Phòng Cấp Cứu",
+   "CHỮA!",
+   "Bác sĩ! Chúng tôi cần anh NGAY!"
+  ],
+  "43": [
+   "Ông Trùm Nước Chanh",
+   "BÁN!",
+   "Từ sạp nhỏ thành ĐẾ CHẾ"
+  ],
+  "44": [
+   "Hoảng Loạn Giặt Đồ",
+   "PHÂN LOẠI!",
+   "Đừng để đồ trắng thành HỒNG"
+  ],
+  "45": [
+   "Giao Hàng Thần Tốc",
+   "GIAO!",
+   "Đồ ăn nóng. 5 sao. ĐI!"
+  ],
+  "46": [
+   "Bấm Điên Cuồng",
+   "BẤM!",
+   "Ngón tay bạn không đủ nhanh đâu"
+  ],
+  "47": [
+   "Dừng Ở 10.00",
+   "DỪNG!",
+   "CHƯA AI từng bấm trúng 10.00"
+  ],
+  "48": [
+   "Samurai Rút Kiếm",
+   "RÚT!",
+   "Chớp mắt là THUA"
+  ],
+  "49": [
+   "Bom Khoai Nóng",
+   "CHUYỀN!",
+   "Đừng cầm nó lúc BÙM"
+  ],
+  "50": [
+   "Bóng Bay Gan Lì",
+   "BƠM!",
+   "To hơn… to hơn… TO HƠN…"
+  ],
+  "51": [
+   "Kéo Co",
+   "KÉO!",
+   "Kéo như thể tính mạng phụ thuộc vào nó"
+  ],
+  "52": [
+   "Đèn Trí Nhớ",
+   "NHỚ!",
+   "Simon bảo… bạn sẽ quên thôi"
+  ],
+  "53": [
+   "Đếm Gà Con",
+   "ĐẾM!",
+   "Dễ hả? Vậy ĐẾM đi."
+  ],
+  "54": [
+   "Tiệc Ngôi Sao Mini",
+   "ĐỔ!",
+   "4 người chơi. 1 ngôi sao. Hết bạn bè."
+  ],
+  "55": [
+   "Tranh Ghế",
+   "NGỒI!",
+   "Khi nhạc dừng… NGỒI!"
+  ],
+  "56": [
+   "Trò Úp Cốc",
+   "NHÌN!",
+   "Dán mắt vào đồng xu"
+  ],
+  "57": [
+   "Sumo Xe Đụng",
+   "HÚC!",
+   "Người cuối cùng trên sàn THẮNG"
+  ],
+  "58": [
+   "Lục Giác Sụp Đổ",
+   "CHẠY!",
+   "Sàn đang SẬP"
+  ],
+  "59": [
+   "Mưa Xu Tranh Giành",
+   "HỐT!",
+   "Trời đang mưa TIỀN"
+  ],
+  "60": [
+   "Cò Quay Bánh Kem",
+   "BẤM?",
+   "Một trong mấy nút này là BÁNH KEM"
+  ],
+  "61": [
+   "Nhổ Đi!",
+   "NHỔ!",
+   "Bác sĩ GHÉT mẹo này"
+  ],
+  "62": [
+   "Đập!",
+   "ĐẬP!",
+   "Vo ve vo ve…"
+  ],
+  "63": [
+   "Bắt Lấy Điện Thoại!",
+   "BẮT!",
+   "Đừng để nó VỠ"
+  ],
+  "64": [
+   "Kéo Khóa!",
+   "KÉO!",
+   "Trước khi ai đó thấy…"
+  ],
+  "65": [
+   "Lật!",
+   "LẬT!",
+   "Đỉnh cao hay thảm họa?"
+  ],
+  "66": [
+   "Xỏ Kim!",
+   "XỎ!",
+   "Bình tĩnh… bình tĩnh…"
+  ],
+  "67": [
+   "Cạo!",
+   "CẠO!",
+   "Mịn như da em bé"
+  ],
+  "68": [
+   "Đóng Đinh!",
+   "ĐÓNG!",
+   "3 phát. Đừng trúng ngón cái."
+  ],
+  "69": [
+   "Tưới Cây!",
+   "TƯỚI!",
+   "Đừng tưới nhiều quá!"
+  ],
+  "70": [
+   "Né!",
+   "NÉ!",
+   "Vua bóng né?"
+  ],
+  "71": [
+   "Chia Đôi!",
+   "CẮT!",
+   "Anh chị em đang nhìn đấy…"
+  ],
+  "72": [
+   "Cắm Sạc!",
+   "CẮM!",
+   "Pin 1%!!!"
+  ],
+  "73": [
+   "Che Cái Hắt Xì!",
+   "CHE!",
+   "Hắt… hắtt… HẮTTT…"
+  ],
+  "74": [
+   "Bóp Bong Bóng!",
+   "BÓP!",
+   "Sướng tuyệt đối"
+  ],
+  "75": [
+   "Dậy Đi!",
+   "DẬY!",
+   "Bạn TRỄ rồi!"
+  ],
+  "76": [
+   "Tìm Cái Khác Biệt!",
+   "TÌM!",
+   "Chỉ 1 trên 100 người thấy được"
+  ],
+  "77": [
+   "Đánh Răng!",
+   "CHẢI!",
+   "Nha sĩ khuyên dùng quảng cáo này"
+  ],
+  "78": [
+   "Đóng Dấu!",
+   "ĐÓNG!",
+   "Mô phỏng đời văn phòng"
+  ],
+  "79": [
+   "Kịp Tàu!",
+   "CHẠY!",
+   "Cửa sắp đóng…"
+  ],
+  "80": [
+   "Cho Mèo Ăn!",
+   "CHO ĂN!",
+   "Meo meo meo meo"
+  ],
+  "81": [
+   "Super Pixel Bros",
+   "NHẢY!",
+   "Kinh điển. Hoặc một vụ kiện."
+  ],
+  "82": [
+   "Hoảng Loạn Invader",
+   "BẮN!",
+   "Chúng đến từ banner quảng cáo"
+  ],
+  "83": [
+   "Phá Gạch",
+   "PHÁ!",
+   "Phá sạch mọi viên gạch!"
+  ],
+  "84": [
+   "Rắn Săn Mồi",
+   "BÒ!",
+   "Y như cái điện thoại cục gạch"
+  ],
+  "85": [
+   "Hành Trình Slime",
+   "CHIẾN!",
+   "Một QUẢNG CÁO hoang dã xuất hiện!"
+  ],
+  "86": [
+   "Pinball Pixel",
+   "LẬT!",
+   "TILT! TILT! TILT!"
+  ],
+  "87": [
+   "Thiên Đường Đạn",
+   "NÉ!",
+   "Chỉ hitbox tí hon là quan trọng"
+  ],
+  "88": [
+   "Câu Cá Pixel",
+   "QUAY!",
+   "Cá huyền thoại đang chờ"
+  ],
+  "89": [
+   "Nhảy Qua Đường",
+   "NHẢY!",
+   "Tại sao con ếch qua đường?"
+  ],
+  "90": [
+   "Pixel Kart GP",
+   "LÁI!",
+   "Hoài niệm Mode 7"
+  ],
+  "91": [
+   "Ăn Mê Cung",
+   "ĂN!",
+   "Wakka wakka wakka"
+  ],
+  "92": [
+   "Xếp Khối Rơi",
+   "THẢ!",
+   "Xóa 3 hàng!"
+  ],
+  "93": [
+   "Ninja Leo Tường",
+   "LEO!",
+   "Ninja không bao giờ ngã"
+  ],
+  "94": [
+   "Bắn Vịt",
+   "BẮN!",
+   "Đừng bắn con chó"
+  ],
+  "95": [
+   "Rương Mimic",
+   "MỞ!",
+   "Kho báu… hay là RĂNG?"
+  ],
+  "96": [
+   "Strike Bowling 3D",
+   "LĂN!",
+   "STRIKE hoặc không gì cả"
+  ],
+  "97": [
+   "Ném Rổ 3D",
+   "NÉM!",
+   "Vào lưới gọn gàng"
+  ],
+  "98": [
+   "Nghiêng Bi 3D",
+   "NGHIÊNG!",
+   "Dẫn viên bi tới đích"
+  ],
+  "99": [
+   "Vòng Trên Trời",
+   "BAY!",
+   "Chỉ dành cho phi công"
+  ],
+  "100": [
+   "Xa Lộ Neon 3D",
+   "ĐUA!",
+   "Synthwave. Tốc độ. Không phanh."
+  ],
+  "101": [
+   "Thoát Ngục FPS",
+   "THOÁT!",
+   "Tìm lối ra trước khi HẮN tìm ra bạn"
+  ],
+  "102": [
+   "Xúc Xắc May Mắn 3D",
+   "ĐỔ!",
+   "Ra 7, thắng LỚN"
+  ],
+  "103": [
+   "Khối Lăn Sơn",
+   "LĂN!",
+   "Sơn kín mọi ô!"
+  ],
+  "104": [
+   "Chim Cánh Cụt Trượt",
+   "TRƯỢT!",
+   "Trượt bụng tới vinh quang"
+  ],
+  "105": [
+   "Thành Phố Máy Bay Giấy",
+   "LƯỢN!",
+   "Bay được bao xa?"
+  ],
+  "106": [
+   "Đường Hầm Warp",
+   "NÉ!",
+   "Nhanh hơn ánh sáng"
+  ],
+  "107": [
+   "Quả Tạ Phá Dỡ",
+   "ĐẬP!",
+   "Phá hủy đã tay cực"
+  ],
+  "108": [
+   "Golf Mini 3D",
+   "GẠT!",
+   "Hole in one? Dễ ợt… nhỉ?"
+  ],
+  "109": [
+   "Mega Gacha x10",
+   "QUAY!",
+   "Tỉ lệ SSR TĂNG!!! (0,0001%)"
+  ],
+  "110": [
+   "Máy Xèng 777",
+   "QUAY!",
+   "JACKPOT GẦN lắm rồi…"
+  ],
+  "111": [
+   "Cào Trúng Thưởng",
+   "CÀO!",
+   "Trùng 3 ô, TRÚNG 1 TỶ"
+  ],
+  "112": [
+   "Xé Pack Holo",
+   "XÉ!",
+   "Đây có phải lá bài 10.000 đô?"
+  ],
+  "113": [
+   "Cơn Sốt Hòm Đồ",
+   "MỞ!",
+   "Thêm một hòm nữa thôi…"
+  ],
+  "114": [
+   "Vòng Quay Định Mệnh",
+   "DỪNG!",
+   "Nó sẽ dừng ở đâu?"
+  ],
+  "115": [
+   "Plinko Pachinko",
+   "THẢ!",
+   "Tiền to ở dưới đáy"
+  ],
+  "116": [
+   "Máy Gắp Thú",
+   "GẮP!",
+   "Càng gắp yếu là CÓ CHỦ ĐÍCH"
+  ],
+  "117": [
+   "Máy Đẩy Xu",
+   "ĐẨY!",
+   "SẮP rơi rồi…"
+  ],
+  "118": [
+   "Vòng Quay Hằng Ngày",
+   "NHẬN!",
+   "Đăng nhập MỖI ngày. Không thì biết tay."
+  ],
+  "119": [
+   "Lv.1 vs Boss Lv.999",
+   "BUFF!",
+   "Bất khả thi? (Không.)"
+  ],
+  "120": [
+   "Từ Tế Bào Đến Thiên Hà",
+   "TIẾN HÓA!",
+   "Tiến hóa thành THẦN trong 20 giây"
+  ],
+  "121": [
+   "Rèn Kiếm Hợp Nhất",
+   "RÈN!",
+   "Ghép tới HUYỀN THOẠI"
+  ],
+  "122": [
+   "Tap Titan",
+   "CHẠM!",
+   "Sát thương: 1 → 1.000.000.000"
+  ],
+  "123": [
+   "Thú Cưng Bỏ Túi",
+   "NUÔI!",
+   "Nuôi cho đàng hoàng… không thì…"
+  ],
+  "124": [
+   "Bầy Quái Sinh Tồn",
+   "SỐNG SÓT!",
+   "10.000 kẻ địch. 1 anh hùng."
+  ],
+  "125": [
+   "Lưỡi Kiếm Xoay",
+   "XOAY!",
+   "Thêm kiếm. THÊM NỮA."
+  ],
+  "126": [
+   "Thuần Hóa Slime",
+   "GHÉP!",
+   "Ghép slime thành VUA"
+  ],
+  "127": [
+   "Pha Chế Độc Dược",
+   "NẤU!",
+   "Khuấy, khuấy, rắc rối thêm"
+  ],
+  "128": [
+   "Trứng Rồng",
+   "ẤP!",
+   "Giữ ấm… nó động đậy kìa!"
+  ],
+  "129": [
+   "Kẹo Ngọt Match 3",
+   "GHÉP!",
+   "Ngọt! Ngon! THẦN THÁNH!"
+  ],
+  "130": [
+   "Xếp Hình Trượt",
+   "TRƯỢT!",
+   "8 ô. 1 chỗ trống. Tức vô hạn."
+  ],
+  "131": [
+   "Tìm 3 Điểm Khác",
+   "TÌM!",
+   "Chỉ dành cho mắt thiên tài"
+  ],
+  "132": [
+   "Chỉ 1% Giải Được",
+   "GIẢI!",
+   "Chỉ 1% giải được câu này!"
+  ],
+  "133": [
+   "Nối Ống Nước",
+   "NỐI!",
+   "Cho nước chảy đi"
+  ],
+  "134": [
+   "Block Blast",
+   "XẾP!",
+   "Gây nghiện. Thật đấy."
+  ],
+  "135": [
+   "Địa Ngục CAPTCHA",
+   "XÁC MINH!",
+   "Chứng minh bạn không phải robot. Lần nữa."
+  ],
+  "136": [
+   "Đẩy Thùng",
+   "ĐẨY!",
+   "Nhà kho cần bạn"
+  ],
+  "137": [
+   "Sút Phạt Đền",
+   "SÚT!",
+   "World Cup nằm trong chân BẠN"
+  ],
+  "138": [
+   "Home Run Derby",
+   "VUNG!",
+   "Đánh bay lên MẶT TRĂNG"
+  ],
+  "139": [
+   "Bắn Cung Trong Gió",
+   "BẮN!",
+   "Coi chừng gió…"
+  ],
+  "140": [
+   "Sumo Quật Ngã",
+   "ĐẨY!",
+   "HAKKEYOI!"
+  ],
+  "141": [
+   "Trượt Tuyết Slalom 3D",
+   "LƯỢN!",
+   "Qua hết mọi cổng!"
+  ],
+  "142": [
+   "Nhà Vô Địch Đấm Bốc",
+   "ĐẤM!",
+   "Bay như bướm"
+  ],
+  "143": [
+   "Dọn Sạch ASMR",
+   "LAU!",
+   "Đã mắt lạ kỳ…"
+  ],
+  "144": [
+   "Lột Xác Glow Up",
+   "GLOW UP!",
+   "Từ SỐ 0 thành ANH HÙNG"
+  ],
+  "145": [
+   "Xịt Rửa Áp Lực",
+   "XỊT!",
+   "Bùn đất → Bóng như gương"
+  ],
+  "146": [
+   "Cắt Xà Phòng",
+   "CẮT!",
+   "Giòn tan đã tai"
+  ],
+  "147": [
+   "Đang tải… 99%",
+   "TẢI!",
+   "Sắp xong rồi… (mãi mãi)"
+  ],
+  "148": [
+   "Đóng Quảng Cáo Này",
+   "ĐÓNG!",
+   "Tìm nút đóng THẬT"
+  ],
+  "149": [
+   "PHÁT HIỆN VIRUS!!!",
+   "QUÉT!",
+   "Thiết bị của bạn có 39 virus!!"
+  ],
+  "150": [
+   "Bạn Là Người Thứ 999.999!",
+   "NHẬN!",
+   "CHÚC MỪNG!!! Nhận giải ngay!"
+  ],
+  "151": [
+   "VUA QUẢNG CÁO",
+   "HẠ GỤC!",
+   "Quảng cáo cuối cùng. Quảng cáo của mọi quảng cáo."
+  ]
+ },
+ "words": {
+  "oops": "ÚI!",
+  "win": "THẮNG!",
+  "tap": "CHẠM!",
+  "great": "TUYỆT!",
+  "nice": "HAY!",
+  "perfect": "HOÀN HẢO!",
+  "goal": "VÀO!",
+  "move": "LƯỢT",
+  "go": "ĐI!",
+  "ouch": "ÁI!",
+  "safe": "AN TOÀN!",
+  "draw": "VẼ!",
+  "yummy": "NGON!",
+  "swipe": "VUỐT!",
+  "combo": "COMBO",
+  "wow": "WOW!",
+  "next": "TIẾP",
+  "danger": "NGUY HIỂM!",
+  "clear": "QUA MÀN!",
+  "good": "TỐT",
+  "miss": "TRƯỢT",
+  "hold": "GIỮ",
+  "fever": "BÙNG NỔ!",
+  "level": "CẤP",
+  "drag": "KÉO",
+  "full": "ĐẦY!",
+  "max": "MAX",
+  "no_fuel": "Hết xăng!",
+  "freezing": "LẠNH CÓNG!",
+  "blizzard": "BÃO TUYẾT!",
+  "boss": "TRÙM",
+  "build": "XÂY!",
+  "upgrade": "NÂNG CẤP!",
+  "wave": "ĐỢT",
+  "headshot": "HEADSHOT!",
+  "ko": "KO",
+  "lose": "THUA",
+  "overthrown": "BỊ LẬT ĐỔ!",
+  "yes": "CÓ",
+  "no": "KHÔNG",
+  "bonus": "THƯỞNG!",
+  "strike": "STRIKE!",
+  "power": "Điện",
+  "food": "Thức ăn",
+  "merge": "GỘP!",
+  "money": "TIỀN",
+  "buy": "MUA",
+  "angry": "GIẬN!",
+  "wrong": "SAI!",
+  "too_much": "NHIỀU QUÁ!",
+  "change": "TIỀN THỐI",
+  "total": "TỔNG",
+  "scan": "BÍP!",
+  "order_up": "CÓ MÓN!",
+  "yuck": "ỌE!",
+  "new": "MỚI!",
+  "auto": "TỰ ĐỘNG!",
+  "billionaire": "TỶ PHÚ!",
+  "unlock": "MỞ KHÓA",
+  "hire": "THUÊ",
+  "empty": "TRỐNG!",
+  "milk": "SỮA",
+  "serve": "PHỤC VỤ",
+  "dirty": "BẨN!",
+  "crash": "VA CHẠM!",
+  "jackpot": "NỔ HŨ!",
+  "scream": "HÉT!",
+  "harvest": "THU HOẠCH!",
+  "fair": "CÔNG BẰNG!",
+  "unfair": "BẤT CÔNG!",
+  "time": "HẾT GIỜ!",
+  "cured": "KHỎI BỆNH!",
+  "busy": "HẾT CHỖ!",
+  "free": "TRỐNG",
+  "xray": "X-QUANG",
+  "clinic": "PHÒNG KHÁM",
+  "dental": "NHA KHOA",
+  "cardio": "TIM MẠCH",
+  "empire": "ĐẾ CHẾ!",
+  "bankrupt": "PHÁ SẢN",
+  "day": "NGÀY",
+  "clean": "SÁNG BÓNG!",
+  "white": "TRẮNG",
+  "color": "MÀU",
+  "dark": "TỐI MÀU",
+  "late": "TRỄ!",
+  "delivered": "ĐÃ GIAO!",
+  "refill": "NẠP LẠI!",
+  "you": "BẠN",
+  "stop": "DỪNG!",
+  "cpu": "CPU",
+  "wait": "CHỜ ĐÃ...",
+  "foul": "PHẠM LUẬT!",
+  "round": "HIỆP",
+  "pop": "BỤP!",
+  "bank": "CẤT",
+  "pull": "KÉO!",
+  "watch": "XEM",
+  "repeat": "LẶP LẠI!",
+  "out": "LOẠI",
+  "count": "ĐẾM!",
+  "star": "SAO!",
+  "lucky": "MAY MẮN!",
+  "steal": "CƯỚP!",
+  "final": "CHUNG KẾT",
+  "too_early": "SỚM QUÁ!",
+  "haha": "HAHA!",
+  "which": "CÁI NÀO?",
+  "bump": "BỊCH!",
+  "dash": "LƯỚT",
+  "run": "CHẠY!",
+  "dodge": "NÉ!",
+  "your_turn": "LƯỢT BẠN",
+  "bingo": "BINGO!",
+  "crispy": "GIÒN...",
+  "burnt": "CHÁY!",
+  "catch": "BẮT!",
+  "smooth": "MƯỢT!",
+  "bloom": "NỞ HOA!",
+  "more": "THÊM!",
+  "ah": "À...",
+  "mph": "MPH!",
+  "achoo": "HẮT XÌ!",
+  "scrub": "CHÀ!",
+  "yum": "NGON!",
+  "jump": "NHẢY",
+  "course_clear": "HOÀN THÀNH!",
+  "score": "ĐIỂM",
+  "world": "THẾ GIỚI",
+  "boom": "BÙM",
+  "multi": "NHÂN BÓNG",
+  "wide": "RỘNG",
+  "fire": "LỬA",
+  "balls": "BÓNG",
+  "game_over": "KẾT THÚC",
+  "hero": "DŨNG SĨ",
+  "mage": "PHÁP SƯ",
+  "cleric": "TU SĨ",
+  "critical": "CHÍ MẠNG",
+  "attack": "TẤN CÔNG",
+  "heal": "HỒI MÁU",
+  "defend": "PHÒNG THỦ",
+  "item": "VẬT PHẨM",
+  "mega_slam": "SIÊU ĐẬP",
+  "guard": "ĐỠ",
+  "charge": "TỤ LỰC",
+  "magic": "PHÉP",
+  "level_up": "LÊN CẤP!",
+  "graze": "SƯỢT",
+  "hit": "TRÚNG!",
+  "snap": "ĐỨT!",
+  "slack": "CHÙNG",
+  "cast": "QUĂNG!",
+  "let_go": "THẢ DÂY!",
+  "reel": "CUỘN!",
+  "legendary": "HUYỀN THOẠI!",
+  "splat": "BẸP!",
+  "splash": "TÕM!",
+  "bonk": "CỐC!",
+  "boost": "TĂNG TỐC!",
+  "lines": "HÀNG",
+  "double": "NHÂN ĐÔI!",
+  "why": "SAO VẬY?!",
+  "fly_away": "BAY ĐI",
+  "shot": "CÚ NÉM",
+  "chomp": "ĐỚP!",
+  "treasure": "KHO BÁU!",
+  "gutter": "RÃNH…",
+  "spare": "SPARE!",
+  "swish": "SẠCH LƯỚI!",
+  "on_fire": "ĐANG HĂNG!",
+  "brick": "TRƯỢT!",
+  "airball": "AIRBALL",
+  "near_miss": "SUÝT!",
+  "nitro": "NITRO!",
+  "smash": "ĐẬP!",
+  "key": "CHÌA KHÓA!",
+  "escape": "THOÁT RỒI!",
+  "locked": "BỊ KHÓA!",
+  "exit": "LỐI RA",
+  "so_close": "SUÝT NỮA!",
+  "up": "LÊN!",
+  "sale": "GIẢM GIÁ",
+  "speed_up": "TĂNG TỐC!",
+  "release": "THẢ",
+  "blocked": "BỊ CHẶN!",
+  "lip_out": "BẬT MIỆNG LỖ!",
+  "hole_in_one": "HOLE IN ONE!",
+  "birdie": "BIRDIE!",
+  "par": "PAR!",
+  "gold": "VÀNG!",
+  "limited": "GIỚI HẠN",
+  "rate_up": "TĂNG TỈ LỆ!!",
+  "turn": "LẬT!",
+  "complete": "HOÀN TẤT!",
+  "reach": "CÒN MỘT!",
+  "revive": "HỒI SINH!!",
+  "spin": "QUAY!",
+  "match_3": "3 GIỐNG = THẮNG",
+  "scratch": "CÀO!",
+  "rip": "XÉ!",
+  "hp": "HP",
+  "value": "GIÁ TRỊ",
+  "rub": "XOA!",
+  "common": "THƯỜNG",
+  "rare": "HIẾM",
+  "epic": "SỬ THI",
+  "again": "LẠI NÀO!",
+  "noooo": "KHÔNGGG!",
+  "get": "NHẬN!!",
+  "last": "CUỐI!",
+  "out_of_coins": "HẾT XU",
+  "big_coin": "XU LỚN!",
+  "chance": "CƠ HỘI!",
+  "login_bonus": "THƯỞNG ĐĂNG NHẬP",
+  "today": "HÔM NAY!",
+  "too_strong": "MẠNH QUÁ!",
+  "weak": "YẾU...",
+  "retry": "THỬ LẠI",
+  "stage": "MÀN",
+  "sword": "KIẾM",
+  "hatch": "NỞ RỒI!",
+  "cute": "DỄ THƯƠNG!",
+  "ugly": "XẤU...",
+  "fun": "VUI",
+  "magnet": "Nam châm",
+  "magic_bolt": "Đạn phép",
+  "holy_book": "Thánh thư",
+  "aura": "Hào quang",
+  "thunder": "Sấm sét",
+  "speed": "Tốc độ",
+  "king": "VUA!",
+  "overflow": "TRÀN RỒI!",
+  "kaboom": "BÙMMM!",
+  "stir": "KHUẤY!",
+  "recipe": "CÔNG THỨC",
+  "brew": "NẤU!",
+  "cold": "LẠNH!",
+  "fried": "ỐP LA...",
+  "chick": "GÀ CON?!",
+  "too_hot": "NÓNG QUÁ!",
+  "hot": "NÓNG",
+  "cozy": "ẤM ÁP",
+  "sweet": "Ngọt!",
+  "tasty": "Ngon!",
+  "delicious": "Tuyệt vị!",
+  "divine": "Thần sầu!",
+  "shuffle": "Xáo!",
+  "moves": "Lượt",
+  "top": "TOP",
+  "connect": "NỐI RỒI!",
+  "excellent": "Xuất sắc!",
+  "unbelievable": "Không thể tin!",
+  "no_moves": "Hết nước đi!",
+  "human_probably": "Là người. Chắc vậy.",
+  "try_again": "Thử lại",
+  "robot_detected": "Phát hiện robot!",
+  "not_robot": "Tôi không phải là robot",
+  "select_all": "Chọn tất cả",
+  "traffic_lights": "đèn giao thông",
+  "buses": "xe buýt",
+  "robots": "robot",
+  "until_none": "cho đến khi hết",
+  "verify": "XÁC MINH",
+  "save": "CỨU THUA!",
+  "post": "TRÚNG CỘT!",
+  "fastball": "BÓNG NHANH",
+  "curve": "BÓNG XOÁY",
+  "changeup": "BÓNG CHẬM",
+  "home_run": "HOME RUN!!",
+  "shaky": "CHAO ĐẢO!",
+  "open": "SƠ HỞ!",
+  "counter": "PHẢN ĐÒN!",
+  "wrong_way": "NGƯỢC CHIỀU!",
+  "block": "CHẶN",
+  "nice_shot": "CÚ ĐẸP!",
+  "before": "TRƯỚC",
+  "after": "SAU",
+  "peel": "LỘT!",
+  "hair": "TÓC",
+  "lips": "MÔI",
+  "popup_storm": "BÃO POPUP!",
+  "install_barrage": "MƯA NÚT CÀI ĐẶT!",
+  "press_skip": "BẤM BỎ QUA!!",
+  "ad_king": "VUA QUẢNG CÁO"
+ }
+}

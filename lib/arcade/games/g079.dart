@@ -31,7 +31,7 @@ class G079 extends MiniGame {
   void init() {
     final dur = host.duration;
     final k = (host.speed - 1) * .5;
-    _closeEnd = dur - .45 - k * .8;
+    _closeEnd = dur - .8 - k * .8;
     _closeStart = _closeEnd - 1.6;
   }
 
@@ -152,7 +152,7 @@ class G079 extends MiniGame {
   void _dash() {
     if (host.finished || _stun > 0) return;
     _taps++;
-    _vx = min(_vx + 44, 240);
+    _vx = min(_vx + 38, 240);
     if (!_air) {
       host.sfx(Sfx.step, rate: .9 + min(_vx, 240) / 400, volume: .7);
       if (_taps.isEven) host.fx.smoke(Offset(_x - 10, _ground), count: 2, size: 10);

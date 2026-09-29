@@ -37,7 +37,7 @@ class G077 extends MiniGame {
       final r = _teeth[i];
       _germs.add(_Germ(r.center + Offset(0, i < 6 ? 6 : -6), rand(0, pi * 2), randInt(3)));
     }
-    _hpDist = 230 * (1 + (host.speed - 1) * .35);
+    _hpDist = 320 * (1 + (host.speed - 1) * .35);
   }
 
   @override

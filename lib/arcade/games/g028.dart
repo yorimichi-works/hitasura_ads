@@ -5,7 +5,7 @@ import '../engine/engine.dart';
 /// hold the wall against the horde until the timer ends.
 class G028 extends MiniGame {
   static const _cols = 4, _rows = 3;
-  static const _gx0 = 12.0, _gy0 = 418.0, _cw = 84.0, _chh = 50.0;
+  static const _gx0 = 12.0, _gy0 = 432.0, _cw = 84.0, _chh = 48.0;
   static const _wallY = 384.0;
   static const _maxLv = 5;
   static const _lvCol = [Color(0xFF3FB8FF), Color(0xFF2ECC71), Color(0xFFFF8A1F), Color(0xFF8C4DFF), Color(0xFFFFC53D)];
@@ -33,7 +33,7 @@ class G028 extends MiniGame {
   Offset _dragPos = Offset.zero;
 
   int get _price => 10 + _bought * 2;
-  static const Rect _buyRect = Rect.fromLTWH(118, 580, 190, 50);
+  static const Rect _buyRect = Rect.fromLTWH(118, 584, 190, 46);
 
   static Offset _cellC(int i) => Offset(_gx0 + (i % _cols) * _cw + _cw / 2, _gy0 + (i ~/ _cols) * _chh + _chh / 2);
 
@@ -91,7 +91,7 @@ class G028 extends MiniGame {
     // spawning
     _spawnT -= dt * host.speed;
     if (_spawnT <= 0) {
-      _spawnT = max(.42, 1.15 - host.time * .035) * rand(.75, 1.25);
+      _spawnT = max(.36, 1.0 - host.time * .035) * rand(.75, 1.25);
       final r = rng.nextDouble();
       final kind = host.time < 4 ? 0 : (r < .6 ? 0 : (r < .85 ? 1 : 2));
       _spawn(kind);
@@ -181,10 +181,10 @@ class G028 extends MiniGame {
 
   void _spawn(int kind) {
     final lane = randInt(4);
-    const hpBase = [4.0, 2.2, 14.0, 150.0];
-    const sp = [24.0, 44.0, 15.0, 11.0];
+    const hpBase = [5.0, 2.6, 16.0, 220.0];
+    const sp = [34.0, 58.0, 22.0, 17.0];
     const size = [15.0, 11.0, 21.0, 34.0];
-    final hp = hpBase[kind] * (1 + host.time * .09);
+    final hp = hpBase[kind] * (1 + host.time * .14);
     _enemies.add(_Enemy(kind, lane, Offset(kind == 3 ? 180 : _laneX[lane] + rand(-12, 12), 30), hp, sp[kind] * rand(.9, 1.1), size[kind]));
   }
 
@@ -230,7 +230,6 @@ class G028 extends MiniGame {
     if (e.dead) return;
     e.hp -= d;
     e.hit = 1;
-    e.pos -= Offset(0, e.kind == 3 ? .5 : 2.5);
     if (e.hp <= 0) {
       e.dead = true;
       final reward = [5, 4, 12, 60][e.kind];
@@ -370,10 +369,7 @@ class G028 extends MiniGame {
       }
     }
     // wall HP
-    D.bar(c, const Rect.fromLTWH(60, 46, 240, 16), _wall / 100, _wall > 35 ? Pal.lime : Pal.red, border: Pal.ink);
-    D.heart(c, const Offset(46, 54), 22, Pal.red, border: Pal.ink);
-    D.text(c, '${_wall.ceil()}', const Offset(180, 54), size: 13, stroke: Pal.ink);
-
+    
     // grid panel
     D.rrect(c, const Rect.fromLTWH(0, 410, 360, 230), 0, const Color(0xFF2B2F45));
     c.drawRect(const Rect.fromLTWH(0, 410, 360, 4), D.fill(const Color(0xFF1B1530)));
@@ -389,6 +385,9 @@ class G028 extends MiniGame {
         c.drawRRect(RRect.fromRectAndRadius(r.inflate(2 + 2 * sin(_t * 12)), const Radius.circular(12)), D.stroke(Pal.yellow, 2.5));
       }
     }
+    D.bar(c, const Rect.fromLTWH(60, 413, 240, 13), _wall / 100, _wall > 35 ? Pal.lime : Pal.red, border: Pal.ink);
+    D.heart(c, const Offset(44, 419), 20, Pal.red, border: Pal.ink);
+    D.text(c, '${_wall.ceil()}', const Offset(180, 419), size: 11, stroke: Pal.ink);
     for (var i = 0; i < 12; i++) {
       final tt = _grid[i];
       if (tt == null || i == _dragFrom) continue;
@@ -487,9 +486,9 @@ class G028 extends MiniGame {
         face: e.hit > .5 ? Face.shocked : (atWall ? Face.angry : (e.kind == 1 ? Face.smug : Face.angry)),
         look: const Offset(0, 1), squash: 1 + (atWall ? .06 * sin(e.anim * 14) : 0));
     if (e.kind == 2) {
-      c.drawArc(Rect.fromCircle(center: e.pos + Offset(0, bob - e.size * .3), radius: e.size * .95), pi, pi, true,
+      c.drawArc(Rect.fromCircle(center: e.pos + Offset(0, bob - e.size * .45), radius: e.size * .85), pi, pi, true,
           D.fill(const Color(0xFF5B6275)));
-      c.drawArc(Rect.fromCircle(center: e.pos + Offset(0, bob - e.size * .3), radius: e.size * .95), pi, pi, true,
+      c.drawArc(Rect.fromCircle(center: e.pos + Offset(0, bob - e.size * .45), radius: e.size * .85), pi, pi, true,
           D.stroke(Pal.ink, 2));
     }
     if (e.kind == 3) {

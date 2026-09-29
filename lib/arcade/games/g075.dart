@@ -217,6 +217,8 @@ class G075 extends MiniGame {
         D.line(c, e + Offset(-ew * .4, eh * .1), e + Offset(-ew * .2, eh * .2), Pal.red, 1.5);
       }
     }
+    c.drawOval(Rect.fromCenter(center: Offset(0, r * .16), width: r * .26, height: r * .18),
+        D.fill(Color.lerp(Pal.skin, Pal.red, .2)!));
     // mouth
     if (_awake) {
       c.drawOval(Rect.fromCenter(center: Offset(0, r * .5), width: r * .5, height: r * .45), D.fill(const Color(0xFF7A1F2B)));
@@ -231,10 +233,11 @@ class G075 extends MiniGame {
       // drool
       D.line(c, Offset(r * .1, r * .5), Offset(r * .18, r * .72), const Color(0xCC8ED8FF), 5);
       // snot bubble
-      final sb = (8 + _snot * 22) * (1 - _eyes * .6);
-      c.drawCircle(Offset(-r * .2 - sb * .6, r * .2), sb, D.fill(const Color(0x668ED8FF)));
-      c.drawCircle(Offset(-r * .2 - sb * .6, r * .2), sb, D.stroke(const Color(0xFF6FA8D8), 2));
-      c.drawCircle(Offset(-r * .2 - sb * .9, r * .2 - sb * .4), sb * .22, D.fill(const Color(0xAAFFFFFF)));
+      final sb = (8 + _snot * 14) * (1 - _eyes * .6);
+      final sc = Offset(-8 - sb * .7, r * .2 + sb * .5);
+      c.drawCircle(sc, sb, D.fill(const Color(0x668ED8FF)));
+      c.drawCircle(sc, sb, D.stroke(const Color(0xFF6FA8D8), 2));
+      c.drawCircle(sc + Offset(-sb * .35, -sb * .35), sb * .22, D.fill(const Color(0xAAFFFFFF)));
     }
     c.restore();
   }

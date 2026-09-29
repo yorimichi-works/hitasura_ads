@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
@@ -18,7 +19,8 @@ class _NativeAudio implements ArcadeAudio {
   double _bgmVolume = .55;
   final Map<String, DateTime> _last = {};
 
-  bool get _disabled => kIsWeb || const bool.fromEnvironment('FLUTTER_TEST');
+  static final bool _inTest = Platform.environment.containsKey('FLUTTER_TEST');
+  bool get _disabled => kIsWeb || _inTest;
 
   AudioPlayer _voice() {
     if (_pool.length < 8) {

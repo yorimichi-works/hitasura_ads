@@ -166,7 +166,7 @@ class G109 extends MiniGame {
 
   // --------------------------------------------------------------- update --
 
-  static const _auto = bool.fromEnvironment('AUTO');
+  static const _auto = true;
   double _autoT = 0;
 
   @override

@@ -97,6 +97,20 @@ class G006 extends MiniGame {
     for (final b in _bees) {
       _moveBee(b, dt);
     }
+    // swarm separation so bees spread out along the wall
+    for (var i = 0; i < _bees.length; i++) {
+      for (var j = i + 1; j < _bees.length; j++) {
+        final d = _bees[j].pos - _bees[i].pos;
+        final dist = d.distance;
+        if (dist < 16 && dist > 1e-4) {
+          final push = d / dist * ((16 - dist) * .5);
+          _bees[i].pos -= push;
+          _bees[j].pos += push;
+          _bees[i].vel -= push * 6;
+          _bees[j].vel += push * 6;
+        }
+      }
+    }
     if (_stung) _stungT += dt;
   }
 
@@ -288,7 +302,7 @@ class G006 extends MiniGame {
       final left = (_surviveTime - _phaseT).clamp(0.0, _surviveTime);
       final n = left.ceil();
       final frac = left - left.floor();
-      final s = 1 + (frac > .8 ? (frac - .8) * 2 : 0);
+      final s = 1.0 + (frac > .8 ? (frac - .8) * 2 : 0.0);
       c.drawCircle(const Offset(180, 100), 36, D.fill(const Color(0xCC1B1530)));
       c.drawArc(Rect.fromCircle(center: const Offset(180, 100), radius: 36), -pi / 2, 2 * pi * left / _surviveTime, false,
           D.stroke(Pal.yellow, 6));

@@ -44,10 +44,10 @@ class G124 extends MiniGame {
   double _cardDelay = 0;
   int _picked = -1;
   double _pickedT = 0;
-  final Map<int, int> _lv = {0: 1, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0};
+  final Map<int, int> _lv = {0: 1, 1: 0, 2: 1, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0};
   double _might = 1;
   double _speedMul = 1;
-  double _magnet = 56;
+  double _magnet = 84;
 
   // weapon timers
   double _boltCd = 0;
@@ -76,9 +76,9 @@ class G124 extends MiniGame {
   static const _heroScreen = Offset(180, 372);
 
   // ---------------------------------------------------------------- stats
-  int get _boltCount => min(1 + (_lv[0]! + 1) ~/ 2, 4);
+  int get _boltCount => min(2 + _lv[0]! ~/ 2, 5);
   double get _boltDmg => 120 * pow(1.3, _lv[0]! - 1) * _might;
-  double get _boltRate => .62 - _lv[0]! * .05;
+  double get _boltRate => .5 - _lv[0]! * .05;
   int get _bookCount => _lv[1]! == 0 ? 0 : _lv[1]! + 1;
   double get _bookDmg => 90 * pow(1.3, max(0, _lv[1]! - 1)) * _might;
   double get _bookR => 62 + _lv[1]! * 4;
@@ -87,7 +87,7 @@ class G124 extends MiniGame {
   double get _thunderDmg => 260 * pow(1.3, max(0, _lv[3]! - 1)) * _might;
   double get _thunderRate => 1.15 - _lv[3]! * .12;
   double get _heroSpeed => 118 * _speedMul;
-  double get _xpNeed => 4.0 + _level * 3.2;
+  double get _xpNeed => 3.0 + _level * 2.4;
 
   @override
   void init() {
@@ -140,6 +140,7 @@ class G124 extends MiniGame {
 
     _st += dt;
     _hurtT = max(0, _hurtT - dt);
+    if (!_dead) _hp = min(_maxHp, _hp + 2.5 * dt);
     if (_dead) {
       _deadT += dt;
     }
@@ -242,11 +243,11 @@ class G124 extends MiniGame {
 
   double _bossHp() {
     // Single-target DPS estimate so the boss always takes ~5.5 s of focus.
-    final bolt = _boltDmg * _boltCount / _boltRate;
+    final bolt = _boltDmg * ((_boltCount + 1) ~/ 2) / _boltRate * 1.3;
     final book = _bookCount * _bookDmg * 1.2;
     final aura = _lv[2]! > 0 ? _auraDmg / .3 : 0;
     final thunder = _lv[3]! > 0 ? _thunderDmg / _thunderRate * .5 : 0;
-    return max(4000.0, (bolt + .45 * (book + aura) + thunder) * 5.2);
+    return max(3000.0, (bolt + .3 * (book + aura) + thunder) * 4.5);
   }
 
   void _spawnOne() {
@@ -276,7 +277,7 @@ class G124 extends MiniGame {
 
   void _addEnemy(double x, double y, int type) {
     if (_en.length >= _maxEn) return;
-    final hpMul = pow(1.1, _st).toDouble();
+    final hpMul = pow(1.075, _st).toDouble();
     const baseHp = [100.0, 70.0, 900.0];
     const spd = [40.0, 66.0, 30.0];
     const rad = [9.0, 7.5, 15.0];
@@ -303,8 +304,13 @@ class G124 extends MiniGame {
         _boltCd = _boltRate;
         final targets = _nearest(_boltCount);
         final b = _boss;
-        if (b != null && !b.dead && targets.isNotEmpty && (Offset(b.x, b.y) - Offset(_hx, _hy)).distance < 330) {
-          targets[0] = Offset(b.x, b.y);
+        Offset? bossPos;
+        if (b != null && !b.dead && (Offset(b.x, b.y) - Offset(_hx, _hy)).distance < 360) {
+          bossPos = Offset(b.x, b.y);
+          if (targets.isEmpty) targets.add(bossPos);
+          for (var i = 0; i < targets.length; i += 2) {
+            targets[i] = bossPos;
+          }
         }
         for (final tg in targets) {
           final d = tg - Offset(_hx, _hy);
@@ -315,7 +321,7 @@ class G124 extends MiniGame {
             ..vx = d.dx / l * 430
             ..vy = d.dy / l * 430
             ..life = 1.1
-            ..pierce = _lv[0]! >= 3 ? 2 : 1);
+            ..pierce = tg == bossPos ? 999 : (_lv[0]! >= 3 ? 2 : 1));
         }
         if (targets.isNotEmpty) host.sfx(Sfx.laser, volume: .25, rate: rand(1.3, 1.6));
       }
@@ -628,7 +634,7 @@ class G124 extends MiniGame {
       if (!_dead && d < minD && d > .01) {
         e.x = _hx - dx / d * minD;
         e.y = _hy - dy / d * minD;
-        contactDps += const [7.0, 5.0, 16.0][e.type];
+        contactDps += const [4.0, 3.0, 10.0][e.type];
       }
       // far-away stragglers teleport back into the fight (the horde never ends)
       if (d > 520) {
@@ -639,7 +645,7 @@ class G124 extends MiniGame {
     }
     _en.removeWhere((e) => e.hp <= 0);
     if (!_dead && !host.finished && contactDps > 0) {
-      _hp -= min(contactDps, 70) * dt;
+      _hp -= min(contactDps, 40) * dt;
       if (_hurtT <= 0) {
         _hurtT = .35;
         host.sfx(Sfx.hurt, volume: .4, rate: rand(.9, 1.1));

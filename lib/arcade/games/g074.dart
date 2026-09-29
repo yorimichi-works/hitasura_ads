@@ -72,7 +72,8 @@ class G074 extends MiniGame {
     }
     if (_chain > 0 && _chain % 6 == 0) {
       host.sfx(Sfx.combo, rate: 1 + _chain * .03);
-      host.fx.pop('${host.tr('combo', 'COMBO')} x$_chain', b.pos + const Offset(0, -34), color: Pal.pink, size: 22);
+      host.fx.pop('${host.tr('combo', 'COMBO')} x$_chain', Offset(b.pos.dx.clamp(90, 270), b.pos.dy - 34),
+          color: Pal.pink, size: 22);
     }
     if (_popped == _bubbles.length) {
       _allT = 0;
@@ -170,7 +171,7 @@ class G074 extends MiniGame {
 
   void _drawBubble(Canvas c, Offset o, double r, double popT, bool popped, bool gold) {
     if (!popped) {
-      final base = gold ? const Color(0xAAFFD23F) : const Color(0x88E8F6FF);
+      final base = gold ? const Color(0xAAFFD23F) : const Color(0xAAC8E8FF);
       c.drawCircle(o + const Offset(3, 5), r, D.fill(const Color(0x22000000)));
       c.drawCircle(o, r, D.fill(base));
       c.drawCircle(o, r, D.stroke(gold ? const Color(0xFFB8860B) : const Color(0xFF6FA8D8), 3));

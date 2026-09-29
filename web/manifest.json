@@ -1,14 +1,14 @@
 {
   "name": "ひたすら広告",
   "short_name": "ひたすら広告",
-  "description": "151種類の怪しい架空広告を探し、集め、ミニゲームとして遊べる広告探索ゲーム。",
+  "description": "広告でよく見るゲームの「デモ」を151本つまみ食いできるミニゲーム集。20言語対応。",
   "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#FFF3D2",
-  "theme_color": "#FF3D00",
+  "background_color": "#1B1140",
+  "theme_color": "#1B1140",
   "lang": "ja",
   "prefer_related_applications": false,
   "icons": [

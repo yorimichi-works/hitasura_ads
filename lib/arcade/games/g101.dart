@@ -53,6 +53,8 @@ class G101 extends MiniGame {
   double _gSpeed = 1.0;
   double _pathT = 0;
   Offset? _gNext;
+  Offset? _gPrev;
+  bool _hunting = false;
   double _gSeen = 0;
   bool _caught = false;
   double _caughtT = 0;
@@ -287,7 +289,7 @@ class G101 extends MiniGame {
     _moveAmt = M.approach(_moveAmt, mv.abs(), 8, dt);
     _fov = M.approach(_fov, sprint ? .74 : .66, 4, dt);
     final dx = cos(_ang) * sp * dt, dy = sin(_ang) * sp * dt;
-    const pr = .22;
+    const pr = .3;
     if (!_solid(_px + dx + pr * dx.sign, _py) && !_solid(_px + dx + pr * dx.sign, _py + pr) && !_solid(_px + dx + pr * dx.sign, _py - pr)) {
       _px += dx;
     }
@@ -351,17 +353,36 @@ class G101 extends MiniGame {
   }
 
   void _updateGhost(double dt) {
-    if (host.time < 1.6) return;
-    final base = _hasKey ? 1.75 : 1.0 + host.time * .03;
+    if (host.time < 2.2) return;
+    final pd0 = (Offset(_gx, _gy) - Offset(_px, _py)).distance;
+    // HE wanders the halls until you grab the key (or wander too close)
+    _hunting = _hasKey || pd0 < 3.2;
+    final base = _hunting ? (_hasKey ? 1.5 : 1.25) : .95;
     _gSpeed = base * (.85 + .15 * host.speed);
     _pathT -= dt;
     final gc = Offset(_gx.floorToDouble(), _gy.floorToDouble());
     final pc = Offset(_px.floorToDouble(), _py.floorToDouble());
     if (_pathT <= 0 || _gNext == null) {
-      _pathT = .25;
-      _gNext = _bfsNext(gc.dy.toInt(), gc.dx.toInt(), pc.dy.toInt(), pc.dx.toInt());
+      _pathT = _hunting ? .25 : 99;
+      if (_hunting) {
+        _gNext = _bfsNext(gc.dy.toInt(), gc.dx.toInt(), pc.dy.toInt(), pc.dx.toInt());
+      } else {
+        // pick a random neighbouring corridor cell, avoid turning back
+        final r = gc.dy.toInt(), c = gc.dx.toInt();
+        final opts = <Offset>[];
+        for (final (dr, dc) in const [(0, 1), (1, 0), (0, -1), (-1, 0)]) {
+          final nr = r + dr, nc = c + dc;
+          if (nr < 0 || nc < 0 || nr >= _n || nc >= _n || _grid[nr][nc] != 0) continue;
+          final o = Offset(nc + .5, nr + .5);
+          if (_gPrev != null && o == _gPrev && opts.isNotEmpty) continue;
+          opts.add(o);
+        }
+        if (opts.length > 1 && _gPrev != null) opts.remove(_gPrev);
+        _gPrev = Offset(c + .5, r + .5);
+        _gNext = opts.isEmpty ? null : pick(opts);
+      }
     }
-    final target = gc == pc ? Offset(_px, _py) : (_gNext ?? Offset(_px, _py));
+    final target = _hunting && gc == pc ? Offset(_px, _py) : (_gNext ?? Offset(_px, _py));
     final d = target - Offset(_gx, _gy);
     final len = d.distance;
     if (len > .01) {
@@ -733,7 +754,7 @@ class G101 extends MiniGame {
 
   void _ghost(Canvas c, Offset o, double h, double shade) {
     final s = h / 100;
-    final hunting = _hasKey || (Offset(_gx, _gy) - Offset(_px, _py)).distance < 4;
+    final hunting = _hunting || _caught;
     c.save();
     c.translate(o.dx, o.dy);
     final jitter = hunting ? sin(_t * 47) * 1.2 * s : 0.0;

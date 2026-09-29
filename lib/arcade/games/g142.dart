@@ -35,7 +35,6 @@ class G142 extends MiniGame {
   double _block = 0;
   double _koT = 0;
   bool _ko = false;
-  bool _down = false;
   double _banner = 0;
   String _bannerText = '';
   Color _bannerColor = Pal.yellow;
@@ -122,7 +121,7 @@ class G142 extends MiniGame {
   }
 
   void _botStep() {
-    if (_op == _Op.tele && _ot > .3 && _dodgeT <= 0) _doDodge(-_side);
+    if (_op == _Op.tele && _ot > _teleDur / (host.speed * (_rage ? 1.25 : 1)) - .25 && _dodgeT <= 0) _doDodge(-_side);
     if ((_op == _Op.open || _op == _Op.taunt) && (_t * 7).floor() != ((_t - 1 / 60) * 7).floor()) _doPunch(_lastPunch == 1 ? -1 : 1);
   }
 
@@ -159,6 +158,7 @@ class G142 extends MiniGame {
         return;
       }
       _setOp(_Op.open);
+      _dodgeT = min(_dodgeT, .12);
       _counterReady = true;
       _hype = .5;
       host.sfx(Sfx.correct, rate: 1.2);
@@ -193,7 +193,7 @@ class G142 extends MiniGame {
   void _doDodge(int dir) {
     if (_hearts <= 0 || _ko) return;
     _dodgeDir = dir;
-    _dodgeT = .42;
+    _dodgeT = .6;
     _taughtSwipe = true;
     host.sfx(Sfx.swipe, rate: 1.2);
   }
@@ -261,11 +261,13 @@ class G142 extends MiniGame {
   // ------------------------------------------------------------- input ---
   @override
   void onDown(Offset p) {
+    if (_bot) return;
     _downAt = p;
   }
 
   @override
   void onMove(Offset p) {
+    if (_bot) return;
     final d = _downAt;
     if (d == null) return;
     if ((p.dx - d.dx).abs() > 45) {
@@ -276,6 +278,7 @@ class G142 extends MiniGame {
 
   @override
   void onUp(Offset p) {
+    if (_bot) return;
     final d = _downAt;
     _downAt = null;
     if (d == null) return;
@@ -288,6 +291,7 @@ class G142 extends MiniGame {
 
   @override
   void onKey(String key, bool down) {
+    if (_bot) return;
     if (!down) return;
     switch (key) {
       case 'left':
@@ -310,7 +314,7 @@ class G142 extends MiniGame {
   void render(Canvas c) {
     // camera sway with dodge
     c.save();
-    final roll = _hearts <= 0 ? min(1.0, _t * 0) : 0.0;
+    final roll = _hearts <= 0 ? .15 : 0.0;
     c.translate(180, 320);
     c.rotate(-_dodge * .06 + roll);
     c.translate(-180 - _dodge * 30, -320);
@@ -412,7 +416,7 @@ class G142 extends MiniGame {
       bodyX += 30 * k;
     }
     c.save();
-    c.translate(bodyX, 400 + bodyY);
+    c.translate(bodyX, 425 + bodyY);
     c.rotate(tilt);
     // legs & trunks
     D.rrect(c, const Rect.fromLTWH(-70, -40, 140, 70), 20, const Color(0xFF7B2FBF), border: Pal.ink, borderWidth: 4);
@@ -487,7 +491,7 @@ class G142 extends MiniGame {
     c.restore();
 
     // gloves (drawn in screen space so strikes can fly at the camera)
-    final base = Offset(bodyX, 400 + bodyY);
+    final base = Offset(bodyX, 425 + bodyY);
     for (final s in [-1, 1]) {
       var p = base + Offset(s * 70.0, -236 + breathe);
       var r = 46.0;
@@ -508,9 +512,11 @@ class G142 extends MiniGame {
         p = Offset.lerp(base + Offset(s * 120.0, -286), target, k)!;
         r = M.lerp(54, 120, k);
       } else if (_block > .1) {
-        p = base + Offset(s * 40.0, -250 + breathe);
+        p = base + Offset(s * 44.0, -200 + breathe);
+        r = 42;
       } else {
-        p = base + Offset(s * 46.0, -260 + breathe);
+        p = base + Offset(s * 66.0, -192 + breathe);
+        r = 42;
       }
       _glove(c, p, r, s);
       if (glint) {

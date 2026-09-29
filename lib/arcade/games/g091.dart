@@ -13,11 +13,11 @@ class G091 extends MiniGame {
     '#.........#',
     '#.##.#.##.#',
     '#....#....#',
-    '####.#.####',
+    '#### # ####',
     '     G     ',
-    '####.#.####',
+    '#### # ####',
     '#....#....#',
-    '#.##...##.#',
+    '#.##   ##.#',
     '#o.#.#.#.o#',
     '##.#.#.#.##',
     '#....P....#',
@@ -67,7 +67,7 @@ class G091 extends MiniGame {
     _ghosts
       ..clear()
       ..add(_Ghost(5, 7, 2, 0, .6))
-      ..add(_Ghost(5, 7, 0, 1, 2.4));
+      ..add(_Ghost(5, 7, 0, 1, 3.2));
     _fright = 0;
   }
 
@@ -156,7 +156,7 @@ class G091 extends MiniGame {
     // player
     _movePac(dt);
     // ghosts
-    final gs = 5.6 * sqrt(host.speed);
+    final gs = 4.7 * sqrt(host.speed);
     for (final g in _ghosts) {
       if (g.wait > 0) {
         g.wait -= dt;
@@ -165,7 +165,7 @@ class G091 extends MiniGame {
       final sp = g.eaten ? 13.0 : (_fright > 0 ? 3.8 : gs + (g.kind == 0 ? .3 : 0));
       _moveGhost(g, sp * dt);
       // collide
-      if (!g.eaten && (_pos(g) - _pos(_pac)).distance < _cell * .62) {
+      if (!g.eaten && (_pos(g) - _pos(_pac)).distance < _cell * .52) {
         if (_fright > 0 && g.scared) {
           g.eaten = true;
           g.scared = false;
@@ -207,7 +207,7 @@ class G091 extends MiniGame {
         return;
       }
     }
-    e.t += 8.8 * dt;
+    e.t += 10.5 * dt;
     while (e.t >= 1 && e.moving) {
       e.t -= 1;
       e.c += _dirs[e.d].dx.toInt();

@@ -45,7 +45,7 @@ class G024 extends MiniGame {
     for (final g in const [(0, 0), (1, 0), (0, 1), (1, 1)]) {
       _tiles.add(_Tile(g.$1, g.$2)..pop = 1);
     }
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 5; i++) {
       _spawnDebris(y: rand(60, 560));
     }
     _sharkAng = rand(0, pi * 2);
@@ -64,7 +64,7 @@ class G024 extends MiniGame {
 
   void _spawnDebris({double? y}) {
     final r = rng.nextDouble();
-    final kind = r < .56 ? 0 : (r < .72 ? 1 : (r < .9 ? 2 : 3)); // plank, barrel, leaf, bottle
+    final kind = r < .46 ? 0 : (r < .56 ? 1 : (r < .86 ? 2 : 3)); // plank, barrel, leaf, bottle
     var x = rand(24, 336);
     // keep new debris off the raft column a bit so it is hookable
     if ((x - 180).abs() < 50 && y != null) x += x < 180 ? -60 : 60;
@@ -87,7 +87,7 @@ class G024 extends MiniGame {
     // debris drift with the current
     _spawnT -= dt;
     if (_spawnT <= 0) {
-      _spawnT = rand(.45, .7);
+      _spawnT = rand(.7, 1.0);
       _spawnDebris();
     }
     for (final d in _debris) {
@@ -112,7 +112,7 @@ class G024 extends MiniGame {
         host.sfx(Sfx.splash, volume: .7);
         host.fx.burst(_hookPos, const Color(0xFFBFF4FF), count: 12, speed: 150, size: 5, gravity: 200);
         host.fx.ring(_hookPos, Pal.white, size: 36, life: .35);
-        _grab(34);
+        _grab(30);
         if (_hooked.isEmpty) {
           host.fx.pop(host.tr('miss', 'MISS'), _hookPos + const Offset(0, -24), color: Pal.white, size: 18);
           _combo = 0;
@@ -139,7 +139,7 @@ class G024 extends MiniGame {
 
   void _grab(double radius) {
     for (final d in _debris) {
-      if (d.hooked || _hooked.length >= 4) continue;
+      if (d.hooked || _hooked.length >= 3) continue;
       if ((d.pos - _hookPos).distance < radius) {
         d.hooked = true;
         _hooked.add(d);
@@ -355,7 +355,7 @@ class G024 extends MiniGame {
 
   @override
   void onTimeUp() {
-    if (_tiles.length >= 7) {
+    if (_tiles.length >= 8) {
       host.win(stars: 1);
     } else {
       host.sfx(Sfx.aww);

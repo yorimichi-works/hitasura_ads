@@ -22,7 +22,6 @@ void _px(Canvas c, String s, Offset pos, double scale, Color col, {int align = -
 }
 
 const _lcdBg = Color(0xFFC7F0D8);
-const _lcdBg2 = Color(0xFFB4DEC4);
 const _lcdInk = Color(0xFF43523D);
 const _cols = 22, _rowsN = 19;
 const double _cell = 12, _sub = 3;
@@ -229,10 +228,10 @@ class G084 extends MiniGame {
 
   // ------------------------------------------------------------ input ---
 
-  static const _keyRect = Rect.fromLTWH(46, 470, 268, 150);
+  static const _keyRect = Rect.fromLTWH(46, 450, 268, 160);
   Rect _key(int i) {
     final col = i % 3, row = i ~/ 3;
-    return Rect.fromLTWH(_keyRect.left + col * 92, _keyRect.top + row * 38, 84, 32);
+    return Rect.fromLTWH(_keyRect.left + col * 92, _keyRect.top + row * 42, 84, 34);
   }
 
   @override
@@ -259,7 +258,7 @@ class G084 extends MiniGame {
       return;
     }
     _downAt = null;
-    if (p.dy > 420) {
+    if (p.dy > 390) {
       // keypad: nearest of 2/4/6/8 (index 1,3,5,7) — or direction from key 5
       for (var i = 0; i < 12; i++) {
         if (_key(i).inflate(4).contains(p)) {
@@ -349,8 +348,8 @@ class G084 extends MiniGame {
     }
     _px(c, 'ADKIA', const Offset(180, 80), 2, const Color(0xFF9CB0D8), align: 0);
     // LCD bezel
-    _stepRect(c, const Rect.fromLTWH(36, 98, 288, 364), 6, Paint()..color = const Color(0xFF0E1320));
-    _stepRect(c, const Rect.fromLTWH(40, 102, 280, 356), 3, Paint()..color = const Color(0xFF3B4A2E));
+    _stepRect(c, const Rect.fromLTWH(36, 98, 288, 284), 6, Paint()..color = const Color(0xFF0E1320));
+    _stepRect(c, const Rect.fromLTWH(40, 102, 280, 276), 3, Paint()..color = const Color(0xFF3B4A2E));
     c.restore();
   }
 
@@ -358,7 +357,7 @@ class G084 extends MiniGame {
     final inv = _won && (_deadT * 6).floor().isOdd;
     final bg = inv ? _lcdInk : _lcdBg;
     final ink = inv ? _lcdBg : _lcdInk;
-    const lcd = Rect.fromLTWH(44, 106, 272, 348);
+    const lcd = Rect.fromLTWH(44, 106, 272, 268);
     c.drawRect(lcd, Paint()..color = bg);
     // backlight glow
     c.drawRect(
@@ -447,11 +446,11 @@ class G084 extends MiniGame {
 
   void _renderKeypad(Canvas c) {
     // navi key
-    _stepRect(c, const Rect.fromLTWH(110, 426, 140, 30), 3, Paint()..color = const Color(0xFF141A28));
-    _stepRect(c, const Rect.fromLTWH(112, 428, 136, 26), 3, Paint()..color = const Color(0xFF8C9CC0));
-    c.drawRect(const Rect.fromLTWH(118, 431, 124, 3), Paint()..color = const Color(0xFFC0CCE8));
-    _stepRect(c, const Rect.fromLTWH(56, 430, 44, 22), 3, Paint()..color = const Color(0xFF1C2438));
-    _stepRect(c, const Rect.fromLTWH(260, 430, 44, 22), 3, Paint()..color = const Color(0xFF1C2438));
+    _stepRect(c, const Rect.fromLTWH(110, 400, 140, 30), 3, Paint()..color = const Color(0xFF141A28));
+    _stepRect(c, const Rect.fromLTWH(112, 402, 136, 26), 3, Paint()..color = const Color(0xFF8C9CC0));
+    c.drawRect(const Rect.fromLTWH(118, 405, 124, 3), Paint()..color = const Color(0xFFC0CCE8));
+    _stepRect(c, const Rect.fromLTWH(56, 404, 44, 22), 3, Paint()..color = const Color(0xFF1C2438));
+    _stepRect(c, const Rect.fromLTWH(260, 404, 44, 22), 3, Paint()..color = const Color(0xFF1C2438));
     const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
     for (var i = 0; i < 12; i++) {
       final r = _key(i);

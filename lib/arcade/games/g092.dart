@@ -528,7 +528,7 @@ class G092 extends MiniGame {
     _r(c, x - 4, 192, 88, 92, const Color(0xFF8C7AD8));
     _r(c, x, 196, 80, 84, const Color(0xFF0C0A1E));
     _pt(c, host.tr('lines', 'LINES'), const Offset(x + 40, 208), 2, Pal.white);
-    PixelFont.draw(c, '${min(_lines, _goal)}', const Offset(x + 30, 236), 5, _lines > 0 ? Pal.yellow : Pal.white,
+    PixelFont.draw(c, '${min(_lines, _goal)}', const Offset(x + 30, 226), 5, _lines > 0 ? Pal.yellow : Pal.white,
         align: 0, shadow: const Color(0xFF7A3A00));
     PixelFont.draw(c, '/$_goal', const Offset(x + 62, 250), 2, Pal.white, align: 0);
     for (var i = 0; i < _goal; i++) {

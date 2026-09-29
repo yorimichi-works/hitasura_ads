@@ -245,7 +245,7 @@ class G111 extends MiniGame {
         host.shake(6);
         host.flash(const Color(0x66FF3B5C), .15);
         host.fx.burst(c, Pal.gold, count: 26, speed: 320, shape: PartShape.star, gravity: 200);
-        host.fx.pop(host.tr('reach', 'REACH!'), const Offset(180, 190), color: Pal.red, size: 40, life: 1.3);
+        host.fx.pop(host.tr('reach', 'REACH!'), const Offset(180, 400), color: Pal.red, size: 40, life: 1.3);
       } else {
         _win(c);
       }

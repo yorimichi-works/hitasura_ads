@@ -1,0 +1,1167 @@
+{
+ "ui": {
+  "app_title": "Solo Pubblicità",
+  "app_sub": "151 DEMO PUBBLICITARIE",
+  "tagline": "Ogni pubblicità finta dell'universo. Giocabile.",
+  "watch_next": "PROSSIMA PUBBLICITÀ",
+  "watch_sub": "Usa 1 biglietto",
+  "tickets": "Biglietti AD",
+  "refill_in": "+1 tra {t}",
+  "full": "PIENO",
+  "out_of_tickets": "Biglietti finiti!",
+  "sponsor_refill": "Guarda uno sponsor per ricaricare",
+  "refilled": "Biglietti ricaricati!",
+  "sponsor_unavailable": "Pubblicità sponsor non disponibili qui",
+  "sponsor_failed": "Impossibile caricare lo sponsor",
+  "sponsor_incomplete": "Sponsor non finito. Niente premio.",
+  "collection": "Collezione",
+  "discovered": "Scoperte",
+  "rush": "AD RUSH",
+  "rush_desc": "Micro pubblicità una dopo l'altra. Più veloce. PIÙ VELOCE.",
+  "rush_locked": "Scopri altre {n} pubblicità rapide per sbloccare",
+  "rush_best": "Record",
+  "rush_start": "VIA",
+  "rush_stage": "LIVELLO",
+  "speed_up": "ACCELERA!",
+  "game_over": "GAME OVER",
+  "new_record": "NUOVO RECORD!",
+  "lives": "Vite",
+  "home": "Home",
+  "settings": "Impostazioni",
+  "language": "Lingua",
+  "sound": "Suono",
+  "on": "ON",
+  "off": "OFF",
+  "nickname": "Nickname",
+  "nickname_hint": "Il tuo nome",
+  "start": "INIZIA",
+  "welcome": "Benvenuto nell'universo delle pubblicità",
+  "welcome_body": "151 demo pubblicitarie assurde ti aspettano. Guardale. Giocale. Collezionale tutte.",
+  "level": "Lv",
+  "coins": "Monete",
+  "xp": "XP",
+  "new_ad": "NUOVA PUBBLICITÀ SCOPERTA!",
+  "rarity_common": "COMUNE",
+  "rarity_uncommon": "NON COMUNE",
+  "rarity_rare": "RARA",
+  "rarity_superRare": "SUPER RARA",
+  "rarity_secret": "SEGRETA",
+  "cat_hyper": "Hyper Casual",
+  "cat_strategy": "Strategia",
+  "cat_tycoon": "Gestionale",
+  "cat_party": "Party",
+  "cat_micro": "Microgioco",
+  "cat_retro": "Retro Pixel",
+  "cat_threeD": "3D",
+  "cat_gacha": "Gacha & Fortuna",
+  "cat_rpg": "RPG & Crescita",
+  "cat_puzzle": "Puzzle",
+  "cat_sports": "Sport",
+  "cat_asmr": "Soddisfacente",
+  "cat_meta": "Parodia Pubblicità",
+  "cat_secret": "Segreto",
+  "install": "INSTALLA",
+  "installed_joke": "Ci stai già giocando.",
+  "reviews": "{n} recensioni",
+  "review_1": "“L'ho scaricato solo per la pubblicità. La pubblicità era il gioco.”",
+  "review_2": "“Il mio pollice non è mai stato così felice.”",
+  "review_3": "“10/10, rivedrei questa pubblicità.”",
+  "review_4": "“Il livello 3 è impossibile. Non esiste il livello 3.”",
+  "review_5": "“Sono entrato per 5 secondi. Ora sono le 4 di notte.”",
+  "review_6": "“Ci gioca anche il mio gatto.”",
+  "review_7": "“Finalmente una pubblicità che mi rispetta. Più o meno.”",
+  "review_8": "“Il gioco migliore che non ho mai installato.”",
+  "next_ad": "PROSSIMA",
+  "replay": "RIGIOCA",
+  "play": "GIOCA",
+  "back": "Indietro",
+  "close": "Chiudi",
+  "score": "Punti",
+  "best": "Record",
+  "plays": "Partite",
+  "locked_hint": "Continua a guardare pubblicità per scoprirla",
+  "secret_hint": "Scopri tutte le 150 pubblicità per evocarla…",
+  "ad_capsule": "Capsula AD",
+  "ad_capsule_desc": "Sblocca una pubblicità casuale non scoperta",
+  "not_enough_coins": "Monete insufficienti",
+  "all_found": "Tutto scoperto!",
+  "level_up": "LIVELLO SU!",
+  "cloud": "Salvataggio cloud",
+  "sign_in": "Accedi con Google",
+  "sign_out": "Esci",
+  "synced": "Sincronizzato",
+  "sync_error": "Sincronizzazione non riuscita",
+  "credits": "Crediti",
+  "complete": "COMPLETATO! Hai visto ogni pubblicità.",
+  "clear": "SUPERATO!!",
+  "fail": "FALLITO…",
+  "ad": "AD",
+  "tap_skip": "Tocca per saltare",
+  "sponsored": "Sponsorizzato",
+  "filter_all": "Tutte",
+  "tap_continue": "Tocca per continuare",
+  "now_showing": "IN ONDA ORA",
+  "reward": "Premio",
+  "result_win": "Hai battuto la pubblicità!",
+  "result_lose": "La pubblicità ti ha battuto…",
+  "free_replay": "Rigiocare è gratis",
+  "daily_bonus": "Bonus giornaliero",
+  "claim": "RISCUOTI",
+  "claimed": "Torna domani",
+  "streak": "{n} giorni di fila",
+  "channel": "CH",
+  "mode_random": "Pubblicità casuale",
+  "stats": "Statistiche",
+  "total_plays": "Partite totali",
+  "wins": "Vittorie",
+  "stars_total": "Stelle",
+  "rush_ready": "Preparati…",
+  "rush_desc_long": "Le pubblicità brevi che hai scoperto si susseguono. Superale prima che scada il tempo. 4 vite.",
+  "progress_title": "Cacciatore di AD",
+  "version": "Versione"
+ },
+ "games": {
+  "1": [
+   "Tira il Perno!",
+   "TIRA!",
+   "Il 99% dei giocatori FALLISCE questo livello!"
+  ],
+  "2": [
+   "Corsa dei Cancelli x100",
+   "STERZA!",
+   "Solo i geni scelgono i cancelli giusti"
+  ],
+  "3": [
+   "Ordina i Liquidi",
+   "ORDINA!",
+   "Che soddisfazione… solo UN ALTRO!"
+  ],
+  "4": [
+   "Impila fino al Cielo",
+   "IMPILA!",
+   "Quanto in alto puoi arrivare TU?"
+  ],
+  "5": [
+   "Parcheggio Bloccato",
+   "ESCI!",
+   "Riesci a far uscire l'auto rossa?"
+  ],
+  "6": [
+   "Disegna e Salva il Doge",
+   "DISEGNA!",
+   "Disegna UNA linea. Salva il cane."
+  ],
+  "7": [
+   "Taglia la Corda",
+   "TAGLIA!",
+   "Ha TANTA fame…"
+  ],
+  "8": [
+   "Fondi la Frutta",
+   "FONDI!",
+   "Riesci a fare l'ANGURIA?"
+  ],
+  "9": [
+   "Fuga delle Frecce",
+   "TOCCA!",
+   "Tocca nell'ordine giusto…"
+  ],
+  "10": [
+   "Riempi fino alla Linea",
+   "VERSA!",
+   "Fermati ESATTAMENTE sulla linea"
+  ],
+  "11": [
+   "Lancio dei Coltelli",
+   "LANCIA!",
+   "Non colpire gli altri coltelli!"
+  ],
+  "12": [
+   "Caduta a Spirale",
+   "GIRA!",
+   "Scendi fino in fondo!"
+  ],
+  "13": [
+   "Città Buco Nero",
+   "INGOIA!",
+   "Divora TUTTA la città!"
+  ],
+  "14": [
+   "Sfida dei Capelli",
+   "CRESCI!",
+   "Vincono i capelli più lunghi!"
+  ],
+  "15": [
+   "Caos di Viti",
+   "SVITA!",
+   "Svita tutto!"
+  ],
+  "16": [
+   "Fornace nel Gelo",
+   "SOPRAVVIVI!",
+   "-60°C. La tua città ha bisogno di TE."
+  ],
+  "17": [
+   "Tower Defense Pixel",
+   "DIFENDI!",
+   "Piazza torri. Salva il regno."
+  ],
+  "18": [
+   "Scontro di Eserciti",
+   "SCEGLI!",
+   "Scegli la strada giusta, Generale!"
+  ],
+  "19": [
+   "Arcieri del Castello",
+   "MIRA!",
+   "Stanno scalando le mura!!"
+  ],
+  "20": [
+   "L'Ultima Squadra",
+   "SPARA!",
+   "Scegli il potenziamento MIGLIORE!"
+  ],
+  "21": [
+   "Torre dell'Eroe",
+   "ASSORBI!",
+   "Combatti solo nemici PIÙ DEBOLI!"
+  ],
+  "22": [
+   "Le Tasse del Piccolo Re",
+   "REGNA!",
+   "Avido o buono? Decidi TU."
+  ],
+  "23": [
+   "Conquista la Mappa",
+   "CONQUISTA!",
+   "Colora tutta la mappa di BLU"
+  ],
+  "24": [
+   "Sopravvivenza in Zattera",
+   "AGGANCIA!",
+   "Giorno 1 in mare aperto…"
+  ],
+  "25": [
+   "Costruisci il Bunker",
+   "SCAVA!",
+   "La superficie non c'è più. Scava."
+  ],
+  "26": [
+   "Assedio con Catapulta",
+   "FUOCO!",
+   "Abbatti la torre!"
+  ],
+  "27": [
+   "Crisi della Colonia su Marte",
+   "BILANCIA!",
+   "Tieni in vita 100 coloni su Marte"
+  ],
+  "28": [
+   "Difesa Torrette Fuse",
+   "FONDI!",
+   "Fondi i cannoni. Ferma l'orda."
+  ],
+  "29": [
+   "Scontro in Corsia",
+   "SCHIERA!",
+   "Distruggi la loro torre in 20s!"
+  ],
+  "30": [
+   "L'Ultima Arca",
+   "CARICA!",
+   "Arriva il diluvio! Chi sale?"
+  ],
+  "31": [
+   "Ramen all'Assalto",
+   "SERVI!",
+   "Reggi l'ora di punta del pranzo?"
+  ],
+  "32": [
+   "Cassiere del Minimarket",
+   "SCANSIONA!",
+   "Bip bip bip! Più veloce!"
+  ],
+  "33": [
+   "Torre di Hamburger",
+   "PRENDI!",
+   "Componi l'ordine ESATTO"
+  ],
+  "34": [
+   "Miniera d'Oro Idle",
+   "POTENZIA!",
+   "Da 0€ a MILIARDARIO"
+  ],
+  "35": [
+   "Maestro di Latte Art",
+   "VERSA!",
+   "Test da barista: un cuore perfetto"
+  ],
+  "36": [
+   "Caos in Hotel",
+   "CHECK-IN!",
+   "Servizio 5 stelle in 20 secondi"
+  ],
+  "37": [
+   "Magnate del Parcheggio",
+   "PARCHEGGIA!",
+   "Ogni auto = soldi"
+  ],
+  "38": [
+   "Nastro del Sushi",
+   "AFFERRA!",
+   "Prendi il piatto giusto!"
+  ],
+  "39": [
+   "Mini Luna Park",
+   "COSTRUISCI!",
+   "Falli URLARE (di gioia)"
+  ],
+  "40": [
+   "Raccolto Pixel",
+   "RACCOGLI!",
+   "Coltiva. Raccogli. RIPETI."
+  ],
+  "41": [
+   "Giustizia della Pizza",
+   "AFFETTA!",
+   "4 bambini. 1 pizza. NIENTE LITI."
+  ],
+  "42": [
+   "Pronto Soccorso",
+   "CURA!",
+   "Dottore! Serve SUBITO!"
+  ],
+  "43": [
+   "Re della Limonata",
+   "VENDI!",
+   "Dal banchetto all'IMPERO"
+  ],
+  "44": [
+   "Panico in Lavanderia",
+   "ORDINA!",
+   "Non far diventare ROSA i bianchi"
+  ],
+  "45": [
+   "Consegna Lampo",
+   "CONSEGNA!",
+   "Cibo caldo. 5 stelle. VAI!"
+  ],
+  "46": [
+   "Corsa a Raffica",
+   "PIGIA!",
+   "Le tue dita non sono abbastanza veloci"
+  ],
+  "47": [
+   "Ferma a 10.00",
+   "STOP!",
+   "NESSUNO ha mai fatto 10.00"
+  ],
+  "48": [
+   "Duello Samurai",
+   "ESTRAI!",
+   "Sbatti le palpebre e PERDI"
+  ],
+  "49": [
+   "Bomba Patata Bollente",
+   "PASSA!",
+   "Non averla in mano al BOOM"
+  ],
+  "50": [
+   "Palloncino del Coraggio",
+   "GONFIA!",
+   "Più grande… più grande… PIÙ GRANDE…"
+  ],
+  "51": [
+   "Tiro alla Fune",
+   "TIRA!",
+   "Tira come se ne andasse della tua VITA"
+  ],
+  "52": [
+   "Luci della Memoria",
+   "RICORDA!",
+   "Simon dice… e tu dimentichi"
+  ],
+  "53": [
+   "Conta i Pulcini",
+   "CONTA!",
+   "Facile? Allora CONTALI."
+  ],
+  "54": [
+   "Mini Festa Stellare",
+   "LANCIA!",
+   "4 giocatori. 1 stella. Addio amicizia."
+  ],
+  "55": [
+   "Gioco della Sedia",
+   "SIEDI!",
+   "Quando la musica si ferma… SIEDITI!"
+  ],
+  "56": [
+   "Gioco delle Tre Carte",
+   "GUARDA!",
+   "Non perdere di vista la moneta"
+  ],
+  "57": [
+   "Sumo con Autoscontri",
+   "SPINGI!",
+   "L'ultimo sul ring VINCE"
+  ],
+  "58": [
+   "Caduta Esagonale",
+   "CORRI!",
+   "Il pavimento sta CROLLANDO"
+  ],
+  "59": [
+   "Pioggia di Monete",
+   "PRENDI!",
+   "Piovono SOLDI"
+  ],
+  "60": [
+   "Roulette della Torta",
+   "PREMI?",
+   "Uno di questi pulsanti è una TORTA"
+  ],
+  "61": [
+   "Scaccola!",
+   "SCACCOLA!",
+   "I medici ODIANO questo trucco"
+  ],
+  "62": [
+   "Schiaccia!",
+   "SCHIACCIA!",
+   "Bzzzzzz…"
+  ],
+  "63": [
+   "Prendi il Telefono!",
+   "PRENDI!",
+   "Non farlo CREPARE"
+  ],
+  "64": [
+   "Chiudi la Zip!",
+   "ZIP!",
+   "Prima che qualcuno se ne accorga…"
+  ],
+  "65": [
+   "Gira il Pancake!",
+   "GIRA!",
+   "Capolavoro o disastro?"
+  ],
+  "66": [
+   "Infila l'Ago!",
+   "INFILA!",
+   "Calmo… calmo…"
+  ],
+  "67": [
+   "Rasati!",
+   "RADI!",
+   "Liscio come un bebè"
+  ],
+  "68": [
+   "Martella!",
+   "MARTELLA!",
+   "3 colpi. Pollici salvi."
+  ],
+  "69": [
+   "Innaffia!",
+   "INNAFFIA!",
+   "Non troppo!"
+  ],
+  "70": [
+   "Schiva!",
+   "SCHIVA!",
+   "Campione di palla prigioniera?"
+  ],
+  "71": [
+   "Taglia a Metà!",
+   "TAGLIA!",
+   "I fratelli ti guardano…"
+  ],
+  "72": [
+   "Attacca la Spina!",
+   "ATTACCA!",
+   "Batteria all'1%!!!"
+  ],
+  "73": [
+   "Copri lo Starnuto!",
+   "COPRI!",
+   "Eh… ehh… ETCIÙ…"
+  ],
+  "74": [
+   "Scoppia le Bolle!",
+   "SCOPPIA!",
+   "Pura soddisfazione"
+  ],
+  "75": [
+   "Svegliati!",
+   "SVEGLIA!",
+   "Sei in RITARDO!"
+  ],
+  "76": [
+   "Trova l'Intruso!",
+   "TROVA!",
+   "Solo 1 su 100 lo vede"
+  ],
+  "77": [
+   "Lavati i Denti!",
+   "SPAZZOLA!",
+   "I dentisti consigliano questa pubblicità"
+  ],
+  "78": [
+   "Timbra!",
+   "TIMBRA!",
+   "Simulatore di vita d'ufficio"
+  ],
+  "79": [
+   "Prendi il Treno!",
+   "CORRI!",
+   "Porte in chiusura…"
+  ],
+  "80": [
+   "Dai da Mangiare al Gatto!",
+   "NUTRI!",
+   "Miao miao miao miao"
+  ],
+  "81": [
+   "Super Pixel Bros",
+   "SALTA!",
+   "Un classico. O una causa legale."
+  ],
+  "82": [
+   "Panico Invasori",
+   "SPARA!",
+   "Sono usciti dal banner"
+  ],
+  "83": [
+   "Spaccamattoni",
+   "SPACCA!",
+   "Distruggi ogni mattone!"
+  ],
+  "84": [
+   "Snake Byte",
+   "STRISCIA!",
+   "Proprio come il tuo vecchio telefono"
+  ],
+  "85": [
+   "Avventura dello Slime",
+   "COMBATTI!",
+   "Una PUBBLICITÀ selvatica è apparsa!"
+  ],
+  "86": [
+   "Flipper Pixel",
+   "COLPISCI!",
+   "TILT! TILT! TILT!"
+  ],
+  "87": [
+   "Paradiso dei Proiettili",
+   "SCHIVA!",
+   "Conta solo la hitbox minuscola"
+  ],
+  "88": [
+   "Pesca Pixel",
+   "RIAVVOLGI!",
+   "Ti aspetta un pesce leggendario"
+  ],
+  "89": [
+   "Salta e Attraversa",
+   "SALTA!",
+   "Perché la rana ha attraversato?"
+  ],
+  "90": [
+   "Pixel Kart GP",
+   "GUIDA!",
+   "Nostalgia Mode 7"
+  ],
+  "91": [
+   "Mangia-Labirinto",
+   "GNAM!",
+   "Wakka wakka wakka"
+  ],
+  "92": [
+   "Blocchi Cadenti",
+   "LASCIA!",
+   "Elimina 3 righe!"
+  ],
+  "93": [
+   "Ninja Scalatore",
+   "SCALA!",
+   "Un ninja non cade mai"
+  ],
+  "94": [
+   "Caccia alle Anatre",
+   "SPARA!",
+   "Non colpire il cane"
+  ],
+  "95": [
+   "Forziere Mimic",
+   "APRI!",
+   "È un tesoro… o sono DENTI?"
+  ],
+  "96": [
+   "Bowling Strike 3D",
+   "LANCIA!",
+   "STRIKE o niente"
+  ],
+  "97": [
+   "Tiro a Canestro 3D",
+   "TIRA!",
+   "Solo rete"
+  ],
+  "98": [
+   "Labirinto Biglia 3D",
+   "INCLINA!",
+   "Porta la biglia al traguardo"
+  ],
+  "99": [
+   "Anelli nel Cielo",
+   "VOLA!",
+   "Solo per piloti"
+  ],
+  "100": [
+   "Autostrada Neon 3D",
+   "CORRI!",
+   "Synthwave. Velocità. Niente freni."
+  ],
+  "101": [
+   "Fuga dal Dungeon FPS",
+   "SCAPPA!",
+   "Trova l'uscita prima che LUI trovi te"
+  ],
+  "102": [
+   "Dadi Fortunati 3D",
+   "LANCIA!",
+   "Fai 7 e vinci ALLA GRANDE"
+  ],
+  "103": [
+   "Cubo Pittore",
+   "ROTOLA!",
+   "Colora ogni casella!"
+  ],
+  "104": [
+   "Scivolata del Pinguino",
+   "SCIVOLA!",
+   "Di pancia verso la gloria"
+  ],
+  "105": [
+   "Aeroplanino in Città",
+   "PLANA!",
+   "Quanto lontano vola?"
+  ],
+  "106": [
+   "Tunnel Warp",
+   "SCHIVA!",
+   "Più veloce della luce"
+  ],
+  "107": [
+   "Palla Demolitrice",
+   "DISTRUGGI!",
+   "Distruggere è così soddisfacente"
+  ],
+  "108": [
+   "Minigolf 3D",
+   "PUTT!",
+   "Buca in uno? Facile… vero?"
+  ],
+  "109": [
+   "Mega Gacha x10",
+   "EVOCA!",
+   "Tasso SSR AUMENTATO!!! (0,0001%)"
+  ],
+  "110": [
+   "Slot Tripla 7",
+   "GIRA!",
+   "Il JACKPOT è COSÌ vicino…"
+  ],
+  "111": [
+   "Gratta e Vinci",
+   "GRATTA!",
+   "3 uguali e VINCI 1.000.000€"
+  ],
+  "112": [
+   "Apertura Bustina Holo",
+   "STRAPPA!",
+   "Sarà la carta da 10.000€?"
+  ],
+  "113": [
+   "Frenesia Loot Box",
+   "APRI!",
+   "Solo un'altra cassa…"
+  ],
+  "114": [
+   "Ruota del Destino",
+   "STOP!",
+   "Dove si fermerà?"
+  ],
+  "115": [
+   "Plinko Pachinko",
+   "LASCIA!",
+   "Soldi a palate in fondo"
+  ],
+  "116": [
+   "Gru Acchiappa-Peluche",
+   "AFFERRA!",
+   "La pinza è debole apposta"
+  ],
+  "117": [
+   "Spingi-Monete",
+   "SPINGI!",
+   "Sta PER cadere…"
+  ],
+  "118": [
+   "Ruota Premio Giornaliera",
+   "RISCUOTI!",
+   "Accedi OGNI giorno. Altrimenti…"
+  ],
+  "119": [
+   "Lv.1 vs Boss Lv.999",
+   "POTENZIATI!",
+   "È impossibile? (No.)"
+  ],
+  "120": [
+   "Dalla Cellula alla Galassia",
+   "EVOLVI!",
+   "Diventa un DIO in 20 secondi"
+  ],
+  "121": [
+   "Forgia di Spade",
+   "FORGIA!",
+   "Fondi fino al LEGGENDARIO"
+  ],
+  "122": [
+   "Tap Titan",
+   "TAPPA!",
+   "Danno: 1 → 1.000.000.000"
+  ],
+  "123": [
+   "Cucciolo Tascabile",
+   "ALLEVA!",
+   "Crescilo bene… o altrimenti"
+  ],
+  "124": [
+   "Orda dei Sopravvissuti",
+   "SOPRAVVIVI!",
+   "10.000 nemici. 1 eroe."
+  ],
+  "125": [
+   "Lame Rotanti",
+   "GIRA!",
+   "Più spade. DI PIÙ."
+  ],
+  "126": [
+   "Domatore di Slime",
+   "FONDI!",
+   "Fondi gli slime in un RE"
+  ],
+  "127": [
+   "Pozionista",
+   "MESCOLA!",
+   "Bolli, bolli, pentolone"
+  ],
+  "128": [
+   "Uovo di Drago",
+   "COVA!",
+   "Tienilo al caldo… si muove!"
+  ],
+  "129": [
+   "Caramelle Match 3",
+   "ABBINA!",
+   "Dolce! Delizioso! DIVINO!"
+  ],
+  "130": [
+   "Gioco del Quindici",
+   "SCORRI!",
+   "8 tessere. 1 buco. Rabbia infinita."
+  ],
+  "131": [
+   "Trova 3 Differenze",
+   "TROVA!",
+   "Solo per occhi da genio"
+  ],
+  "132": [
+   "Solo l'1% lo Risolve",
+   "RISOLVI!",
+   "Solo l'1% riesce a risolverlo!"
+  ],
+  "133": [
+   "Collega i Tubi",
+   "COLLEGA!",
+   "Fai scorrere l'acqua"
+  ],
+  "134": [
+   "Block Blast",
+   "INCASTRA!",
+   "Crea dipendenza. Davvero."
+  ],
+  "135": [
+   "Inferno CAPTCHA",
+   "VERIFICA!",
+   "Dimostra di non essere un robot. Di nuovo."
+  ],
+  "136": [
+   "Spingi-Casse",
+   "SPINGI!",
+   "Il magazzino ha bisogno di te"
+  ],
+  "137": [
+   "Calcio di Rigore",
+   "CALCIA!",
+   "Il Mondiale dipende da TE"
+  ],
+  "138": [
+   "Home Run Derby",
+   "BATTI!",
+   "Mandala sulla LUNA"
+  ],
+  "139": [
+   "Tiro con l'Arco al Vento",
+   "TIRA!",
+   "Occhio al vento…"
+  ],
+  "140": [
+   "Sumo Slam",
+   "SPINGI!",
+   "HAKKEYOI!"
+  ],
+  "141": [
+   "Slalom Sci 3D",
+   "CURVA!",
+   "Passa tutte le porte!"
+  ],
+  "142": [
+   "Campione del KO",
+   "PUGNO!",
+   "Vola come una farfalla"
+  ],
+  "143": [
+   "Pulizia Profonda ASMR",
+   "PULISCI!",
+   "Stranamente soddisfacente…"
+  ],
+  "144": [
+   "Trasformazione Totale",
+   "BRILLA!",
+   "Da ZERO a EROE"
+  ],
+  "145": [
+   "Idropulitrice",
+   "LAVA!",
+   "Fango → Brillante come uno specchio"
+  ],
+  "146": [
+   "Taglio del Sapone",
+   "TAGLIA!",
+   "Croccante e soddisfacente"
+  ],
+  "147": [
+   "Caricamento… 99%",
+   "CARICA!",
+   "Quasi fatto… (per sempre)"
+  ],
+  "148": [
+   "Chiudi Questa Pubblicità",
+   "CHIUDI!",
+   "Trova la VERA X per chiudere"
+  ],
+  "149": [
+   "VIRUS RILEVATO!!!",
+   "SCANSIONA!",
+   "Il tuo dispositivo ha 39 virus!!"
+  ],
+  "150": [
+   "Sei il Visitatore 999.999!",
+   "RISCUOTI!",
+   "CONGRATULAZIONI!!! Ritira il tuo premio!"
+  ],
+  "151": [
+   "IL RE DELLE PUBBLICITÀ",
+   "SCONFIGGI!",
+   "L'ultima pubblicità. La pubblicità di tutte le pubblicità."
+  ]
+ },
+ "words": {
+  "oops": "OPS!",
+  "win": "VITTORIA!",
+  "tap": "TOCCA!",
+  "great": "GRANDE!",
+  "nice": "BENE!",
+  "perfect": "PERFETTO!",
+  "goal": "GOL!",
+  "move": "MOSSE",
+  "go": "VIA!",
+  "ouch": "AHIA!",
+  "safe": "SALVO!",
+  "draw": "DISEGNA!",
+  "yummy": "GNAM!",
+  "swipe": "SCORRI!",
+  "combo": "COMBO",
+  "wow": "WOW!",
+  "next": "AVANTI",
+  "danger": "PERICOLO!",
+  "clear": "SUPERATO!",
+  "good": "BENE",
+  "miss": "MANCATO",
+  "hold": "TIENI",
+  "fever": "FEBBRE!",
+  "level": "LIVELLO",
+  "drag": "TRASCINA",
+  "full": "PIENO!",
+  "max": "MAX",
+  "no_fuel": "Niente benzina!",
+  "freezing": "GELATO!",
+  "blizzard": "BUFERA!",
+  "boss": "BOSS",
+  "build": "COSTRUISCI!",
+  "upgrade": "POTENZIA!",
+  "wave": "ONDATA",
+  "headshot": "COLPO IN TESTA!",
+  "ko": "KO",
+  "lose": "SCONFITTA",
+  "overthrown": "ROVESCIATO!",
+  "yes": "SÌ",
+  "no": "NO",
+  "bonus": "BONUS!",
+  "strike": "STRIKE!",
+  "power": "Energia",
+  "food": "Cibo",
+  "merge": "FUSIONE!",
+  "money": "SOLDI",
+  "buy": "COMPRA",
+  "angry": "ARRABBIATO!",
+  "wrong": "SBAGLIATO!",
+  "too_much": "TROPPO!",
+  "change": "RESTO",
+  "total": "TOTALE",
+  "scan": "BIP!",
+  "order_up": "PRONTO!",
+  "yuck": "BLEAH!",
+  "new": "NUOVO!",
+  "auto": "AUTO!",
+  "billionaire": "MILIARDARIO!",
+  "unlock": "SBLOCCA",
+  "hire": "ASSUMI",
+  "empty": "VUOTO!",
+  "milk": "LATTE",
+  "serve": "SERVI",
+  "dirty": "SPORCO!",
+  "crash": "SCHIANTO!",
+  "jackpot": "JACKPOT!",
+  "scream": "AAAH!",
+  "harvest": "RACCOLTO!",
+  "fair": "GIUSTO!",
+  "unfair": "INGIUSTO!",
+  "time": "TEMPO!",
+  "cured": "GUARITO!",
+  "busy": "PIENO!",
+  "free": "LIBERO",
+  "xray": "RAGGI X",
+  "clinic": "CLINICA",
+  "dental": "DENTISTA",
+  "cardio": "CARDIO",
+  "empire": "IMPERO!",
+  "bankrupt": "FALLITO",
+  "day": "GIORNO",
+  "clean": "SPLENDENTE!",
+  "white": "BIANCHI",
+  "color": "COLORATI",
+  "dark": "SCURI",
+  "late": "IN RITARDO!",
+  "delivered": "CONSEGNATO!",
+  "refill": "RICARICA!",
+  "you": "TU",
+  "stop": "STOP!",
+  "cpu": "CPU",
+  "wait": "ASPETTA...",
+  "foul": "FALLO!",
+  "round": "ROUND",
+  "pop": "POP!",
+  "bank": "INCASSA",
+  "pull": "TIRA!",
+  "watch": "GUARDA",
+  "repeat": "RIPETI!",
+  "out": "FUORI",
+  "count": "CONTA!",
+  "star": "STELLA!",
+  "lucky": "FORTUNA!",
+  "steal": "FURTO!",
+  "final": "FINALE",
+  "too_early": "TROPPO PRESTO!",
+  "haha": "AH AH!",
+  "which": "QUALE?",
+  "bump": "BUM!",
+  "dash": "SCATTO",
+  "run": "CORRI!",
+  "dodge": "SCHIVA!",
+  "your_turn": "TOCCA A TE",
+  "bingo": "BINGO!",
+  "crispy": "CROCCANTE...",
+  "burnt": "BRUCIATO!",
+  "catch": "PRENDI!",
+  "smooth": "LISCIO!",
+  "bloom": "FIORITO!",
+  "more": "ANCORA!",
+  "ah": "AH...",
+  "mph": "MPH!",
+  "achoo": "ETCIÙ!",
+  "scrub": "STROFINA!",
+  "yum": "GNAM!",
+  "jump": "SALTO",
+  "course_clear": "PERCORSO SUPERATO!",
+  "score": "PUNTI",
+  "world": "MONDO",
+  "boom": "BUM",
+  "multi": "MULTI",
+  "wide": "LARGA",
+  "fire": "FUOCO",
+  "balls": "PALLE",
+  "game_over": "GAME OVER",
+  "hero": "EROE",
+  "mage": "MAGO",
+  "cleric": "CHIERICO",
+  "critical": "CRITICO",
+  "attack": "ATTACCA",
+  "heal": "CURA",
+  "defend": "DIFENDI",
+  "item": "OGGETTO",
+  "mega_slam": "MEGA COLPO",
+  "guard": "GUARDIA",
+  "charge": "CARICA",
+  "magic": "MAGIA",
+  "level_up": "LIVELLO SU!",
+  "graze": "SFIORATO",
+  "hit": "COLPITO!",
+  "snap": "SPEZZATO!",
+  "slack": "MOLLE",
+  "cast": "LANCIA!",
+  "let_go": "MOLLA!",
+  "reel": "RECUPERA!",
+  "legendary": "LEGGENDARIO!",
+  "splat": "SPLAT!",
+  "splash": "SPLASH!",
+  "bonk": "BONK!",
+  "boost": "BOOST!",
+  "lines": "LINEE",
+  "double": "DOPPIO!",
+  "why": "PERCHÉ?!",
+  "fly_away": "VOLA VIA",
+  "shot": "TIRO",
+  "chomp": "GNAM!",
+  "treasure": "TESORO!",
+  "gutter": "CANALE…",
+  "spare": "SPARE!",
+  "swish": "CIUFF!",
+  "on_fire": "INFUOCATO!",
+  "brick": "MATTONE!",
+  "airball": "AIRBALL",
+  "near_miss": "PER UN PELO!",
+  "nitro": "NITRO!",
+  "smash": "SMASH!",
+  "key": "CHIAVE!",
+  "escape": "EVASO!",
+  "locked": "CHIUSO!",
+  "exit": "USCITA",
+  "so_close": "QUASI!",
+  "up": "SU!",
+  "sale": "SALDI",
+  "speed_up": "ACCELERA!",
+  "release": "RILASCIA",
+  "blocked": "BLOCCATO!",
+  "lip_out": "SPUTATA!",
+  "hole_in_one": "BUCA IN UNO!",
+  "birdie": "BIRDIE!",
+  "par": "PAR!",
+  "gold": "ORO!",
+  "limited": "LIMITATO",
+  "rate_up": "RATE UP!!",
+  "turn": "GIRA!",
+  "complete": "COMPLETO!",
+  "reach": "MANCA UNO!",
+  "revive": "RESURREZIONE!!",
+  "spin": "GIRA!",
+  "match_3": "3 UGUALI = VINCI",
+  "scratch": "GRATTA!",
+  "rip": "STRAPPA!",
+  "hp": "PS",
+  "value": "VALORE",
+  "rub": "STROFINA!",
+  "common": "COMUNE",
+  "rare": "RARO",
+  "epic": "EPICO",
+  "again": "ANCORA!",
+  "noooo": "NOOOO!",
+  "get": "OTTENUTO!!",
+  "last": "ULTIMO!",
+  "out_of_coins": "NIENTE MONETE",
+  "big_coin": "MONETONA!",
+  "chance": "OCCASIONE!",
+  "login_bonus": "BONUS ACCESSO",
+  "today": "OGGI!",
+  "too_strong": "TROPPO FORTE!",
+  "weak": "DEBOLE...",
+  "retry": "RIPROVA",
+  "stage": "LIVELLO",
+  "sword": "SPADA",
+  "hatch": "SCHIUSO!",
+  "cute": "CARINO!",
+  "ugly": "BRUTTO...",
+  "fun": "SVAGO",
+  "magnet": "Magnete",
+  "magic_bolt": "Dardo magico",
+  "holy_book": "Libro sacro",
+  "aura": "Aura",
+  "thunder": "Tuono",
+  "speed": "Velocità",
+  "king": "RE!",
+  "overflow": "TRABOCCA!",
+  "kaboom": "KABOOM!",
+  "stir": "MESCOLA!",
+  "recipe": "RICETTA",
+  "brew": "DISTILLA!",
+  "cold": "FREDDO!",
+  "fried": "FRITTO...",
+  "chick": "PULCINO?!",
+  "too_hot": "TROPPO CALDO!",
+  "hot": "CALDO",
+  "cozy": "TIEPIDO",
+  "sweet": "Dolce!",
+  "tasty": "Gustoso!",
+  "delicious": "Delizioso!",
+  "divine": "Divino!",
+  "shuffle": "Mescola!",
+  "moves": "Mosse",
+  "top": "TOP",
+  "connect": "COLLEGATO!",
+  "excellent": "Eccellente!",
+  "unbelievable": "Incredibile!",
+  "no_moves": "Nessuna mossa!",
+  "human_probably": "Umano. Probabilmente.",
+  "try_again": "Riprova",
+  "robot_detected": "Robot rilevato!",
+  "not_robot": "Non sono un robot",
+  "select_all": "Seleziona tutti i",
+  "traffic_lights": "semafori",
+  "buses": "autobus",
+  "robots": "robot",
+  "until_none": "finché non ne restano",
+  "verify": "VERIFICA",
+  "save": "PARATA!",
+  "post": "PALO!",
+  "fastball": "VELOCE",
+  "curve": "CURVA",
+  "changeup": "CAMBIO",
+  "home_run": "FUORICAMPO!!",
+  "shaky": "TRABALLA!",
+  "open": "SCOPERTO!",
+  "counter": "CONTRATTACCO!",
+  "wrong_way": "CONTROMANO!",
+  "block": "PARATA",
+  "nice_shot": "BEL COLPO!",
+  "before": "PRIMA",
+  "after": "DOPO",
+  "peel": "STACCA!",
+  "hair": "CAPELLI",
+  "lips": "LABBRA",
+  "popup_storm": "TEMPESTA DI POPUP!",
+  "install_barrage": "RAFFICA DI INSTALLA!",
+  "press_skip": "PREMI SALTA!!",
+  "ad_king": "IL RE DELLE PUBBLICITÀ"
+ }
+}

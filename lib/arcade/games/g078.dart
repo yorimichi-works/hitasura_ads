@@ -3,7 +3,7 @@ import '../engine/engine.dart';
 /// No.078 Stamp It! — documents slide past; tap to slam the hanko on the
 /// approved ones (green check) and never on the skull ones. The boss watches.
 class G078 extends MiniGame {
-  static const _stampX = 180.0;
+  static const _stampX = 240.0;
   static const _docY = 400.0;
   static const _need = 4;
   double _t = 0;
@@ -104,7 +104,7 @@ class G078 extends MiniGame {
       if (_ok >= _need) {
         _setMood(1, 99);
         host.sfx(Sfx.fanfare, volume: .7);
-        host.fx.coins(const Offset(180, 160), count: 18);
+        host.fx.coins(const Offset(96, 160), count: 18);
         host.fx.pop(host.tr('perfect', 'PERFECT!'), const Offset(180, 250), color: Pal.yellow, size: 38);
         host.win(stars: _missed == 0 ? 3 : (_missed == 1 ? 2 : 1));
       }
@@ -115,7 +115,7 @@ class G078 extends MiniGame {
       host.sfx(Sfx.explode, volume: .7);
       host.shake(14, .4);
       host.flash(Pal.red, .2);
-      host.fx.burst(const Offset(180, 150), Pal.red, count: 24, speed: 340, size: 8);
+      host.fx.burst(const Offset(96, 150), Pal.red, count: 24, speed: 340, size: 8);
       host.lose();
     }
   }
@@ -187,8 +187,8 @@ class G078 extends MiniGame {
     }
 
     if (host.time < 2 && _ok == 0) {
-      D.hand(c, const Offset(300, 400), _t);
-      D.text(c, host.tr('tap', 'TAP!'), const Offset(300, 370), size: 22, color: Pal.yellow, stroke: Pal.ink);
+      D.hand(c, const Offset(96, 410), _t);
+      D.text(c, host.tr('tap', 'TAP!'), const Offset(96, 370), size: 22, color: Pal.yellow, stroke: Pal.ink);
     }
   }
 
@@ -268,6 +268,13 @@ class G078 extends MiniGame {
   }
 
   void _drawBoss(Canvas c) {
+    c.save();
+    c.translate(-84, 0);
+    _drawBossAt(c);
+    c.restore();
+  }
+
+  void _drawBossAt(Canvas c) {
     const o = Offset(180, 170);
     final furious = _mood == 2;
     final pleased = _mood == 1;

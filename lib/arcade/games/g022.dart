@@ -189,6 +189,7 @@ class G022 extends MiniGame {
   @override
   void update(double dt) {
     _t += dt;
+    if (_card != null && _flyDir == 0 && !host.finished && _enter >= 1 && chance(.05)) { double sc(List<int> d) { var m = 99.0; for (var i = 0; i < 4; i++) { final v = _meters[i] + d[i]; m = math.min(m, math.min(v, 10 - v)); } return m; } _decide(sc(_card!.acc) >= sc(_card!.rej)); } // BOT
     _enter = math.min(1, _enter + dt * 4);
     _kingJoy = M.approach(_kingJoy, 0, 3, dt);
     for (var i = 0; i < 4; i++) {
@@ -264,6 +265,7 @@ class G022 extends MiniGame {
   @override
   void onDown(Offset p) {
     if (host.finished || _flyDir != 0) return;
+    return; // BOT
     _dragging = true;
     _dragStartX = p.dx - _dx;
   }
@@ -288,6 +290,7 @@ class G022 extends MiniGame {
   @override
   void onKey(String key, bool down) {
     if (!down) return;
+    return; // BOT
     if (key == 'left') _decide(false);
     if (key == 'right') _decide(true);
   }

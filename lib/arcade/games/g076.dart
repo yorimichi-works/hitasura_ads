@@ -114,7 +114,7 @@ class G076 extends MiniGame {
       c.save();
       c.translate(o.dx, o.dy + wave);
       if (wt != null && _t - wt < .4) c.rotate(sin((_t - wt) * 50) * .25);
-      c.scale(scale);
+      c.scale(scale * 1.12);
       if (!(_foundT >= 0 && i == _odd)) _icon(c, i == _odd, _foundT >= 0 ? (i == _odd ? 2 : 1) : 0);
       c.restore();
       if (wt != null) {

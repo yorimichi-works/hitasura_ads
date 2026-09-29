@@ -3,6 +3,7 @@ import '../engine/engine.dart';
 /// No.139 Wind Archery — hold to draw, drag to aim, release to shoot.
 /// Your breath sways the sight; the wind pushes the arrow. 3 arrows, 24+ wins.
 class G139 extends MiniGame {
+  static const _bot = bool.fromEnvironment('ARCADE_BOT');
   static const _tc = Offset(180, 300); // target center (world space)
   static const _tr = 84.0; // target radius (10 rings)
   static const _ring = _tr / 10;
@@ -88,12 +89,19 @@ class G139 extends MiniGame {
     }
     switch (_ph) {
       case _Ph.ready:
+        if (_bot && _pt > .3) {
+          _ph = _Ph.draw;
+          _hold = 0;
+          _draw = 0;
+          _aim = _tc - Offset(_wind * _windPx, 0);
+        }
         _zoom = M.approach(_zoom, 1, 5, dt);
       case _Ph.draw:
         _hold += dt;
         _draw = min(1, _draw + dt / .45);
         _zoom = M.approach(_zoom, 1.3, 4, dt);
         if (_hold > 2.4 && (_hold * 4).floor() != ((_hold - dt) * 4).floor()) host.sfx(Sfx.heartbeat, volume: .5);
+        if (_bot && _hold > 1.4) _release();
         if (_hold > 5) {
           host.fx.pop(host.tr('oops', 'OOPS'), const Offset(180, 470), color: Pal.orange);
           _release();
@@ -112,12 +120,13 @@ class G139 extends MiniGame {
   }
 
   void _release() {
+    final sway = _sway;
     _ph = _Ph.fly;
     _pt = 0;
     _ft = 0;
     _last = null;
     _weak = _draw < .6;
-    _aimAtRelease = _aim + _sway;
+    _aimAtRelease = _aim + sway;
     final drift = Offset(_wind * _windPx, 0);
     _impact = _weak
         ? Offset(_aimAtRelease.dx + drift.dx * .5, 470)
@@ -220,6 +229,7 @@ class G139 extends MiniGame {
   // ------------------------------------------------------------- input ---
   @override
   void onDown(Offset p) {
+    if (_bot) return;
     if (_ph != _Ph.ready) return;
     _ph = _Ph.draw;
     _pt = 0;
@@ -231,6 +241,7 @@ class G139 extends MiniGame {
 
   @override
   void onMove(Offset p) {
+    if (_bot) return;
     final l = _last;
     if (_ph != _Ph.draw || l == null) return;
     _aim += (p - l) * (.7 / _zoom);
@@ -240,11 +251,13 @@ class G139 extends MiniGame {
 
   @override
   void onUp(Offset p) {
+    if (_bot) return;
     if (_ph == _Ph.draw) _release();
   }
 
   @override
   void onKey(String key, bool down) {
+    if (_bot) return;
     if (!down) {
       if (key == 'action' && _ph == _Ph.draw) _release();
       return;

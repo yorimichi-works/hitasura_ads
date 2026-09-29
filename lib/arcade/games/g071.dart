@@ -62,8 +62,12 @@ class G071 extends MiniGame {
     if (_good) {
       host.sfx(off < 1.5 ? Sfx.perfect : Sfx.correct);
       host.flash(const Color(0x88FFFFFF));
-      host.fx.pop(off < 1.5 ? host.tr('perfect', 'PERFECT!') : host.tr('nice', 'NICE!'), const Offset(180, 175),
-          color: Pal.lime, size: 36);
+      host.fx.pop(
+        off < 1.5 ? host.tr('perfect', 'PERFECT!') : host.tr('nice', 'NICE!'),
+        const Offset(180, 175),
+        color: Pal.lime,
+        size: 36,
+      );
       host.fx.sparkle(Offset(_knifeX, _cakeY), count: 14, radius: 60, color: Pal.yellow);
       host.win(stars: off < 1.5 ? 3 : (off < 3 ? 2 : 1));
     } else {
@@ -109,17 +113,21 @@ class G071 extends MiniGame {
     final left = _cx - _w / 2;
     final cutX = _cut ? _knifeX : _cx;
     final lw = cutX - left;
-    c.save();
-    c.clipRect(Rect.fromLTRB(-50, 0, cutX, 640));
-    c.translate(-sep, 0);
-    c.rotate(_cut ? -.03 * M.clamp01(_cutT * 3) : 0);
-    _drawCake(c, left, lw, true);
-    c.restore();
-    c.save();
-    c.clipRect(Rect.fromLTRB(cutX, 0, 410, 640));
-    c.translate(sep, 0);
-    _drawCake(c, left, lw, false);
-    c.restore();
+    if (!_cut) {
+      _drawCake(c, left, lw, true);
+    } else {
+      c.save();
+      c.clipRect(Rect.fromLTRB(-50, 0, cutX, 640));
+      c.translate(-sep, 0);
+      c.rotate(_cut ? -.03 * M.clamp01(_cutT * 3) : 0);
+      _drawCake(c, left, lw, true);
+      c.restore();
+      c.save();
+      c.clipRect(Rect.fromLTRB(cutX, 0, 410, 640));
+      c.translate(sep, 0);
+      _drawCake(c, left, lw, false);
+      c.restore();
+    }
 
     // The knife
     _drawKnife(c);
@@ -155,8 +163,9 @@ class G071 extends MiniGame {
       c.drawRRect(rr.shift(const Offset(0, 5)), D.fill(const Color(0xFF8A4B16)));
       c.drawRRect(rr, D.fill(const Color(0xFFDB9440)));
       c.drawRRect(
-          RRect.fromRectAndRadius(Rect.fromLTWH(r.left + 12, r.top + 8, r.width - 24, 18), const Radius.circular(9)),
-          D.fill(const Color(0x55FFF1C0)));
+        RRect.fromRectAndRadius(Rect.fromLTWH(r.left + 12, r.top + 8, r.width - 24, 18), const Radius.circular(9)),
+        D.fill(const Color(0x55FFF1C0)),
+      );
       for (var i = 0; i < 5; i++) {
         final x = r.left + 40 + i * (r.width - 80) / 4;
         D.line(c, Offset(x - 14, r.top + 22), Offset(x + 14, r.top + 10), const Color(0xFF9C5518), 6);
@@ -166,8 +175,10 @@ class G071 extends MiniGame {
       final rr = RRect.fromRectAndRadius(r, const Radius.circular(16));
       c.drawRRect(rr, D.fill(const Color(0xFFF2C77E)));
       // cream stripe + strawberries on top
-      c.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(r.left, r.top - 14, r.width, 18), const Radius.circular(9)),
-          D.fill(Pal.white));
+      c.drawRRect(
+        RRect.fromRectAndRadius(Rect.fromLTWH(r.left, r.top - 14, r.width, 18), const Radius.circular(9)),
+        D.fill(Pal.white),
+      );
       for (var i = 0; i < 6; i++) {
         final x = r.left + 22 + i * (r.width - 44) / 5;
         c.drawCircle(Offset(x, r.top - 18), 10, D.fill(Pal.red));
@@ -176,14 +187,17 @@ class G071 extends MiniGame {
       }
       // sponge texture
       for (var i = 0; i < 14; i++) {
-        c.drawCircle(Offset(r.left + 14 + (i * 37) % (r.width - 20), r.top + 22 + (i * 23) % 40), 3,
-            D.fill(const Color(0x33A0602A)));
+        c.drawCircle(
+          Offset(r.left + 14 + (i * 37) % (r.width - 20), r.top + 22 + (i * 23) % 40),
+          3,
+          D.fill(const Color(0x33A0602A)),
+        );
       }
       c.drawRRect(rr, D.stroke(Pal.ink, 5));
     }
     // swirl end caps
-    final capX = isLeft ? r.left + 6 : r.right - 6;
-    _swirl(c, Offset(capX, _cakeY));
+    _swirl(c, Offset(r.left + 6, _cakeY));
+    _swirl(c, Offset(r.right - 6, _cakeY));
     // exposed swirl at cut
     if (_cut) {
       _swirl(c, Offset(isLeft ? left + lw - 2 : left + lw + 2, _cakeY));
@@ -211,8 +225,14 @@ class G071 extends MiniGame {
   void _drawKnife(Canvas c) {
     final y = M.lerp(150, 268, _knife) + (_cut ? 0 : sin(_t * 9) * 3);
     // handle
-    D.rrect(c, Rect.fromCenter(center: Offset(_knifeX, y - 110), width: 34, height: 80), 12, const Color(0xFF3B2A4A),
-        border: Pal.ink, borderWidth: 4);
+    D.rrect(
+      c,
+      Rect.fromCenter(center: Offset(_knifeX, y - 110), width: 34, height: 80),
+      12,
+      const Color(0xFF3B2A4A),
+      border: Pal.ink,
+      borderWidth: 4,
+    );
     for (var i = 0; i < 3; i++) {
       c.drawCircle(Offset(_knifeX, y - 132 + i * 22), 4, D.fill(Pal.gray));
     }
@@ -225,13 +245,14 @@ class G071 extends MiniGame {
       ..close();
     c.drawPath(blade, D.fill(const Color(0xFFE8EEF8)));
     c.drawPath(
-        Path()
-          ..moveTo(_knifeX - 20, y - 70)
-          ..lineTo(_knifeX - 8, y - 70)
-          ..lineTo(_knifeX - 8, y + 44)
-          ..lineTo(_knifeX - 20, y + 48)
-          ..close(),
-        D.fill(const Color(0xFFB9C4D8)));
+      Path()
+        ..moveTo(_knifeX - 20, y - 70)
+        ..lineTo(_knifeX - 8, y - 70)
+        ..lineTo(_knifeX - 8, y + 44)
+        ..lineTo(_knifeX - 20, y + 48)
+        ..close(),
+      D.fill(const Color(0xFFB9C4D8)),
+    );
     c.drawPath(blade, D.stroke(Pal.ink, 4));
     // glint
     final g = (_t * 1.5) % 1.0;
@@ -249,8 +270,14 @@ class G071 extends MiniGame {
     final bounce = _cut ? sin(_cutT * 18) * 4 * M.clamp01(1 - _cutT) : sin(_t * 3 + side) * 2;
     final head = o + Offset(0, -30 + bounce);
     // body
-    D.rrect(c, Rect.fromCenter(center: o + const Offset(0, 70), width: 120, height: 100), 40, shirt,
-        border: Pal.ink, borderWidth: 4);
+    D.rrect(
+      c,
+      Rect.fromCenter(center: o + const Offset(0, 70), width: 120, height: 100),
+      40,
+      shirt,
+      border: Pal.ink,
+      borderWidth: 4,
+    );
     // head
     c.drawCircle(head, 62, D.fill(Pal.skin));
     c.drawArc(Rect.fromCircle(center: head, radius: 64), pi * 1.05, pi * .9, true, D.fill(hair));

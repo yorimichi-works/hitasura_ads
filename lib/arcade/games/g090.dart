@@ -95,7 +95,7 @@ class G090 extends MiniGame {
     }
     // rivals
     final hs = 1 + (host.speed - 1) * .15;
-    const data = [(1500.0, 4950.0, -.45), (1200.0, 4750.0, .4), (900.0, 4450.0, -.1), (600.0, 4300.0, .5), (300.0, 4150.0, -.5)];
+    const data = [(1500.0, 5150.0, -.45), (1200.0, 4950.0, .4), (900.0, 4700.0, -.1), (600.0, 4550.0, .5), (300.0, 4400.0, -.5)];
     for (var i = 0; i < data.length; i++) {
       _rivals.add(_Kart(data[i].$1, data[i].$2 * hs, data[i].$3, i));
     }
@@ -292,7 +292,7 @@ class G090 extends MiniGame {
       if (!_pVis[n]) continue;
       final i = baseIdx + n;
       final seg = _seg(i);
-      if (seg.props.isNotEmpty && _pS1[n] < .5) {
+      if (seg.props.isNotEmpty && _pS1[n] < .32) {
         for (final p in seg.props) {
           _drawProp(c, p, _pX1[n], _pY1[n], _pS1[n], _pClip[n]);
         }

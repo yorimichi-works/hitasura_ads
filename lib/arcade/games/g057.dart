@@ -442,8 +442,8 @@ class G057 extends MiniGame {
     final cam = _scene.cam;
     cam
       ..pos = const V3(0, 10.5, -10.2)
-      ..focal = 400
-      ..center = const Offset(180, 300)
+      ..focal = 460
+      ..center = const Offset(180, 318)
       ..lookAt(const V3(0, -.4, .9));
     _ballScene.cam
       ..pos = cam.pos
@@ -558,7 +558,7 @@ class G057 extends MiniGame {
     final dc = 1 - _dashCd / .9;
     D.rrect(c, const Rect.fromLTWH(250, 590, 96, 32), 16, const Color(0xAA1B1530));
     D.bar(c, const Rect.fromLTWH(258, 610, 80, 6), dc, dc >= 1 ? Pal.lime : Pal.orange);
-    D.text(c, host.tr('tap', 'TAP') == 'TAP' ? 'DASH' : host.tr('dash', 'DASH'), const Offset(298, 600), size: 12,
+    D.text(c, host.tr('dash', 'DASH'), const Offset(298, 600), size: 12,
         color: Pal.white);
     if (host.time < 2.6) {
       final hp = Offset(180 + sin(_t * 3) * 50, 540 + cos(_t * 3) * 20);

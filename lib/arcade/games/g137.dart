@@ -5,6 +5,7 @@ import '../engine/engine.dart';
 /// No.137 Penalty Kick — World-Cup shootout. Swipe to shoot (angle = aim,
 /// length = height, speed = power, bend = curve), then tap to dive as keeper.
 class G137 extends MiniGame {
+  static const _bot = bool.fromEnvironment('ARCADE_BOT');
   // true = you shoot, false = you keep goal
   static const _rounds = [true, false, true, false, true];
   static const _ballHome = Offset(180, 566);
@@ -133,6 +134,10 @@ class G137 extends MiniGame {
     }
 
     final sdt = dt * _slow;
+    if (_bot && !host.finished && _wipe < 0) {
+      if (_ph == _Ph.aim && _pt > .4) _launch(Offset(chance(.5) ? 86 : 274, 172), 0, .5, .44);
+      if (!_shooting && _ph == _Ph.cpuFly && _pt > .1 && _myZone < 0) _dive(_cpuZone);
+    }
     switch (_ph) {
       case _Ph.aim:
         if (_pt > 3.4 && _sStart == null && !host.finished) _autoShank();
@@ -232,9 +237,9 @@ class G137 extends MiniGame {
     host.fx.ring(_ballHome, Pal.white, size: 50, life: .3);
     // keeper decision: 45% reads the right zone; the rest is a guess
     final zone = target.dx < 142 ? 0 : (target.dx > 218 ? 2 : 1);
-    final guess = chance(_shank ? 1 : .45) ? zone : randInt(3);
+    final guess = chance(_shank ? 1 : .35) ? zone : randInt(3);
     final ty = target.dy.clamp(172.0, 240.0);
-    _kTarget = switch (guess) { 0 => Offset(96, ty), 2 => Offset(264, ty), _ => const Offset(180, 198) };
+    _kTarget = switch (guess) { 0 => Offset(104, ty), 2 => Offset(256, ty), _ => const Offset(180, 198) };
     _kDelay = .12 / host.speed;
     _kDiveDur = .42 / host.speed;
   }
@@ -272,7 +277,7 @@ class G137 extends MiniGame {
     if (x < 62 || x > 298) return _Out.wide;
     if (x < 76 || x > 284 || y < 157) return _Out.post;
     final reach = _keeperReach();
-    if ((_bT - reach).distance < 40) return _Out.save;
+    if ((_bT - reach).distance < (_shank ? 60 : 32)) return _Out.save;
     return _Out.goal;
   }
 
@@ -403,6 +408,7 @@ class G137 extends MiniGame {
   // ------------------------------------------------------------- input ---
   @override
   void onDown(Offset p) {
+    if (_bot) return;
     if (_wipe >= 0) return;
     if (_shooting && _ph == _Ph.aim) {
       _sStart = p;
@@ -423,6 +429,7 @@ class G137 extends MiniGame {
 
   @override
   void onMove(Offset p) {
+    if (_bot) return;
     if (_sStart != null && _ph == _Ph.aim) {
       if (_trail.length < 60) _trail.add(p);
     }
@@ -430,6 +437,7 @@ class G137 extends MiniGame {
 
   @override
   void onUp(Offset p) {
+    if (_bot) return;
     final s = _sStart;
     if (s == null || _ph != _Ph.aim) return;
     _sStart = null;
@@ -462,6 +470,7 @@ class G137 extends MiniGame {
 
   @override
   void onKey(String key, bool down) {
+    if (_bot) return;
     if (!down || _wipe >= 0) return;
     if (_shooting && _ph == _Ph.aim) {
       final tx = switch (key) { 'left' => 92.0, 'right' => 268.0, _ => 180.0 };

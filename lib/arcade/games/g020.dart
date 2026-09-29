@@ -60,14 +60,14 @@ class G020 extends MiniGame {
       ..fogColor = const Color(0xFF3A2440)
       ..fogNear = 22
       ..fogFar = 46;
-    _road = Mesh.grid(_roadHalf * 2, 56, 4, 28, (i, j) {
+    _road = Mesh.grid(_roadHalf * 2, 60, 4, 30, (i, j) {
       final lane = i == 1 || i == 2;
       final dark = j.isEven;
       return lane
           ? (dark ? const Color(0xFF4A4A58) : const Color(0xFF55556A))
           : (dark ? const Color(0xFF414150) : const Color(0xFF4C4C5E));
     });
-    _side = Mesh.grid(8, 56, 2, 14, (i, j) => (i + j).isEven ? const Color(0xFF5A4A3A) : const Color(0xFF65533F));
+    _side = Mesh.grid(8, 60, 2, 15, (i, j) => (i + j).isEven ? const Color(0xFF5A4A3A) : const Color(0xFF65533F));
     const army = Color(0xFF3D7BFF);
     _soldier = Mesh.merge([
       (Models.person(army, pants: const Color(0xFF2A3A5A)), V3.zero),
@@ -125,6 +125,7 @@ class G020 extends MiniGame {
   @override
   void update(double dt) {
     _t += dt;
+    { final open = _gates.where((g) => g.active && !g.passed).toList(); if (open.isNotEmpty) { final g = open.first; if (g.z > 8) { _targetX = g.sides[0].soldiers ? -2 : 2; } else { final a = g.sides[0], b = g.sides[1]; double val(_GateSide s) => s.soldiers ? s.value * 12 : s.value; _targetX = val(a) >= val(b) ? -2 : 2; } } else { _targetX = math.sin(_t) * 2; } } // BOT
     final sp = host.speed;
     _hurt = M.approach(_hurt, 0, 4, dt);
     _gateBanner = math.max(0, _gateBanner - dt);
@@ -150,7 +151,7 @@ class G020 extends MiniGame {
       }
       if (!_bossSpawned && _t >= 9.5) {
         _bossSpawned = true;
-        _boss = _Zombie(0, 32, hp: 200, boss: true);
+        _boss = _Zombie(0, 32, hp: 110, boss: true);
         _zombies.add(_boss!);
         host.sfx(Sfx.horror);
         host.sfx(Sfx.hitHeavy, volume: .6);
@@ -232,7 +233,7 @@ class G020 extends MiniGame {
       z.anim += dt * 7;
       if (host.finished) continue;
       final walk = (z.boss ? 1.25 : 1.1 + (z.x.abs() * .05)) * sp;
-      z.z -= (scroll + walk) * dt * (z.boss ? .55 : 1);
+      z.z -= (scroll + walk) * dt * (z.boss ? .74 : 1);
       // shamble toward the squad
       z.x += ((_squadX - z.x).sign * .45 * sp * dt) * (z.boss ? .4 : 1);
       if (z.z < 1.0) {
@@ -465,10 +466,10 @@ class G020 extends MiniGame {
 
     scene.clear();
     scene.cam
-      ..center = const Offset(180, 290)
-      ..focal = 400
-      ..pos = V3(_squadX * .35, 5.4, -6.2)
-      ..lookAt(V3(_squadX * .25, .4, 8));
+      ..center = const Offset(180, 300)
+      ..focal = 430
+      ..pos = V3(_squadX * .35, 8.2, -9.5)
+      ..lookAt(V3(_squadX * .25, 0, 9));
 
     final roadOff = -(_scroll % 2);
     scene.add(_road, pos: V3(0, 0, 25 + roadOff));
@@ -579,9 +580,9 @@ class G020 extends MiniGame {
     for (var i = 0; i < 3; i++) {
       D.rrect(c, Rect.fromLTWH(196 + i * 8.0, 56, 6, 20), 3, Pal.yellow, border: Pal.ink, borderWidth: 1.5);
     }
-    D.text(c, (_rate * _soldiers).toStringAsFixed(0), const Offset(228, 67), size: 26, color: Pal.yellow,
+    final rw = D.text(c, (_rate * _soldiers).toStringAsFixed(0), const Offset(228, 67), size: 26, color: Pal.yellow,
         stroke: Pal.ink, strokeWidth: 6, anchor: Alignment.centerLeft);
-    D.text(c, '/s', const Offset(270, 72), size: 14, color: const Color(0xFFCFC6E6), anchor: Alignment.centerLeft);
+    D.text(c, '/s', Offset(230 + rw.width, 72), size: 14, color: const Color(0xFFCFC6E6), anchor: Alignment.centerLeft);
 
     // red vignette on hurt
     if (_hurt > .05) {
@@ -602,7 +603,7 @@ class G020 extends MiniGame {
   }
 
   void _gateLabel(Canvas c, Offset pos, double sc, _GateSide gs) {
-    final k = (sc / 40).clamp(.25, 1.6);
+    final k = (sc / 30).clamp(.35, 1.8);
     final v = gs.value.round();
     final txt = gs.soldiers ? (v >= 0 ? '+$v' : '$v') : (v >= 0 ? '+$v%' : '$v%');
     c.save();

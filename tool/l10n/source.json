@@ -1,0 +1,2045 @@
+{
+ "ui_en": {
+  "app_title": "Nothing But Ads",
+  "app_sub": "151 AD DEMOS",
+  "tagline": "Every fake ad in the universe. Playable.",
+  "watch_next": "WATCH NEXT AD",
+  "watch_sub": "Uses 1 ticket",
+  "tickets": "Ad Tickets",
+  "refill_in": "+1 in {t}",
+  "full": "FULL",
+  "out_of_tickets": "Out of tickets!",
+  "sponsor_refill": "Watch a sponsor to refill",
+  "refilled": "Tickets fully refilled!",
+  "sponsor_unavailable": "Sponsor ads are not available here",
+  "sponsor_failed": "Could not load the sponsor ad",
+  "sponsor_incomplete": "Sponsor not finished. No reward.",
+  "collection": "Collection",
+  "discovered": "Discovered",
+  "rush": "AD RUSH",
+  "rush_desc": "Micro ads back to back. Faster. FASTER.",
+  "rush_locked": "Find {n} more quick ads to unlock",
+  "rush_best": "Best",
+  "rush_start": "START",
+  "rush_stage": "STAGE",
+  "speed_up": "SPEED UP!",
+  "game_over": "GAME OVER",
+  "new_record": "NEW RECORD!",
+  "lives": "Lives",
+  "home": "Home",
+  "settings": "Settings",
+  "language": "Language",
+  "sound": "Sound",
+  "on": "ON",
+  "off": "OFF",
+  "nickname": "Nickname",
+  "nickname_hint": "Your name",
+  "start": "START",
+  "welcome": "Welcome to the ad universe",
+  "welcome_body": "151 ridiculous ad demos are waiting. Watch them. Play them. Collect them all.",
+  "level": "Lv",
+  "coins": "Coins",
+  "xp": "XP",
+  "new_ad": "NEW AD DISCOVERED!",
+  "rarity_common": "COMMON",
+  "rarity_uncommon": "UNCOMMON",
+  "rarity_rare": "RARE",
+  "rarity_superRare": "SUPER RARE",
+  "rarity_secret": "SECRET",
+  "cat_hyper": "Hyper Casual",
+  "cat_strategy": "Strategy",
+  "cat_tycoon": "Tycoon",
+  "cat_party": "Party",
+  "cat_micro": "Micro Game",
+  "cat_retro": "Retro Pixel",
+  "cat_threeD": "3D",
+  "cat_gacha": "Gacha & Luck",
+  "cat_rpg": "RPG & Growth",
+  "cat_puzzle": "Puzzle",
+  "cat_sports": "Sports",
+  "cat_asmr": "Satisfying",
+  "cat_meta": "Ad Parody",
+  "cat_secret": "Secret",
+  "install": "INSTALL",
+  "installed_joke": "You're already playing it.",
+  "reviews": "{n} reviews",
+  "review_1": "\"I only downloaded it for the ad. The ad was the game.\"",
+  "review_2": "\"My thumb has never been this happy.\"",
+  "review_3": "\"10/10 would watch this ad again.\"",
+  "review_4": "\"Level 3 is impossible. There is no level 3.\"",
+  "review_5": "\"I came for 5 seconds. It is now 4 AM.\"",
+  "review_6": "\"My cat also plays this.\"",
+  "review_7": "\"Finally an ad that respects me. Sort of.\"",
+  "review_8": "\"The best game I never installed.\"",
+  "next_ad": "NEXT AD",
+  "replay": "REPLAY",
+  "play": "PLAY",
+  "back": "Back",
+  "close": "Close",
+  "score": "Score",
+  "best": "Best",
+  "plays": "Plays",
+  "locked_hint": "Keep watching ads to discover this one",
+  "secret_hint": "Discover all 150 ads to summon it…",
+  "ad_capsule": "Ad Capsule",
+  "ad_capsule_desc": "Unlock a random undiscovered ad",
+  "not_enough_coins": "Not enough coins",
+  "all_found": "Everything discovered!",
+  "level_up": "LEVEL UP!",
+  "cloud": "Cloud save",
+  "sign_in": "Sign in with Google",
+  "sign_out": "Sign out",
+  "synced": "Synced",
+  "sync_error": "Could not sync progress",
+  "credits": "Credits",
+  "complete": "COMPLETE! You have seen every ad.",
+  "clear": "CLEAR!!",
+  "fail": "FAILED…",
+  "ad": "AD",
+  "tap_skip": "Tap to skip",
+  "sponsored": "Sponsored",
+  "filter_all": "All",
+  "tap_continue": "Tap to continue",
+  "now_showing": "NOW SHOWING",
+  "reward": "Reward",
+  "result_win": "You beat the ad!",
+  "result_lose": "The ad beat you…",
+  "free_replay": "Replays are free",
+  "daily_bonus": "Daily Bonus",
+  "claim": "CLAIM",
+  "claimed": "Come back tomorrow",
+  "streak": "{n}-day streak",
+  "channel": "CH",
+  "mode_random": "Random Ad",
+  "stats": "Stats",
+  "total_plays": "Total plays",
+  "wins": "Wins",
+  "stars_total": "Stars",
+  "rush_ready": "Get ready…",
+  "rush_desc_long": "Short ads you have discovered play back to back. Clear them before time runs out. 4 lives.",
+  "progress_title": "Ad Hunter",
+  "version": "Version"
+ },
+ "ui_ja": {
+  "app_title": "ひたすら広告",
+  "app_sub": "151の広告デモ",
+  "tagline": "世界中のウソ広告、ぜんぶ遊べます。",
+  "watch_next": "次の広告を見る",
+  "watch_sub": "チケット1枚",
+  "tickets": "広告チケット",
+  "refill_in": "{t}後に+1",
+  "full": "満タン",
+  "out_of_tickets": "チケット切れ！",
+  "sponsor_refill": "スポンサー広告で全回復",
+  "refilled": "チケットが全回復！",
+  "sponsor_unavailable": "この環境ではスポンサー広告を利用できません",
+  "sponsor_failed": "スポンサー広告を読み込めませんでした",
+  "sponsor_incomplete": "視聴が完了しなかったため報酬はありません",
+  "collection": "広告図鑑",
+  "discovered": "発見",
+  "rush": "広告ラッシュ",
+  "rush_desc": "超短い広告が連続で。速く。もっと速く。",
+  "rush_locked": "あと{n}本の短い広告を見つけると解放",
+  "rush_best": "ベスト",
+  "rush_start": "スタート",
+  "rush_stage": "ステージ",
+  "speed_up": "スピードアップ！",
+  "game_over": "ゲームオーバー",
+  "new_record": "新記録！",
+  "lives": "ライフ",
+  "home": "ホーム",
+  "settings": "設定",
+  "language": "言語",
+  "sound": "サウンド",
+  "on": "オン",
+  "off": "オフ",
+  "nickname": "ニックネーム",
+  "nickname_hint": "あなたの名前",
+  "start": "はじめる",
+  "welcome": "広告の宇宙へようこそ",
+  "welcome_body": "くだらなすぎる広告デモが151本。見て、遊んで、ぜんぶ集めよう。",
+  "level": "Lv",
+  "coins": "コイン",
+  "xp": "経験値",
+  "new_ad": "新しい広告を発見！",
+  "rarity_common": "コモン",
+  "rarity_uncommon": "アンコモン",
+  "rarity_rare": "レア",
+  "rarity_superRare": "スーパーレア",
+  "rarity_secret": "シークレット",
+  "cat_hyper": "ハイパーカジュアル",
+  "cat_strategy": "ストラテジー",
+  "cat_tycoon": "経営シミュ",
+  "cat_party": "パーティ",
+  "cat_micro": "ミニミニゲーム",
+  "cat_retro": "レトロドット",
+  "cat_threeD": "3D",
+  "cat_gacha": "ガチャ・運試し",
+  "cat_rpg": "RPG・育成",
+  "cat_puzzle": "パズル",
+  "cat_sports": "スポーツ",
+  "cat_asmr": "気持ちいい系",
+  "cat_meta": "広告パロディ",
+  "cat_secret": "シークレット",
+  "install": "インストール",
+  "installed_joke": "もう遊んでます。",
+  "reviews": "レビュー{n}件",
+  "review_1": "「広告目当てで入れたら、広告がゲームだった」",
+  "review_2": "「親指がこんなに喜んだのは初めて」",
+  "review_3": "「この広告、また見たい。星10」",
+  "review_4": "「レベル3が難しすぎる。レベル3は存在しない」",
+  "review_5": "「5秒のつもりが朝4時」",
+  "review_6": "「うちの猫も遊んでます」",
+  "review_7": "「やっと私を尊重する広告に出会えた。たぶん」",
+  "review_8": "「インストールしなかった最高のゲーム」",
+  "next_ad": "次の広告",
+  "replay": "もう一回",
+  "play": "プレイ",
+  "back": "戻る",
+  "close": "閉じる",
+  "score": "スコア",
+  "best": "ベスト",
+  "plays": "プレイ回数",
+  "locked_hint": "広告を見続けると見つかるかも",
+  "secret_hint": "150本すべて発見すると現れる…",
+  "ad_capsule": "広告カプセル",
+  "ad_capsule_desc": "未発見の広告をランダムで1本解放",
+  "not_enough_coins": "コインが足りません",
+  "all_found": "すべて発見済み！",
+  "level_up": "レベルアップ！",
+  "cloud": "クラウド保存",
+  "sign_in": "Googleでログイン",
+  "sign_out": "ログアウト",
+  "synced": "同期済み",
+  "sync_error": "進行状況を同期できませんでした",
+  "credits": "クレジット",
+  "complete": "コンプリート！すべての広告を見届けました。",
+  "clear": "クリア！！",
+  "fail": "しっぱい…",
+  "ad": "広告",
+  "tap_skip": "タップでスキップ",
+  "sponsored": "スポンサー",
+  "filter_all": "すべて",
+  "tap_continue": "タップで続ける",
+  "now_showing": "放送中",
+  "reward": "ごほうび",
+  "result_win": "広告に勝った！",
+  "result_lose": "広告に負けた…",
+  "free_replay": "もう一回は無料",
+  "daily_bonus": "デイリーボーナス",
+  "claim": "受け取る",
+  "claimed": "また明日！",
+  "streak": "{n}日連続",
+  "channel": "CH",
+  "mode_random": "ランダム広告",
+  "stats": "記録",
+  "total_plays": "総プレイ",
+  "wins": "勝利",
+  "stars_total": "スター",
+  "rush_ready": "よーい…",
+  "rush_desc_long": "見つけた短い広告が次々に流れます。時間内にクリアしよう。ライフは4つ。",
+  "progress_title": "広告ハンター",
+  "version": "バージョン"
+ },
+ "games_en": {
+  "1": [
+   "Pull the Pin!",
+   "PULL!",
+   "99% of players FAIL this level!"
+  ],
+  "2": [
+   "Gate Runner x100",
+   "STEER!",
+   "Only geniuses choose the right gates"
+  ],
+  "3": [
+   "Liquid Sort",
+   "SORT!",
+   "So satisfying… just ONE more!"
+  ],
+  "4": [
+   "Stack to the Sky",
+   "STACK!",
+   "How high can YOU go?"
+  ],
+  "5": [
+   "Parking Jam",
+   "ESCAPE!",
+   "Can you get the red car out?"
+  ],
+  "6": [
+   "Draw to Save the Doge",
+   "DRAW!",
+   "Draw ONE line. Save the dog."
+  ],
+  "7": [
+   "Cut the Rope",
+   "CUT!",
+   "He's SO hungry…"
+  ],
+  "8": [
+   "Fruit Merge Drop",
+   "MERGE!",
+   "Can you make the WATERMELON?"
+  ],
+  "9": [
+   "Arrow Escape",
+   "TAP OUT!",
+   "Tap in the right order…"
+  ],
+  "10": [
+   "Fill to the Line",
+   "POUR!",
+   "Stop EXACTLY at the line"
+  ],
+  "11": [
+   "Knife Hit",
+   "THROW!",
+   "Don't hit the other knives!"
+  ],
+  "12": [
+   "Helix Drop",
+   "SPIN!",
+   "Drop to the bottom!"
+  ],
+  "13": [
+   "Black Hole City",
+   "SWALLOW!",
+   "Eat the WHOLE city!"
+  ],
+  "14": [
+   "Hair Challenge",
+   "GROW!",
+   "Longest hair wins!"
+  ],
+  "15": [
+   "Screw Jam",
+   "UNSCREW!",
+   "Unscrew everything!"
+  ],
+  "16": [
+   "Whiteout Furnace",
+   "SURVIVE!",
+   "-60°C. Your city needs YOU."
+  ],
+  "17": [
+   "Pixel Tower Defense",
+   "DEFEND!",
+   "Place towers. Save the kingdom."
+  ],
+  "18": [
+   "Army Count Clash",
+   "CHOOSE!",
+   "Pick the right path, General!"
+  ],
+  "19": [
+   "Castle Archers",
+   "AIM!",
+   "They're climbing the walls!!"
+  ],
+  "20": [
+   "Last Squad Standing",
+   "SHOOT!",
+   "Choose the BEST upgrade!"
+  ],
+  "21": [
+   "Hero Tower Absorb",
+   "ABSORB!",
+   "Only fight WEAKER enemies!"
+  ],
+  "22": [
+   "Tiny King's Tax",
+   "RULE!",
+   "Greedy or kind? YOU decide."
+  ],
+  "23": [
+   "Conquer the Map",
+   "CONQUER!",
+   "Paint the whole map BLUE"
+  ],
+  "24": [
+   "Raft Survival",
+   "HOOK!",
+   "Day 1 on the open ocean…"
+  ],
+  "25": [
+   "Bunker Builder",
+   "DIG!",
+   "The surface is gone. Dig."
+  ],
+  "26": [
+   "Catapult Siege",
+   "FIRE!",
+   "Knock down the tower!"
+  ],
+  "27": [
+   "Mars Colony Crisis",
+   "BALANCE!",
+   "Keep 100 colonists alive on Mars"
+  ],
+  "28": [
+   "Merge Turret Defense",
+   "MERGE!",
+   "Merge guns. Stop the horde."
+  ],
+  "29": [
+   "Clash Lane",
+   "DEPLOY!",
+   "Destroy their tower in 20s!"
+  ],
+  "30": [
+   "Noah's Last Boat",
+   "LOAD!",
+   "The flood is coming! Who gets on?"
+  ],
+  "31": [
+   "Ramen Rush",
+   "SERVE!",
+   "Can you handle the lunch rush?"
+  ],
+  "32": [
+   "Konbini Cashier",
+   "SCAN!",
+   "Beep beep beep! Faster!"
+  ],
+  "33": [
+   "Burger Tower",
+   "CATCH!",
+   "Build the order EXACTLY"
+  ],
+  "34": [
+   "Idle Gold Mine",
+   "UPGRADE!",
+   "From $0 to BILLIONAIRE"
+  ],
+  "35": [
+   "Latte Art Master",
+   "POUR!",
+   "Barista test: draw a perfect heart"
+  ],
+  "36": [
+   "Hotel Rush",
+   "CHECK IN!",
+   "5-star service in 20 seconds"
+  ],
+  "37": [
+   "Parking Lot Tycoon",
+   "PARK!",
+   "Every car = money"
+  ],
+  "38": [
+   "Sushi Conveyor",
+   "GRAB!",
+   "Grab the right plate!"
+  ],
+  "39": [
+   "Tiny Theme Park",
+   "BUILD!",
+   "Make them SCREAM (with joy)"
+  ],
+  "40": [
+   "Pixel Farm Harvest",
+   "HARVEST!",
+   "Grow. Harvest. REPEAT."
+  ],
+  "41": [
+   "Pizza Slice Justice",
+   "SLICE!",
+   "4 kids. 1 pizza. NO fighting."
+  ],
+  "42": [
+   "Emergency Room",
+   "TREAT!",
+   "Doctor! We need you NOW!"
+  ],
+  "43": [
+   "Lemonade Mogul",
+   "SELL!",
+   "From stand to EMPIRE"
+  ],
+  "44": [
+   "Laundry Panic",
+   "SORT!",
+   "Don't turn the whites PINK"
+  ],
+  "45": [
+   "Delivery Dash",
+   "DELIVER!",
+   "Hot food. 5 stars. GO!"
+  ],
+  "46": [
+   "Mash Dash",
+   "MASH!",
+   "Your fingers aren't fast enough"
+  ],
+  "47": [
+   "Stop at 10.00",
+   "STOP!",
+   "Nobody has EVER hit 10.00"
+  ],
+  "48": [
+   "Samurai Quickdraw",
+   "DRAW!",
+   "Blink and you LOSE"
+  ],
+  "49": [
+   "Hot Potato Bomb",
+   "PASS!",
+   "Don't be holding it at BOOM"
+  ],
+  "50": [
+   "Balloon Chicken",
+   "PUMP!",
+   "Bigger… bigger… BIGGER…"
+  ],
+  "51": [
+   "Tug of War",
+   "PULL!",
+   "Pull for your LIFE"
+  ],
+  "52": [
+   "Memory Lights",
+   "REMEMBER!",
+   "Simon says… you'll forget"
+  ],
+  "53": [
+   "Count the Chicks",
+   "COUNT!",
+   "Easy? Then COUNT them."
+  ],
+  "54": [
+   "Mini Star Party",
+   "ROLL!",
+   "4 players. 1 star. Friendship ends."
+  ],
+  "55": [
+   "Musical Chairs",
+   "SIT!",
+   "When the music stops… SIT!"
+  ],
+  "56": [
+   "Shell Game",
+   "WATCH!",
+   "Keep your eyes on the coin"
+  ],
+  "57": [
+   "Bumper Sumo",
+   "BUMP!",
+   "Last one on the ring WINS"
+  ],
+  "58": [
+   "Hexa Fall",
+   "RUN!",
+   "The floor is FALLING"
+  ],
+  "59": [
+   "Coin Rain Scramble",
+   "GRAB!",
+   "It's raining MONEY"
+  ],
+  "60": [
+   "Cream Pie Roulette",
+   "PRESS?",
+   "One of these buttons is a PIE"
+  ],
+  "61": [
+   "Pick It!",
+   "PICK!",
+   "Doctors HATE this trick"
+  ],
+  "62": [
+   "Swat!",
+   "SWAT!",
+   "Bzzzzzz…"
+  ],
+  "63": [
+   "Catch the Phone!",
+   "CATCH!",
+   "Don't let it CRACK"
+  ],
+  "64": [
+   "Zip It!",
+   "ZIP!",
+   "Before anyone notices…"
+  ],
+  "65": [
+   "Flip It!",
+   "FLIP!",
+   "Chef's kiss or disaster?"
+  ],
+  "66": [
+   "Thread It!",
+   "THREAD!",
+   "Steady… steady…"
+  ],
+  "67": [
+   "Shave It!",
+   "SHAVE!",
+   "Smooth like a baby"
+  ],
+  "68": [
+   "Hammer It!",
+   "HAMMER!",
+   "3 hits. No thumbs."
+  ],
+  "69": [
+   "Water It!",
+   "WATER!",
+   "Not too much!"
+  ],
+  "70": [
+   "Dodge It!",
+   "DODGE!",
+   "Dodgeball champion?"
+  ],
+  "71": [
+   "Cut It in Half!",
+   "CUT!",
+   "Siblings are watching…"
+  ],
+  "72": [
+   "Plug It In!",
+   "PLUG!",
+   "Battery 1%!!!"
+  ],
+  "73": [
+   "Cover the Sneeze!",
+   "COVER!",
+   "Ah… ahh… AHHH…"
+  ],
+  "74": [
+   "Pop the Wrap!",
+   "POP!",
+   "Pure satisfaction"
+  ],
+  "75": [
+   "Wake Up!",
+   "WAKE!",
+   "You're LATE!"
+  ],
+  "76": [
+   "Find the Odd One!",
+   "FIND!",
+   "Only 1 in 100 can see it"
+  ],
+  "77": [
+   "Brush It!",
+   "BRUSH!",
+   "Dentists recommend this ad"
+  ],
+  "78": [
+   "Stamp It!",
+   "STAMP!",
+   "Office life simulator"
+  ],
+  "79": [
+   "Catch the Train!",
+   "RUN!",
+   "Doors closing…"
+  ],
+  "80": [
+   "Feed the Cat!",
+   "FEED!",
+   "Meow meow meow meow"
+  ],
+  "81": [
+   "Super Pixel Bros",
+   "JUMP!",
+   "A classic. Or a lawsuit."
+  ],
+  "82": [
+   "Invader Panic",
+   "BLAST!",
+   "They came from the ad banner"
+  ],
+  "83": [
+   "Brick Buster",
+   "BREAK!",
+   "Break every brick!"
+  ],
+  "84": [
+   "Snake Byte",
+   "SLITHER!",
+   "Just like your old phone"
+  ],
+  "85": [
+   "Slime Quest",
+   "FIGHT!",
+   "A wild AD appeared!"
+  ],
+  "86": [
+   "Pixel Pinball",
+   "FLIP!",
+   "TILT! TILT! TILT!"
+  ],
+  "87": [
+   "Bullet Heaven",
+   "DODGE!",
+   "Only the tiny hitbox matters"
+  ],
+  "88": [
+   "Pixel Fishing",
+   "REEL!",
+   "A legendary fish awaits"
+  ],
+  "89": [
+   "Hop Across",
+   "HOP!",
+   "Why did the frog cross?"
+  ],
+  "90": [
+   "Pixel Kart GP",
+   "DRIVE!",
+   "Mode 7 nostalgia"
+  ],
+  "91": [
+   "Maze Muncher",
+   "CHOMP!",
+   "Wakka wakka wakka"
+  ],
+  "92": [
+   "Block Drop",
+   "DROP!",
+   "Clear 3 lines!"
+  ],
+  "93": [
+   "Ninja Wall Climb",
+   "CLIMB!",
+   "Ninja never falls"
+  ],
+  "94": [
+   "Duck Blaster",
+   "SHOOT!",
+   "Don't hit the dog"
+  ],
+  "95": [
+   "Mimic Chest",
+   "OPEN!",
+   "Is it treasure… or TEETH?"
+  ],
+  "96": [
+   "Strike Bowling 3D",
+   "BOWL!",
+   "STRIKE or nothing"
+  ],
+  "97": [
+   "Hoop Flick 3D",
+   "SHOOT!",
+   "Nothing but net"
+  ],
+  "98": [
+   "Marble Tilt 3D",
+   "TILT!",
+   "Guide the marble to the goal"
+  ],
+  "99": [
+   "Sky Rings",
+   "FLY!",
+   "Pilots only"
+  ],
+  "100": [
+   "Neon Highway 3D",
+   "RACE!",
+   "Synthwave. Speed. No brakes."
+  ],
+  "101": [
+   "Dungeon Escape FPS",
+   "ESCAPE!",
+   "Find the exit before HE finds you"
+  ],
+  "102": [
+   "Lucky Dice 3D",
+   "ROLL!",
+   "Roll a 7, win BIG"
+  ],
+  "103": [
+   "Paint Roller Cube",
+   "ROLL!",
+   "Paint every tile!"
+  ],
+  "104": [
+   "Penguin Slide",
+   "SLIDE!",
+   "Belly slide to glory"
+  ],
+  "105": [
+   "Paper Plane City",
+   "GLIDE!",
+   "How far can it fly?"
+  ],
+  "106": [
+   "Warp Tunnel",
+   "DODGE!",
+   "Faster than light"
+  ],
+  "107": [
+   "Wrecking Ball",
+   "SMASH!",
+   "So satisfying to destroy"
+  ],
+  "108": [
+   "Mini Golf 3D",
+   "PUTT!",
+   "Hole in one? Easy… right?"
+  ],
+  "109": [
+   "10x Mega Gacha",
+   "PULL!",
+   "SSR rate UP!!! (0.0001%)"
+  ],
+  "110": [
+   "Triple 7 Slots",
+   "SPIN!",
+   "JACKPOT is SO close…"
+  ],
+  "111": [
+   "Scratch & Win",
+   "SCRATCH!",
+   "Match 3 to WIN $1,000,000"
+  ],
+  "112": [
+   "Holo Pack Rip",
+   "RIP!",
+   "Could this be the $10,000 card?"
+  ],
+  "113": [
+   "Loot Box Frenzy",
+   "OPEN!",
+   "Just one more box…"
+  ],
+  "114": [
+   "Wheel of Fate",
+   "STOP!",
+   "Where will it stop?"
+  ],
+  "115": [
+   "Plinko Pachinko",
+   "DROP!",
+   "Big money at the bottom"
+  ],
+  "116": [
+   "Claw Crane",
+   "GRAB!",
+   "The claw is weak on purpose"
+  ],
+  "117": [
+   "Coin Pusher",
+   "PUSH!",
+   "It's ABOUT to fall…"
+  ],
+  "118": [
+   "Daily Reward Wheel",
+   "CLAIM!",
+   "Log in EVERY day. Or else."
+  ],
+  "119": [
+   "Lv.1 vs Boss Lv.999",
+   "POWER UP!",
+   "Is it impossible? (No.)"
+  ],
+  "120": [
+   "Cell to Galaxy",
+   "EVOLVE!",
+   "Evolve into a GOD in 20 seconds"
+  ],
+  "121": [
+   "Sword Forge Merge",
+   "FORGE!",
+   "Merge to LEGENDARY"
+  ],
+  "122": [
+   "Tap Titan",
+   "TAP!",
+   "Damage: 1 → 1,000,000,000"
+  ],
+  "123": [
+   "Pocket Pet",
+   "RAISE!",
+   "Raise it right… or else"
+  ],
+  "124": [
+   "Survivor Horde",
+   "SURVIVE!",
+   "10,000 enemies. 1 hero."
+  ],
+  "125": [
+   "Spinning Blades",
+   "SPIN!",
+   "More swords. MORE."
+  ],
+  "126": [
+   "Slime Merge Tamer",
+   "MERGE!",
+   "Merge slimes into a KING"
+  ],
+  "127": [
+   "Potion Brewer",
+   "BREW!",
+   "Double, double, toil & trouble"
+  ],
+  "128": [
+   "Dragon Egg",
+   "HATCH!",
+   "Keep it warm… it's moving!"
+  ],
+  "129": [
+   "Candy Match 3",
+   "MATCH!",
+   "Sweet! Delicious! DIVINE!"
+  ],
+  "130": [
+   "Slide Puzzle",
+   "SLIDE!",
+   "8 tiles. 1 gap. Infinite rage."
+  ],
+  "131": [
+   "Spot 3 Differences",
+   "SPOT!",
+   "Genius eyes only"
+  ],
+  "132": [
+   "Only 1% Can Solve",
+   "SOLVE!",
+   "Only 1% can solve this!"
+  ],
+  "133": [
+   "Pipe Connect",
+   "CONNECT!",
+   "Get the water flowing"
+  ],
+  "134": [
+   "Block Blast",
+   "FIT!",
+   "Addictive. Seriously."
+  ],
+  "135": [
+   "CAPTCHA Hell",
+   "VERIFY!",
+   "Prove you're not a robot. Again."
+  ],
+  "136": [
+   "Box Pusher",
+   "PUSH!",
+   "The warehouse needs you"
+  ],
+  "137": [
+   "Penalty Kick",
+   "KICK!",
+   "The World Cup is on YOU"
+  ],
+  "138": [
+   "Home Run Derby",
+   "SWING!",
+   "Send it to the MOON"
+  ],
+  "139": [
+   "Wind Archery",
+   "SHOOT!",
+   "Mind the wind…"
+  ],
+  "140": [
+   "Sumo Slam",
+   "PUSH!",
+   "HAKKEYOI!"
+  ],
+  "141": [
+   "Slalom Ski 3D",
+   "CARVE!",
+   "Pass every gate!"
+  ],
+  "142": [
+   "Punch Out Champ",
+   "PUNCH!",
+   "Float like a butterfly"
+  ],
+  "143": [
+   "Deep Clean ASMR",
+   "CLEAN!",
+   "Oddly satisfying…"
+  ],
+  "144": [
+   "Glow Up Makeover",
+   "GLOW UP!",
+   "From ZERO to HERO"
+  ],
+  "145": [
+   "Power Wash",
+   "WASH!",
+   "Mud → Mirror shine"
+  ],
+  "146": [
+   "Soap Cutting",
+   "CUT!",
+   "Crunchy crunchy satisfying"
+  ],
+  "147": [
+   "Loading… 99%",
+   "LOAD!",
+   "Almost there… (forever)"
+  ],
+  "148": [
+   "Close This Ad",
+   "CLOSE!",
+   "Find the REAL close button"
+  ],
+  "149": [
+   "VIRUS DETECTED!!!",
+   "SCAN!",
+   "Your device has 39 viruses!!"
+  ],
+  "150": [
+   "You Are Visitor 999,999!",
+   "CLAIM!",
+   "CONGRATULATIONS!!! Claim your prize!"
+  ],
+  "151": [
+   "THE AD KING",
+   "DEFEAT!",
+   "The final ad. The ad of all ads."
+  ]
+ },
+ "games_ja": {
+  "1": [
+   "ピンを抜け！",
+   "抜け！",
+   "99%の人がクリアできない！"
+  ],
+  "2": [
+   "ゲートで×100",
+   "よけろ！",
+   "天才だけが正しいゲートを選べる"
+  ],
+  "3": [
+   "色水ソート",
+   "分けろ！",
+   "気持ちよすぎて止まらない"
+  ],
+  "4": [
+   "積んで積んで天まで",
+   "積め！",
+   "あなたは何段まで行ける？"
+  ],
+  "5": [
+   "駐車場から脱出せよ",
+   "脱出！",
+   "赤い車を出せる？"
+  ],
+  "6": [
+   "線を描いて犬を守れ",
+   "描け！",
+   "線は1本だけ。犬を守れ。"
+  ],
+  "7": [
+   "ロープを切ってアメを届けろ",
+   "切れ！",
+   "おなかペコペコなんです…"
+  ],
+  "8": [
+   "フルーツ合体ドロップ",
+   "合体！",
+   "スイカまで作れる？"
+  ],
+  "9": [
+   "矢印を逃がせ",
+   "飛ばせ！",
+   "順番を間違えると…"
+  ],
+  "10": [
+   "線ぴったりまで注げ",
+   "注げ！",
+   "線ぴったりで止めろ"
+  ],
+  "11": [
+   "ナイフを投げろ",
+   "投げろ！",
+   "ナイフに当てるな！"
+  ],
+  "12": [
+   "ヘリックス落下",
+   "回せ！",
+   "最下層まで落とせ！"
+  ],
+  "13": [
+   "ブラックホールで街を飲め",
+   "飲み込め！",
+   "街ごと全部いただきます"
+  ],
+  "14": [
+   "髪を伸ばせチャレンジ",
+   "伸ばせ！",
+   "一番長い髪が勝ち！"
+  ],
+  "15": [
+   "ネジはずしパズル",
+   "外せ！",
+   "全部はずせる？"
+  ],
+  "16": [
+   "極寒サバイバル：炉を守れ",
+   "生き延びろ！",
+   "氷点下60℃。街を救えるのはあなただけ。"
+  ],
+  "17": [
+   "ドット絵タワーディフェンス",
+   "守れ！",
+   "塔を置いて王国を守れ"
+  ],
+  "18": [
+   "兵隊カウントバトル",
+   "選べ！",
+   "将軍、道を選べ！"
+  ],
+  "19": [
+   "城壁アーチャー",
+   "狙え！",
+   "壁を登ってくるぞ！！"
+  ],
+  "20": [
+   "最後の部隊",
+   "撃て！",
+   "一番いい強化を選べ！"
+  ],
+  "21": [
+   "勇者タワー吸収バトル",
+   "吸収！",
+   "自分より弱い敵だけ倒せ！"
+  ],
+  "22": [
+   "小さな王様の税金",
+   "統治せよ！",
+   "強欲か、慈悲か。あなた次第。"
+  ],
+  "23": [
+   "陣取り合戦",
+   "攻めろ！",
+   "マップを全部青に染めろ"
+  ],
+  "24": [
+   "イカダで漂流",
+   "引っかけろ！",
+   "漂流1日目…"
+  ],
+  "25": [
+   "地下シェルター建設",
+   "掘れ！",
+   "地上はもうダメだ。掘れ。"
+  ],
+  "26": [
+   "投石機で城攻め",
+   "放て！",
+   "塔を崩せ！"
+  ],
+  "27": [
+   "火星コロニーの危機",
+   "保て！",
+   "火星で100人を生かせ"
+  ],
+  "28": [
+   "砲台合体ディフェンス",
+   "合体！",
+   "砲台を合体して侵攻を止めろ"
+  ],
+  "29": [
+   "カードでタワーバトル",
+   "出撃！",
+   "20秒で敵タワーを落とせ！"
+  ],
+  "30": [
+   "最後の方舟",
+   "乗せろ！",
+   "洪水が来る！誰を乗せる？"
+  ],
+  "31": [
+   "ラーメン屋の昼ピーク",
+   "出せ！",
+   "昼ピークをさばけるか？"
+  ],
+  "32": [
+   "コンビニのレジ打ち",
+   "スキャン！",
+   "ピッピッピッ！急げ！"
+  ],
+  "33": [
+   "バーガー積み上げ",
+   "キャッチ！",
+   "注文通りに積め！"
+  ],
+  "34": [
+   "放置で金鉱王",
+   "強化！",
+   "0円から億万長者へ"
+  ],
+  "35": [
+   "ラテアート職人",
+   "描け！",
+   "バリスタ試験：完璧なハートを"
+  ],
+  "36": [
+   "ホテルのフロント",
+   "案内！",
+   "20秒で五つ星サービス"
+  ],
+  "37": [
+   "駐車場経営",
+   "停めさせろ！",
+   "1台停めれば1円"
+  ],
+  "38": [
+   "回転寿司の皿取り",
+   "取れ！",
+   "注文の皿を取れ！"
+  ],
+  "39": [
+   "ちっちゃな遊園地",
+   "建てろ！",
+   "絶叫させろ（楽しさで）"
+  ],
+  "40": [
+   "ドット農園",
+   "収穫！",
+   "育てて、収穫して、繰り返す"
+  ],
+  "41": [
+   "ピザを公平に切れ",
+   "切れ！",
+   "子供4人、ピザ1枚。ケンカ厳禁。"
+  ],
+  "42": [
+   "救急外来てんてこまい",
+   "治療！",
+   "先生！急患です！"
+  ],
+  "43": [
+   "レモネード王",
+   "売れ！",
+   "屋台から帝国へ"
+  ],
+  "44": [
+   "コインランドリー大混乱",
+   "仕分け！",
+   "白い服をピンクにするな"
+  ],
+  "45": [
+   "フードデリバリー大作戦",
+   "届けろ！",
+   "熱々のまま5つ星で！"
+  ],
+  "46": [
+   "連打ダッシュ",
+   "連打！",
+   "その指じゃ勝てない"
+  ],
+  "47": [
+   "10秒ぴったりで止めろ",
+   "止めろ！",
+   "10.00を出した人はいない"
+  ],
+  "48": [
+   "侍の居合い抜き",
+   "抜け！",
+   "まばたきしたら負け"
+  ],
+  "49": [
+   "爆弾リレー",
+   "渡せ！",
+   "ドカンの瞬間に持つな"
+  ],
+  "50": [
+   "風船チキンレース",
+   "膨らませ！",
+   "もっと…もっと…もっと…"
+  ],
+  "51": [
+   "綱引き",
+   "引け！",
+   "全力で引け"
+  ],
+  "52": [
+   "光の記憶ゲーム",
+   "覚えろ！",
+   "どうせ忘れる"
+  ],
+  "53": [
+   "ひよこを数えろ",
+   "数えろ！",
+   "簡単？じゃあ数えて"
+  ],
+  "54": [
+   "ミニスターパーティ",
+   "振れ！",
+   "4人。スター1個。友情崩壊。"
+  ],
+  "55": [
+   "イス取りゲーム",
+   "座れ！",
+   "音楽が止まったら…座れ！"
+  ],
+  "56": [
+   "どのカップ？",
+   "見ろ！",
+   "コインから目を離すな"
+  ],
+  "57": [
+   "バンパー相撲",
+   "押し出せ！",
+   "最後まで残った者が勝ち"
+  ],
+  "58": [
+   "崩れる床",
+   "走れ！",
+   "床が消えていく"
+  ],
+  "59": [
+   "コインの雨",
+   "拾え！",
+   "お金が降ってきた"
+  ],
+  "60": [
+   "パイ投げルーレット",
+   "押す？",
+   "どれかひとつがパイ"
+  ],
+  "61": [
+   "鼻をほじれ！",
+   "ほじれ！",
+   "医者が嫌がる裏技"
+  ],
+  "62": [
+   "蚊を叩け！",
+   "叩け！",
+   "プ〜〜〜ン…"
+  ],
+  "63": [
+   "スマホを受け止めろ！",
+   "キャッチ！",
+   "画面割るな"
+  ],
+  "64": [
+   "チャックを上げろ！",
+   "上げろ！",
+   "誰かに気づかれる前に…"
+  ],
+  "65": [
+   "パンケーキを返せ！",
+   "返せ！",
+   "神業か大惨事か"
+  ],
+  "66": [
+   "糸を通せ！",
+   "通せ！",
+   "そーっと…そーっと…"
+  ],
+  "67": [
+   "ヒゲを剃れ！",
+   "剃れ！",
+   "赤ちゃん肌へ"
+  ],
+  "68": [
+   "釘を打て！",
+   "打て！",
+   "3回で。指は打つな。"
+  ],
+  "69": [
+   "水をあげろ！",
+   "水やり！",
+   "あげすぎ注意！"
+  ],
+  "70": [
+   "よけろ！",
+   "よけろ！",
+   "ドッジボールの王者？"
+  ],
+  "71": [
+   "半分に切れ！",
+   "切れ！",
+   "兄弟が見ている…"
+  ],
+  "72": [
+   "コンセントを挿せ！",
+   "挿せ！",
+   "充電残り1%！！！"
+  ],
+  "73": [
+   "くしゃみを防げ！",
+   "防げ！",
+   "へっ…へっ…へっ…"
+  ],
+  "74": [
+   "プチプチを潰せ！",
+   "潰せ！",
+   "純度100%の快感"
+  ],
+  "75": [
+   "起きろ！",
+   "起きろ！",
+   "遅刻だ！"
+  ],
+  "76": [
+   "仲間はずれを探せ！",
+   "探せ！",
+   "100人に1人しか見つけられない"
+  ],
+  "77": [
+   "歯をみがけ！",
+   "みがけ！",
+   "歯医者さんも推奨の広告"
+  ],
+  "78": [
+   "ハンコを押せ！",
+   "押せ！",
+   "会社員シミュレーター"
+  ],
+  "79": [
+   "電車に飛び乗れ！",
+   "走れ！",
+   "ドアが閉まります…"
+  ],
+  "80": [
+   "猫にごはん！",
+   "あげろ！",
+   "にゃーにゃーにゃー"
+  ],
+  "81": [
+   "スーパードットブラザーズ",
+   "跳べ！",
+   "名作。あるいは訴訟。"
+  ],
+  "82": [
+   "インベーダーパニック",
+   "撃て！",
+   "奴らはバナーからやって来た"
+  ],
+  "83": [
+   "ブロック崩し",
+   "崩せ！",
+   "全部こわせ！"
+  ],
+  "84": [
+   "スネーク",
+   "這え！",
+   "昔のケータイのアレ"
+  ],
+  "85": [
+   "スライムクエスト",
+   "たたかえ！",
+   "やせいの こうこくが あらわれた！"
+  ],
+  "86": [
+   "ドットピンボール",
+   "弾け！",
+   "ティルト！ティルト！"
+  ],
+  "87": [
+   "弾幕天国",
+   "避けろ！",
+   "当たり判定は1ドット"
+  ],
+  "88": [
+   "ドット釣り",
+   "巻け！",
+   "伝説の魚が待っている"
+  ],
+  "89": [
+   "ぴょんぴょん横断",
+   "跳べ！",
+   "カエルはなぜ渡るのか"
+  ],
+  "90": [
+   "ドットカートGP",
+   "走れ！",
+   "懐かしの疑似3D"
+  ],
+  "91": [
+   "迷路パクパク",
+   "食べろ！",
+   "パクパクパク"
+  ],
+  "92": [
+   "落ちものブロック",
+   "落とせ！",
+   "3ライン消せ！"
+  ],
+  "93": [
+   "忍者の壁登り",
+   "登れ！",
+   "忍者は落ちない"
+  ],
+  "94": [
+   "カモ撃ち",
+   "撃て！",
+   "犬は撃つな"
+  ],
+  "95": [
+   "ミミック宝箱",
+   "開けろ！",
+   "お宝か…牙か…"
+  ],
+  "96": [
+   "ボウリング3D",
+   "投げろ！",
+   "ストライク以外は認めない"
+  ],
+  "97": [
+   "バスケシュート3D",
+   "シュート！",
+   "スウィッシュ"
+  ],
+  "98": [
+   "ビー玉迷路3D",
+   "傾けろ！",
+   "ゴールへ導け"
+  ],
+  "99": [
+   "空のリングくぐり",
+   "飛べ！",
+   "パイロット専用"
+  ],
+  "100": [
+   "ネオンハイウェイ3D",
+   "飛ばせ！",
+   "シンセウェイブ。速度。ブレーキなし。"
+  ],
+  "101": [
+   "地下迷宮からの脱出",
+   "脱出！",
+   "奴に見つかる前に出口へ"
+  ],
+  "102": [
+   "ラッキーダイス3D",
+   "転がせ!",
+   "合計7で大当たり"
+  ],
+  "103": [
+   "コロコロペイント",
+   "転がせ！",
+   "全マス塗れ！"
+  ],
+  "104": [
+   "ペンギンすべり",
+   "すべれ！",
+   "腹すべりで栄光へ"
+  ],
+  "105": [
+   "紙飛行機で街を飛べ",
+   "滑空！",
+   "どこまで飛べる？"
+  ],
+  "106": [
+   "ワープトンネル",
+   "避けろ！",
+   "光速を超えろ"
+  ],
+  "107": [
+   "鉄球で全部壊せ",
+   "壊せ！",
+   "壊すのって最高"
+  ],
+  "108": [
+   "パターゴルフ3D",
+   "打て！",
+   "ホールインワン？簡単…だよね？"
+  ],
+  "109": [
+   "10連メガガチャ",
+   "回せ！",
+   "SSR確率UP！！！（0.0001%）"
+  ],
+  "110": [
+   "スリーセブン",
+   "止めろ！",
+   "ジャックポットはすぐそこ…"
+  ],
+  "111": [
+   "スクラッチくじ",
+   "削れ！",
+   "3つそろえば100万円"
+  ],
+  "112": [
+   "キラキラパック開封",
+   "開けろ！",
+   "100万円のカードが出るかも？"
+  ],
+  "113": [
+   "ルートボックス連打",
+   "開けろ！",
+   "あと1箱だけ…"
+  ],
+  "114": [
+   "運命のルーレット",
+   "止めろ！",
+   "どこで止まる？"
+  ],
+  "115": [
+   "パチンコプリンコ",
+   "落とせ！",
+   "底に大金が眠る"
+  ],
+  "116": [
+   "クレーンゲーム",
+   "つかめ！",
+   "アームはわざと弱い"
+  ],
+  "117": [
+   "コインプッシャー",
+   "落とせ！",
+   "もう落ちそう…"
+  ],
+  "118": [
+   "デイリーボーナス",
+   "受け取れ！",
+   "毎日ログインしてね（圧）"
+  ],
+  "119": [
+   "Lv.1で魔王Lv.999に挑め",
+   "強くなれ！",
+   "無理ゲー？（いいえ）"
+  ],
+  "120": [
+   "細胞から銀河へ",
+   "進化！",
+   "20秒で神へ進化"
+  ],
+  "121": [
+   "剣を合成して伝説へ",
+   "鍛えろ！",
+   "合成して伝説の剣へ"
+  ],
+  "122": [
+   "タップで巨人討伐",
+   "連打！",
+   "ダメージ1→10億"
+  ],
+  "123": [
+   "ポケットペット育成",
+   "育てろ！",
+   "ちゃんと育てないと…"
+  ],
+  "124": [
+   "サバイバー無双",
+   "生き残れ！",
+   "敵1万体、勇者1人"
+  ],
+  "125": [
+   "回転する剣で成り上がれ",
+   "回せ！",
+   "剣を増やせ。もっと。"
+  ],
+  "126": [
+   "スライム合体使い",
+   "合体！",
+   "スライムをキングに"
+  ],
+  "127": [
+   "魔女の調合",
+   "調合！",
+   "まぜまぜ…ぐつぐつ…"
+  ],
+  "128": [
+   "ドラゴンの卵",
+   "孵せ！",
+   "温めて…動いた！"
+  ],
+  "129": [
+   "キャンディマッチ3",
+   "そろえろ！",
+   "スウィート！デリシャス！"
+  ],
+  "130": [
+   "スライドパズル",
+   "並べろ！",
+   "8枚と1マス、無限のイライラ"
+  ],
+  "131": [
+   "3つの間違い探し",
+   "探せ！",
+   "天才の目だけが見抜く"
+  ],
+  "132": [
+   "正答率1%の問題",
+   "解け！",
+   "正解できるのは1%だけ！"
+  ],
+  "133": [
+   "パイプをつなげ",
+   "つなげ！",
+   "水を流せ"
+  ],
+  "134": [
+   "ブロックブラスト",
+   "はめろ！",
+   "中毒性、マジで注意"
+  ],
+  "135": [
+   "地獄のCAPTCHA",
+   "証明しろ！",
+   "ロボットじゃないと証明せよ（再）"
+  ],
+  "136": [
+   "倉庫番",
+   "押せ！",
+   "倉庫が君を待っている"
+  ],
+  "137": [
+   "PK戦",
+   "蹴れ！",
+   "ワールドカップはキミにかかっている"
+  ],
+  "138": [
+   "ホームラン競争",
+   "振れ！",
+   "月までかっ飛ばせ"
+  ],
+  "139": [
+   "風の弓道",
+   "射て！",
+   "風を読め…"
+  ],
+  "140": [
+   "すもう大一番",
+   "押せ！",
+   "はっけよい！"
+  ],
+  "141": [
+   "スラロームスキー3D",
+   "曲がれ！",
+   "全ゲートを通過せよ！"
+  ],
+  "142": [
+   "ボクシング王者",
+   "殴れ！",
+   "蝶のように舞え"
+  ],
+  "143": [
+   "汚部屋を掃除ASMR",
+   "掃除！",
+   "なぜか気持ちいい…"
+  ],
+  "144": [
+   "大変身メイクオーバー",
+   "変身！",
+   "すっぴんから女神へ"
+  ],
+  "145": [
+   "高圧洗浄",
+   "洗え！",
+   "泥だらけ→ピカピカ"
+  ],
+  "146": [
+   "石けんカッティング",
+   "削れ！",
+   "サクサク…たまらない"
+  ],
+  "147": [
+   "ロード中…99%",
+   "読み込め！",
+   "もうすぐ…（永遠に）"
+  ],
+  "148": [
+   "この広告を閉じろ",
+   "閉じろ！",
+   "本物の×ボタンを探せ"
+  ],
+  "149": [
+   "ウイルスを検出しました！！！",
+   "駆除しろ！",
+   "あなたの端末に39個のウイルス！！"
+  ],
+  "150": [
+   "あなたは999,999人目！",
+   "受け取れ！",
+   "おめでとうございます！！！賞品を受け取って！"
+  ],
+  "151": [
+   "広告の王",
+   "倒せ！",
+   "最後の広告。すべての広告の王。"
+  ]
+ },
+ "words_en": {
+  "oops": "OOPS!",
+  "win": "WIN!",
+  "tap": "TAP!",
+  "great": "GREAT!",
+  "nice": "NICE!",
+  "perfect": "PERFECT!",
+  "goal": "GOAL!",
+  "move": "MOVE",
+  "go": "GO!",
+  "ouch": "OUCH!",
+  "safe": "SAFE!",
+  "draw": "DRAW!",
+  "yummy": "YUMMY!",
+  "swipe": "SWIPE!",
+  "combo": "COMBO",
+  "wow": "WOW!",
+  "next": "NEXT",
+  "danger": "DANGER!",
+  "clear": "CLEAR!",
+  "good": "GOOD",
+  "miss": "MISS",
+  "hold": "HOLD",
+  "fever": "FEVER!",
+  "level": "LEVEL",
+  "drag": "DRAG",
+  "full": "FULL!",
+  "max": "MAX",
+  "no_fuel": "No fuel!",
+  "freezing": "FREEZING!",
+  "blizzard": "BLIZZARD!",
+  "boss": "BOSS",
+  "build": "BUILD!",
+  "upgrade": "UPGRADE!",
+  "wave": "WAVE",
+  "headshot": "HEADSHOT!",
+  "ko": "KO",
+  "lose": "LOSE",
+  "overthrown": "OVERTHROWN!",
+  "yes": "YES",
+  "no": "NO",
+  "bonus": "BONUS!",
+  "strike": "STRIKE!",
+  "power": "Power",
+  "food": "Food",
+  "merge": "MERGE!",
+  "money": "MONEY",
+  "buy": "BUY",
+  "angry": "ANGRY!",
+  "wrong": "WRONG!",
+  "too_much": "TOO MUCH!",
+  "change": "CHANGE",
+  "total": "TOTAL",
+  "scan": "SCAN!",
+  "order_up": "ORDER UP!",
+  "yuck": "YUCK!",
+  "new": "NEW!",
+  "auto": "AUTO!",
+  "billionaire": "BILLIONAIRE!",
+  "unlock": "UNLOCK",
+  "hire": "HIRE",
+  "empty": "EMPTY!",
+  "milk": "MILK",
+  "serve": "SERVE",
+  "dirty": "DIRTY!",
+  "crash": "CRASH!",
+  "jackpot": "JACKPOT!",
+  "scream": "SCREAM!",
+  "harvest": "HARVEST!",
+  "fair": "FAIR!",
+  "unfair": "UNFAIR!",
+  "time": "TIME!",
+  "cured": "CURED!",
+  "busy": "BUSY!",
+  "free": "FREE",
+  "xray": "X-RAY",
+  "clinic": "CLINIC",
+  "dental": "DENTAL",
+  "cardio": "CARDIO",
+  "empire": "EMPIRE!",
+  "bankrupt": "BANKRUPT",
+  "day": "DAY",
+  "clean": "SPARKLING!",
+  "white": "WHITE",
+  "color": "COLOR",
+  "dark": "DARK",
+  "late": "LATE!",
+  "delivered": "DELIVERED!",
+  "refill": "REFILL!",
+  "you": "YOU",
+  "stop": "STOP!",
+  "cpu": "CPU",
+  "wait": "WAIT...",
+  "foul": "FOUL!",
+  "round": "ROUND",
+  "pop": "POP!",
+  "bank": "BANK",
+  "pull": "PULL!",
+  "watch": "WATCH",
+  "repeat": "REPEAT!",
+  "out": "OUT",
+  "count": "COUNT!",
+  "star": "STAR!",
+  "lucky": "LUCKY!",
+  "steal": "STEAL!",
+  "final": "FINAL",
+  "too_early": "TOO EARLY!",
+  "haha": "HA HA!",
+  "which": "WHICH?",
+  "bump": "BUMP!",
+  "dash": "DASH",
+  "run": "RUN!",
+  "dodge": "DODGE!",
+  "your_turn": "YOUR TURN",
+  "bingo": "BINGO!",
+  "crispy": "CRISPY...",
+  "burnt": "BURNT!",
+  "catch": "CATCH!",
+  "smooth": "SMOOTH!",
+  "bloom": "BLOOM!",
+  "more": "MORE!",
+  "ah": "AH...",
+  "mph": "MPH!",
+  "achoo": "ACHOO!",
+  "scrub": "SCRUB!",
+  "yum": "YUM!",
+  "jump": "JUMP",
+  "course_clear": "COURSE CLEAR!",
+  "score": "SCORE",
+  "world": "WORLD",
+  "boom": "BOOM",
+  "multi": "MULTI",
+  "wide": "WIDE",
+  "fire": "FIRE",
+  "balls": "BALLS",
+  "game_over": "GAME OVER",
+  "hero": "HERO",
+  "mage": "MAGE",
+  "cleric": "CLERIC",
+  "critical": "CRITICAL",
+  "attack": "ATTACK",
+  "heal": "HEAL",
+  "defend": "DEFEND",
+  "item": "ITEM",
+  "mega_slam": "MEGA SLAM",
+  "guard": "GUARD",
+  "charge": "CHARGE",
+  "magic": "MAGIC",
+  "level_up": "LEVEL UP!",
+  "graze": "GRAZE",
+  "hit": "HIT!",
+  "snap": "SNAP!",
+  "slack": "SLACK",
+  "cast": "CAST!",
+  "let_go": "LET GO!",
+  "reel": "REEL!",
+  "legendary": "LEGENDARY!",
+  "splat": "SPLAT!",
+  "splash": "SPLASH!",
+  "bonk": "BONK!",
+  "boost": "BOOST!",
+  "lines": "LINES",
+  "double": "DOUBLE!",
+  "why": "WHY?!",
+  "fly_away": "FLY AWAY",
+  "shot": "SHOT",
+  "chomp": "CHOMP!",
+  "treasure": "TREASURE!",
+  "gutter": "GUTTER…",
+  "spare": "SPARE!",
+  "swish": "SWISH!",
+  "on_fire": "ON FIRE!",
+  "brick": "BRICK!",
+  "airball": "AIRBALL",
+  "near_miss": "NEAR MISS!",
+  "nitro": "NITRO!",
+  "smash": "SMASH!",
+  "key": "KEY!",
+  "escape": "ESCAPED!",
+  "locked": "LOCKED!",
+  "exit": "EXIT",
+  "so_close": "SO CLOSE!",
+  "up": "UP!",
+  "sale": "SALE",
+  "speed_up": "SPEED UP!",
+  "release": "RELEASE",
+  "blocked": "BLOCKED!",
+  "lip_out": "LIP OUT!",
+  "hole_in_one": "HOLE IN ONE!",
+  "birdie": "BIRDIE!",
+  "par": "PAR!",
+  "gold": "GOLD!",
+  "limited": "LIMITED",
+  "rate_up": "RATE UP!!",
+  "turn": "TURN!",
+  "complete": "COMPLETE!",
+  "reach": "REACH!",
+  "revive": "REVIVE!!",
+  "spin": "SPIN!",
+  "match_3": "MATCH 3 = WIN",
+  "scratch": "SCRATCH!",
+  "rip": "RIP!",
+  "hp": "HP",
+  "value": "VALUE",
+  "rub": "RUB!",
+  "common": "COMMON",
+  "rare": "RARE",
+  "epic": "EPIC",
+  "again": "AGAIN!",
+  "noooo": "NOOOO!",
+  "get": "GET!!",
+  "last": "LAST!",
+  "out_of_coins": "NO COINS",
+  "big_coin": "BIG COIN!",
+  "chance": "CHANCE!",
+  "login_bonus": "LOGIN BONUS",
+  "today": "TODAY!",
+  "too_strong": "TOO STRONG!",
+  "weak": "WEAK...",
+  "retry": "RETRY",
+  "stage": "STAGE",
+  "sword": "SWORD",
+  "hatch": "HATCH!",
+  "cute": "CUTE!",
+  "ugly": "UGLY...",
+  "fun": "FUN",
+  "magnet": "Magnet",
+  "magic_bolt": "Magic Bolt",
+  "holy_book": "Holy Book",
+  "aura": "Aura",
+  "thunder": "Thunder",
+  "speed": "Speed",
+  "king": "KING!",
+  "overflow": "OVERFLOW!",
+  "kaboom": "KABOOM!",
+  "stir": "STIR!",
+  "recipe": "RECIPE",
+  "brew": "BREW!",
+  "cold": "COLD!",
+  "fried": "FRIED...",
+  "chick": "CHICK?!",
+  "too_hot": "TOO HOT!",
+  "hot": "HOT",
+  "cozy": "COZY",
+  "sweet": "Sweet!",
+  "tasty": "Tasty!",
+  "delicious": "Delicious!",
+  "divine": "Divine!",
+  "shuffle": "Shuffle!",
+  "moves": "Moves",
+  "top": "TOP",
+  "connect": "CONNECT!",
+  "excellent": "Excellent!",
+  "unbelievable": "Unbelievable!",
+  "no_moves": "No moves!",
+  "human_probably": "Human. Probably.",
+  "try_again": "Try again",
+  "robot_detected": "Robot detected!",
+  "not_robot": "I'm not a robot",
+  "select_all": "Select all",
+  "traffic_lights": "traffic lights",
+  "buses": "buses",
+  "robots": "robots",
+  "until_none": "until none left",
+  "verify": "VERIFY",
+  "save": "SAVED!",
+  "post": "POST!",
+  "fastball": "FASTBALL",
+  "curve": "CURVE",
+  "changeup": "CHANGE-UP",
+  "home_run": "HOME RUN!!",
+  "shaky": "SHAKY!",
+  "open": "OPEN!",
+  "counter": "COUNTER!",
+  "wrong_way": "WRONG WAY!",
+  "block": "BLOCK",
+  "nice_shot": "NICE SHOT!",
+  "before": "BEFORE",
+  "after": "AFTER",
+  "peel": "PEEL!",
+  "hair": "HAIR",
+  "lips": "LIPS",
+  "popup_storm": "POPUP STORM!",
+  "install_barrage": "INSTALL BARRAGE!",
+  "press_skip": "PRESS SKIP!!",
+  "ad_king": "THE AD KING"
+ }
+}

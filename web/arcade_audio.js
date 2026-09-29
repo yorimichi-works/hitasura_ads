@@ -66,10 +66,9 @@
     const src = c.createBufferSource();
     src.buffer = buf;
     src.loop = true;
-    // MP3 encoders pad the start; skip it so the loop is seamless.
-    const pad = Math.min(0.05, buf.duration * 0.01);
-    src.loopStart = pad;
-    src.loopEnd = buf.duration;
+    // The generated MP3s carry LAME gapless info, which decodeAudioData
+    // honours, so the decoded buffer loops seamlessly from 0.
+    const pad = 0;
     const g = c.createGain();
     g.gain.value = 0;
     src.connect(g);

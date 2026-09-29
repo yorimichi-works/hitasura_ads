@@ -518,8 +518,8 @@ class G025 extends MiniGame {
           align: 0, shadow: const Color(0xFF000000));
     }
     // dweller count
-    _dwSprites[0][0].draw(c, const Offset(8, 96), scale: 2);
-    PixelFont.draw(c, 'x${_dw.length}', const Offset(26, 104), 2, Pal.white, shadow: const Color(0xFF000000));
+    _dwSprites[0][0].draw(c, const Offset(304, 96), scale: 2);
+    PixelFont.draw(c, 'x${_dw.length}', const Offset(322, 104), 2, Pal.white, shadow: const Color(0xFF000000));
   }
 
   void _drawCell(Canvas c, _Room r) {

@@ -4,7 +4,7 @@ import '../engine/engine.dart';
 /// overhanging pile off the edge. Time a drop into the moving CHANCE slot for
 /// a coin rain.
 class G117 extends MiniGame {
-  static const _target = 25;
+  static const _target = 30;
   static const _fw = 300.0; // field width (world units)
   static const _edge = 300.0; // front edge (world y)
   static const _r = 13.0;
@@ -13,7 +13,7 @@ class G117 extends MiniGame {
   final List<_Coin> _coins = [];
   final List<_Drop> _drops = [];
   final List<_Fall> _falls = [];
-  int _hand = 36;
+  int _hand = 32;
   int _won = 0;
   double _shownWon = 0;
   double _t = 0;
@@ -32,7 +32,7 @@ class G117 extends MiniGame {
   void init() {
     // tightly packed pile that is JUST about to go over the edge
     var row = 0;
-    for (var y = 124.0; y < _edge - 6; y += _r * 1.74, row++) {
+    for (var y = 150.0; y < _edge - 6; y += _r * 1.74, row++) {
       final odd = row.isOdd;
       for (var x = _r + (odd ? _r : 0); x <= _fw - _r; x += _r * 2.02) {
         _coins.add(_Coin(x + rand(-1.5, 1.5), y + rand(-1.5, 1.5), _r, _CoinKind.normal));
@@ -104,7 +104,7 @@ class G117 extends MiniGame {
       d.t += dt;
       if (!d.checkedSlot && d.t >= .18) {
         d.checkedSlot = true;
-        if ((d.wx - _slotX).abs() < 16) {
+        if ((d.wx - _slotX).abs() < 11) {
           d.dead = true;
           _jackpot();
           continue;
@@ -206,12 +206,12 @@ class G117 extends MiniGame {
     host.fx.burst(sp, Pal.yellow, count: 26, shape: PartShape.star, speed: 300, colors: Pal.candy);
     host.fx.pop(host.tr('chance', 'CHANCE!'), sp + const Offset(0, -30), color: Pal.pink, size: 34, life: 1.2);
     // coin rain onto the field + refund
-    for (var i = 0; i < 9; i++) {
+    for (var i = 0; i < 6; i++) {
       _drops.add(_Drop(rand(20, _fw - 20))
         ..t = -i * .05
         ..checkedSlot = true);
     }
-    _hand += 4;
+    _hand += 3;
   }
 
   void _drop(double sx) {
@@ -362,7 +362,7 @@ class G117 extends MiniGame {
     D.coin(c, const Offset(266, 583), 9);
     D.text(c, 'x$_hand', const Offset(280, 583), size: 16, color: _hand <= 5 ? Pal.red : Pal.white, anchor: Alignment.centerLeft);
 
-    if (host.time < 2.4 && _hand >= 34) {
+    if (host.time < 2.4 && _hand >= 30) {
       D.hand(c, Offset(_proj(_slotX, 0).dx, 200), _t);
       D.text(c, host.tr('tap', 'TAP!'), const Offset(180, 216), size: 24, color: Pal.yellow, stroke: Pal.ink);
     }

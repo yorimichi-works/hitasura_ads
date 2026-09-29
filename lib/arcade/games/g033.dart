@@ -324,7 +324,7 @@ class G033 extends MiniGame {
       if (f.kind == _needKind) {
         c.drawLine(Offset(f.x, f.y + 20), Offset(f.x, f.y + 60), D.stroke(const Color(0x33FFFFFF), 10));
       }
-      _drawIng(c, f.kind, Offset(f.x, f.y), f.rot * .25, 1, glow: f.kind == _needKind);
+      _drawIng(c, f.kind, Offset(f.x, f.y), sin(f.rot) * .25, 1, glow: f.kind == _needKind);
     }
     _drawPlateStack(c);
     for (final j in _junk) {

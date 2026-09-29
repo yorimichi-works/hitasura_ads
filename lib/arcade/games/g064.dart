@@ -61,9 +61,9 @@ class G064 extends MiniGame {
 
   void _drag(double dy) {
     if (_resolved) return;
-    final resist = .9 / pow(host.speed, .35);
+    final resist = .6 / pow(host.speed, .35);
     if (dy < 0) {
-      var move = -dy * resist;
+      var move = min(18.0, -dy * resist);
       if (!_snagDone && _pullY - move <= _snagY) {
         // hit the snag: extra effort needed to rip through
         if (!_snagged) {
@@ -76,7 +76,7 @@ class G064 extends MiniGame {
         _pullY = _snagY;
         _snagForce += over;
         _wiggle = 1;
-        if (_snagForce > 60) {
+        if (_snagForce > 70) {
           _snagDone = true;
           _snagged = false;
           host.sfx(Sfx.rip);

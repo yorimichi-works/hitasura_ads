@@ -316,13 +316,15 @@ class G103 extends MiniGame {
     _background(c);
     final cam = scene.cam
       ..center = const Offset(180, 350)
-      ..focal = 470
+      ..focal = 540
       ..pos = V3(0, 10.2, -7.6 + sin(_t * .6) * .15)
       ..lookAt(const V3(0, 0, .35));
     final prog = _celebrate > 0 ? 3 - _celebrate : 0.0;
     // pass 1: board
     scene.clear();
     scene.add(_base, pos: const V3(0, -.55, 0));
+    scene.render(c);
+    scene.clear();
     for (var j = 0; j < _rows; j++) {
       for (var i = 0; i < _cols; i++) {
         final k = _idx(i, j);

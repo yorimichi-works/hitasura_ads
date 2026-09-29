@@ -401,14 +401,14 @@ class G042 extends MiniGame {
     final docX = rect.left + 30;
     final docFeet = Offset(docX, rect.bottom - 8);
     final docFace = r.shakeT > 0 ? Face.angry : (busy ? Face.smug : Face.happy);
-    D.person(c, docFeet, 58, Pal.white, pants: const Color(0xFF6FA8DC), face: docFace, hair: const Color(0xFF3A2A20),
+    D.person(c, docFeet, 72, Pal.white, pants: const Color(0xFF6FA8DC), face: docFace, hair: const Color(0xFF3A2A20),
         armsUp: busy ? (sin(_t * 14) * .5 + .5) * .4 : 0);
-    D.circle(c, docFeet + const Offset(-1, -56), 4, const Color(0xFFDDE6F0), border: Pal.ink, borderWidth: 1.5);
+    D.circle(c, docFeet + const Offset(-1, -70), 5, const Color(0xFFDDE6F0), border: Pal.ink, borderWidth: 1.5);
     // patient being treated
     if (treating != null) {
       final jit = r.type == 2 || r.type == 3 ? Offset(sin(_t * 70) * 1.5, 0) : Offset.zero;
       final pf = Offset(rect.left + 86, rect.bottom - 10) + jit;
-      D.person(c, pf, 54, treating.shirt, face: r.prog > .6 ? Face.happy : Face.shocked,
+      D.person(c, pf, 66, treating.shirt, face: r.prog > .6 ? Face.happy : Face.shocked,
           skin: Color.lerp(Pal.skin, const Color(0xFF9BE22D), treating.sick * .7)!);
       if (r.type == 3 && (_t * 6).floor().isEven) {
         // zap!
@@ -508,6 +508,7 @@ class G042 extends MiniGame {
     c.save();
     c.translate(feet.dx, feet.dy);
     c.rotate(wob);
+    c.scale(1.17);
     final face = dancing ? Face.happy : (dragged ? Face.shocked : (sick > .7 ? Face.cry : (sick > .4 ? Face.sad : Face.neutral)));
     D.person(c, Offset.zero, 58, p.shirt, skin: skin, face: face, running: p.state == 0 || dancing, run: p.anim * 12,
         hair: const Color(0xFF3A2A20), armsUp: dancing ? .9 : 0);
@@ -532,7 +533,7 @@ class G042 extends MiniGame {
       return;
     }
     // symptom bubble + sickness bar
-    final bc = feet + const Offset(0, -86);
+    final bc = feet + const Offset(0, -98);
     final col = _typeCol[p.type];
     final pulse = sick > .7 ? 1 + sin(_t * 18) * .08 : 1.0;
     c.save();
@@ -541,7 +542,7 @@ class G042 extends MiniGame {
     D.bubble(c, Rect.fromCenter(center: Offset.zero, width: 38, height: 32), color: col, tail: const Offset(0, 22));
     _icon(c, p.type, Offset.zero, 12);
     c.restore();
-    D.bar(c, Rect.fromCenter(center: feet + const Offset(0, -64), width: 40, height: 6), sick,
+    D.bar(c, Rect.fromCenter(center: feet + const Offset(0, -76), width: 40, height: 6), sick,
         sick > .7 ? Pal.red : Color.lerp(Pal.yellow, Pal.lime, sick)!, border: Pal.ink);
     if (sick > .55) {
       final dy = (p.anim * 30) % 14;

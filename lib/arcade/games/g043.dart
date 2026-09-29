@@ -4,7 +4,7 @@ import '../engine/engine.dart';
 /// watch the crowd decide. The stand upgrades every day, from a cardboard box
 /// to a neon lemon EMPIRE.
 class G043 extends MiniGame {
-  static const _target = 100;
+  static const _target = 90;
   // sunny, cloudy, rain, heatwave
   static const _base = [4.0, 3.0, 2.0, 7.0];
   static const _idealIce = [2, 1, 0, 3];
@@ -84,13 +84,13 @@ class G043 extends MiniGame {
       }
       _dayT += dt;
       _spawnT -= dt;
-      if (_spawnT <= 0 && _toSpawn > 0 && _dayT < _dayLen - 1.4) {
+      if (_spawnT <= 0 && _toSpawn > 0 && _dayT < _dayLen - 1.7) {
         _toSpawn--;
         final left = chance(.55);
         final wtp = _base[_w] * rand(.7, 1.3);
-        _cust.add(_Cust(left, Offset(left ? -20 : 380, rand(452, 468)), pick(_shirts), wtp, rand(95, 125) * host.speed));
-        final remaining = _dayLen - 1.4 - _dayT;
-        _spawnT = _toSpawn > 0 ? max(.12, remaining / (_toSpawn + 1)) * rand(.6, 1.2) : 99;
+        _cust.add(_Cust(left, Offset(left ? -10 : 370, rand(452, 468)), pick(_shirts), wtp, rand(95, 125) * host.speed));
+        final remaining = _dayLen - 1.7 - _dayT;
+        _spawnT = _toSpawn > 0 ? max(.12, remaining / (_toSpawn + 1)) * rand(.6, 1.0) : 99;
       }
     }
     for (final cu in _cust) {
@@ -219,7 +219,7 @@ class G043 extends MiniGame {
       host.fx.confetti(count: 90);
       host.fx.coins(const Offset(180, 420), count: 30, speed: 500);
       host.fx.pop(host.tr('empire', 'EMPIRE!'), const Offset(180, 260), color: Pal.yellow, size: 44, life: 1.4);
-      host.win(stars: _money >= 135 ? 3 : (_money >= 115 ? 2 : 1));
+      host.win(stars: _money >= 115 ? 3 : (_money >= 100 ? 2 : 1));
     } else {
       host.sfx(Sfx.jingleLose);
       host.fx.pop(host.tr('bankrupt', 'BANKRUPT'), const Offset(180, 260), color: Pal.red, size: 36, life: 1.4);
@@ -442,7 +442,7 @@ class G043 extends MiniGame {
     c.scale(1 / s, s);
     D.shadow(c, const Offset(0, 4), 160, 18, .3);
     // owner kid
-    D.person(c, const Offset(0, -38), 64, Pal.yellow, face: _pour > 0 ? Face.happy : (lvl >= 3 ? Face.smug : Face.neutral),
+    D.person(c, const Offset(0, -52), 66, Pal.yellow, face: _pour > 0 ? Face.happy : (lvl >= 3 ? Face.smug : Face.neutral),
         hair: const Color(0xFF6B3A1E), armsUp: _pour);
     switch (lvl) {
       case 0: // cardboard box

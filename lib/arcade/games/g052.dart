@@ -175,7 +175,7 @@ class G052 extends MiniGame {
     final gp = D.stroke(const Color(0x88FF3DDB), 1.5);
     for (var i = 0; i < 12; i++) {
       final k = ((i + (_t * 1.2) % 1) / 12);
-      final y = 250 + pow(k, 2.2) * 390;
+      final y = 250 + pow(k, 2.2).toDouble() * 390;
       c.drawLine(Offset(0, y), Offset(360, y), gp);
     }
     for (var i = -8; i <= 8; i++) {
@@ -300,7 +300,7 @@ class G052 extends MiniGame {
     // you + 3 rivals on neon podiums
     for (var k = 0; k < 4; k++) {
       final x = 54 + k * 84.0;
-      const y = 214.0;
+      const y = 194.0;
       final out = k > 0 && _cpuOut[k];
       final ot = _cpuOutT[k];
       final col = _Cast.col[k];
@@ -342,7 +342,7 @@ class G052 extends MiniGame {
         c.restore();
       }
       final label = k == 0 ? host.tr('you', 'YOU') : '${host.tr('cpu', 'CPU')}$k';
-      D.text(c, label, Offset(x, y + 30), size: 11, color: k == 0 ? Pal.yellow : const Color(0xCCFFFFFF));
+      D.text(c, label, Offset(x, y + 26), size: 11, color: k == 0 ? Pal.yellow : const Color(0xCCFFFFFF));
     }
   }
 }

@@ -282,6 +282,9 @@ class G060 extends MiniGame {
     for (var i = 0; i < 4; i++) {
       _drawSeat(c, i);
     }
+    for (var i = 0; i < 4; i++) {
+      _drawArm(c, i);
+    }
 
     // control desk
     D.gradientBg(c, const [Color(0xFF5A3A8A), Color(0xFF2A1A4A)], rect: const Rect.fromLTWH(0, 360, 360, 280));
@@ -394,17 +397,20 @@ class G060 extends MiniGame {
         c.drawCircle(hp + const Offset(9, 0), 3, D.fill(Pal.ink));
       }
     }
-    // pie arm (mounted on the podium, swings up into the face)
-    if (!_out[i] || _armWho == i) {
-      final k = _armWho == i ? _armK : 0.0;
-      final pivot = Offset(x + 30, 268);
-      final ang = M.lerp(.35, -2.35, k); // rest: pointing down-right; fired: up-left toward face
-      final tip = pivot + Offset(cos(ang), sin(ang)) * 46;
-      D.line(c, pivot, tip, const Color(0xFF9AA4B8), 7);
-      D.line(c, pivot, tip, Pal.ink, 1.5);
-      c.drawCircle(pivot, 6, D.fill(const Color(0xFF55607A)));
-      if (!(_cream[i] > 0 && _armWho != i)) _pie(c, tip + const Offset(0, -4), 12);
-    }
+  }
+
+  void _drawArm(Canvas c, int i) {
+    final x = _seatX[i];
+    if (_out[i] && _armWho != i) return;
+    final k = _armWho == i ? _armK : 0.0;
+    final pivot = Offset(x + 24, 266);
+    final ang = M.lerp(pi - .15, -2.05, k); // rest: pie on the desk; fired: up into the face
+    final tip = pivot + Offset(cos(ang), sin(ang)) * 40;
+    D.line(c, pivot, tip, Pal.ink, 9);
+    D.line(c, pivot, tip, const Color(0xFFC9D2E3), 5);
+    c.drawCircle(pivot, 7, D.fill(const Color(0xFF55607A)));
+    c.drawCircle(pivot, 7, D.stroke(Pal.ink, 2));
+    if (!(_cream[i] > 0)) _pie(c, tip + const Offset(0, -6), 13);
   }
 
   void _drawButton(Canvas c, int i) {
