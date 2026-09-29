@@ -311,4 +311,5 @@ const Map<String, String> wordsRu = {
   'corner': 'УГОЛ!!!',
   'click_here': 'ЖМИ СЮДА',
   'sorry': 'ИЗВИНИТЕ!',
+  'overheat': 'ПЕРЕГРЕВ',
 };

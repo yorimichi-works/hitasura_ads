@@ -45,7 +45,7 @@ class G135 extends MiniGame {
       for (var i = 0; i < 9; i++) {
         kinds[pos[i]] = i < 3 ? _kBus : 2 + randInt(6);
       }
-      _replaceChance = .45;
+      _replaceChance = .35;
     } else {
       final m = randInt(9);
       for (var i = 0; i < 9; i++) {
@@ -73,7 +73,7 @@ class G135 extends MiniGame {
       }
       return;
     }
-    if (_stage > 3 || _stageT < .25) return;
+    if (_stage > 3 || _stageT < .15) return;
     if (_verifyR.inflate(6).contains(p)) {
       _verify();
       return;
@@ -184,21 +184,21 @@ class G135 extends MiniGame {
     _shakeCard = M.approach(_shakeCard, 0, 6, dt);
     _verifyPress = M.approach(_verifyPress, 0, 10, dt);
     _robotShown = M.approach(_robotShown, _robot, 5, dt);
-    if (_stage == 0 && _checking && _stageT > .7) {
+    if (_stage == 0 && _checking && _stageT > .45) {
       host.sfx(Sfx.notify, volume: .6);
       _startRound(1);
     }
     for (var i = 0; i < _tiles.length; i++) {
       final tl = _tiles[i];
-      tl.appear = min(1, tl.appear + dt * 3.5);
+      tl.appear = min(1, tl.appear + dt * 5);
       tl.bump = M.approach(tl.bump, 0, 9, dt);
       tl.shake = M.approach(tl.shake, 0, 6, dt);
       if (tl.leaving > 0) {
-        tl.leaving += dt * 2.6;
+        tl.leaving += dt * 3.6;
         if (tl.leaving >= 1) {
           // reCAPTCHA-style: slowly fade in a brand-new picture
           final bus = chance(_replaceChance);
-          _replaceChance = max(0, _replaceChance - .2);
+          _replaceChance = max(0, _replaceChance - .35);
           _tiles[i] = _Tile(bus ? _kBus : 2 + randInt(6), rng.nextDouble())..appear = -.2;
         }
       }

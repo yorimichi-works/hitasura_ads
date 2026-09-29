@@ -311,4 +311,5 @@ const Map<String, String> wordsId = {
   'corner': 'POJOK!!!',
   'click_here': 'KLIK DI SINI',
   'sorry': 'MAAF!',
+  'overheat': 'KEPANASAN',
 };

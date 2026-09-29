@@ -66,11 +66,11 @@ class G010 extends MiniGame {
     _stateT += dt;
     _press = M.approach(_press, _open ? 1 : 0, 18, dt);
     _reactT = max(0, _reactT - dt);
-    final rate = .72 * host.speed;
+    final rate = .8 * host.speed;
 
     if (_state == 0) {
-      _glassX = M.lerp(-180, 180, M.easeOutBack(M.clamp01(_stateT / .35)));
-      if (_stateT >= .35) {
+      _glassX = M.lerp(-180, 180, M.easeOutBack(M.clamp01(_stateT / .25)));
+      if (_stateT >= .25) {
         _glassX = 180;
         _state = 1;
         _stateT = 0;
@@ -151,13 +151,13 @@ class G010 extends MiniGame {
 
     // state transitions
     if (_state == 2) {
-      if (!_open && !_inflow && _stateT > .45) _judge();
+      if (!_open && !_inflow && _stateT > .3) _judge();
     }
     if (_state == 3) {
-      if (_stateT > .55) {
-        _glassX = M.lerp(180, 560, M.easeInOut(M.clamp01((_stateT - .55) / .3)));
+      if (_stateT > .35) {
+        _glassX = M.lerp(180, 560, M.easeInOut(M.clamp01((_stateT - .35) / .22)));
       }
-      if (_stateT > .85) {
+      if (_stateT > .57) {
         _round++;
         if (_round >= 3) {
           _state = 4;
@@ -226,7 +226,7 @@ class G010 extends MiniGame {
 
   void _finish() {
     final a = _avg;
-    if (a <= 15) {
+    if (a <= 16) {
       host.sfx(Sfx.jingleWin);
       host.fx.confetti(count: 90);
       host.win(stars: a <= 5 ? 3 : (a <= 10 ? 2 : 1));
@@ -244,7 +244,7 @@ class G010 extends MiniGame {
         _judge();
       }
     }
-    if (_errors.length >= 2 && _avg <= 15) {
+    if (_errors.length >= 2 && _avg <= 16) {
       host.win(stars: 1);
     } else {
       host.lose();

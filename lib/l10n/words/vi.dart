@@ -311,4 +311,5 @@ const Map<String, String> wordsVi = {
   'corner': 'GÓC!!!',
   'click_here': 'BẤM VÀO ĐÂY',
   'sorry': 'XIN LỖI!',
+  'overheat': 'QUÁ NHIỆT',
 };

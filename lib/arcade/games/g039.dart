@@ -8,7 +8,7 @@ class G039 extends MiniGame {
   static const double _ts = 52, _ox = 24, _oy = 128;
   static const _map = ['......', '.PPPP.', '.P..P.', '.PPPP.', '.P..P.', '.PPPP.', '..P...'];
   static const _gateC = 2, _gateR = 6;
-  static const _target = 250;
+  static const _target = 370;
   static const _needHappy = 70.0;
   static const _dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
@@ -220,7 +220,7 @@ class G039 extends MiniGame {
       host.fx.pop(host.tr('jackpot', 'JACKPOT!'), const Offset(180, 300), color: Pal.yellow, size: 40, life: 1.4);
       host.flash(Pal.white, .15);
       _won = true;
-      host.win(stars: host.time < 16 ? 3 : (host.time < 21 ? 2 : 1));
+      host.win(stars: host.time < 19 ? 3 : (host.time < 22 ? 2 : 1));
     }
   }
 
@@ -437,7 +437,7 @@ class G039 extends MiniGame {
 
   @override
   void onTimeUp() {
-    if (_cash >= _target * .92 && _happy >= _needHappy - 5) {
+    if (_cash >= _target && _happy >= _needHappy) {
       _won = true;
       host.fx.confetti();
       host.win(stars: 1);

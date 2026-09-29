@@ -311,4 +311,5 @@ const Map<String, String> wordsBn = {
   'corner': 'কোণা!!!',
   'click_here': 'এখানে ক্লিক করুন',
   'sorry': 'দুঃখিত!',
+  'overheat': 'অতিরিক্ত গরম',
 };

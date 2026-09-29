@@ -6,7 +6,7 @@ import '../engine/engine.dart';
 /// how perfect the care was (common → rare → epic → RAINBOW legendary).
 class G128 extends MiniGame {
   double _t = 0;
-  double _temp = .35;
+  double _temp = .44;
   double _progress = 0;
   double _perfectTime = 0, _goodTime = 0;
   double _burn = 0;
@@ -28,8 +28,8 @@ class G128 extends MiniGame {
   static const _egg = Offset(180, 360);
   static const _thermo = Rect.fromLTWH(318, 150, 22, 300);
 
-  double get _bandC => .6 + sin(_t * .8) * .09;
-  static const _bandW = .11;
+  double get _bandC => .6 + sin(_t * .65) * .08;
+  static const _bandW = .14;
 
   @override
   void init() {
@@ -89,10 +89,10 @@ class G128 extends MiniGame {
     if (_temp > .88) {
       _burn += dt;
       if (chance(.3)) host.fx.smoke(_egg + Offset(rand(-40, 40), -60), count: 1, color: const Color(0xAA555555));
-      if (_burn > 1.6) _fry();
+      if (_burn > 2.0) _fry();
     } else if (_temp >= lo && _temp <= hi) {
-      final perfect = (_temp - _bandC).abs() < .045;
-      _progress += dt / (perfect ? 5.6 : 7.2);
+      final perfect = (_temp - _bandC).abs() < .05;
+      _progress += dt / (perfect ? 4.6 : 5.8);
       _goodTime += dt;
       if (perfect) _perfectTime += dt;
       _wobble = max(_wobble, .2 + _progress * .4);

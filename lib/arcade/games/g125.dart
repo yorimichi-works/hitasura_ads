@@ -28,7 +28,7 @@ class G125 extends MiniGame {
   @override
   void init() {
     _me = _Fighter(const Offset(360, 560), const Color(0xFF3FB8FF), true)
-      ..blades = 4
+      ..blades = 5
       ..hp = 3;
     _cam = _me.pos;
     for (var i = 0; i < 4; i++) {
@@ -38,8 +38,8 @@ class G125 extends MiniGame {
       _items.add(_Pickup(Offset(rand(40, 680), rand(40, 1060))));
     }
     // a few right next to the player so growth starts instantly
-    for (var i = 0; i < 4; i++) {
-      final a = i / 4 * pi * 2 + .4;
+    for (var i = 0; i < 6; i++) {
+      final a = i / 6 * pi * 2 + .4;
       _items.add(_Pickup(_me.pos + Offset(cos(a), sin(a)) * rand(90, 130)));
     }
   }
@@ -50,12 +50,12 @@ class G125 extends MiniGame {
     do {
       p = Offset(rand(60, 660), rand(60, 1040));
       tries++;
-    } while ((p - _me.pos).distance < (initial ? 260 : 380) && tries < 30);
+    } while (((p - _me.pos).distance < (initial ? 260 : 300) || (!initial && (p - _me.pos).distance > 520)) && tries < 30);
     final f = _Fighter(p, _foeCols[_foeColIdx++ % _foeCols.length], false)
-      ..blades = initial ? 2 + randInt(3) : 2 + min(_kills, 3).toInt() + randInt(2)
+      ..blades = initial ? 1 + randInt(3) : 2 + min(_kills, 2).toInt() + randInt(2)
       ..hp = 1
       ..spinDir = chance(.5) ? 1 : -1
-      ..speed = rand(62, 82) * host.speed
+      ..speed = rand(55, 72) * host.speed
       ..think = rand(0, 1);
     _foes.add(f);
   }
@@ -96,7 +96,7 @@ class G125 extends MiniGame {
           (_keys.contains('down') ? 1.0 : 0) - (_keys.contains('up') ? 1.0 : 0));
       if (k.distance > 0) mv = k / k.distance;
     }
-    if (!_dead && !host.finished) _me.vel = mv * 132;
+    if (!_dead && !host.finished) _me.vel = mv * 148;
     final all = [_me, ..._foes];
     for (final f in all) {
       f.spin += dt * (4.2 - min(f.blades, 12) * .12) * f.spinDir;
@@ -239,7 +239,7 @@ class G125 extends MiniGame {
 
   void _hit(_Fighter att, _Fighter vic) {
     vic.hp--;
-    vic.invuln = vic.isMe ? 1.1 : .2;
+    vic.invuln = vic.isMe ? 1.4 : .2;
     vic.flash = .15;
     final n = vic.pos - att.pos;
     vic.kb += (n.distance > .1 ? n / n.distance : const Offset(1, 0)) * 360;

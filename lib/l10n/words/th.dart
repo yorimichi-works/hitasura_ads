@@ -311,4 +311,5 @@ const Map<String, String> wordsTh = {
   'corner': 'มุม!!!',
   'click_here': 'คลิกที่นี่',
   'sorry': 'ขอโทษ!',
+  'overheat': 'ร้อนเกิน',
 };

@@ -17,11 +17,11 @@ class G106 extends MiniGame {
   final _stars = <List<double>>[];
 
   double _d = 0; // distance travelled
-  double _v = 20;
+  double _v = 15;
   double _theta = 0; // ship angle around tunnel (world)
   double _thetaVel = 0;
   double _bank = 0;
-  double _nextSpawn = 30;
+  double _nextSpawn = 62;
   int _hp = _maxHp;
   double _inv = 0;
   double _t = 0;
@@ -96,15 +96,16 @@ class G106 extends MiniGame {
   // -------------------------------------------------------------- spawn ---
 
   void _spawnRow(double z) {
-    final kind = _pattern % 5;
+    // Gentle opening: two wide gap walls first, then the full rotation.
+    final kind = _pattern < 2 ? 0 : (_pattern - 2) % 5;
     _pattern++;
     final h = rand(1.0, 1.8);
     final hue = rand(290, 360);
     switch (kind) {
       case 0: // wall with a gap near the ship
       case 3:
-        final gap = _theta + rand(-2.0, 2.0);
-        final gapSlots = host.time < 8 ? 5 : 4;
+        final gap = _theta + (_pattern <= 2 ? rand(-1.0, 1.0) : rand(-2.0, 2.0));
+        final gapSlots = host.time < 8 ? 6 : 5;
         final g0 = ((gap / _slot).round());
         for (var s = 0; s < _n; s++) {
           final rel = ((s - g0) % _n + _n) % _n;
@@ -131,7 +132,7 @@ class G106 extends MiniGame {
           _obs.add(_Block(z, a + pi / 2 + (s + 1) * _slot, 1, h, hue));
         }
         for (var s = 0; s < _n ~/ 2 - 1; s++) {
-          _obs.add(_Block(z + 12, a - pi / 2 + (s + 1) * _slot + pi, 1, h, hue + 30));
+          _obs.add(_Block(z + 18, a - pi / 2 + (s + 1) * _slot + pi, 1, h, hue + 30));
         }
     }
   }
@@ -155,7 +156,7 @@ class G106 extends MiniGame {
       host.flash(const Color(0xFF8C4DFF), .2);
       host.punch(.05);
     }
-    _v = (20 + host.time * 1.6 + _stage * 3) * host.speed;
+    _v = (15 + host.time * 1.5 + _stage * 2.5) * host.speed;
     _d += _v * dt;
     if (_keyDir != 0) {
       _theta += _keyDir * 3.6 * dt;
@@ -167,7 +168,7 @@ class G106 extends MiniGame {
     // spawn ahead
     while (_nextSpawn < _d + _rings * _segL + 4) {
       _spawnRow(_nextSpawn);
-      _nextSpawn += (_pattern % 5 == 2 ? 26 : 22) + _v * .25;
+      _nextSpawn += (_pattern % 5 == 2 ? 30 : 26) + _v * .35;
     }
     // collisions
     final shipZ = _d + _shipZ;
@@ -185,7 +186,7 @@ class G106 extends MiniGame {
       }
       if (dz.abs() < .75) {
         final da = _wrap(b.a - _theta).abs();
-        if (da < b.w * _slot / 2 + .11 && _inv <= 0) _hitBlock(b);
+        if (da < b.w * _slot / 2 + .04 && _inv <= 0) _hitBlock(b);
       }
     }
     for (final g in _gems) {
@@ -205,7 +206,7 @@ class G106 extends MiniGame {
   void _hitBlock(_Block b) {
     b.hit = true;
     _hp--;
-    _inv = 1.1;
+    _inv = 1.5;
     host.sfx(Sfx.explodeSmall);
     host.sfx(Sfx.hurt, volume: .6);
     host.shake(12, .35);

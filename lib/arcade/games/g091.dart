@@ -9,17 +9,17 @@ class G091 extends MiniGame {
   static const _map = [
     '###########',
     '#o...#...o#',
-    '#.##.#.##.#',
+    '#.## # ##.#',
     '#.........#',
-    '#.##.#.##.#',
+    '#.## # ##.#',
     '#....#....#',
     '#### # ####',
     '     G     ',
     '#### # ####',
     '#....#....#',
     '#.##   ##.#',
-    '#o.#.#.#.o#',
-    '##.#.#.#.##',
+    '#o # # # o#',
+    '## # # # ##',
     '#....P....#',
     '###########',
   ];
@@ -66,8 +66,8 @@ class G091 extends MiniGame {
     _want = 2;
     _ghosts
       ..clear()
-      ..add(_Ghost(5, 7, 2, 0, .6))
-      ..add(_Ghost(5, 7, 0, 1, 3.2));
+      ..add(_Ghost(5, 7, 2, 0, 1.4))
+      ..add(_Ghost(5, 7, 0, 1, 4.5));
     _fright = 0;
   }
 
@@ -156,7 +156,7 @@ class G091 extends MiniGame {
     // player
     _movePac(dt);
     // ghosts
-    final gs = 4.7 * sqrt(host.speed);
+    final gs = 4.1 * sqrt(host.speed);
     for (final g in _ghosts) {
       if (g.wait > 0) {
         g.wait -= dt;
@@ -207,7 +207,7 @@ class G091 extends MiniGame {
         return;
       }
     }
-    e.t += 10.5 * dt;
+    e.t += 11.0 * dt;
     while (e.t >= 1 && e.moving) {
       e.t -= 1;
       e.c += _dirs[e.d].dx.toInt();
@@ -235,7 +235,7 @@ class G091 extends MiniGame {
     _left--;
     final at = Offset(_ox + (c + .5) * _cell, _oy + (r + .5) * _cell);
     if (v == 2) {
-      _fright = 4.2;
+      _fright = 5.0;
       _ghostChain = 0;
       for (final g in _ghosts) {
         if (!g.eaten) {
@@ -303,7 +303,7 @@ class G091 extends MiniGame {
       final pd = _dirs[_pac.d];
       target = Offset(_pac.c + pd.dx * 3, _pac.r + pd.dy * 3);
     }
-    if (!g.eaten && chance(.18)) return pick(opts);
+    if (!g.eaten && chance(.25)) return pick(opts);
     var best = opts.first;
     var bd = double.infinity;
     for (final d in opts) {
@@ -317,9 +317,21 @@ class G091 extends MiniGame {
     return best;
   }
 
+  @override
+  void onTimeUp() {
+    // Mercy: nearly-cleared mazes still count (barely).
+    if (_left <= (_total * .1).ceil()) {
+      host.sfx(Sfx.jingleWin);
+      host.fx.confetti();
+      host.win(stars: 1);
+    } else {
+      host.lose();
+    }
+  }
+
   void _die() {
     _lives--;
-    _dieT = 1.3;
+    _dieT = 1.0;
     host.sfx(Sfx.pDie);
     host.shake(8);
     host.flash(Pal.red, .12);

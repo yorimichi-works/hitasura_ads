@@ -242,7 +242,7 @@ class G045 extends MiniGame {
   @override
   void onDown(Offset p) {
     _Order? best;
-    var bd = 34.0;
+    var bd = 26.0;
     for (final o in _orders) {
       final d = min((_pin(o.dest) - p).distance, (_cc(o.dest.hc, o.dest.hr) - p).distance);
       if (d < bd) {
@@ -268,7 +268,7 @@ class G045 extends MiniGame {
 
   @override
   void onTimeUp() {
-    if (_delivered >= _goal - 1 && _fails < 2) {
+    if (_delivered >= _goal) {
       host.win(stars: 1);
     } else {
       host.sfx(Sfx.jingleLose);

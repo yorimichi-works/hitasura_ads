@@ -119,7 +119,7 @@ class _Pop {
 }
 
 class G086 extends MiniGame {
-  static const _target = 6000;
+  static const _target = 9000;
   static const _r = 7.5;
   final _segs = <_Seg>[];
   final _bumpers = [
@@ -140,6 +140,9 @@ class G086 extends MiniGame {
   double _serveT = .4;
   int _balls = 2;
   double _saveT = 0;
+  bool _saveUsed = false;
+  bool _hot = false;
+  double _heat = 0; // flipper coil heat: mashing overheats the flippers
   int _mult = 1;
   double _t = 0;
   String _dmdMsg = '';
@@ -191,7 +194,8 @@ class G086 extends MiniGame {
     _bp = const Offset(326, 470);
     _bv = Offset(rand(-30, 0), -1050);
     _ballLive = true;
-    _saveT = 4;
+    // ball save only once per ball (a SAFE re-serve gets no second save)
+    _saveT = _saveUsed ? 0 : 3;
     host.sfx(Sfx.pShoot, rate: .6);
     host.sfx(Sfx.whoosh, volume: .5);
     _trail.clear();
@@ -367,6 +371,7 @@ class G086 extends MiniGame {
     _slingLitR = max(0, _slingLitR - dt * 5);
     _laneFlash = max(0, _laneFlash - dt);
     _tilt = max(0, _tilt - dt);
+    _heat = max(0, _heat - dt * .55);
     _saveT = max(0, _saveT - dt);
     _nudgeDecay += dt;
     if (_nudgeDecay > 2.5 && _nudges > 0) {
@@ -403,11 +408,13 @@ class G086 extends MiniGame {
       _ballLive = false;
       if (host.finished) return;
       if (_saveT > 0) {
+        _saveUsed = true;
         _msg(host.tr('safe', 'SAFE'));
         host.sfx(Sfx.pPowerup, rate: .8);
         _serveT = .5;
       } else {
         _balls--;
+        _saveUsed = false;
         host.sfx(Sfx.pDie);
         host.shake(8);
         host.flash(const Color(0xFFF83828), .15);
@@ -433,13 +440,23 @@ class G086 extends MiniGame {
       _rf.held = true;
     }
     if (_tilt <= 0) host.sfx(Sfx.flip, volume: .5);
+    _heat += .3;
+    if (_heat >= 1 && _tilt <= 0) {
+      // coils overheat from mashing -> flippers go limp for a moment
+      _heat = .4;
+      _tilt = 1.4;
+      _hot = true;
+      _msg(host.tr('overheat', 'OVERHEAT'));
+      host.sfx(Sfx.buzzer, volume: .7);
+      host.fx.smoke(const Offset(180, 560), count: 6);
+    }
   }
 
   @override
   void onMove(Offset p) {
     final d0 = _downAt;
     if (d0 == null) return;
-    if (d0.dy - p.dy > 70 && _t - _downTime < .3) {
+    if (d0.dy - p.dy > 90 && _t - _downTime < .25) {
       _downAt = null;
       _nudge();
     }
@@ -457,9 +474,12 @@ class G086 extends MiniGame {
     _nudgeDecay = 0;
     host.shake(8, .3);
     host.sfx(Sfx.thud);
-    if (_ballLive) _bv += Offset(rand(-160, 160), -260);
+    if (_ballLive) _bv += Offset(rand(-120, 120), -170);
     if (_nudges >= 3) {
-      _tilt = 1.8;
+      // TILT: flippers die and the ball save is gone
+      _tilt = 3;
+      _hot = false;
+      _saveT = 0;
       _nudges = 0;
       _msg('TILT');
       host.sfx(Sfx.buzzer);
@@ -625,8 +645,14 @@ class G086 extends MiniGame {
 
     _renderDmd(c);
 
+    if (_heat > .35) {
+      // coil heat gauge (mashing warning)
+      final w = 60 * _heat.clamp(0.0, 1.0);
+      c.drawRect(const Rect.fromLTWH(149, 603, 62, 8), D.fill(_k));
+      c.drawRect(Rect.fromLTWH(150, 604, w, 6), D.fill(_heat > .7 ? const Color(0xFFF83828) : _dmd));
+    }
     if (_tilt > 0 && (_t * 8).floor().isEven) {
-      _px(c, 'TILT', const Offset(180, 330), 7, const Color(0xFFF83828), align: 0, shadow: _k);
+      _px(c, _hot ? 'HOT!' : 'TILT', const Offset(180, 330), 7, const Color(0xFFF83828), align: 0, shadow: _k);
     }
     if (host.time < 2.4 && !host.finished) {
       D.hand(c, const Offset(80, 590), _t);

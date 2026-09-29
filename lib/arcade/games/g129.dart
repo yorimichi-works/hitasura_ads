@@ -7,7 +7,7 @@ class G129 extends MiniGame {
   static const _cell = 46.0;
   static const _bx = 19.0;
   static const _by = 172.0;
-  static const _target = 16;
+  static const _target = 13;
   static const _goalPos = Offset(128, 98);
 
   static const _cols = <Color>[
@@ -78,9 +78,9 @@ class G129 extends MiniGame {
 
   int _randColor() {
     // red is slightly more common so the goal feels reachable
-    final r = rng.nextDouble() * 5.25;
-    if (r < 1.25) return 0;
-    return 1 + ((r - 1.25) ~/ 1.0).clamp(0, 3);
+    final r = rng.nextDouble() * 5.4;
+    if (r < 1.4) return 0;
+    return 1 + ((r - 1.4) ~/ 1.0).clamp(0, 3);
   }
 
   @override

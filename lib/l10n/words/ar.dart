@@ -311,4 +311,5 @@ const Map<String, String> wordsAr = {
   'corner': 'الزاوية!!!',
   'click_here': 'انقر هنا',
   'sorry': 'آسف!',
+  'overheat': 'سخونة زائدة',
 };

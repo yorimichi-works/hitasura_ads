@@ -311,4 +311,5 @@ const Map<String, String> wordsFa = {
   'corner': 'گوشه!!!',
   'click_here': 'اینجا کلیک کن',
   'sorry': 'ببخشید!',
+  'overheat': 'داغ کرد',
 };

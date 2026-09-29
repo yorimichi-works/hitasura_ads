@@ -55,9 +55,9 @@ class G008 extends MiniGame {
   int _roll() {
     final r = host.rng.nextDouble();
     if (_drops < 1) return 3;
-    if (r < .1) return 0;
-    if (r < .3) return 1;
-    if (r < .6) return 2;
+    if (r < .2) return 0;
+    if (r < .45) return 1;
+    if (r < .72) return 2;
     return 3;
   }
 
@@ -233,7 +233,7 @@ class G008 extends MiniGame {
     host.sfx(Sfx.throwIt, volume: .6, rate: 1.3 - _cur * .05);
     _cur = _next;
     _next = _roll();
-    _cool = .45;
+    _cool = .6;
     _aimX = _clampAim(_aimX);
   }
 

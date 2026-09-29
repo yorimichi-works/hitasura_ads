@@ -311,4 +311,5 @@ const Map<String, String> wordsPt = {
   'corner': 'CANTO!!!',
   'click_here': 'CLIQUE AQUI',
   'sorry': 'FOI MAL!',
+  'overheat': 'SUPERAQUECEU',
 };

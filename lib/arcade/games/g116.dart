@@ -99,7 +99,7 @@ class G116 extends MiniGame {
         _cy = M.approach(_cy, 150, 8, dt);
         _open = M.approach(_open, .6, 8, dt);
         if (_holding) {
-          _cx += _dir * 150 * host.speed * dt;
+          _cx += _dir * 100 * host.speed * dt;
           _holdMoved += dt;
           if (_cx > 322) {
             _cx = 322;
@@ -221,7 +221,7 @@ class G116 extends MiniGame {
       return;
     }
     final a = (t.x - _cx).abs() / t.r;
-    final pity = _tryNo >= 3 && a < .7; // last credit: the machine feels a bit sorry
+    final pity = _tryNo >= 3 && a < .4; // last credit: the machine feels a bit sorry
     if (a > .95) {
       // prongs just shove it
       t.x += (t.x - _cx).sign * 12;
@@ -236,7 +236,7 @@ class G116 extends MiniGame {
     t.gripOff = (t.x - _cx);
     _gripQ = (a / .95).clamp(0.0, 1.0);
     final heavy = t.kind == _Kind.prize ? .2 : 0.0;
-    final slipChance = pity ? .3 : (a < .35 ? .04 + heavy : (a < .7 ? .7 + heavy : .95));
+    final slipChance = pity ? .5 : (a < .22 ? .04 + heavy : (a < .6 ? .9 + heavy : .97));
     if (chance(slipChance)) {
       // slips during lift (near the top = maximum pain) or during carry
       _slipAt = chance(.55) ? rand(.55, .95) : rand(1.0, 1.9);
@@ -245,7 +245,7 @@ class G116 extends MiniGame {
     }
     host.sfx(Sfx.squish, rate: 1.1);
     host.fx.sparkle(Offset(t.x, t.y), count: 6, radius: 20);
-    if (a < .35) {
+    if (a < .22) {
       host.fx.pop(host.tr('perfect', 'PERFECT!'), Offset(_cx, _cy - 40), color: Pal.yellow, size: 26);
       host.sfx(Sfx.correct, volume: .6);
     } else {
@@ -335,6 +335,26 @@ class G116 extends MiniGame {
     _stopY = stop + 4;
     _set(_St.drop);
     host.sfx(Sfx.whoosh);
+  }
+
+  /// The toy the claw would grab if dropped right now (for the aim line).
+  _Toy? _toyBelow() {
+    var stop = _floor - 40;
+    for (final t in _toys) {
+      if (t.falling || t.inChute) continue;
+      if ((t.x - _cx).abs() < t.r + 10 && t.y - t.r - 40 < stop) stop = t.y - t.r - 40;
+    }
+    _Toy? best;
+    var bd = double.infinity;
+    for (final t in _toys) {
+      if (t.falling || t.inChute) continue;
+      final dx = (t.x - _cx).abs();
+      if (dx < t.r + 8 && (t.y - t.r - 40 - stop).abs() < 16 && dx < bd) {
+        bd = dx;
+        best = t;
+      }
+    }
+    return best;
   }
 
   @override
@@ -449,7 +469,9 @@ class G116 extends MiniGame {
 
     // aim line
     if (_st == _St.aim && !host.finished) {
-      final p = Paint()..color = const Color(0x66FF3B5C);
+      final below = _toyBelow();
+      final sweet = below != null && (below.x - _cx).abs() / below.r < .22;
+      final p = Paint()..color = sweet ? const Color(0xCC7CFF6B) : const Color(0x66FF3B5C);
       for (var y = _cy + 36; y < _floor; y += 14) {
         c.drawCircle(Offset(_cx, y), 2.5, p);
       }

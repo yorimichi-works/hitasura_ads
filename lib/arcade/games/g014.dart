@@ -7,7 +7,7 @@ class G014 extends MiniGame {
   static const _finishZ = 108.0;
   static const _tileLen = 1.5;
   static const _ladderZ = _finishZ + 3;
-  static const _winMult = 4;
+  static const _winMult = 6;
 
   final scene = Scene3();
   late final Mesh _road, _water, _finish, _bundle, _saw, _sawHub, _post, _archPost, _archTop;
@@ -158,7 +158,7 @@ class G014 extends MiniGame {
           host.flash(Pal.white, .15);
           host.fx.pop('x$_finalMult!', const Offset(180, 250), color: Pal.yellow, size: 56, life: 1.5);
           host.addScore(_finalMult * 100);
-          host.win(stars: _finalMult >= 8 ? 3 : (_finalMult >= 5 ? 2 : 1));
+          host.win(stars: _finalMult >= 9 ? 3 : (_finalMult >= 7 ? 2 : 1));
         } else {
           host.sfx(Sfx.aww);
           host.fx.pop(host.tr('oops', 'OOPS!'), const Offset(180, 250), color: Pal.red, size: 44);

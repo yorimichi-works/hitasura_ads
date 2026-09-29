@@ -311,4 +311,5 @@ const Map<String, String> wordsTr = {
   'corner': 'KÖŞE!!!',
   'click_here': 'BURAYA TIKLA',
   'sorry': 'ÜZGÜNÜM!',
+  'overheat': 'AŞIRI ISINDI',
 };

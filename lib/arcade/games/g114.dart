@@ -49,13 +49,13 @@ class G114 extends MiniGame {
   Color get backdrop => const Color(0xFF2A0616);
 
   List<double> get _gold => const [
-        [.70, .86],
-        [.64, .90],
-        [.56, .94],
+        [.68, .87],
+        [.62, .90],
+        [.55, .93],
       ][math.min(2, _spins)];
   static const _red = .10;
 
-  double _needle(double h) => .5 - .5 * math.cos(h * math.pi * 2 * .85 * (0.9 + .1 * host.speed));
+  double _needle(double h) => .5 - .5 * math.cos(h * math.pi * 2 * .75 * (0.9 + .1 * host.speed));
 
   @override
   void update(double dt) {
@@ -87,7 +87,7 @@ class G114 extends MiniGame {
         _bulbT += dt * (1 + (1 - u) * 6);
         if (u >= 1) _land();
       case _St.result:
-        if (_result > 0 && _result < 100 && _stT > 1.1) {
+        if (_result > 0 && _result < 100 && _stT > .8) {
           _st = _St.ready;
           _stT = 0;
           _power = 0;
@@ -142,7 +142,8 @@ class G114 extends MiniGame {
     final g = _gold;
     int target;
     double off;
-    if (p <= _red) {
+    if (p <= _red || p > g[1]) {
+      // Both red zones (too weak / overshoot) are BANKRUPT, as drawn.
       target = chance(.5) ? 3 : 9;
       off = rand(-.3, .3);
     } else if (p >= g[0] && p <= g[1]) {
@@ -163,7 +164,7 @@ class G114 extends MiniGame {
     var extra = (want - base) % (math.pi * 2);
     if (extra < 0) extra += math.pi * 2;
     _to = base + extra;
-    _dur = 2.5 + p * .5;
+    _dur = 2.2 + p * .4;
     _lastPeg = (_theta / _a).floor();
     host.sfx(Sfx.spin);
     host.sfx(Sfx.whoosh);
@@ -172,6 +173,13 @@ class G114 extends MiniGame {
       host.sfx(Sfx.rarityUp);
       host.fx.pop(host.tr('perfect', 'PERFECT!'), const Offset(180, 470), color: Pal.yellow, size: 28);
     }
+  }
+
+  @override
+  void onTimeUp() {
+    // A spin already in the air still counts: snap it to where it lands.
+    if (_st == _St.spin) _land();
+    if (!host.finished) host.lose();
   }
 
   int get _under {
@@ -471,6 +479,7 @@ class G114 extends MiniGame {
       ..strokeWidth = 4);
     c.drawRect(gRect, D.stroke(Pal.ink, 2.5));
     _skull(c, Offset(r.left + r.width * _red / 2, r.center.dy), 8);
+    _skull(c, Offset(r.left + r.width * (1 + _gold[1]) / 2, r.center.dy), 8);
     D.star(c, gRect.center, 9, Pal.white, border: Pal.ink);
     // needle
     final nx = r.left + r.width * (_st == _St.hold ? _power : (_st == _St.ready ? 0 : _power));

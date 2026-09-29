@@ -311,4 +311,5 @@ const Map<String, String> wordsZh = {
   'corner': '角落！！！',
   'click_here': '点这里',
   'sorry': '抱歉！',
+  'overheat': '过热',
 };

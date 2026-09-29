@@ -311,4 +311,5 @@ const Map<String, String> wordsKo = {
   'corner': '코너!!!',
   'click_here': '여기를 클릭',
   'sorry': '죄송!',
+  'overheat': '과열',
 };

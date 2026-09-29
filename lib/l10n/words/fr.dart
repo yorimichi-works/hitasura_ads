@@ -311,4 +311,5 @@ const Map<String, String> wordsFr = {
   'corner': 'COIN !!!',
   'click_here': 'CLIQUEZ ICI',
   'sorry': 'DÉSOLÉ !',
+  'overheat': 'SURCHAUFFE',
 };

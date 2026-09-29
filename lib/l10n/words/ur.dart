@@ -311,4 +311,5 @@ const Map<String, String> wordsUr = {
   'corner': 'کونا!!!',
   'click_here': 'یہاں کلک کریں',
   'sorry': 'معاف کیجیے!',
+  'overheat': 'اوور ہیٹ',
 };

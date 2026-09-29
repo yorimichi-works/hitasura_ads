@@ -159,7 +159,7 @@ class G149 extends MiniGame {
   final _iconHit = List<double>.filled(6, 0);
   final _pops = <_Pop>[];
   final _zaps = <_Zap>[];
-  int _total = 22;
+  int _total = 17;
   int _spawned = 0;
   int _killed = 0;
   double _spawnT = .3;
@@ -221,8 +221,8 @@ class G149 extends MiniGame {
     // spawn waves
     _spawnT -= dt * host.speed;
     if (_spawned < _total && _spawnT <= 0) {
-      _spawnT = _spawned < 6 ? .55 : rand(.45, .8);
-      final n = _spawned > 10 && chance(.35) ? 2 : 1;
+      _spawnT = _spawned < 5 ? .5 : rand(.38, .62);
+      final n = _spawned > 8 && chance(.3) ? 2 : 1;
       for (var i = 0; i < n && _spawned < _total; i++) {
         _spawnBug(_edgePoint());
       }
@@ -230,8 +230,8 @@ class G149 extends MiniGame {
     }
     // fake cleaner popups
     _popT -= dt * host.speed;
-    if (_popT <= 0 && _pops.length < 2 && host.timeLeft > 4) {
-      _popT = rand(3.5, 4.5);
+    if (_popT <= 0 && _pops.length < 2 && host.timeLeft > 7) {
+      _popT = rand(4.0, 5.0);
       _pops.add(_Pop(Offset(rand(110, 250), rand(250, 440))));
       host.sfx(Sfx.notify);
     }
@@ -315,7 +315,7 @@ class G149 extends MiniGame {
     _clickT = .15;
     // bugs crawl on top of everything: check them first
     _Bug? hit;
-    var hd = 26.0;
+    var hd = 30.0;
     for (final b in _bugs) {
       final d = (b.pos - p).distance;
       if (d < hd) {
@@ -362,7 +362,7 @@ class G149 extends MiniGame {
 
   @override
   void onTimeUp() {
-    if (_remaining <= 2 && _iconsLeft > 0) {
+    if (_remaining <= 3 && _iconsLeft > 0) {
       host.win(stars: 1);
     } else {
       _bsod = true;

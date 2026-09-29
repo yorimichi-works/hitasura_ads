@@ -311,4 +311,5 @@ const Map<String, String> wordsJa = {
   'corner': '角だ！！！',
   'click_here': 'ここをクリック',
   'sorry': 'ごめんね！',
+  'overheat': 'オーバーヒート',
 };

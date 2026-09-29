@@ -9,6 +9,7 @@ class G117 extends MiniGame {
   static const _edge = 300.0; // front edge (world y)
   static const _r = 13.0;
   static const _auto = bool.fromEnvironment('AUTOPLAY');
+  static const _shelfOut = 80.0; // shelf extended beyond this -> dropped coin is lost
 
   final List<_Coin> _coins = [];
   final List<_Drop> _drops = [];
@@ -97,7 +98,7 @@ class G117 extends MiniGame {
     _shownWon = M.approach(_shownWon, _won.toDouble(), 10, dt);
     _push = 70 + 36 * sin(_t * 2.5 * host.speed);
     _slotX = 150 + sin(_t * 1.9 * host.speed) * 105;
-    if (_auto && !host.finished) _drop(_proj(150 + sin(_t * 3) * 100, 60).dx);
+    if (_auto && !host.finished && _dropOk) _drop(_proj(150 + sin(_t * 3) * 100, 60).dx);
 
     // airborne drops
     for (final d in [..._drops]) {
@@ -112,6 +113,11 @@ class G117 extends MiniGame {
       }
       if (d.t >= .3) {
         d.dead = true;
+        if (d.fromRail && _push > _shelfOut) {
+          // landed on top of the extended shelf -> dragged away behind the wall
+          _wasted(d.wx);
+          continue;
+        }
         final c = _Coin(d.wx.clamp(_r, _fw - _r), _push + _r + 2, _r, _CoinKind.normal)..bounce = 1;
         _coins.add(c);
         host.sfx(Sfx.clang, volume: .35, rate: 1.6 + rand(0, .3));
@@ -214,13 +220,24 @@ class G117 extends MiniGame {
     _hand += 3;
   }
 
+  /// Would a coin dropped now land in front of the shelf (not on top of it)?
+  bool get _dropOk => 70 + 36 * sin((_t + .3) * 2.5 * host.speed) <= _shelfOut;
+
+  void _wasted(double wx) {
+    final at = _proj(wx, _push * .5);
+    host.sfx(Sfx.clang, volume: .4, rate: .7);
+    host.sfx(Sfx.boing, volume: .3);
+    host.fx.smoke(at, count: 3, color: const Color(0xAAE8EEFA));
+    host.fx.pop(host.tr('miss', 'MISS'), at + const Offset(0, -18), color: Pal.red, size: 18, life: .6);
+  }
+
   void _drop(double sx) {
     if (host.finished || _hand <= 0 || _cd > 0) return;
     _cd = .13;
     _hand--;
     _aimX = sx.clamp(40.0, 320.0);
     final wx = _unprojX(_aimX, 40).clamp(_r, _fw - _r);
-    _drops.add(_Drop(wx));
+    _drops.add(_Drop(wx)..fromRail = true);
     host.sfx(Sfx.click, rate: 1.4);
   }
 
@@ -261,6 +278,8 @@ class G117 extends MiniGame {
     }
     // coin launcher rail
     D.rrect(c, const Rect.fromLTRB(30, 64, 330, 84), 10, const Color(0xFF2A0F40), border: Pal.ink, borderWidth: 2.5);
+    final ok = _dropOk;
+    c.drawCircle(Offset(_aimX, 74), 13, D.fill(ok ? const Color(0xAA7CFF6B) : const Color(0x88FF4D4D)));
     D.coin(c, Offset(_aimX, 74), 9, spin: _t);
     // back wall with chance slot
     const wall = Rect.fromLTRB(30, 92, 330, 232);
@@ -447,6 +466,7 @@ class _Drop {
   double t = 0;
   bool dead = false;
   bool checkedSlot = false;
+  bool fromRail = false;
 }
 
 class _Fall {

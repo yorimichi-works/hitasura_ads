@@ -18,6 +18,7 @@ class G026 extends MiniGame {
 
   // aim
   bool _aiming = false;
+  double _aimT0 = 0;
   Offset _aimStart = Offset.zero;
   Offset _aimCur = Offset.zero;
   double _arm = -2.4; // radians, arm angle (0 = pointing right)
@@ -135,7 +136,12 @@ class G026 extends MiniGame {
     }
     for (final g in _guys) {
       if (g.down) continue;
-      if ((g.pos + const Offset(0, -14) - _bPos).distance < 22) {
+      if ((g.pos + const Offset(0, -14) - _bPos).distance < (g.king ? 17 : 22)) {
+        // a rolling/resting boulder only nudges: it has to actually smash in
+        if (_bVel.distance < 160) {
+          _bVel = Offset(-_bVel.dx * .4, _bVel.dy.abs() * .2);
+          continue;
+        }
         _launchGuy(g, _bVel * .7 + const Offset(0, -260));
         _bVel = _bVel * .8;
       }
@@ -237,7 +243,7 @@ class G026 extends MiniGame {
           b.spin *= .6;
         }
         // flying debris can clobber guys
-        if (b.vel.distance > 170) {
+        if (b.vel.distance > 230) {
           for (final g in _guys) {
             if (!g.down && (g.pos + const Offset(0, -14) - b.r.center).distance < 20) _launchGuy(g, b.vel * .6);
           }
@@ -286,7 +292,7 @@ class G026 extends MiniGame {
         var ny = g.pos.dy + g.vy * dt;
         if (ny >= sup) {
           ny = sup;
-          if (g.fall > 40 || sup >= _groundY) {
+          if (g.fall > 90 || sup >= _groundY) {
             g.pos = Offset(g.pos.dx, ny);
             _launchGuy(g, Offset(rand(-40, 40), -120));
             continue;
@@ -303,6 +309,7 @@ class G026 extends MiniGame {
   void onDown(Offset p) {
     if (_flying || _shots >= _maxShots || _won) return;
     _aiming = true;
+    _aimT0 = _t;
     _aimStart = p;
     _aimCur = p;
     host.sfx(Sfx.tick, volume: .5);
@@ -319,7 +326,8 @@ class G026 extends MiniGame {
     _aiming = false;
     _aimCur = p;
     final pullV = _aimStart - _aimCur;
-    if (pullV.distance < 30 || pullV.dx < 4 || pullV.dy > -2) {
+    // a flick doesn't wind the catapult: pull back and hold a moment to aim
+    if (pullV.distance < 40 || pullV.dx < 4 || pullV.dy > -2 || _t - _aimT0 < .3) {
       // must pull back (down-left) to fire
       _armTarget = -2.4;
       host.sfx(Sfx.boing, volume: .4);
