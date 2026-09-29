@@ -44,6 +44,7 @@ void main() {
     final index = File('web/index.html').readAsStringSync();
     final robots = File('web/robots.txt').readAsStringSync();
     final sitemap = File('web/sitemap.xml').readAsStringSync();
+    final adsText = File('web/ads.txt').readAsStringSync().trim();
     final manifest = jsonDecode(
       File('web/manifest.json').readAsStringSync(),
     ) as Map<String, dynamic>;
@@ -56,6 +57,31 @@ void main() {
     expect(index, contains('src="rewarded_ads.js"'));
     expect(robots, contains('$origin/sitemap.xml'));
     expect(sitemap, contains('<loc>$origin/</loc>'));
+    for (final page in [
+      'about.html',
+      'guide.html',
+      'catalog.html',
+      'privacy.html',
+      'contact.html',
+    ]) {
+      final contents = File('web/$page').readAsStringSync();
+      expect(contents, contains('<html lang="ja">'));
+      expect(contents, contains('href="/privacy.html"'));
+      expect(sitemap, contains('$origin/$page'));
+    }
+    expect(File('web/catalog.html').readAsStringSync(), contains('No.151'));
+    expect(
+      File('web/privacy.html').readAsStringSync(),
+      allOf(
+        contains('Google AdSense'),
+        contains('Cookie'),
+        contains('Firebase'),
+      ),
+    );
+    expect(
+      adsText,
+      'google.com, pub-3186852093801241, DIRECT, f08c47fec0942fa0',
+    );
     expect(manifest['name'], 'ひたすら広告');
     expect(manifest['start_url'], '/');
     expect(File('web/favicon.png').lengthSync(), greaterThan(0));

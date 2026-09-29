@@ -1,3 +1,7 @@
+import 'arcade_state.dart';
+
+export 'arcade_state.dart';
+
 class UserProfile {
   const UserProfile({
     required this.id,
@@ -62,6 +66,7 @@ class AppSnapshot {
     this.searchEnergy = 5,
     this.searchEnergyRecoveryAnchor,
     this.statsDate,
+    this.arcade = const ArcadeState(),
   });
 
   final String? cloudAccountUid;
@@ -75,4 +80,5 @@ class AppSnapshot {
   final int searchEnergy;
   final DateTime? searchEnergyRecoveryAnchor;
   final String? statsDate;
+  final ArcadeState arcade;
 }

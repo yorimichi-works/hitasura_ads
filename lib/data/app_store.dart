@@ -26,6 +26,7 @@ class PreferencesAppStore implements AppStore {
   static const _searchEnergyRecoveryAnchor = 'search_energy_recovery_anchor';
   static const _statsDate = 'stats_date';
   static const _cloudAccountUid = 'cloud_account_uid';
+  static const _arcade = 'arcade_state';
 
   @override
   Future<AppSnapshot> load() async {
@@ -62,6 +63,7 @@ class PreferencesAppStore implements AppStore {
         prefs.getString(_searchEnergyRecoveryAnchor) ?? '',
       ),
       statsDate: prefs.getString(_statsDate),
+      arcade: ArcadeState.fromJson(prefs.getString(_arcade)),
     );
   }
 
@@ -93,11 +95,12 @@ class PreferencesAppStore implements AppStore {
     await prefs.setInt(_watchCount, snapshot.watchCount);
     await prefs.setBool(_soundEffectsEnabled, snapshot.soundEffectsEnabled);
     await prefs.setInt(_searchEnergy, snapshot.searchEnergy);
-    await prefs.setString(
-      _searchEnergyRecoveryAnchor,
-      snapshot.searchEnergyRecoveryAnchor!.toIso8601String(),
-    );
+    final anchor = snapshot.searchEnergyRecoveryAnchor;
+    if (anchor != null) {
+      await prefs.setString(_searchEnergyRecoveryAnchor, anchor.toIso8601String());
+    }
     await _setNullable(prefs, _statsDate, snapshot.statsDate);
+    await prefs.setString(_arcade, snapshot.arcade.encode());
   }
 
   Future<void> _setNullable(

@@ -109,7 +109,7 @@ This app was frozen because it was boring. Each game must be **a polished little
 ```bash
 cd /d/user/develop/hitasura_ads
 ../flutter/bin/dart analyze lib/arcade/games/g042.dart   # must be clean (no errors/warnings)
-../flutter/bin/flutter test test/arcade/game_snap_test.dart --dart-define=GAMES=42,43
+python tool/arcade/snap.py 42,43        # compiles ONLY the listed games
 ```
 
 The test runs each game 3 times with a random "monkey" player, fails on exceptions or if the
@@ -119,4 +119,4 @@ game never ends, prints outcomes, and writes snapshots to `build/snaps/gNNN_{0,1
 win path works, e.g. by reasoning through the code or temporarily testing.)
 
 Note: several agents share this machine; flutter test may wait on a lock — be patient. Run
-the test for all your games in ONE invocation when possible (e.g. `GAMES=41-50`).
+the test for all your games in ONE invocation when possible (e.g. `python tool/arcade/snap.py 41-50`).

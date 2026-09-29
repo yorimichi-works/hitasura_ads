@@ -91,6 +91,7 @@ abstract final class AppSnapshotCodec {
         ?.toUtc()
         .toIso8601String(),
     'statsDate': snapshot.statsDate,
+    'arcade': snapshot.arcade.toJson(),
   };
 
   static AppSnapshot fromMap(Map<String, dynamic> data) {
@@ -126,6 +127,7 @@ abstract final class AppSnapshotCodec {
         _string(data['searchEnergyRecoveryAnchor']) ?? '',
       ),
       statsDate: _string(data['statsDate']),
+      arcade: ArcadeState.fromJson(data['arcade']),
     );
   }
 

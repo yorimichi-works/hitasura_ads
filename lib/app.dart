@@ -1,54 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'screens/app_shell.dart';
-import 'screens/first_launch_screen.dart';
+import 'arcade/engine/audio.dart';
+import 'arcade/engine/draw.dart';
+import 'arcade/engine/game_view.dart';
+import 'l10n/l10n.dart';
+import 'services/rewarded_ad_service.dart';
 import 'state/app_controller.dart';
+import 'ui/first_launch.dart';
+import 'ui/home.dart';
+import 'ui/kit.dart';
+
+/// Connects the engine's text hooks to the current language.
+void applyLanguage() {
+  EngineText.lang = L10n.code;
+  EngineText.word = L10n.word;
+  EngineText.ui = L10n.ui;
+  D.textDirection = L10n.direction;
+}
 
 class HitasuraAdsApp extends StatelessWidget {
-  const HitasuraAdsApp({super.key, required this.controller});
+  const HitasuraAdsApp({super.key, required this.controller, this.rewardedAdService});
 
   final AppController controller;
+  final RewardedAdService? rewardedAdService;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ひたすら広告',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFF3D00),
-          primary: const Color(0xFFE52A00),
-          secondary: const Color(0xFFFFC400),
-          surface: const Color(0xFFFFF7E8),
-        ),
-        scaffoldBackgroundColor: const Color(0xFFFFF7E8),
-        fontFamily: 'KosugiMaru',
-        fontFamilyFallback: const ['Noto Sans JP', 'Yu Gothic', 'Meiryo'],
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-            fontWeight: FontWeight.w900,
-            letterSpacing: 0,
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, _) {
+        applyLanguage();
+        ArcadeAudio.instance.muted = !controller.soundEffectsEnabled;
+        final lang = L10n.lang;
+        return MaterialApp(
+          title: L10n.ui('app_title'),
+          debugShowCheckedModeBanner: false,
+          locale: lang.flutterLocale,
+          supportedLocales: [for (final l in languages) l.flutterLocale],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          theme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.dark,
+            fontFamily: K.font,
+            fontFamilyFallback: D.fontFallback,
+            colorScheme: ColorScheme.fromSeed(seedColor: K.pink, brightness: Brightness.dark, primary: K.pink, secondary: K.yellow),
+            scaffoldBackgroundColor: K.night,
+            snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
+            inputDecorationTheme: const InputDecorationTheme(
+              filled: true,
+              fillColor: Color(0xFFFFFFFF),
+              border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+              hintStyle: TextStyle(color: Color(0x88140E2A)),
+            ),
           ),
-          headlineMedium: TextStyle(fontWeight: FontWeight.w900),
-          titleLarge: TextStyle(fontWeight: FontWeight.w900),
-        ),
-        cardTheme: CardThemeData(
-          elevation: 0,
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-            side: const BorderSide(color: Color(0xFF1A1A1A), width: 2),
-          ),
-        ),
-      ),
-      home: AnimatedBuilder(
-        animation: controller,
-        builder: (context, _) => controller.isRegistered
-            ? AppShell(controller: controller)
-            : FirstLaunchScreen(controller: controller),
-      ),
+          builder: (context, child) => Directionality(textDirection: L10n.direction, child: child!),
+          home: controller.isRegistered
+              ? HomeScreen(controller: controller, rewardedAdService: rewardedAdService)
+              : FirstLaunchScreen(controller: controller),
+        );
+      },
     );
   }
 }

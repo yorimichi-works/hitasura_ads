@@ -1,19 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hitasura_ads/data/ad_catalog.dart';
 import 'package:hitasura_ads/data/app_store.dart';
 import 'package:hitasura_ads/models/app_models.dart';
 import 'package:hitasura_ads/services/cloud_progress_service.dart';
 import 'package:hitasura_ads/services/google_auth_service.dart';
+import 'package:hitasura_ads/arcade/engine/game.dart';
+import 'package:hitasura_ads/arcade/registry.dart';
 import 'package:hitasura_ads/state/app_controller.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late AdCatalog catalog;
-
-  setUpAll(() async {
-    catalog = await AdCatalog.load();
-  });
 
   test('cloud snapshot codec preserves all progression fields', () {
     final anchor = DateTime.utc(2026, 8, 28, 12);
@@ -98,7 +94,6 @@ void main() {
     final auth = _FakeAuthSession('google-1');
 
     final controller = await AppController.create(
-      catalog: catalog,
       store: localStore,
       authSession: auth,
       cloudStore: cloud,
@@ -141,7 +136,6 @@ void main() {
       final auth = _FakeAuthSession('google-b');
 
       final controller = await AppController.create(
-        catalog: catalog,
         store: localStore,
         authSession: auth,
         cloudStore: cloud,
@@ -168,14 +162,13 @@ void main() {
     final cloud = _MemoryCloudStore();
     final auth = _FakeAuthSession('google-1');
     final controller = await AppController.create(
-      catalog: catalog,
       store: localStore,
       authSession: auth,
       cloudStore: cloud,
       clock: () => now,
     );
 
-    await controller.completeAd(catalog['AD_040'], 8);
+    await controller.recordPlay(gamesById['AD_040']!, const GameResult(won: true, stars: 2, score: 0, seconds: 8));
 
     expect(cloud.snapshots['google-1']?.discoveredIds, contains('AD_040'));
     expect(cloud.snapshots['google-1']?.watchCount, 1);

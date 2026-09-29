@@ -12,21 +12,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb && Firebase.apps.isEmpty) {
     try {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     } on FirebaseException catch (error) {
       debugPrint('Firebase initialization failed: ${error.code} $error');
     }
   }
   final googleAuth = GoogleAuthService();
   await googleAuth.initialize();
-  final cloudStore = kIsWeb && Firebase.apps.isNotEmpty
-      ? FirestoreProgressCloudStore()
-      : null;
-  final controller = await AppController.create(
-    authSession: googleAuth,
-    cloudStore: cloudStore,
-  );
+  final cloudStore = kIsWeb && Firebase.apps.isNotEmpty ? FirestoreProgressCloudStore() : null;
+  final controller = await AppController.create(authSession: googleAuth, cloudStore: cloudStore);
   runApp(HitasuraAdsApp(controller: controller));
 }

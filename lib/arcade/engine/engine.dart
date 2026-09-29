@@ -1,7 +1,7 @@
 /// Everything a mini-game needs: `import '../engine/engine.dart';`
 library;
 
-export 'dart:math' show Random, pi, sin, cos, sqrt, atan2, max, min, pow;
+export 'dart:math' show Random, pi, e, sin, cos, tan, asin, acos, atan, atan2, sqrt, max, min, pow, exp, log;
 export 'dart:ui' show Canvas, Color, Offset, Rect, RRect, Radius, Size, Path, Paint, PaintingStyle, StrokeCap, BlendMode;
 
 export 'package:flutter/painting.dart' show Alignment, FontWeight, TextAlign, LinearGradient, RadialGradient;

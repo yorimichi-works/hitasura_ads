@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hitasura_ads/data/ad_catalog.dart';
 import 'package:hitasura_ads/data/app_store.dart';
 import 'package:hitasura_ads/models/app_models.dart';
 import 'package:hitasura_ads/services/search_energy_service.dart';
@@ -56,14 +55,12 @@ void main() {
   test(
     'controller persists consumption and restores elapsed recovery',
     () async {
-      final catalog = await AdCatalog.load();
       var now = DateTime.utc(2026, 8, 26, 12);
       final store = MemoryAppStore(
         AppSnapshot(searchEnergy: 2, searchEnergyRecoveryAnchor: now),
       );
       var controller = await AppController.create(
         store: store,
-        catalog: catalog,
         clock: () => now,
       );
 
@@ -74,7 +71,6 @@ void main() {
       now = now.add(const Duration(minutes: 7));
       controller = await AppController.create(
         store: store,
-        catalog: catalog,
         clock: () => now,
       );
       expect(controller.searchEnergy, 3);

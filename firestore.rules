@@ -26,7 +26,7 @@ service cloud.firestore {
             'schemaVersion', 'cloudAccountUid', 'user', 'explorationProfile',
             'discoveredIds', 'totalWatchSeconds', 'todayWatchSeconds',
             'watchCount', 'soundEffectsEnabled', 'searchEnergy',
-            'searchEnergyRecoveryAnchor', 'statsDate'
+            'searchEnergyRecoveryAnchor', 'statsDate', 'arcade'
           ]);
       }
 

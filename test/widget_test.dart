@@ -20,6 +20,85 @@ void main() {
     catalog = await AdCatalog.load();
   });
 
+  testWidgets('discovery continues directly and respects remaining search energy', (tester) async {
+    tester.view.physicalSize = const Size(320, 568);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    for (final energy in [2, 1]) {
+      final now = DateTime.utc(2026, 9, 8);
+      final controller = await AppController.create(
+        store: MemoryAppStore(AppSnapshot(
+          user: UserProfile(id: 'continuous-$energy', nickname: 'tester', age: 24, createdAt: now),
+          searchEnergy: energy, searchEnergyRecoveryAnchor: now,
+        )), catalog: catalog, clock: () => now,
+      );
+      await tester.pumpWidget(MaterialApp(home: AppShell(controller: controller,
+        rewardedAdService: _FakeRewardedAdService(RewardedAdResult.rewarded))));
+      await tester.tap(find.byKey(const Key('play-ad-button')));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 30));
+      await tester.tap(find.widgetWithText(TextButton, '広告を終了する'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(controller.discoveredCount, 1);
+      expect(controller.searchEnergy, energy - 1);
+      final next = find.byKey(const Key('discovery-next-ad'));
+      expect(tester.takeException(), isNull);
+      if (energy == 2) {
+        expect(next, findsOneWidget);
+        expect(next.hitTestable(), findsOneWidget);
+        expect(find.widgetWithText(TextButton, '閉じる').hitTestable(), findsOneWidget);
+        await tester.tap(next);
+        await tester.tap(next);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(controller.searchEnergy, 0);
+        expect(next, findsNothing);
+      } else {
+        expect(next, findsNothing);
+        expect(find.widgetWithText(TextButton, '閉じる'), findsOneWidget);
+      }
+      await tester.pumpWidget(const SizedBox.shrink());
+    }
+  });
+
+  testWidgets('known ads continue without a discovery dialog and consume one search', (tester) async {
+    tester.view.physicalSize = const Size(320, 568);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final now = DateTime.utc(2026, 9, 8);
+    final controller = await AppController.create(
+      store: MemoryAppStore(AppSnapshot(
+        user: UserProfile(id: 'known-chain', nickname: 'tester', age: 24, createdAt: now),
+        discoveredIds: catalog.all.map((ad) => ad.id).toSet(),
+        searchEnergy: 2, searchEnergyRecoveryAnchor: now,
+      )), catalog: catalog, clock: () => now,
+    );
+    await tester.pumpWidget(MaterialApp(home: AppShell(controller: controller,
+      rewardedAdService: _FakeRewardedAdService(RewardedAdResult.rewarded))));
+    await tester.tap(find.byKey(const Key('play-ad-button')));
+    await tester.pump();
+    expect(find.byKey(const Key('next-ad-button')), findsNothing);
+    await tester.pump(const Duration(seconds: 30));
+    expect(find.byKey(const Key('next-ad-button')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    expect(find.byKey(const Key('next-ad-button')).hitTestable(), findsOneWidget);
+    expect(find.byKey(const Key('close-ad-button')).hitTestable(), findsOneWidget);
+    await tester.tap(find.byKey(const Key('next-ad-button')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(controller.searchEnergy, 0);
+    expect(find.byKey(const Key('discovery-next-ad')), findsNothing);
+    await tester.pump(const Duration(seconds: 30));
+    expect(find.byKey(const Key('next-ad-button')), findsNothing);
+    expect(find.byKey(const Key('close-ad-button')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('close-ad-button')));
+    await tester.pump();
+    expect(controller.discoveredCount, 151);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   test('広告図鑑は001〜151の固定データを欠番・重複なく持つ', () async {
     expect(catalog.all, hasLength(151));
     expect(catalog.all.map((ad) => ad.id).toSet(), hasLength(151));
