@@ -166,21 +166,10 @@ class G109 extends MiniGame {
 
   // --------------------------------------------------------------- update --
 
-  static const _auto = true;
-  double _autoT = 0;
-
   @override
   void update(double dt) {
     _t += dt;
     _phT += dt;
-    if (_auto && !host.finished) {
-      _autoT += dt;
-      if (_ph == _Ph.crank) _turn(dt * 9);
-      if (_autoT > .45) {
-        _autoT = 0;
-        onKey('action', true);
-      }
-    }
     _machShake = M.approach(_machShake, 0, 5, dt);
     switch (_ph) {
       case _Ph.crank:

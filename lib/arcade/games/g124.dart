@@ -247,7 +247,7 @@ class G124 extends MiniGame {
     final book = _bookCount * _bookDmg * 1.2;
     final aura = _lv[2]! > 0 ? _auraDmg / .3 : 0;
     final thunder = _lv[3]! > 0 ? _thunderDmg / _thunderRate * .5 : 0;
-    return max(3000.0, (bolt + .3 * (book + aura) + thunder) * 4.5);
+    return max(3000.0, (bolt + .3 * (book + aura) + thunder) * 6.0);
   }
 
   void _spawnOne() {

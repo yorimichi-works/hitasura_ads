@@ -48,10 +48,8 @@ class G019 extends MiniGame {
   // ------------------------------------------------------------ update ---
 
   @override
-  double _botT = 0; // BOT
   void update(double dt) {
     _t += dt;
-    _botT += dt; if (_botT > .45 && !host.finished) { _botT = 0; final live = _foes.where((f) => !f.dead && f.x < 360).toList()..sort((a, b) => a.x.compareTo(b.x)); if (live.isNotEmpty) { final f = live.first; final tgt = _headOf(f) + Offset(-f.speed * .5, 0); Offset? bestV; var bd = 1e9; for (var a = -1.2; a < .3; a += .02) { for (var sp = 300.0; sp < 980; sp += 20) { var p = _bow; var v = Offset(cos(a), sin(a)) * sp; for (var k = 0; k < 90; k++) { v = Offset(v.dx, v.dy + _g / 60); p += v / 60; if (p.dx >= tgt.dx) break; } final d = (p - tgt).distance; if (d < bd) { bd = d; bestV = Offset(cos(a), sin(a)) * sp; } } } if (bestV != null) _fire(bestV); } } // BOT
     final sp = host.speed;
     _cool = math.max(0, _cool - dt);
     _wallHit = M.approach(_wallHit, 0, 6, dt);

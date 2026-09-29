@@ -204,7 +204,7 @@ class G116 extends MiniGame {
     if (!_autoHeld && _stT > .3) {
       _autoHeld = true;
       _startHold();
-    } else if (_autoHeld && _holding && (_cx - target.x).abs() < 6 + rand(0, 8)) {
+    } else if (_autoHeld && _holding && (_cx - target.x).abs() < 5) {
       _autoHeld = false;
       _releaseHold();
     }
@@ -221,7 +221,7 @@ class G116 extends MiniGame {
       return;
     }
     final a = (t.x - _cx).abs() / t.r;
-    final pity = _tryNo >= 3; // the machine feels sorry for you
+    final pity = _tryNo >= 3 && a < .7; // last credit: the machine feels a bit sorry
     if (a > .95) {
       // prongs just shove it
       t.x += (t.x - _cx).sign * 12;
@@ -236,7 +236,7 @@ class G116 extends MiniGame {
     t.gripOff = (t.x - _cx);
     _gripQ = (a / .95).clamp(0.0, 1.0);
     final heavy = t.kind == _Kind.prize ? .2 : 0.0;
-    final slipChance = pity ? 0.0 : (a < .3 ? .08 + heavy : (a < .6 ? .6 + heavy : .9));
+    final slipChance = pity ? .3 : (a < .35 ? .04 + heavy : (a < .7 ? .7 + heavy : .95));
     if (chance(slipChance)) {
       // slips during lift (near the top = maximum pain) or during carry
       _slipAt = chance(.55) ? rand(.55, .95) : rand(1.0, 1.9);
@@ -245,7 +245,7 @@ class G116 extends MiniGame {
     }
     host.sfx(Sfx.squish, rate: 1.1);
     host.fx.sparkle(Offset(t.x, t.y), count: 6, radius: 20);
-    if (a < .3) {
+    if (a < .35) {
       host.fx.pop(host.tr('perfect', 'PERFECT!'), Offset(_cx, _cy - 40), color: Pal.yellow, size: 26);
       host.sfx(Sfx.correct, volume: .6);
     } else {

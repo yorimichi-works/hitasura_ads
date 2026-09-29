@@ -88,7 +88,6 @@ class G021 extends MiniGame {
   @override
   void update(double dt) {
     _t += dt;
-    if (!_busy && _t > 1 && _slide < .05 && chance(.05)) { final pots = _rooms.where((r) => !r.cleared && r.kind == _RoomKind.potion).toList(); if (pots.isNotEmpty) { _enter(pots.first); } else { onKey('action', true); } } // BOT
     _bump = M.approach(_bump, 0, 7, dt);
     _shownPower = M.approach(_shownPower, _power, 9, dt);
     if (_transition < 0) _slide = M.approach(_slide, 0, 6, dt);
@@ -218,7 +217,6 @@ class G021 extends MiniGame {
   @override
   void onDown(Offset p) {
     if (_busy) return;
-    return; // BOT
     if ((p - _heroPos).distance < 48) {
       _dragging = true;
       _everDragged = true;

@@ -254,24 +254,10 @@ class G110 extends MiniGame {
 
   // --------------------------------------------------------------- update --
 
-  static const _auto = true;
-
   @override
   void update(double dt) {
     _t += dt;
     _stT += dt;
-    if (_auto && !host.finished) {
-      if (_st == _St.ready && _stT > .6) onKey('action', true);
-      if (_st == _St.spinning) {
-        for (var i = 0; i < 3; i++) {
-          final r = _reels[i];
-          if (r.st == _RS.spin && r.speed > 10 && _symAt((r.pos + 1.3).ceil()) == 0 && chance(.3)) {
-            _stopReel(i);
-            break;
-          }
-        }
-      }
-    }
     _strobe = M.approach(_strobe, _reach && _st == _St.spinning ? 1 : 0, 6, dt);
     _lineFlash = M.approach(_lineFlash, 0, 1.2, dt);
     if (!_leverDrag) _lever = M.approach(_lever, 0, 9, dt);

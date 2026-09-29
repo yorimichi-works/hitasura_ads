@@ -1,52 +1,9 @@
-# Third-Party Research Notices
+# Third-Party Notices
 
-No third-party game code or images were copied for the mini-game upgrade. The
-implementation is original Dart/Flutter code. The audio and font assets bundled
-with the app are listed below with their licenses and required attribution.
-These repositories were reviewed as architectural references only.
-
-| Repository | URL | License | Reference | Direct code used | Attribution |
-| --- | --- | --- | --- | --- | --- |
-| Flutter Games | https://github.com/flutter/games | BSD-3-Clause | Short game structure, drag/drop, runner lifecycle | No | Link and license recorded |
-| Flame | https://github.com/flame-engine/flame | MIT | Component lifecycle, input, hitbox and collision concepts | No | Link and license recorded |
-| flutter_2048 | https://github.com/angjelkom/flutter_2048 | MIT | Seedable board state and animation separation | No | Link and license recorded |
-| 2048-Game-Flutter | https://github.com/dcaayushd/2048-Game-Flutter | MIT | Swipe, score, restart and legal-move concepts | No | Link and license recorded |
-| flutter_puzzle_game | https://github.com/tomkastek/puzzle_game | MIT | Match-state separation | No | Link and license recorded |
-| flutter_crush | https://github.com/boeledi/flutter_crush | Unclear for code; some assets restricted | Match-3 ideas only | No | No source/assets used |
-
-Repositories without a clearly verified permissive license were not used as a
-source of code. No new runtime dependency was added, keeping Web size and the
-existing app lifecycle unchanged.
-
-## Background music
-
-| Asset | Source | Track | Composer | License | Credit shown in-app |
-| --- | --- | --- | --- | --- | --- |
-| `assets/audio/maou_loop_bgm_8bit27.mp3` | 魔王魂 (https://maou.audio/) | 8bit27「キャロットマンステージ」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-| `assets/audio/maou_loop_bgm_8bit28.mp3` | 魔王魂 (https://maou.audio/) | 8bit28「バーダックマン」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-| `assets/audio/maou_loop_bgm_neorock82.mp3` | 魔王魂 (https://maou.audio/) | ネオロック82「君が見ていた世界の果て」loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-| `assets/audio/maou_bgm_piano04.mp3` | 魔王魂 (https://maou.audio/bgm_piano04/) | ピアノ04 | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-| `assets/audio/maou_bgm_piano17.mp3` | 魔王魂 (https://maou.audio/bgm_piano17/) | ピアノ17 | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-| `assets/audio/maou_loop_bgm_cyber41.mp3` | 魔王魂 (https://maou.audio/bgm_cyber41/) | サイバー41 loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-| `assets/audio/maou_loop_bgm_cyber44.mp3` | 魔王魂 (https://maou.audio/bgm_cyber44/) | サイバー44 loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-| `assets/audio/maou_loop_bgm_cyber45.mp3` | 魔王魂 (https://maou.audio/bgm_cyber45/) | サイバー45 loop | 森田交一 | Free for personal and commercial use per https://maou.audio/rule/; attribution required | Yes, in Settings screen ("音楽：魔王魂") |
-
-魔王魂の利用規約に基づき、素材そのものの単体再配布は行っていません。
-
-## Sound effects
-
-The 25 MP3 files under `assets/audio/soundeffect_lab/` are from
-[効果音ラボ / Sound Effect Lab](https://soundeffect-lab.info/). They are used
-only as contextual operation, success, and failure sounds inside the 151 ad
-experiences. The app does not provide a soundboard, sampler, download UI, or
-other feature whose primary purpose is redistributing these files.
-
-Use is governed by the publisher's
-[terms](https://soundeffect-lab.info/agreement/) and
-[FAQ](https://soundeffect-lab.info/faq/). Both personal and commercial app use
-is permitted and attribution is optional. Copyright remains with Sound Effect
-Lab. The source files must not be extracted and redistributed as standalone
-sound material.
+All mini-games, graphics, background music and sound effects in this app are original works created for
+ひたすら広告 / AD DEMO 151. Music and sound effects are synthesized procedurally by `tool/audio/synth.py`;
+no third-party audio samples or images are bundled. Every ad, product, prize and brand shown in the games
+is a fictional parody.
 
 ## Bundled Japanese font
 

@@ -125,7 +125,6 @@ class G020 extends MiniGame {
   @override
   void update(double dt) {
     _t += dt;
-    { final open = _gates.where((g) => g.active && !g.passed).toList(); if (open.isNotEmpty) { final g = open.first; if (g.z > 8) { _targetX = g.sides[0].soldiers ? -2 : 2; } else { final a = g.sides[0], b = g.sides[1]; double val(_GateSide s) => s.soldiers ? s.value * 12 : s.value; _targetX = val(a) >= val(b) ? -2 : 2; } } else { _targetX = math.sin(_t) * 2; } } // BOT
     final sp = host.speed;
     _hurt = M.approach(_hurt, 0, 4, dt);
     _gateBanner = math.max(0, _gateBanner - dt);
@@ -310,7 +309,7 @@ class G020 extends MiniGame {
         host.fx.pop('KO!', p + const Offset(0, -60), color: Pal.yellow, size: 48, life: 1.2);
       }
       host.addScore(500);
-      host.win(stars: _soldiers >= 6 ? 3 : (_soldiers >= 3 ? 2 : 1));
+      host.win(stars: _soldiers >= 8 ? 3 : (_soldiers >= 4 ? 2 : 1));
     }
   }
 
@@ -319,7 +318,7 @@ class G020 extends MiniGame {
     final row = i ~/ cols;
     final inRow = math.min(cols, _soldiers - row * cols);
     final col = i % cols;
-    return V3((col - (inRow - 1) / 2) * .62, 0, -row * .7);
+    return V3((col - (inRow - 1) / 2) * .5, 0, -row * .55);
   }
 
   void _damageZombie(_Zombie z, int dmg) {
@@ -466,7 +465,7 @@ class G020 extends MiniGame {
 
     scene.clear();
     scene.cam
-      ..center = const Offset(180, 300)
+      ..center = const Offset(180, 350)
       ..focal = 430
       ..pos = V3(_squadX * .35, 8.2, -9.5)
       ..lookAt(V3(_squadX * .25, 0, 9));
@@ -533,7 +532,7 @@ class G020 extends MiniGame {
     for (var i = 0; i < _soldiers; i++) {
       final f = _formation(i);
       final bob = math.sin(_t * 12 + i) * .05;
-      scene.add(_soldier, pos: V3(_squadX + f.x, bob.abs(), f.z), flash: _hurt * .6, tint: _hurt > .3 ? Pal.red : null);
+      scene.add(_soldier, pos: V3(_squadX + f.x, bob.abs(), f.z), scale: .72, flash: _hurt * .6, tint: _hurt > .3 ? Pal.red : null);
     }
 
     // bullets

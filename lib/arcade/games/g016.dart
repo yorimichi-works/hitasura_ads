@@ -13,13 +13,13 @@ import '../engine/engine.dart';
 class G016 extends MiniGame {
   static const _c = Offset(180, 352); // furnace / town center
   static const _pop = 20;
-  static const _freezeLine = 30.0;
+  static const _freezeLine = 35.0;
   static const _woodHeat = 10.0;
   static const _coalHeat = 17.0;
 
   double _t = 0;
-  double _heat = 72; // 0..100
-  double _heatShown = 72;
+  double _heat = 64; // 0..100
+  double _heatShown = 64;
   double _boost = 0; // flame boost after feeding
   double _tapPulse = 0;
   double _freezeClock = 0;
@@ -104,7 +104,7 @@ class G016 extends MiniGame {
 
     if (!host.finished) {
       // heat decay
-      final decay = (5.6 + 8.4 * bz) * sp;
+      final decay = (6.2 + 9.0 * bz) * sp;
       _heat = math.max(0, _heat - decay * dt);
 
       // blizzard announcement
@@ -122,7 +122,7 @@ class G016 extends MiniGame {
 
       // freezing
       if (_heat < _freezeLine) {
-        final rate = _heat < 12 ? .5 : .85;
+        final rate = _heat < 15 ? .45 : .7;
         _freezeClock += dt * sp;
         if (_freezeClock >= rate) {
           _freezeClock = 0;

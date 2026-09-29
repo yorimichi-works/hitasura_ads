@@ -53,3 +53,6 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# snap.py temporary tests
+test/arcade/gen/

@@ -91,7 +91,6 @@ class G018 extends MiniGame {
   @override
   void update(double dt) {
     _t += dt;
-    for (final g in _gates) { if (!g.done) { var b = 0; for (var i = 1; i < g.ops.length; i++) { if (g.ops[i].apply(_army) > g.ops[b].apply(_army)) b = i; } _targetX = (g.ops.length == 3 ? _laneX3 : _laneX2)[b]; break; } } // BOT
     _bump = M.approach(_bump, 0, 8, dt);
     _castleShake = M.approach(_castleShake, 0, 8, dt);
     _shownArmy = M.approach(_shownArmy, _army, 14, dt);

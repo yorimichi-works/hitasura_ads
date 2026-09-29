@@ -35,16 +35,13 @@ class PlayReward {
 
 class AppController extends ChangeNotifier {
   AppController._({
-    required AppStore store,
+    required this._store,
     required AppSnapshot snapshot,
     required SearchEnergyService searchEnergyService,
-    required AuthSession? authSession,
-    required ProgressCloudStore? cloudStore,
+    required this._authSession,
+    required this._cloudStore,
     Random? random,
-  })  : _store = store,
-        _authSession = authSession,
-        _cloudStore = cloudStore,
-        _random = random ?? Random(),
+  })  : _random = random ?? Random(),
         _user = snapshot.user,
         _cloudAccountUid = snapshot.cloudAccountUid,
         _profile = snapshot.explorationProfile,

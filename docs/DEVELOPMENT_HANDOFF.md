@@ -1,6 +1,17 @@
 # 『ひたすら広告』制作環境引き継ぎ説明書
 
+> **2026-09-30 全面リニューアル（ブランチ `revamp/ad-demo-151`）**
+> 旧MVPの広告151本・ゲーム実装・画像・音声・UIはすべて撤去し、「151の広告デモ風ミニゲーム集」に作り直しました。
+> 現行の構成・起動・テスト方法は [README](../README.md) と [ミニゲーム制作ガイド](../tool/arcade/GAME_DEV_GUIDE.md) を参照してください。
+> 以下の第2節以降の環境構築（Flutter・Firebase・デプロイ手順）は引き続き有効ですが、ゲーム内容・ファイル構成・テスト件数に関する記述は旧版のものです。
+> 変更点の要約: `lib/arcade/`（エンジン＋151本）、`lib/ui/`（新UI）、`lib/l10n/`（20言語）、`assets/audio/{sfx,bgm}`（全音源を合成で新規制作）、
+> 保存データに `arcade`（コイン・経験値・スター等）を追加（`firestore.rules` 更新済み・要デプロイ）。
+
 最終更新: 2026-08-26
+
+2026-09-05追記: 全150本の再制作を進めています。以下は従来MVPの環境・運用手順です。現在の実装・テスト・実ブラウザ評価と残作業は[再制作の進行記録](game_rebuild_progress.md)を参照してください。
+
+2026-09-10公開: 最新改作版をFirebase Hostingへ公開済み。全151枚の現行ゲームサムネイルとアプリ本体が独自ドメインの配信内容と一致。最新検証は992 PASS・3 skip、静的解析問題なし、JavaScript 6 PASS。BGM/SEの聴覚評価など個別の未確認事項は残っており、総合品質目標を完了扱いにはしていません。詳細は進行記録末尾を参照。
 
 この文書は、別のWindows PCへ制作環境を移し、同じ状態から開発、テスト、Web本番デプロイを再開するための手順書です。
 
@@ -11,10 +22,10 @@
 - 広告表示、視聴時間、視聴回数、発見種類数、広告図鑑を実装
 - No.151の解放条件、専用演出、BGM、効果音を実装
 - 初回登録と広告探索プロフィールを実装
-- `main`へのpushを起点にVercelへ本番デプロイするGitHub Actionsを設定
+- `main`へのpushを起点にFirebase Hostingへ本番デプロイするGitHub Actionsを設定
 - 151広告すべてをスマートフォン相当サイズで生成し、操作とオーバーフローを検査する自動テストを実装
 
-現在のMVPはローカル版です。Firebase、実広告SDK、オンライン世界ランキングはまだ接続していません。ユーザー情報、発見状況、統計は`shared_preferences`を通じて端末内へ保存されます。
+現在はFirebase HostingでWeb版を公開しています。端末内保存に加え、WebのGoogleログインではFirebase AuthとFirestoreによる同期を実装しています（第13節）。実広告SDKとオンライン世界ランキングは未接続です。
 
 ## 2. 基準環境
 
@@ -195,27 +206,15 @@ git push origin main
 
 `main`へのpushは本番デプロイを起動します。未検証の変更、Secret、個人ファイル、大容量の一時ファイルを含めないでください。複数人で同時開発する場合は作業ブランチとPull Requestを使用し、検証後に`main`へマージする方が安全です。
 
-## 11. GitHub ActionsとGitHub Pages
+## 11. GitHub ActionsとFirebase Hosting
 
-CI/CD定義は`.github/workflows/deploy-web.yml`です。`main`へのpush時に次を実行します。
+CI/CD定義は`.github/workflows/deploy-firebase-hosting.yml`です。`main`へのpush時に依存取得、解析、Flutterテスト、`node --test test_js/rewarded_ads_test.cjs`、本番Webビルドを順番に実行します。
 
-1. ソースをcheckout
-2. Flutter stableをセットアップ
-3. `flutter pub get`
-4. `flutter analyze`
-5. `flutter test`
-6. GitHub Pagesを設定
-7. `flutter build web --release --base-href /hitasura_ads/ --no-wasm-dry-run`
-8. ビルド成果物をPages artifactとしてアップロード
-9. 成功した成果物だけをGitHub Pagesへデプロイ
+ビルドはbase href `/`、`APP_ENV=production`、`ADMOB_MODE=disabled`、`APP_BASE_URL=https://hitasura.yorimichi-works.jp`を指定します。成功後、`build/web`をFirebaseプロジェクト`hitasuraads`のHosting liveチャンネルへ公開します。
 
-解析、テスト、ビルドのいずれかが失敗した場合はデプロイ工程へ進まないため、既存の本番サイトは維持されます。
+公開URLは https://hitasura.yorimichi-works.jp/ です。GitHub Repository Secret `FIREBASE_SERVICE_ACCOUNT_HITASURAADS`が未設定の場合は警告を出して公開をスキップします。ビルド成功と公開成功は別に確認してください。Secretの現在の登録状態は、この文書では確認済みとしていません。
 
-公開URLは `https://chikuzensaito-dev.github.io/hitasura_ads/` です。
-
-初回のみ、GitHubリポジトリの `Settings > Pages > Build and deployment > Source` で `GitHub Actions` を選択します。Vercel用Secretは不要です。
-
-Pages用の権限はワークフロー内の `pages: write` と `id-token: write` で宣言しています。
+今回の公開はFirebase CLIのHosting限定デプロイで実施し、公開ファイルの一致と起動を検証済みです。GitHub Actionsが実行されたという記録ではありません。
 
 ## 12. 現在未接続の機能
 
@@ -257,7 +256,7 @@ flutter doctor -v
 
 Web音声が自動再生されない場合は、ブラウザの自動再生制限を確認します。音声はユーザー操作を起点に再生する設計で、再生失敗がアプリ全体を停止させないようフォールバックされています。
 
-Vercelで直接URLだけ404になる場合は、デプロイ成果物に`vercel.json`が含まれているか、rewriteが`/index.html`を指しているか確認します。
+Firebase Hostingで直接URLだけ404になる場合は、`firebase.json`のHosting公開ディレクトリとSPAのrewrite設定、および最新のデプロイ結果を確認します。
 
 GitHub Actionsが失敗した場合は、GitHubの`Actions`タブで最初に失敗した工程を確認します。Secret値をログやIssueへ貼り付けないでください。
 
@@ -271,7 +270,8 @@ GitHub Actionsが失敗した場合は、GitHubの`Actions`タブで最初に失
 - `flutter build web --release --base-href / --no-wasm-dry-run`が成功する
 - `flutter run -d chrome`で初回登録から広告表示まで確認できる
 - `docs/specification_06_catalog_source.md`と`docs/specification_07_current_product.md`を読める
-- GitHub Actionsの3つのVercel Secretsが登録済みである
-- `main`へのpush後、Actions成功とVercel本番反映を確認できる
+- GitHub Repository Secret `FIREBASE_SERVICE_ACCOUNT_HITASURAADS`が登録済みである
+- `main`へのpush後、Actions成功とFirebase Hosting本番反映を確認できる
 
 このチェックリストがすべて通れば、制作環境の引き継ぎは完了です。
+
