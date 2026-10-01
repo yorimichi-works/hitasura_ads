@@ -43,15 +43,17 @@ void main() {
     service.dispose();
   });
 
-  test('production ads stay hidden when the unit ID is missing', () {
+  test('production ads support energy recovery and catalog unlock', () {
     final service = GoogleRewardedAdService(
       platform: TargetPlatform.android,
       isWeb: false,
       adNetworkMode: AdNetworkMode.production,
     );
 
-    expect(service.isSupported, isFalse);
-    expect(service.status, RewardedAdStatus.unsupported);
+    expect(service.isSupported, isTrue);
+    expect(service.supportsPlacement('restore_search_energy'), isTrue);
+    expect(service.supportsPlacement('unlock_catalog'), isTrue);
+    expect(service.usesTestAds, isFalse);
     service.dispose();
   });
 

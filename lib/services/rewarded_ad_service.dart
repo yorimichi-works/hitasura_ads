@@ -84,9 +84,11 @@ class GoogleRewardedAdService extends RewardedAdService {
   static const _iosTestId = 'ca-app-pub-3940256099942544/1712485313';
   static const _androidProductionId = String.fromEnvironment(
     'ADMOB_ANDROID_REWARDED_ID',
+    defaultValue: 'ca-app-pub-3186852093801241/6139671936',
   );
   static const _androidUnlockProductionId = String.fromEnvironment(
     'ADMOB_ANDROID_UNLOCK_REWARDED_ID',
+    defaultValue: 'ca-app-pub-3186852093801241/4741056280',
   );
   static const _iosProductionId = String.fromEnvironment(
     'ADMOB_IOS_REWARDED_ID',

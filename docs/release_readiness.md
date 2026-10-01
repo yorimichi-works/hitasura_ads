@@ -3,7 +3,7 @@
 ## iOSビルド対象の追加機能
 
 - スタミナ全回復時と、アプリを3日間起動していないときのローカル通知。設定画面からオフにできる。OSの省電力制御により到着時刻は多少前後する。
-- iOS AdMobアプリID `ca-app-pub-3186852093801241~9948289508`、全回復用リワード広告ユニット `ca-app-pub-3186852093801241/4511295842`、任意解放用ユニット `ca-app-pub-3186852093801241/6036789642` を設定。Androidの本番ユニットは未提供のため別途設定が必要。
+- iOS AdMobアプリID `ca-app-pub-3186852093801241~9948289508`、全回復用リワード広告ユニット `ca-app-pub-3186852093801241/4511295842`、任意解放用ユニット `ca-app-pub-3186852093801241/6036789642` を設定。Androidの探索数回復用ユニット `ca-app-pub-3186852093801241/6139671936`、図鑑解放用ユニット `ca-app-pub-3186852093801241/4741056280` も設定済み。AndroidのAdMobアプリIDは未提供。
 - 買い切り商品ID `ad_free_unlimited` をiOS/Android両ストアで同じ非消耗型商品として登録する。価格は各ストアで200円に設定し、アプリ画面にはストアが返す価格を表示する。購入済みならチケットを消費せず、図鑑から好きな広告をスポンサー視聴なしで解放できる。購入復元ボタンあり。
 - 購入権利は端末に保存し、再インストール時はストアの復元操作で戻す。現実の販売前にストア側の商品登録、Sandbox/内部テストでの購入・復元検証、必要な取引検証方式の確定が必要。
 - `codemagic.yaml` に署名不要のiOSシミュレータビルドを用意。署名付きIPAには正式なBundle IDと配布プロファイルが必要。
@@ -22,7 +22,7 @@
 
 1. Androidの正式な `ANDROID_APPLICATION_ID` とiOSの `PRODUCT_BUNDLE_IDENTIFIER` を決定する。現行の `com.example.*` は仮値。
 2. AndroidのGradleプロパティ `RELEASE_STORE_FILE`、`RELEASE_STORE_PASSWORD`、`RELEASE_KEY_ALIAS`、`RELEASE_KEY_PASSWORD` を安全な場所から渡す。鍵をリポジトリに追加しない。
-3. AndroidのGradleプロパティ `ADMOB_ANDROID_APP_ID`、iOSのRelease用 `ADMOB_APP_ID`、Dart定義 `ADMOB_MODE=production` と各OSの `ADMOB_ANDROID_REWARDED_ID` / `ADMOB_IOS_REWARDED_ID` に本番値を設定する。現在のiOS Release設定はテスト用アプリIDのまま。
+3. AndroidのGradleプロパティ `ADMOB_ANDROID_APP_ID` とDart定義 `ADMOB_MODE=production` を設定する。広告ユニットIDは各OSともコード内の本番既定値を設定済みで、必要なら `ADMOB_ANDROID_REWARDED_ID` / `ADMOB_ANDROID_UNLOCK_REWARDED_ID` / `ADMOB_IOS_REWARDED_ID` / `ADMOB_IOS_UNLOCK_REWARDED_ID` で上書きできる。iOS Release用の `ADMOB_APP_ID` は設定済み。
 4. Android実機で広告の表示・視聴完了時のみ報酬付与・音声・画面遷移を確認する。iOSはmacOS環境でビルドと実機確認を行う。
 5. ストア登録用の説明、画像、プライバシー案内を用意する。端末内の進捗はアプリ削除時に消え、旧Web版のクラウド進捗は引き継がれないことを明記する。
 6. 既に公開したFirebase HostingのWeb版は、リポジトリからコードとデプロイ処理を削除しても自動的には停止しない。公開停止とクラウド上の既存データの扱いを別途決める。
