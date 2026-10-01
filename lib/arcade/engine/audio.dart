@@ -1,4 +1,4 @@
-import 'audio_native.dart' if (dart.library.js_interop) 'audio_web.dart' as impl;
+import 'audio_native.dart' as impl;
 
 /// Global audio for the arcade: sound effects + one looping music track.
 abstract class ArcadeAudio {

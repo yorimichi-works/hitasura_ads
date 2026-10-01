@@ -22,10 +22,12 @@ class PreferencesAppStore implements AppStore {
   static const _todaySeconds = 'today_watch_seconds';
   static const _watchCount = 'watch_count';
   static const _soundEffectsEnabled = 'sound_effects_enabled';
+  static const _notificationsEnabled = 'notifications_enabled';
+  static const _premiumNoAds = 'premium_no_ads';
   static const _searchEnergy = 'search_energy';
   static const _searchEnergyRecoveryAnchor = 'search_energy_recovery_anchor';
   static const _statsDate = 'stats_date';
-  static const _cloudAccountUid = 'cloud_account_uid';
+  static const _legacyCloudAccountUid = 'cloud_account_uid';
   static const _arcade = 'arcade_state';
 
   @override
@@ -42,7 +44,6 @@ class PreferencesAppStore implements AppStore {
             createdAt: createdAt ?? DateTime.now(),
           );
     return AppSnapshot(
-      cloudAccountUid: prefs.getString(_cloudAccountUid),
       user: user,
       explorationProfile: ExplorationProfile(
         ageGroup: prefs.getString(_ageGroup),
@@ -58,6 +59,8 @@ class PreferencesAppStore implements AppStore {
       todayWatchSeconds: prefs.getInt(_todaySeconds) ?? 0,
       watchCount: prefs.getInt(_watchCount) ?? 0,
       soundEffectsEnabled: prefs.getBool(_soundEffectsEnabled) ?? true,
+      notificationsEnabled: prefs.getBool(_notificationsEnabled) ?? true,
+      premiumNoAds: prefs.getBool(_premiumNoAds) ?? false,
       searchEnergy: prefs.getInt(_searchEnergy) ?? 5,
       searchEnergyRecoveryAnchor: DateTime.tryParse(
         prefs.getString(_searchEnergyRecoveryAnchor) ?? '',
@@ -70,8 +73,8 @@ class PreferencesAppStore implements AppStore {
   @override
   Future<void> save(AppSnapshot snapshot) async {
     final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_legacyCloudAccountUid);
     final user = snapshot.user;
-    await _setNullable(prefs, _cloudAccountUid, snapshot.cloudAccountUid);
     if (user != null) {
       await prefs.setString(_userId, user.id);
       await prefs.setString(_nickname, user.nickname);
@@ -94,10 +97,15 @@ class PreferencesAppStore implements AppStore {
     await prefs.setInt(_todaySeconds, snapshot.todayWatchSeconds);
     await prefs.setInt(_watchCount, snapshot.watchCount);
     await prefs.setBool(_soundEffectsEnabled, snapshot.soundEffectsEnabled);
+    await prefs.setBool(_notificationsEnabled, snapshot.notificationsEnabled);
+    await prefs.setBool(_premiumNoAds, snapshot.premiumNoAds);
     await prefs.setInt(_searchEnergy, snapshot.searchEnergy);
     final anchor = snapshot.searchEnergyRecoveryAnchor;
     if (anchor != null) {
-      await prefs.setString(_searchEnergyRecoveryAnchor, anchor.toIso8601String());
+      await prefs.setString(
+        _searchEnergyRecoveryAnchor,
+        anchor.toIso8601String(),
+      );
     }
     await _setNullable(prefs, _statsDate, snapshot.statsDate);
     await prefs.setString(_arcade, snapshot.arcade.encode());

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -9,9 +8,8 @@ import '../arcade/spec.dart';
 import '../data/app_store.dart';
 import '../l10n/l10n.dart';
 import '../models/app_models.dart';
-import '../services/cloud_progress_service.dart';
-import '../services/google_auth_service.dart';
 import '../services/search_energy_service.dart';
+import '../services/premium_purchase_service.dart';
 
 /// What a finished play earned.
 class PlayReward {
@@ -38,26 +36,31 @@ class AppController extends ChangeNotifier {
     required this._store,
     required AppSnapshot snapshot,
     required SearchEnergyService searchEnergyService,
-    required this._authSession,
-    required this._cloudStore,
+    required DateTime Function() clock,
     Random? random,
-  })  : _random = random ?? Random(),
-        _user = snapshot.user,
-        _cloudAccountUid = snapshot.cloudAccountUid,
-        _profile = snapshot.explorationProfile,
-        _discoveredIds = {...snapshot.discoveredIds},
-        _totalWatchSeconds = snapshot.totalWatchSeconds,
-        _todayWatchSeconds = _isToday(snapshot.statsDate) ? snapshot.todayWatchSeconds : 0,
-        _watchCount = snapshot.watchCount,
-        _soundEffectsEnabled = snapshot.soundEffectsEnabled,
-        _arcade = snapshot.arcade,
-        _searchEnergyService = searchEnergyService,
-        _searchEnergyState = searchEnergyService.synchronize(
-          SearchEnergyState(
-            remaining: snapshot.searchEnergy,
-            recoveryAnchor: snapshot.searchEnergyRecoveryAnchor ?? searchEnergyService.now(),
-          ),
-        ) {
+  }) : _clock = clock,
+       _random = random ?? Random(),
+       _user = snapshot.user,
+       _profile = snapshot.explorationProfile,
+       _discoveredIds = {...snapshot.discoveredIds},
+       _totalWatchSeconds = snapshot.totalWatchSeconds,
+       _todayWatchSeconds = snapshot.statsDate == _dateKey(clock())
+           ? snapshot.todayWatchSeconds
+           : 0,
+       _statsDate = _dateKey(clock()),
+       _watchCount = snapshot.watchCount,
+       _soundEffectsEnabled = snapshot.soundEffectsEnabled,
+       _notificationsEnabled = snapshot.notificationsEnabled,
+       _premiumNoAds = snapshot.premiumNoAds,
+       _arcade = snapshot.arcade,
+       _searchEnergyService = searchEnergyService,
+       _searchEnergyState = searchEnergyService.synchronize(
+         SearchEnergyState(
+           remaining: snapshot.searchEnergy,
+           recoveryAnchor:
+               snapshot.searchEnergyRecoveryAnchor ?? searchEnergyService.now(),
+         ),
+       ) {
     L10n.code = _arcade.language ?? L10n.detect();
   }
 
@@ -65,43 +68,40 @@ class AppController extends ChangeNotifier {
     AppStore? store,
     Random? random,
     DateTime Function()? clock,
-    AuthSession? authSession,
-    ProgressCloudStore? cloudStore,
   }) async {
     final actualStore = store ?? PreferencesAppStore();
+    final actualClock = clock ?? DateTime.now;
     final controller = AppController._(
       store: actualStore,
       snapshot: await actualStore.load(),
-      searchEnergyService: SearchEnergyService(clock: clock),
-      authSession: authSession,
-      cloudStore: cloudStore,
+      searchEnergyService: SearchEnergyService(clock: actualClock),
+      clock: actualClock,
       random: random,
     );
     await controller._store.save(controller._snapshot());
-    if (authSession != null && cloudStore != null) {
-      await controller._startCloudSync();
-    }
+    await controller.purchases.initialize();
     return controller;
   }
 
   final AppStore _store;
+  final DateTime Function() _clock;
   final SearchEnergyService _searchEnergyService;
-  final AuthSession? _authSession;
-  final ProgressCloudStore? _cloudStore;
   final Random _random;
   UserProfile? _user;
-  String? _cloudAccountUid;
-  ExplorationProfile _profile;
+  final ExplorationProfile _profile;
   final Set<String> _discoveredIds;
   int _totalWatchSeconds;
   int _todayWatchSeconds;
+  String _statsDate;
   int _watchCount;
   bool _soundEffectsEnabled;
+  bool _notificationsEnabled;
+  bool _premiumNoAds;
+  late final PremiumPurchaseService purchases = PremiumPurchaseService(
+    onUnlocked: grantPremium,
+  );
   ArcadeState _arcade;
   SearchEnergyState _searchEnergyState;
-  bool _cloudSyncing = false;
-  bool _cloudSynced = false;
-  String? _cloudSyncError;
   bool _unlockAll = false;
   final List<int> _recent = [];
 
@@ -115,34 +115,40 @@ class AppController extends ChangeNotifier {
   int get level => _arcade.level;
   Set<String> get discoveredIds => Set.unmodifiable(_discoveredIds);
   bool isDiscovered(GameSpec g) => _unlockAll || _discoveredIds.contains(g.id);
-  int get discoveredCount => _unlockAll ? allGames.length : allGames.where((g) => _discoveredIds.contains(g.id)).length;
+  int get discoveredCount => _unlockAll
+      ? allGames.length
+      : allGames.where((g) => _discoveredIds.contains(g.id)).length;
   bool get isComplete => allGames.every((g) => _discoveredIds.contains(g.id));
   int starsOf(GameSpec g) => _arcade.stars[g.id] ?? 0;
   int playsOf(GameSpec g) => _arcade.plays[g.id] ?? 0;
   int get totalWatchSeconds => _totalWatchSeconds;
   int get watchCount => _watchCount;
   bool get soundEffectsEnabled => _soundEffectsEnabled;
+  bool get notificationsEnabled => _notificationsEnabled;
+  bool get premiumNoAds => _premiumNoAds;
   int get searchEnergy => _searchEnergyState.remaining;
-  bool get canSearch => searchEnergy > 0;
-  Duration get timeUntilSearchRecovery => _searchEnergyService.untilNextRecovery(_searchEnergyState);
-  bool get cloudSyncing => _cloudSyncing;
-  bool get cloudSynced => _cloudSynced;
-  String? get cloudSyncError => _cloudSyncError;
+  bool get canSearch => _premiumNoAds || searchEnergy > 0;
+  Duration get timeUntilSearchRecovery =>
+      _searchEnergyService.untilNextRecovery(_searchEnergyState);
+  DateTime? get searchEnergyFullAt => _premiumNoAds
+      ? null
+      : _searchEnergyService.fullRecoveryAt(_searchEnergyState);
   bool get unlockAll => _unlockAll;
   static const _adminToolsCompiled = bool.fromEnvironment('ENABLE_ADMIN_TOOLS');
   bool get adminToolsEnabled => kDebugMode || _adminToolsCompiled;
 
   /// Discovered games that fit in RUSH mode.
-  List<GameSpec> get rushPool => allGames.where((g) => g.rushable && isDiscovered(g)).toList();
+  List<GameSpec> get rushPool =>
+      allGames.where((g) => g.rushable && isDiscovered(g)).toList();
   static const rushUnlockCount = 5;
   bool get rushUnlocked => rushPool.length >= rushUnlockCount;
 
-  bool get dailyAvailable => _arcade.dailyDate != _dateKey(DateTime.now());
+  bool get dailyAvailable => _arcade.dailyDate != _dateKey(_clock());
 
   // ------------------------------------------------------------- actions ---
 
   Future<void> register(String nickname) async {
-    final now = DateTime.now();
+    final now = _clock();
     _user = UserProfile(
       id: '${now.microsecondsSinceEpoch}-${Random().nextInt(999999)}',
       nickname: nickname.trim().isEmpty ? 'Ad Hunter' : nickname.trim(),
@@ -174,8 +180,12 @@ class AppController extends ChangeNotifier {
     final regular = allGames.where((g) => !g.isSecret).toList();
     final secret = allGames.firstWhere((g) => g.isSecret);
     final allRegularFound = regular.every((g) => _discoveredIds.contains(g.id));
-    if (allRegularFound && !_discoveredIds.contains(secret.id)) return _remember(secret);
-    final undiscovered = regular.where((g) => !_discoveredIds.contains(g.id)).toList();
+    if (allRegularFound && !_discoveredIds.contains(secret.id)) {
+      return _remember(secret);
+    }
+    final undiscovered = regular
+        .where((g) => !_discoveredIds.contains(g.id))
+        .toList();
     List<GameSpec> pool;
     if (undiscovered.isNotEmpty && _random.nextDouble() < .72) {
       pool = undiscovered;
@@ -185,12 +195,12 @@ class AppController extends ChangeNotifier {
     final candidates = pool.where((g) => !_recent.contains(g.no)).toList();
     if (candidates.isNotEmpty) pool = candidates;
     double weight(GameSpec g) => switch (g.rarity) {
-          Rarity.common => 10,
-          Rarity.uncommon => 6,
-          Rarity.rare => 4,
-          Rarity.superRare => 2.2,
-          Rarity.secret => 0,
-        };
+      Rarity.common => 10,
+      Rarity.uncommon => 6,
+      Rarity.rare => 4,
+      Rarity.superRare => 2.2,
+      Rarity.secret => 0,
+    };
     final total = pool.fold<double>(0, (a, g) => a + weight(g));
     var r = _random.nextDouble() * total;
     for (final g in pool) {
@@ -208,12 +218,18 @@ class AppController extends ChangeNotifier {
 
   /// Records a finished play. [discover] is false for replays that must not
   /// count as discovery (they are already discovered anyway).
-  Future<PlayReward> recordPlay(GameSpec spec, GameResult result, {bool discover = true}) async {
+  Future<PlayReward> recordPlay(
+    GameSpec spec,
+    GameResult result, {
+    bool discover = true,
+  }) async {
+    _rolloverStats();
     final isNew = discover && !_unlockAll && _discoveredIds.add(spec.id);
     final oldLevel = _arcade.level;
     final prevStars = _arcade.stars[spec.id] ?? 0;
     final stars = result.won ? result.stars : 0;
-    final coins = 5 + stars * 10 + (isNew ? 50 : 0) + (stars > prevStars ? 10 : 0);
+    final coins =
+        5 + stars * 10 + (isNew ? 50 : 0) + (stars > prevStars ? 10 : 0);
     final xp = 10 + stars * 6 + (isNew ? 30 : 0);
     _arcade = _arcade.copyWith(
       coins: _arcade.coins + coins,
@@ -253,7 +269,9 @@ class AppController extends ChangeNotifier {
 
   /// Spends coins to unlock a random undiscovered regular ad.
   Future<GameSpec?> buyCapsule() async {
-    final pool = allGames.where((g) => !g.isSecret && !_discoveredIds.contains(g.id)).toList();
+    final pool = allGames
+        .where((g) => !g.isSecret && !_discoveredIds.contains(g.id))
+        .toList();
     if (pool.isEmpty || _arcade.coins < capsuleCost) return null;
     final g = pool[_random.nextInt(pool.length)];
     _discoveredIds.add(g.id);
@@ -265,7 +283,11 @@ class AppController extends ChangeNotifier {
 
   Future<bool> unlockWithReward(String id) async {
     final g = gamesById[id];
-    if (g == null || g.isSecret || _discoveredIds.contains(id)) return false;
+    if (g == null ||
+        (g.isSecret && !_premiumNoAds) ||
+        _discoveredIds.contains(id)) {
+      return false;
+    }
     _discoveredIds.add(id);
     await _persist();
     notifyListeners();
@@ -275,17 +297,23 @@ class AppController extends ChangeNotifier {
   /// Claims the daily bonus; returns coins granted (0 if already claimed).
   Future<int> claimDaily() async {
     if (!dailyAvailable) return 0;
-    final today = _dateKey(DateTime.now());
-    final yesterday = _dateKey(DateTime.now().subtract(const Duration(days: 1)));
+    final now = _clock();
+    final today = _dateKey(now);
+    final yesterday = _dateKey(now.subtract(const Duration(days: 1)));
     final streak = _arcade.dailyDate == yesterday ? _arcade.streak + 1 : 1;
     final amount = 50 + min(streak, 7) * 25;
-    _arcade = _arcade.copyWith(coins: _arcade.coins + amount, dailyDate: today, streak: streak);
+    _arcade = _arcade.copyWith(
+      coins: _arcade.coins + amount,
+      dailyDate: today,
+      streak: streak,
+    );
     await _persist();
     notifyListeners();
     return amount;
   }
 
   Future<bool> consumeSearchEnergy() async {
+    if (_premiumNoAds) return true;
     final next = _searchEnergyService.consume(_searchEnergyState);
     if (next == null) return false;
     _searchEnergyState = next;
@@ -296,7 +324,8 @@ class AppController extends ChangeNotifier {
 
   Future<void> refreshSearchEnergy() async {
     final next = _searchEnergyService.synchronize(_searchEnergyState);
-    if (next.remaining == _searchEnergyState.remaining && next.recoveryAnchor == _searchEnergyState.recoveryAnchor) {
+    if (next.remaining == _searchEnergyState.remaining &&
+        next.recoveryAnchor == _searchEnergyState.recoveryAnchor) {
       return;
     }
     _searchEnergyState = next;
@@ -317,6 +346,20 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setNotificationsEnabled(bool enabled) async {
+    if (_notificationsEnabled == enabled) return;
+    _notificationsEnabled = enabled;
+    await _persist();
+    notifyListeners();
+  }
+
+  Future<void> grantPremium() async {
+    if (_premiumNoAds) return;
+    _premiumNoAds = true;
+    await _persist();
+    notifyListeners();
+  }
+
   /// Admin/debug: view everything without saving it as discovered.
   void setUnlockAll(bool enabled) {
     if (!adminToolsEnabled || _unlockAll == enabled) return;
@@ -324,150 +367,35 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ----------------------------------------------------------- cloud sync ---
-
-  Future<void> _startCloudSync() async {
-    _authSession!.addListener(_handleAuthStateChanged);
-    if (_authSession.isSignedIn) await _syncFromCloud();
-  }
-
-  void _handleAuthStateChanged() {
-    if (!_authSession!.isSignedIn) {
-      _cloudSynced = false;
-      _cloudSyncing = false;
-      _cloudSyncError = null;
-      notifyListeners();
-      return;
-    }
-    unawaited(_syncFromCloud());
-  }
-
-  Future<void> _syncFromCloud() async {
-    final uid = _authSession?.uid;
-    if (uid == null || _cloudStore == null || _cloudSyncing) return;
-    _cloudSyncing = true;
-    _cloudSyncError = null;
-    notifyListeners();
-    try {
-      final local = _snapshot();
-      final remote = await _cloudStore.load(uid);
-      final canMergeLocal = local.cloudAccountUid == null || local.cloudAccountUid == uid;
-      final baseLocal = canMergeLocal ? local : const AppSnapshot();
-      _applySnapshot(_mergeSnapshots(baseLocal, remote, uid));
-      await _store.save(_snapshot());
-      final account = _authSession?.account;
-      if (account == null) return;
-      await _cloudStore.save(uid, _snapshot(), account: account);
-      _cloudSynced = true;
-    } on Exception catch (error) {
-      _cloudSynced = false;
-      _cloudSyncError = 'sync_error';
-      debugPrint('Cloud progress sync failed: $error');
-    } finally {
-      _cloudSyncing = false;
-      notifyListeners();
-    }
-  }
-
-  AppSnapshot _mergeSnapshots(AppSnapshot local, AppSnapshot? remote, String uid) {
-    if (remote == null) return _withUid(local, uid);
-    final sourceUser = remote.user ?? local.user;
-    final user = sourceUser == null
-        ? null
-        : UserProfile(id: uid, nickname: sourceUser.nickname, age: sourceUser.age, createdAt: sourceUser.createdAt);
-    final localAnchor = local.searchEnergyRecoveryAnchor;
-    final remoteAnchor = remote.searchEnergyRecoveryAnchor;
-    final useLocalEnergy = remoteAnchor == null || localAnchor != null && localAnchor.isAfter(remoteAnchor);
-    return AppSnapshot(
-      cloudAccountUid: uid,
-      user: user,
-      explorationProfile: local.explorationProfile,
-      discoveredIds: {...local.discoveredIds, ...remote.discoveredIds},
-      totalWatchSeconds: max(local.totalWatchSeconds, remote.totalWatchSeconds),
-      todayWatchSeconds: max(local.todayWatchSeconds, remote.todayWatchSeconds),
-      watchCount: max(local.watchCount, remote.watchCount),
-      soundEffectsEnabled: remote.soundEffectsEnabled,
-      searchEnergy: useLocalEnergy ? local.searchEnergy : remote.searchEnergy,
-      searchEnergyRecoveryAnchor: useLocalEnergy ? localAnchor : remoteAnchor,
-      statsDate: local.statsDate ?? remote.statsDate,
-      arcade: ArcadeState.merge(local.arcade, remote.arcade),
-    );
-  }
-
-  AppSnapshot _withUid(AppSnapshot s, String uid) => AppSnapshot(
-        cloudAccountUid: uid,
-        user: s.user == null ? null : UserProfile(id: uid, nickname: s.user!.nickname, age: s.user!.age, createdAt: s.user!.createdAt),
-        explorationProfile: s.explorationProfile,
-        discoveredIds: s.discoveredIds,
-        totalWatchSeconds: s.totalWatchSeconds,
-        todayWatchSeconds: s.todayWatchSeconds,
-        watchCount: s.watchCount,
-        soundEffectsEnabled: s.soundEffectsEnabled,
-        searchEnergy: s.searchEnergy,
-        searchEnergyRecoveryAnchor: s.searchEnergyRecoveryAnchor,
-        statsDate: s.statsDate,
-        arcade: s.arcade,
-      );
-
-  void _applySnapshot(AppSnapshot snapshot) {
-    _cloudAccountUid = snapshot.cloudAccountUid;
-    _user = snapshot.user;
-    _profile = snapshot.explorationProfile;
-    _discoveredIds
-      ..clear()
-      ..addAll(snapshot.discoveredIds);
-    _totalWatchSeconds = snapshot.totalWatchSeconds;
-    _todayWatchSeconds = _isToday(snapshot.statsDate) ? snapshot.todayWatchSeconds : 0;
-    _watchCount = snapshot.watchCount;
-    _soundEffectsEnabled = snapshot.soundEffectsEnabled;
-    _arcade = snapshot.arcade;
-    if (_arcade.language != null) L10n.code = _arcade.language!;
-    _searchEnergyState = _searchEnergyService.synchronize(
-      SearchEnergyState(
-        remaining: snapshot.searchEnergy,
-        recoveryAnchor: snapshot.searchEnergyRecoveryAnchor ?? _searchEnergyService.now(),
-      ),
-    );
-  }
-
   AppSnapshot _snapshot() => AppSnapshot(
-        cloudAccountUid: _cloudAccountUid,
-        user: _user,
-        explorationProfile: _profile,
-        discoveredIds: _discoveredIds,
-        totalWatchSeconds: _totalWatchSeconds,
-        todayWatchSeconds: _todayWatchSeconds,
-        watchCount: _watchCount,
-        soundEffectsEnabled: _soundEffectsEnabled,
-        searchEnergy: _searchEnergyState.remaining,
-        searchEnergyRecoveryAnchor: _searchEnergyState.recoveryAnchor,
-        statsDate: _dateKey(DateTime.now()),
-        arcade: _arcade,
-      );
+    user: _user,
+    explorationProfile: _profile,
+    discoveredIds: _discoveredIds,
+    totalWatchSeconds: _totalWatchSeconds,
+    todayWatchSeconds: _statsDate == _dateKey(_clock())
+        ? _todayWatchSeconds
+        : 0,
+    watchCount: _watchCount,
+    soundEffectsEnabled: _soundEffectsEnabled,
+    notificationsEnabled: _notificationsEnabled,
+    premiumNoAds: _premiumNoAds,
+    searchEnergy: _searchEnergyState.remaining,
+    searchEnergyRecoveryAnchor: _searchEnergyState.recoveryAnchor,
+    statsDate: _dateKey(_clock()),
+    arcade: _arcade,
+  );
 
   Future<void> _persist() async {
-    final snapshot = _snapshot();
-    await _store.save(snapshot);
-    final uid = _authSession?.uid;
-    final account = _authSession?.account;
-    if (uid == null || account == null || _cloudStore == null || uid != _cloudAccountUid) return;
-    try {
-      await _cloudStore.save(uid, snapshot, account: account);
-      _cloudSynced = true;
-      _cloudSyncError = null;
-    } on Exception catch (error) {
-      _cloudSynced = false;
-      _cloudSyncError = 'sync_error';
-      debugPrint('Cloud progress save failed: $error');
-    }
+    await _store.save(_snapshot());
   }
 
-  @override
-  void dispose() {
-    _authSession?.removeListener(_handleAuthStateChanged);
-    super.dispose();
+  void _rolloverStats() {
+    final today = _dateKey(_clock());
+    if (_statsDate == today) return;
+    _statsDate = today;
+    _todayWatchSeconds = 0;
   }
 
-  static bool _isToday(String? value) => value == _dateKey(DateTime.now());
-  static String _dateKey(DateTime date) => '${date.year}-${date.month}-${date.day}';
+  static String _dateKey(DateTime date) =>
+      '${date.year}-${date.month}-${date.day}';
 }

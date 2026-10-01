@@ -3,9 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import 'rewarded_ad_web_bridge_stub.dart'
-    if (dart.library.js_interop) 'rewarded_ad_web_bridge_web.dart';
-
 enum RewardedAdResult { rewarded, notRewarded, unavailable, loadFailed }
 
 enum AdNetworkMode { disabled, test, production }
@@ -24,6 +21,7 @@ abstract class RewardedAdService extends ChangeNotifier {
   RewardedAdStatus get status;
   bool get isSupported;
   bool get usesTestAds;
+  bool supportsPlacement(String placementName) => isSupported;
   Future<void> initialize();
   Future<RewardedAdResult> show({String placementName = 'reward'});
 }
@@ -56,69 +54,12 @@ class DebugRewardedAdService extends RewardedAdService {
     }
     _showing = true;
     _setStatus(RewardedAdStatus.showing);
-    debugPrint('[RewardedAd] WEB DEBUG pseudo reward started');
+    debugPrint('[RewardedAd] DEBUG pseudo reward started');
     await Future<void>.delayed(const Duration(milliseconds: 650));
     _showing = false;
     _setStatus(RewardedAdStatus.ready);
-    debugPrint('[RewardedAd] WEB DEBUG pseudo reward earned');
+    debugPrint('[RewardedAd] DEBUG pseudo reward earned');
     return RewardedAdResult.rewarded;
-  }
-
-  void _setStatus(RewardedAdStatus value) {
-    if (_status == value) return;
-    _status = value;
-    notifyListeners();
-  }
-}
-
-class WebRewardedAdService extends RewardedAdService {
-  WebRewardedAdService({WebRewardedAdBridge? bridge, bool? isWeb})
-    : _bridge = bridge ?? WebRewardedAdBridge(),
-      _isWeb = isWeb ?? kIsWeb;
-
-  final WebRewardedAdBridge _bridge;
-  final bool _isWeb;
-  RewardedAdStatus _status = RewardedAdStatus.idle;
-  bool _showing = false;
-
-  @override
-  RewardedAdStatus get status =>
-      isSupported ? _status : RewardedAdStatus.unsupported;
-
-  @override
-  bool get isSupported => _isWeb && _bridge.isSupported;
-
-  @override
-  bool get usesTestAds => isSupported && _bridge.usesTestAds;
-
-  @override
-  Future<void> initialize() async {
-    _setStatus(
-      isSupported ? RewardedAdStatus.ready : RewardedAdStatus.unsupported,
-    );
-  }
-
-  @override
-  Future<RewardedAdResult> show({String placementName = 'reward'}) async {
-    if (!isSupported) return RewardedAdResult.unavailable;
-    if (_showing) return RewardedAdResult.loadFailed;
-    _showing = true;
-    _setStatus(RewardedAdStatus.showing);
-    try {
-      final result = await _bridge.show(placementName);
-      return switch (result) {
-        'rewarded' => RewardedAdResult.rewarded,
-        'notRewarded' => RewardedAdResult.notRewarded,
-        'unavailable' => RewardedAdResult.unavailable,
-        _ => RewardedAdResult.loadFailed,
-      };
-    } on Object catch (error) {
-      if (kDebugMode) debugPrint('[RewardedAd] WEB failed: $error');
-      return RewardedAdResult.loadFailed;
-    } finally {
-      _showing = false;
-      _setStatus(RewardedAdStatus.ready);
-    }
   }
 
   void _setStatus(RewardedAdStatus value) {
@@ -144,8 +85,16 @@ class GoogleRewardedAdService extends RewardedAdService {
   static const _androidProductionId = String.fromEnvironment(
     'ADMOB_ANDROID_REWARDED_ID',
   );
+  static const _androidUnlockProductionId = String.fromEnvironment(
+    'ADMOB_ANDROID_UNLOCK_REWARDED_ID',
+  );
   static const _iosProductionId = String.fromEnvironment(
     'ADMOB_IOS_REWARDED_ID',
+    defaultValue: 'ca-app-pub-3186852093801241/4511295842',
+  );
+  static const _iosUnlockProductionId = String.fromEnvironment(
+    'ADMOB_IOS_UNLOCK_REWARDED_ID',
+    defaultValue: 'ca-app-pub-3186852093801241/6036789642',
   );
   static const _configuredMode = String.fromEnvironment('ADMOB_MODE');
 
@@ -153,6 +102,7 @@ class GoogleRewardedAdService extends RewardedAdService {
   RewardedAdStatus _status = RewardedAdStatus.idle;
   bool _initialized = false;
   bool _rewardGranted = false;
+  String? _loadedPlacement;
   final TargetPlatform _platform;
   final bool _isWeb;
   final AdNetworkMode _adNetworkMode;
@@ -176,19 +126,32 @@ class GoogleRewardedAdService extends RewardedAdService {
   bool get isSupported =>
       !_isWeb &&
       _adNetworkMode != AdNetworkMode.disabled &&
-      (_platform == TargetPlatform.android || _platform == TargetPlatform.iOS);
+      (_platform == TargetPlatform.android ||
+          _platform == TargetPlatform.iOS) &&
+      (_adNetworkMode != AdNetworkMode.production ||
+          (_platform == TargetPlatform.android
+                  ? _androidProductionId
+                  : _iosProductionId)
+              .isNotEmpty);
 
   @override
   bool get usesTestAds => _adNetworkMode == AdNetworkMode.test;
 
-  String? get _adUnitId {
+  @override
+  bool supportsPlacement(String placementName) =>
+      _adUnitId(placementName) != null;
+
+  String? _adUnitId(String placementName) {
     if (!isSupported) return null;
     final isAndroid = _platform == TargetPlatform.android;
     if (_adNetworkMode == AdNetworkMode.test) {
       return isAndroid ? _androidTestId : _iosTestId;
     }
     if (_adNetworkMode != AdNetworkMode.production) return null;
-    final productionId = isAndroid ? _androidProductionId : _iosProductionId;
+    final unlocking = placementName.startsWith('unlock_');
+    final productionId = isAndroid
+        ? (unlocking ? _androidUnlockProductionId : _androidProductionId)
+        : (unlocking ? _iosUnlockProductionId : _iosProductionId);
     return productionId.isEmpty ? null : productionId;
   }
 
@@ -208,39 +171,45 @@ class GoogleRewardedAdService extends RewardedAdService {
         _initialized = true;
         _log('initialization completed');
       }
-      await _load();
+      await _load('restore_search_energy');
     } on Exception catch (error) {
       _log('initialization failed: $error');
       _setStatus(RewardedAdStatus.failed);
     }
   }
 
-  Future<void> _load() async {
-    final adUnitId = _adUnitId;
+  Future<void> _load(String placementName) async {
+    final adUnitId = _adUnitId(placementName);
     if (adUnitId == null) {
       _setStatus(RewardedAdStatus.unsupported);
       return;
     }
     _ad?.dispose();
     _ad = null;
+    _loadedPlacement = null;
     _setStatus(RewardedAdStatus.loading);
     _log(usesTestAds ? 'loading test ad' : 'loading production ad');
+    final loaded = Completer<void>();
     await RewardedAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {
           _ad = ad;
+          _loadedPlacement = placementName;
           _setStatus(RewardedAdStatus.ready);
           _log('loaded');
+          loaded.complete();
         },
         onAdFailedToLoad: (error) {
           _ad = null;
           _setStatus(RewardedAdStatus.failed);
           _log('load failed: $error');
+          loaded.complete();
         },
       ),
     );
+    await loaded.future;
   }
 
   @override
@@ -249,12 +218,15 @@ class GoogleRewardedAdService extends RewardedAdService {
     if (status == RewardedAdStatus.failed || status == RewardedAdStatus.idle) {
       await initialize();
     }
+    if (_adUnitId(placementName) == null) return RewardedAdResult.unavailable;
+    if (_loadedPlacement != placementName) await _load(placementName);
     final ad = _ad;
     if (ad == null || status != RewardedAdStatus.ready) {
       return RewardedAdResult.loadFailed;
     }
 
     _ad = null;
+    _loadedPlacement = null;
     _rewardGranted = false;
     _setStatus(RewardedAdStatus.showing);
     _log('showing');

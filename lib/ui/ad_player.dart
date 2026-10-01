@@ -48,6 +48,7 @@ class _AdPlayerScreenState extends State<AdPlayerScreen> with TickerProviderStat
   GameResult? _result;
   PlayReward? _reward;
   bool _replay = false;
+  bool _nextBusy = false;
   int _playSerial = 0;
   late final AnimationController _anim = AnimationController(vsync: this, duration: const Duration(seconds: 1))
     ..addListener(() => setState(() {}));
@@ -151,15 +152,21 @@ class _AdPlayerScreenState extends State<AdPlayerScreen> with TickerProviderStat
   }
 
   Future<void> _next() async {
-    final g = await widget.nextGame?.call();
-    if (!mounted) return;
-    if (g == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(L10n.ui('out_of_tickets'))));
-      return;
+    if (_nextBusy) return;
+    _nextBusy = true;
+    try {
+      final g = await widget.nextGame?.call();
+      if (!mounted) return;
+      if (g == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(L10n.ui('out_of_tickets'))));
+        return;
+      }
+      _spec = g;
+      _replay = false;
+      _start(roulette: true);
+    } finally {
+      _nextBusy = false;
     }
-    _spec = g;
-    _replay = false;
-    _start(roulette: true);
   }
 
   void _again() {

@@ -55,7 +55,6 @@ class AdWatchLog {
 
 class AppSnapshot {
   const AppSnapshot({
-    this.cloudAccountUid,
     this.user,
     this.explorationProfile = const ExplorationProfile(),
     this.discoveredIds = const <String>{},
@@ -63,13 +62,14 @@ class AppSnapshot {
     this.todayWatchSeconds = 0,
     this.watchCount = 0,
     this.soundEffectsEnabled = true,
+    this.notificationsEnabled = true,
+    this.premiumNoAds = false,
     this.searchEnergy = 5,
     this.searchEnergyRecoveryAnchor,
     this.statsDate,
     this.arcade = const ArcadeState(),
   });
 
-  final String? cloudAccountUid;
   final UserProfile? user;
   final ExplorationProfile explorationProfile;
   final Set<String> discoveredIds;
@@ -77,6 +77,8 @@ class AppSnapshot {
   final int todayWatchSeconds;
   final int watchCount;
   final bool soundEffectsEnabled;
+  final bool notificationsEnabled;
+  final bool premiumNoAds;
   final int searchEnergy;
   final DateTime? searchEnergyRecoveryAnchor;
   final String? statsDate;

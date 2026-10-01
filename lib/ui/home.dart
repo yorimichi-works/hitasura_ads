@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../arcade/engine/audio.dart';
@@ -22,7 +21,11 @@ import 'settings.dart';
 import 'thumbs.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.controller, this.rewardedAdService});
+  const HomeScreen({
+    super.key,
+    required this.controller,
+    this.rewardedAdService,
+  });
   final AppController controller;
   final RewardedAdService? rewardedAdService;
 
@@ -40,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _ads = widget.rewardedAdService ?? (kIsWeb ? WebRewardedAdService() : GoogleRewardedAdService());
+    _ads = widget.rewardedAdService ?? GoogleRewardedAdService();
     _ads.addListener(_refresh);
     unawaited(_ads.initialize());
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) async {
@@ -66,7 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void _toast(String key) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(L10n.ui(key), style: K.t(14)), backgroundColor: K.ink));
+      ..showSnackBar(
+        SnackBar(
+          content: Text(L10n.ui(key), style: K.t(14)),
+          backgroundColor: K.ink,
+        ),
+      );
   }
 
   Future<GameSpec?> _takeTicketAndPick() async {
@@ -76,17 +84,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _watch() async {
     if (_busy) return;
-    final g = await _takeTicketAndPick();
-    if (!mounted) return;
-    if (g == null) {
-      _toast('out_of_tickets');
-      return;
-    }
     _busy = true;
     try {
-      await Navigator.of(context).push(MaterialPageRoute<void>(
-        builder: (_) => AdPlayerScreen(controller: c, first: g, nextGame: _takeTicketAndPick),
-      ));
+      final g = await _takeTicketAndPick();
+      if (!mounted) return;
+      if (g == null) {
+        _toast('out_of_tickets');
+        return;
+      }
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => AdPlayerScreen(
+            controller: c,
+            first: g,
+            nextGame: _takeTicketAndPick,
+          ),
+        ),
+      );
     } finally {
       _busy = false;
     }
@@ -98,7 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_busy) return;
     _busy = true;
     try {
-      final r = await _ads.show(placementName: const RewardPurpose.restoreSearchEnergy().placementName);
+      final r = await _ads.show(
+        placementName: const RewardPurpose.restoreSearchEnergy().placementName,
+      );
       if (r == RewardedAdResult.rewarded) {
         await c.refillSearchEnergy();
         ArcadeAudio.instance.sfx(Sfx.powerup);
@@ -121,10 +137,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ArcadeAudio.instance.sfx(Sfx.coins);
       ArcadeAudio.instance.sfx(Sfx.fanfare, volume: .6);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: K.ink,
-        content: Text('${L10n.ui('daily_bonus')}  +$amount / ${L10n.ui('streak', {'n': c.arcade.streak})}', style: K.t(15, color: K.yellow)),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: K.ink,
+          content: Text(
+            '${L10n.ui('daily_bonus')}  +$amount / ${L10n.ui('streak', {'n': c.arcade.streak})}',
+            style: K.t(15, color: K.yellow),
+          ),
+        ),
+      );
     }
   }
 
@@ -144,7 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _open(Widget page) async {
-    await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
+    await Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (_) => page));
     ArcadeAudio.instance.bgm('menu');
     if (mounted) setState(() {});
   }
@@ -174,17 +196,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 18),
                     _progress(),
                     const SizedBox(height: 14),
-                    Row(children: [
-                      Expanded(child: _rushCard()),
-                      const SizedBox(width: 12),
-                      Expanded(child: _collectionCard()),
-                    ]),
+                    Row(
+                      children: [
+                        Expanded(child: _rushCard()),
+                        const SizedBox(width: 12),
+                        Expanded(child: _collectionCard()),
+                      ],
+                    ),
                     const SizedBox(height: 12),
-                    Row(children: [
-                      Expanded(child: _dailyCard()),
-                      const SizedBox(width: 12),
-                      Expanded(child: _capsuleCard()),
-                    ]),
+                    Row(
+                      children: [
+                        Expanded(child: _dailyCard()),
+                        const SizedBox(width: 12),
+                        Expanded(child: _capsuleCard()),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -197,73 +223,128 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _topBar() {
     final a = c.arcade;
-    return Row(children: [
-      Container(
-        width: 46,
-        height: 46,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: K.cyan,
-          shape: BoxShape.circle,
-          border: Border.all(color: K.ink, width: 3),
-          boxShadow: const [BoxShadow(color: K.ink, offset: Offset(0, 3))],
-        ),
-        child: Text('${a.level}', style: K.t(18, color: K.ink, weight: FontWeight.w900)),
-      ),
-      const SizedBox(width: 8),
-      Expanded(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(c.user?.nickname ?? '', style: K.t(15), maxLines: 1, overflow: TextOverflow.ellipsis),
-          const SizedBox(height: 3),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(99),
-            child: LinearProgressIndicator(value: a.levelProgress, minHeight: 7, backgroundColor: Colors.white12, color: K.cyan),
+    return Row(
+      children: [
+        Container(
+          width: 46,
+          height: 46,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: K.cyan,
+            shape: BoxShape.circle,
+            border: Border.all(color: K.ink, width: 3),
+            boxShadow: const [BoxShadow(color: K.ink, offset: Offset(0, 3))],
           ),
-        ]),
-      ),
-      const SizedBox(width: 10),
-      Pill(_fmt(c.coins), icon: Icons.monetization_on_rounded, color: K.yellow, size: 14),
-      const SizedBox(width: 6),
-      IconButton(
-        onPressed: () {
-          K.tap();
-          _open(SettingsScreen(controller: c));
-        },
-        icon: const Icon(Icons.settings_rounded, color: Colors.white),
-      ),
-    ]);
+          child: Text(
+            '${a.level}',
+            style: K.t(18, color: K.ink, weight: FontWeight.w900),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                c.user?.nickname ?? '',
+                style: K.t(15),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 3),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(99),
+                child: LinearProgressIndicator(
+                  value: a.levelProgress,
+                  minHeight: 7,
+                  backgroundColor: Colors.white12,
+                  color: K.cyan,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 10),
+        Pill(
+          _fmt(c.coins),
+          icon: Icons.monetization_on_rounded,
+          color: K.yellow,
+          size: 14,
+        ),
+        const SizedBox(width: 6),
+        IconButton(
+          onPressed: () {
+            K.tap();
+            _open(SettingsScreen(controller: c));
+          },
+          icon: const Icon(Icons.settings_rounded, color: Colors.white),
+        ),
+      ],
+    );
   }
 
-  Widget _logo() => Column(children: [
-        Transform.rotate(angle: -.04, child: InkText(L10n.ui('app_title'), size: 44, color: K.yellow)),
-        const SizedBox(height: 4),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Pill(L10n.ui('app_sub'), color: K.pink, textColor: Colors.white, size: 13),
-        ]),
-        const SizedBox(height: 6),
-        Text(L10n.ui('tagline'), textAlign: TextAlign.center, style: K.t(13, color: Colors.white70)),
-      ]);
+  Widget _logo() => Column(
+    children: [
+      Transform.rotate(
+        angle: -.04,
+        child: InkText(L10n.ui('app_title'), size: 44, color: K.yellow),
+      ),
+      const SizedBox(height: 4),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Pill(
+            L10n.ui('app_sub'),
+            color: K.pink,
+            textColor: Colors.white,
+            size: 13,
+          ),
+        ],
+      ),
+      const SizedBox(height: 6),
+      Text(
+        L10n.ui('tagline'),
+        textAlign: TextAlign.center,
+        style: K.t(13, color: Colors.white70),
+      ),
+    ],
+  );
 
   Widget _tickets() {
     final n = c.searchEnergy;
     final wait = c.timeUntilSearchRecovery;
     final mm = wait.inMinutes.toString();
     final ss = (wait.inSeconds % 60).toString().padLeft(2, '0');
-    return Row(children: [
-      Text(L10n.ui('tickets'), style: K.t(13, color: Colors.white70)),
-      const SizedBox(width: 8),
-      for (var i = 0; i < SearchEnergyService.maxEnergy; i++)
-        Padding(
-          padding: const EdgeInsets.only(right: 3),
-          child: Transform.rotate(
-            angle: -.15,
-            child: Icon(Icons.confirmation_number_rounded, size: 24, color: i < n ? K.yellow : Colors.white24),
+    return Row(
+      children: [
+        Text(L10n.ui('tickets'), style: K.t(13, color: Colors.white70)),
+        const SizedBox(width: 8),
+        for (var i = 0; i < SearchEnergyService.maxEnergy; i++)
+          Padding(
+            padding: const EdgeInsets.only(right: 3),
+            child: Transform.rotate(
+              angle: -.15,
+              child: Icon(
+                Icons.confirmation_number_rounded,
+                size: 24,
+                color: i < n ? K.yellow : Colors.white24,
+              ),
+            ),
+          ),
+        const Spacer(),
+        Text(
+          c.premiumNoAds
+              ? L10n.ui('unlimited')
+              : n >= SearchEnergyService.maxEnergy
+              ? L10n.ui('full')
+              : L10n.ui('refill_in', {'t': '$mm:$ss'}),
+          style: K.t(
+            12,
+            color: n >= SearchEnergyService.maxEnergy ? K.lime : Colors.white70,
           ),
         ),
-      const Spacer(),
-      Text(n >= SearchEnergyService.maxEnergy ? L10n.ui('full') : L10n.ui('refill_in', {'t': '$mm:$ss'}),
-          style: K.t(12, color: n >= SearchEnergyService.maxEnergy ? K.lime : Colors.white70)),
-    ]);
+      ],
+    );
   }
 
   Widget _watchButton() {
@@ -272,11 +353,19 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _ads.isSupported ? _sponsor : null,
         color: K.lime,
         height: 64,
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Icon(Icons.ondemand_video_rounded, color: K.ink, size: 28),
-          const SizedBox(width: 8),
-          Flexible(child: Text(L10n.ui('sponsor_refill'), style: K.t(17, color: K.ink, weight: FontWeight.w900))),
-        ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.ondemand_video_rounded, color: K.ink, size: 28),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                L10n.ui('sponsor_refill'),
+                style: K.t(17, color: K.ink, weight: FontWeight.w900),
+              ),
+            ),
+          ],
+        ),
       );
     }
     return Pulse(
@@ -286,16 +375,29 @@ class _HomeScreenState extends State<HomeScreen> {
         color: K.pink,
         height: 76,
         sound: Sfx.go,
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Icon(Icons.play_circle_fill_rounded, color: Colors.white, size: 38),
-          const SizedBox(width: 10),
-          Flexible(
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              InkText(L10n.ui('watch_next'), size: 24, shadow: false),
-              Text(L10n.ui('watch_sub'), style: K.t(11, color: Colors.white)),
-            ]),
-          ),
-        ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.play_circle_fill_rounded,
+              color: Colors.white,
+              size: 38,
+            ),
+            const SizedBox(width: 10),
+            Flexible(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkText(L10n.ui('watch_next'), size: 24, shadow: false),
+                  Text(
+                    L10n.ui('watch_sub'),
+                    style: K.t(11, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -306,39 +408,54 @@ class _HomeScreenState extends State<HomeScreen> {
     return Sticker(
       color: const Color(0xFF2B1F55),
       padding: const EdgeInsets.all(12),
-      child: Column(children: [
-        Row(children: [
-          const Icon(Icons.auto_awesome_rounded, color: K.yellow),
-          const SizedBox(width: 6),
-          Text(L10n.ui('discovered'), style: K.t(15)),
-          const Spacer(),
-          InkText('$n / $total', size: 20, color: K.yellow, shadow: false),
-        ]),
-        const SizedBox(height: 8),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(99),
-          child: Stack(children: [
-            Container(height: 14, color: Colors.white12),
-            FractionallySizedBox(
-              widthFactor: n / total,
-              child: Container(
-                height: 14,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(colors: [K.pink, K.yellow, K.lime, K.cyan]),
-                ),
-              ),
-            ),
-          ]),
-        ),
-        if (c.isComplete) ...[
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.auto_awesome_rounded, color: K.yellow),
+              const SizedBox(width: 6),
+              Text(L10n.ui('discovered'), style: K.t(15)),
+              const Spacer(),
+              InkText('$n / $total', size: 20, color: K.yellow, shadow: false),
+            ],
+          ),
           const SizedBox(height: 8),
-          Text(L10n.ui('complete'), style: K.t(13, color: K.lime)),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(99),
+            child: Stack(
+              children: [
+                Container(height: 14, color: Colors.white12),
+                FractionallySizedBox(
+                  widthFactor: n / total,
+                  child: Container(
+                    height: 14,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [K.pink, K.yellow, K.lime, K.cyan],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (c.isComplete) ...[
+            const SizedBox(height: 8),
+            Text(L10n.ui('complete'), style: K.t(13, color: K.lime)),
+          ],
         ],
-      ]),
+      ),
     );
   }
 
-  Widget _modeCard({required String title, required String sub, required IconData icon, required Color color, required VoidCallback onTap, bool locked = false}) {
+  Widget _modeCard({
+    required String title,
+    required String sub,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+    bool locked = false,
+  }) {
     return GestureDetector(
       onTap: () {
         K.tap(Sfx.select);
@@ -348,21 +465,37 @@ class _HomeScreenState extends State<HomeScreen> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: locked ? [const Color(0xFF4A4266), const Color(0xFF2F2848)] : [color, Color.lerp(color, K.ink, .35)!],
+          colors: locked
+              ? [const Color(0xFF4A4266), const Color(0xFF2F2848)]
+              : [color, Color.lerp(color, K.ink, .35)!],
         ),
         padding: const EdgeInsets.all(12),
         child: SizedBox(
           height: 112,
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
-              Icon(locked ? Icons.lock_rounded : icon, color: Colors.white, size: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    locked ? Icons.lock_rounded : icon,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  const Spacer(),
+                ],
+              ),
               const Spacer(),
-            ]),
-            const Spacer(),
-            InkText(title, size: 20, align: TextAlign.start, maxLines: 1),
-            const SizedBox(height: 2),
-            Text(sub, style: K.t(11, color: Colors.white.withValues(alpha: .85)), maxLines: 2, overflow: TextOverflow.ellipsis),
-          ]),
+              InkText(title, size: 20, align: TextAlign.start, maxLines: 1),
+              const SizedBox(height: 2),
+              Text(
+                sub,
+                style: K.t(11, color: Colors.white.withValues(alpha: .85)),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -390,34 +523,53 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _collectionCard() => _modeCard(
-        title: L10n.ui('collection'),
-        sub: '${c.discoveredCount} / ${allGames.length}',
-        icon: Icons.grid_view_rounded,
-        color: K.purple,
-        onTap: () => _open(CollectionScreen(controller: c, onUnlockWithSponsor: _unlockWithSponsor, sponsorAvailable: _ads.isSupported)),
-      );
+    title: L10n.ui('collection'),
+    sub: '${c.discoveredCount} / ${allGames.length}',
+    icon: Icons.grid_view_rounded,
+    color: K.purple,
+    onTap: () => _open(
+      CollectionScreen(
+        controller: c,
+        onUnlockWithSponsor: _unlockWithSponsor,
+        sponsorAvailable:
+            c.premiumNoAds || _ads.supportsPlacement('unlock_catalog'),
+      ),
+    ),
+  );
 
   Widget _dailyCard() {
     final available = c.dailyAvailable;
     return _modeCard(
       title: L10n.ui('daily_bonus'),
-      sub: available ? L10n.ui('claim') : '${L10n.ui('claimed')} / ${L10n.ui('streak', {'n': c.arcade.streak})}',
-      icon: available ? Icons.card_giftcard_rounded : Icons.check_circle_rounded,
+      sub: available
+          ? L10n.ui('claim')
+          : '${L10n.ui('claimed')} / ${L10n.ui('streak', {'n': c.arcade.streak})}',
+      icon: available
+          ? Icons.card_giftcard_rounded
+          : Icons.check_circle_rounded,
       color: available ? K.orange : const Color(0xFF6B5E8E),
       onTap: _daily,
     );
   }
 
   Widget _capsuleCard() => _modeCard(
-        title: L10n.ui('ad_capsule'),
-        sub: '${AppController.capsuleCost} ${L10n.ui('coins')} / ${L10n.ui('ad_capsule_desc')}',
-        icon: Icons.egg_alt_rounded,
-        color: K.cyan.withValues(alpha: 1),
-        onTap: _capsule,
-      );
+    title: L10n.ui('ad_capsule'),
+    sub:
+        '${AppController.capsuleCost} ${L10n.ui('coins')} / ${L10n.ui('ad_capsule_desc')}',
+    icon: Icons.egg_alt_rounded,
+    color: K.cyan.withValues(alpha: 1),
+    onTap: _capsule,
+  );
 
   Future<bool> _unlockWithSponsor(GameSpec g) async {
-    final r = await _ads.show(placementName: RewardPurpose.unlockAd(g.id).placementName);
+    if (c.premiumNoAds) {
+      final ok = await c.unlockWithReward(g.id);
+      if (ok && mounted) await showDiscoveryReveal(context, g);
+      return ok;
+    }
+    final r = await _ads.show(
+      placementName: RewardPurpose.unlockAd(g.id).placementName,
+    );
     if (r != RewardedAdResult.rewarded) {
       _toast(switch (r) {
         RewardedAdResult.notRewarded => 'sponsor_incomplete',
@@ -431,7 +583,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return ok;
   }
 
-  static String _fmt(int n) => n >= 100000 ? '${(n / 1000).toStringAsFixed(0)}K' : '$n';
+  static String _fmt(int n) =>
+      n >= 100000 ? '${(n / 1000).toStringAsFixed(0)}K' : '$n';
 }
 
 /// Retro TV that flips through discovered ads (or mystery channels).
@@ -451,7 +604,9 @@ class _TvState extends State<_Tv> {
 
   List<GameSpec> get _pool {
     final found = allGames.where(widget.controller.isDiscovered).toList();
-    return found.isEmpty ? allGames.where((g) => g.rarity == Rarity.superRare).toList() : found;
+    return found.isEmpty
+        ? allGames.where((g) => g.rarity == Rarity.superRare).toList()
+        : found;
   }
 
   @override
@@ -488,50 +643,99 @@ class _TvState extends State<_Tv> {
       color: const Color(0xFF3A2C5E),
       radius: 26,
       padding: const EdgeInsets.all(10),
-      child: Row(children: [
-        SizedBox(
-          width: 96,
-          child: Stack(children: [
-            DecoratedBox(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: K.ink, width: 3)),
-              child: GameThumb(key: ValueKey(g.no), spec: g, unlocked: unlocked, radius: 9),
-            ),
-            if (_static)
-              Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: ColoredBox(color: Colors.white.withValues(alpha: .6)),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 96,
+            child: Stack(
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: K.ink, width: 3),
+                  ),
+                  child: GameThumb(
+                    key: ValueKey(g.no),
+                    spec: g,
+                    unlocked: unlocked,
+                    radius: 9,
+                  ),
                 ),
-              ),
-          ]),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(children: [
-              Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(color: K.red, shape: BoxShape.circle),
-              ),
-              const SizedBox(width: 6),
-              Text(L10n.ui('now_showing'), style: K.t(11, color: K.red, weight: FontWeight.w900)),
-              const Spacer(),
-              Text('${L10n.ui('channel')} ${g.no.toString().padLeft(3, '0')}', style: K.t(11, color: Colors.white54)),
-            ]),
-            const SizedBox(height: 6),
-            Text(unlocked ? text.title : '???', style: K.t(18, weight: FontWeight.w900), maxLines: 2, overflow: TextOverflow.ellipsis),
-            const SizedBox(height: 4),
-            Text(unlocked ? text.hook : L10n.ui('locked_hint'),
-                style: K.t(12, color: Colors.white70), maxLines: 2, overflow: TextOverflow.ellipsis),
-            const SizedBox(height: 8),
-            Wrap(spacing: 6, runSpacing: 4, children: [
-              Pill(L10n.ui('cat_${g.cat.name}'), color: K.category(g.cat), size: 10),
-              RarityBadge(g.rarity, label: L10n.ui('rarity_${g.rarity.name}'), size: 9),
-            ]),
-          ]),
-        ),
-      ]),
+                if (_static)
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: ColoredBox(
+                        color: Colors.white.withValues(alpha: .6),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: K.red,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      L10n.ui('now_showing'),
+                      style: K.t(11, color: K.red, weight: FontWeight.w900),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '${L10n.ui('channel')} ${g.no.toString().padLeft(3, '0')}',
+                      style: K.t(11, color: Colors.white54),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  unlocked ? text.title : '???',
+                  style: K.t(18, weight: FontWeight.w900),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  unlocked ? text.hook : L10n.ui('locked_hint'),
+                  style: K.t(12, color: Colors.white70),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 4,
+                  children: [
+                    Pill(
+                      L10n.ui('cat_${g.cat.name}'),
+                      color: K.category(g.cat),
+                      size: 10,
+                    ),
+                    RarityBadge(
+                      g.rarity,
+                      label: L10n.ui('rarity_${g.rarity.name}'),
+                      size: 9,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

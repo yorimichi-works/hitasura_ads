@@ -66,4 +66,12 @@ class SearchEnergyService {
         recoveryInterval - _clock().difference(current.recoveryAnchor);
     return remaining.isNegative ? Duration.zero : remaining;
   }
+
+  DateTime? fullRecoveryAt(SearchEnergyState state) {
+    final current = synchronize(state);
+    if (current.remaining >= maxEnergy) return null;
+    return current.recoveryAnchor.add(
+      recoveryInterval * (maxEnergy - current.remaining),
+    );
+  }
 }

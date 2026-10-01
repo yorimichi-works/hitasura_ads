@@ -1,0 +1,20 @@
+workflows:
+  ios-simulator:
+    name: Hitasura Ads iOS simulator
+    instance_type: mac_mini_m2
+    max_build_duration: 120
+    environment:
+      flutter: stable
+      xcode: latest
+    scripts:
+      - name: Install Flutter dependencies
+        script: flutter pub get
+      - name: Analyze Dart code
+        script: flutter analyze --no-pub
+      - name: Run Flutter tests
+        script: flutter test --no-pub
+      - name: Build iOS simulator app
+        script: flutter build ios --simulator --debug --no-codesign --dart-define=ADMOB_MODE=test
+    artifacts:
+      - build/ios/iphonesimulator/Runner.app
+      - /tmp/xcodebuild_logs/*.log

@@ -1,7 +1,7 @@
 // Developer playtest launcher: pick any of the 151 games and play it directly
 // (no progress is saved).
 //
-//   flutter run -d chrome -t lib/playtest_main.dart
+//   flutter run -d <device-id> -t lib/playtest_main.dart
 import 'package:flutter/material.dart';
 
 import 'app.dart';

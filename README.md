@@ -2,7 +2,7 @@
 
 > 広告を、ひたすら遊ぶ。
 
-スマホでよく見るゲーム広告の「デモ」だけを151本つまみ食いできるミニゲーム集です（Flutter / Web・Android・iOS）。
+スマホでよく見るゲーム広告の「デモ」だけを151本つまみ食いできるミニゲーム集です（Flutter / Android・iOS）。
 ピン抜き、ゲート×100ランナー、極寒サバイバル、ラーメン屋経営、マリオパーティ風の対戦、5秒のミニミニゲーム、
 ドット絵の横スクロール、ローポリ3D、10連ガチャ、広告そのものをいじるパロディまで。通常150本＋全発見で現れる秘密の1本。
 20言語対応（日本語・英語・中国語簡体/繁体・韓国語・スペイン語・フランス語・ドイツ語・ポルトガル語・ロシア語・イタリア語・
@@ -22,20 +22,20 @@
 
 ```powershell
 flutter pub get
-flutter run -d chrome                               # 本編
-flutter run -d chrome -t lib/playtest_main.dart     # 開発用：151本を番号から直接プレイ（言語・速度切替つき）
+flutter run -d <device-id>                         # Android / iOS 本編
+flutter run -d <device-id> -t lib/playtest_main.dart # 開発用：151本を番号から直接プレイ
 ```
 
 ## 構成
 
 | パス | 内容 |
 |---|---|
-| `lib/arcade/engine/` | ミニゲームエンジン：ゲームループ／HUD（`game_view.dart`）、描画ヘルパ（`draw.dart`）、パーティクル（`fx.dart`）、ドット絵（`pixel.dart`）、軽量3D（`mini3d.dart`）、音（`audio*.dart`、Webは `web/arcade_audio.js` のWeb Audio） |
+| `lib/arcade/engine/` | ミニゲームエンジン：ゲームループ／HUD（`game_view.dart`）、描画ヘルパ（`draw.dart`）、パーティクル（`fx.dart`）、ドット絵（`pixel.dart`）、軽量3D（`mini3d.dart`）、音（`audio*.dart`） |
 | `lib/arcade/games/gNNN.dart` | 151本のゲーム本体（1ファイル1本） |
 | `lib/arcade/registry.dart` | 生成物。`tool/arcade/lineup.json` から `python tool/arcade/gen_registry.py` |
 | `lib/ui/` | ホーム・広告再生（ルーレット→タイトル→ゲーム→ストア風エンドカード）・発見演出・図鑑・ラッシュ・設定 |
 | `lib/l10n/` | 20言語。`tool/l10n/<code>.json` → `python tool/l10n/gen_l10n.py build` |
-| `lib/state/app_controller.dart` | 発見・スター・コイン・経験値・チケット・クラウド同期 |
+| `lib/state/app_controller.dart` | 発見・スター・コイン・経験値・チケット。進捗は端末内に保存 |
 | `assets/audio/{sfx,bgm}/` | 効果音100種・BGM18曲。すべて `python tool/audio/synth.py` で合成 |
 | `tool/arcade/GAME_DEV_GUIDE.md` | ミニゲーム制作ガイド（API・品質基準・テスト方法） |
 | `docs/AD_DEMO_151_LINEUP.md` | 全151本の一覧（ジャンル・絵柄・レア度・秒数） |
@@ -48,8 +48,8 @@ flutter test                                  # 151本を自動操作で完走�
 python tool/arcade/snap.py 12,13              # 指定ゲームだけ実行し build/snaps/ にスクリーンショット
 ```
 
-## 本番デプロイ
+## モバイルリリース
 
-`main` へのpush時、GitHub Actionsが解析・テスト・Webビルドを実行し、成功時のみFirebase Hosting（`hitasuraads`）へデプロイします
-（`.github/workflows/deploy-firebase-hosting.yml`、Secret `FIREBASE_SERVICE_ACCOUNT_HITASURAADS`）。
-Firestoreのルール（`firestore.rules`）に新フィールド `arcade` を追加しているため、ルールのデプロイも必要です。
+進捗は端末内に保存されます。アプリを削除すると進捗も失われるため、旧Web版のクラウド進捗は引き継がれません。
+
+Android / iOS のアプリID、ストア用署名、AdMobの本番アプリIDとリワード広告ユニットIDを設定してから、実機で広告・音声・画面遷移を確認してください。設定項目と未完了の確認は [リリース準備メモ](docs/release_readiness.md) にまとめています。

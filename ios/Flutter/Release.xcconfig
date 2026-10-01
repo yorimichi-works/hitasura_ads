@@ -1,3 +1,2 @@
 #include "Generated.xcconfig"
-// Replace this official test ID with the production AdMob app ID for release.
-ADMOB_APP_ID=ca-app-pub-3940256099942544~1458002511
+ADMOB_APP_ID=ca-app-pub-3186852093801241~9948289508

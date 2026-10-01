@@ -58,6 +58,26 @@ void main() {
     expect(c.coins, greaterThan(0));
   });
 
+  test('watch time starts a new daily total after midnight', () async {
+    var now = DateTime(2026, 10, 1, 23, 59);
+    final store = MemoryAppStore(AppSnapshot(
+      todayWatchSeconds: 45,
+      statsDate: '2026-10-1',
+    ));
+    final controller = await AppController.create(store: store, clock: () => now);
+
+    now = DateTime(2026, 10, 2, 0, 1);
+    await controller.recordPlay(
+      allGames.first,
+      const GameResult(won: true, stars: 1, score: 0, seconds: 8),
+    );
+
+    expect(store.snapshot.todayWatchSeconds, 8);
+    expect(store.snapshot.statsDate, '2026-10-2');
+    expect(store.snapshot.totalWatchSeconds, 8);
+    controller.dispose();
+  });
+
   testWidgets('first launch registers and shows home', (tester) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1;
