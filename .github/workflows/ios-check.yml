@@ -23,9 +23,27 @@ jobs:
       - name: Test
         run: flutter test --no-pub --reporter expanded
       - name: Build iOS simulator app
-        run: flutter build ios --simulator --debug --no-codesign --dart-define=ADMOB_MODE=test
+        run: |
+          set +e
+          flutter build ios --simulator --debug --no-codesign --dart-define=ADMOB_MODE=test > ios-build.log 2>&1 &
+          build_pid=$!
+          while kill -0 "$build_pid" 2>/dev/null; do
+            sleep 60
+            tail -n 8 ios-build.log
+            ps -Ao pid,etime,%cpu,command | grep -E '[x]codebuild|[s]wift-frontend|[d]art' | tail -n 8 || true
+          done
+          wait "$build_pid"
+          result=$?
+          tail -n 120 ios-build.log
+          exit "$result"
       - name: Upload simulator app
         uses: actions/upload-artifact@v4
         with:
           name: hitasura-ads-ios-simulator
           path: build/ios/iphonesimulator/Runner.app
+      - name: Upload iOS build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-log
+          path: ios-build.log
