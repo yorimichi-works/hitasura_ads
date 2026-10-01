@@ -9,6 +9,7 @@ val releaseRequested = gradle.startParameter.taskNames.any {
 }
 val androidApplicationId = providers.gradleProperty("ANDROID_APPLICATION_ID").orNull
 val admobAndroidAppId = providers.gradleProperty("ADMOB_ANDROID_APP_ID").orNull
+    ?: "ca-app-pub-3186852093801241~5592877027"
 val releaseStoreFile = providers.gradleProperty("RELEASE_STORE_FILE").orNull
 val releaseStorePassword = providers.gradleProperty("RELEASE_STORE_PASSWORD").orNull
 val releaseKeyAlias = providers.gradleProperty("RELEASE_KEY_ALIAS").orNull
@@ -18,7 +19,7 @@ if (releaseRequested) {
     require(!androidApplicationId.isNullOrBlank() && !androidApplicationId.startsWith("com.example.")) {
         "Set ANDROID_APPLICATION_ID to the final package name before building a release."
     }
-    require(!admobAndroidAppId.isNullOrBlank()) {
+    require(admobAndroidAppId.isNotBlank()) {
         "Set ADMOB_ANDROID_APP_ID to the production AdMob app ID."
     }
     require(listOf(releaseStoreFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword).all { !it.isNullOrBlank() }) {
@@ -72,7 +73,7 @@ android {
         release {
             signingConfig = signingConfigs.findByName("release")
             manifestPlaceholders["admobApplicationId"] =
-                admobAndroidAppId ?: ""
+                admobAndroidAppId
         }
     }
 }
