@@ -65,3 +65,19 @@ Every host command persists an intent/result event and independent stdout/stderr
 ## File-based capture transport proof
 
 Run866c8d4 reached Dart startup, but all Platform.environment capture values were null. It failed at the harness's pre-runApp configuration guard, before production controller/StoreKit initialization. The replacement protocol reads a fixed app-owned request file after the `hitasura_ads/simulator_capture` / `documentsDirectory` channel attests a native debug simulator. Both the Dart debug/iOS guard and Swift `DEBUG && targetEnvironment(simulator)` guard remain required; release and real-device builds expose no capture channel. Request schema, UUID, locale, scene, UTC freshness, fixed paths, atomic writes and one-scene selection have focused tests. The next workflow proves only `--locales en --devices iphone_6_9 --scenes home`, with no video, before broader capture resumes.
+
+### Isolated reuse proof
+
+A readiness-branch push whose message includes `[capture-reuse]` selects the
+bounded `native-probe` job instead of the iOS compile job. It downloads only
+artifact `11243670913` from run `37042725105` (app source `17321d1`), requires its
+published ZIP digest and unexpired status, validates the embedded simulator-only
+provenance, and rejects changes to any compiled source. The job grants only
+`contents: read` and `actions: read` to its existing ephemeral GitHub token; it
+creates no credential and performs no signing or App Store operation.
+
+This proof captures one English iPhone home screen with the natural system status
+bar. Cosmetic override failures in other capture modes are reported but do not
+block app launch. Manifests distinguish the app source SHA from the capture-script
+SHA. Ordinary pushes retain the existing full iOS build; Android checks are
+unchanged. After this artifact expires (2026-10-09), a fresh compile is required.

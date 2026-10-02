@@ -112,6 +112,19 @@ def record_host_resources(host):
     host.best_effort('vm_stat', timeout=5)
 
 
+def override_status_bar(host, udid):
+    """Cosmetic metadata must never block a real native capture."""
+    try:
+        host.run('xcrun', 'simctl', 'status_bar', udid, 'override', '--time', '9:41',
+                 '--dataNetwork', 'wifi', '--wifiMode', 'active', '--wifiBars', '3',
+                 '--batteryState', 'charged', '--batteryLevel', '100', timeout=30)
+        return True
+    except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as error:
+        host.stage('status_bar_override_unavailable', error=str(error),
+                   capture_may_continue=True)
+        return False
+
+
 def lookup_app_container(host, udid):
     """Retry only a timed-out read, never installation, launch or an explicit error."""
     for attempt in range(1, 4):
@@ -257,10 +270,14 @@ def record_video(host, udid, path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--app', default='build/ios/iphonesimulator/Runner.app')
+    parser.add_argument('--app-source-sha', default=os.environ.get('GITHUB_SHA'),
+                        help='Exact compiled app source revision, separate from capture script revision')
     parser.add_argument('--output', default='build/store_assets/native_ios')
     parser.add_argument('--locales', default=','.join(LOCALES))
     parser.add_argument('--devices', default='iphone_6_9,ipad_13')
     parser.add_argument('--videos', action='store_true')
+    parser.add_argument('--natural-status-bar', action='store_true',
+                        help='Keep actual system status for a transport proof')
     parser.add_argument('--scenes', default=','.join(SCENES), help='Comma-separated screenshot scenes; home for a one-scene proof')
     parser.add_argument('--startup-timeout', type=float, default=90)
     args = parser.parse_args()
@@ -271,6 +288,8 @@ def main():
         parser.error('Unknown locale')
     if not 0 < args.startup_timeout <= 120:
         parser.error('Startup timeout must be between 0 and 120 seconds.')
+    if args.app_source_sha is not None and not re.fullmatch(r'[0-9a-f]{40}', args.app_source_sha):
+        parser.error('App source SHA must be a full lowercase Git SHA.')
     try:
         selected_scenes = select_capture_scenes(args.scenes, args.videos)
     except ValueError as error:
@@ -279,8 +298,9 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     host = HostLog(out)
     manifest = {'origin':'native_ios_simulator','app_target':'tool/store_assets/native_capture_main.dart','production_ui_unchanged':True,
+        'app_source_sha':args.app_source_sha,'capture_script_sha':os.environ.get('GITHUB_SHA'),
         'fixture':'40 discovered games, 1234 coins, 900 XP, 5 tickets; notifications/audio/external ads disabled; production purchase initialization preserved',
-        'status':'in_progress','records':[]}
+        'status':'in_progress','records':[], 'status_bar_overrides': {}}
     def save():
         pending = out / 'manifest.pending'
         pending.write_text(json.dumps(manifest, indent=2))
@@ -312,7 +332,9 @@ def main():
                 host.run('xcrun','simctl','boot',udid, timeout=120)
             host.run('xcrun','simctl','bootstatus',udid,'-b', timeout=120)
             record_host_resources(host)
-            host.run('xcrun','simctl','status_bar',udid,'override','--time','9:41','--dataNetwork','wifi','--wifiMode','active','--wifiBars','3','--batteryState','charged','--batteryLevel','100', timeout=30)
+            status_bar_applied = False if args.natural_status_bar else override_status_bar(host, udid)
+            manifest['status_bar_overrides'][group] = status_bar_applied
+            save()
             host.run('xcrun','simctl','install',udid,str(app), timeout=60)
             container = lookup_app_container(host, udid)
             state_path = container / 'Documents/HitasuraCapture/state.json'
@@ -322,7 +344,8 @@ def main():
                 for index, scene in enumerate(selected_scenes, 1):
                     try:
                         evidence = launch_capture(host, udid, locale, scene, container, dest, args.startup_timeout)
-                        record = {'locale':locale,'device_group':group,'device_name':device['name'],'runtime':runtime,'scene':scene,'app_evidence':evidence}
+                        record = {'locale':locale,'device_group':group,'device_name':device['name'],'runtime':runtime,'scene':scene,'app_evidence':evidence,
+                                  'status_bar_override_applied':status_bar_applied}
                         if scene == 'preview':
                             path = dest/'preview_native.mov'
                             record_video(host, udid, path)

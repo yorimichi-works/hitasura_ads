@@ -9,6 +9,8 @@ on:
 
 jobs:
   ios:
+    # A reuse-only probe must independently verify that no compiled source changed.
+    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || !contains(github.event.head_commit.message, '[capture-reuse]')
     runs-on: macos-15
     timeout-minutes: 60
     steps:
@@ -104,3 +106,52 @@ jobs:
         with:
           name: ios-build-log
           path: ios-build.log
+
+  native-probe:
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[capture-reuse]')
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test capture and release guards
+        run: |
+          python3 -m unittest discover -s tool/store_assets/tests -v
+          python3 -m unittest discover -s tool/release/tests -v
+      - name: Download exact retained simulator harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/reuse_download build/store_assets/native_ios
+          python3 - <<'PY'
+          import subprocess, pathlib, shutil
+          base = 'repos/yorimichi-works/hitasura_ads/actions/artifacts/11243670913'
+          for endpoint, name in [(base, 'metadata.json'), (base + '/zip', 'artifact.zip')]:
+              with pathlib.Path('build/reuse_download', name).open('wb') as output:
+                  subprocess.run(['gh', 'api', endpoint], stdout=output, check=True, timeout=120)
+              if name == 'metadata.json':
+                  shutil.copyfile('build/reuse_download/metadata.json', 'build/store_assets/native_ios/download_metadata.json')
+          PY
+      - name: Verify artifact hash, identity and unchanged compiled source
+        run: |
+          python3 tool/store_assets/reuse_capture_harness.py --metadata build/reuse_download/metadata.json --zip build/reuse_download/artifact.zip
+          python3 tool/store_assets/verify_native_bridge.py --app build/reused_native_harness/Runner.app > build/store_assets/native_ios/native_bridge_check.json
+      - name: Prove one native home screen without compiling
+        timeout-minutes: 10
+        run: |
+          xcodebuild -version
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha 17321d1e8ef249da30fe24173130ab3ace7b062f --locales en --devices iphone_6_9 --scenes home --natural-status-bar
+      - name: Upload native proof and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-native-reused-proof
+          path: build/store_assets/native_ios
+          if-no-files-found: warn
+          retention-days: 7

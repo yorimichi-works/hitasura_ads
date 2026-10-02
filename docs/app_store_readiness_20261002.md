@@ -197,3 +197,14 @@ The next patch sets `$(inherited) DEBUG` on Runner Debug only, leaves Release an
 Profile unchanged, and verifies the channel marker in native Mach-O images
 before boot. The guard rejects the actual failed artifact and cannot be fooled
 by the same channel name in a Dart kernel asset. Runtime proof remains pending.
+
+The `17321d1` run passed native bridge verification, then stopped on a cosmetic
+status-bar command timeout before app installation. The next isolated probe
+reuses that exact verified harness with a pinned artifact digest, expiry check,
+embedded provenance and compiled-source equality check. Only its job gains
+read-only Actions access on the existing ephemeral GitHub token. No build or
+signing occurs in that probe; ordinary iOS builds and Android checks remain
+available. Natural status-bar pixels are retained and source revisions remain
+explicit. Host snapshots show heavy Apple background activity and memory
+compression, but do not establish an out-of-memory event or prove that the prior
+compile caused the simulator latency.

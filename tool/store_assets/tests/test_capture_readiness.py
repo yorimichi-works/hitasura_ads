@@ -247,5 +247,23 @@ class SceneSelectionTests(unittest.TestCase):
                 capture.select_capture_scenes(value)
 
 
+class CosmeticStatusTests(unittest.TestCase):
+    def test_success_is_reported(self):
+        host = mock.Mock()
+        self.assertTrue(capture.override_status_bar(host, 'device'))
+        self.assertEqual(host.run.call_args.kwargs['timeout'], 30)
+
+    def test_timeout_does_not_block_capture(self):
+        host = mock.Mock()
+        host.run.side_effect = subprocess.TimeoutExpired('simctl', 30)
+        self.assertFalse(capture.override_status_bar(host, 'device'))
+        self.assertTrue(host.stage.call_args.kwargs['capture_may_continue'])
+
+    def test_command_failure_is_reported_nonfatally(self):
+        host = mock.Mock()
+        host.run.side_effect = subprocess.CalledProcessError(1, 'simctl')
+        self.assertFalse(capture.override_status_bar(host, 'device'))
+
+
 if __name__ == '__main__':
     unittest.main()
