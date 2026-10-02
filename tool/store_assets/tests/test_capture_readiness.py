@@ -194,5 +194,58 @@ class ContainerLookupTests(unittest.TestCase):
         self.assertTrue(all(call.kwargs['timeout'] == 5 for call in calls))
 
 
+class RequestTransportTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = pathlib.Path(self.directory.name)
+        self.launch_id = 'c1a9a9ab-3fb1-4300-a6f6-1ca22950679d'
+
+    def test_request_is_atomic_and_contains_only_protocol_fields(self):
+        value = capture.write_capture_request(self.root, 'en', 'home', self.launch_id)
+        path = self.root / 'Documents/HitasuraCapture/request.json'
+        self.assertEqual(json.loads(path.read_text()), value)
+        self.assertFalse(path.with_name('request.pending').exists())
+        self.assertEqual(set(value), {'schema_version', 'launch_id', 'locale', 'scene', 'created_at'})
+        self.assertEqual(value['launch_id'], self.launch_id)
+        self.assertEqual(value['schema_version'], 1)
+
+    def test_second_request_replaces_old_identity(self):
+        capture.write_capture_request(self.root, 'en', 'home', self.launch_id)
+        fresh = 'a1234567-1234-4123-a123-123456789012'
+        capture.write_capture_request(self.root, 'ja', 'collection', fresh)
+        value = json.loads((self.root / 'Documents/HitasuraCapture/request.json').read_text())
+        self.assertEqual(value['launch_id'], fresh)
+        self.assertEqual(value['locale'], 'ja')
+
+    def test_invalid_locale_scene_and_uuid_rejected_before_write(self):
+        for locale, scene, launch_id in [('xx', 'home', self.launch_id), ('en', '../home', self.launch_id), ('en', 'home', 'bad')]:
+            with self.assertRaises(ValueError):
+                capture.write_capture_request(self.root, locale, scene, launch_id)
+        self.assertFalse((self.root / 'Documents').exists())
+
+    def test_launch_no_longer_transmits_capture_environment(self):
+        host = capture.HostLog(self.root)
+        with mock.patch.object(host, 'run', return_value=capture.BUNDLE + ': 123\n') as run, \
+                mock.patch.object(capture, 'wait_for_capture', return_value={'stage': 'ready'}):
+            capture.launch_capture(host, 'device', 'en', 'home', self.root, self.root, 90)
+        self.assertNotIn('env', run.call_args.kwargs)
+        self.assertTrue((self.root / 'home_request.json').exists())
+
+
+class SceneSelectionTests(unittest.TestCase):
+    def test_minimal_proof_selects_only_home(self):
+        self.assertEqual(capture.select_capture_scenes('home'), ['home'])
+
+    def test_video_requires_explicit_flag(self):
+        self.assertEqual(capture.select_capture_scenes('home', True), ['home', 'preview'])
+        self.assertNotIn('preview', capture.select_capture_scenes(','.join(capture.SCENES)))
+
+    def test_empty_unknown_and_duplicate_scenes_rejected(self):
+        for value in ['', 'home,', '../home', 'home,home', 'preview']:
+            with self.assertRaises(ValueError):
+                capture.select_capture_scenes(value)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -83,10 +83,10 @@ jobs:
             build/native-capture-provenance.json
           retention-days: 7
           compression-level: 0
-      - name: Capture localized native smoke assets
+      - name: Prove native capture transport
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
-        timeout-minutes: 20
-        run: python3 -u tool/store_assets/capture_ios_simulator.py --locales en,ja,ar --videos
+        timeout-minutes: 10
+        run: python3 -u tool/store_assets/capture_ios_simulator.py --locales en --devices iphone_6_9 --scenes home
       - name: Upload native capture evidence
         if: always() && github.ref == 'refs/heads/codex/app-store-readiness-20261002'
         uses: actions/upload-artifact@v4

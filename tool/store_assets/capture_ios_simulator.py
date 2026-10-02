@@ -3,6 +3,7 @@
 No signing, credentials, or App Store upload. Raw screenshots/video require QA.
 """
 import argparse
+import datetime
 import hashlib
 import json
 import os
@@ -177,22 +178,48 @@ def collect_diagnostics(host, udid, state_path, dest):
             shutil.copyfile(source, dest / source.name)
 
 
+def select_capture_scenes(value, include_videos=False):
+    selected = value.split(',')
+    if (not selected or any(scene not in SCENES for scene in selected)
+            or len(set(selected)) != len(selected)):
+        raise ValueError('Unknown or duplicate screenshot scene')
+    return selected + (['preview'] if include_videos else [])
+
+
+def write_capture_request(container, locale, scene, launch_id):
+    """Atomic app-owned config; no environment variables or arbitrary paths."""
+    if locale not in LOCALES or scene not in SCENES + ['preview']:
+        raise ValueError('Unsupported capture locale or scene')
+    if str(uuid.UUID(launch_id, version=4)) != launch_id:
+        raise ValueError('Capture launch ID must be a canonical version-4 UUID')
+    folder = container / 'Documents/HitasuraCapture'
+    folder.mkdir(parents=True, exist_ok=True)
+    request = {'schema_version': 1, 'launch_id': launch_id, 'locale': locale,
+               'scene': scene, 'created_at': datetime.datetime.now(datetime.timezone.utc).isoformat()}
+    pending = folder / 'request.pending'
+    with pending.open('w') as stream:
+        json.dump(request, stream)
+        stream.flush()
+        os.fsync(stream.fileno())
+    pending.replace(folder / 'request.json')
+    return request
+
+
 def launch_capture(host, udid, locale, scene, container, dest, timeout):
     state_path = container / 'Documents/HitasuraCapture/state.json'
     state_path.parent.mkdir(parents=True, exist_ok=True)
     launch_id = str(uuid.uuid4())
-    env = dict(os.environ,
-        SIMCTL_CHILD_HITASURA_CAPTURE_LOCALE=locale,
-        SIMCTL_CHILD_HITASURA_CAPTURE_SCENE=scene,
-        SIMCTL_CHILD_HITASURA_CAPTURE_STATE_PATH=str(state_path),
-        SIMCTL_CHILD_HITASURA_CAPTURE_ID=launch_id)
+    request = write_capture_request(container, locale, scene, launch_id)
+    (dest / f'{scene}_request.json').write_text(json.dumps(request, indent=2))
+    host.stage('request_written', locale=locale, scene=scene, launch_id=launch_id,
+               request_path=str(state_path.parent / 'request.json'))
     stdout = (dest / f'{scene}_stdout.log').resolve()
     stderr = (dest / f'{scene}_stderr.log').resolve()
     # --console blocks for the entire app lifetime. These verified flags return
     # immediately with the app PID while preserving separate app output files.
     host.stage('app_launch', udid=udid, locale=locale, scene=scene, launch_id=launch_id)
     output = host.run('xcrun','simctl','launch',f'--stdout={stdout}',f'--stderr={stderr}',
-                      '--terminate-running-process',udid,BUNDLE, timeout=30, env=env)
+                      '--terminate-running-process',udid,BUNDLE, timeout=30)
     match = re.search(re.escape(BUNDLE) + r':\s*(\d+)', output)
     if not match:
         raise RuntimeError(f'Launch succeeded but returned no app PID: {output!r}')
@@ -234,6 +261,7 @@ def main():
     parser.add_argument('--locales', default=','.join(LOCALES))
     parser.add_argument('--devices', default='iphone_6_9,ipad_13')
     parser.add_argument('--videos', action='store_true')
+    parser.add_argument('--scenes', default=','.join(SCENES), help='Comma-separated screenshot scenes; home for a one-scene proof')
     parser.add_argument('--startup-timeout', type=float, default=90)
     args = parser.parse_args()
     if sys.platform != 'darwin':
@@ -243,6 +271,10 @@ def main():
         parser.error('Unknown locale')
     if not 0 < args.startup_timeout <= 120:
         parser.error('Startup timeout must be between 0 and 120 seconds.')
+    try:
+        selected_scenes = select_capture_scenes(args.scenes, args.videos)
+    except ValueError as error:
+        parser.error(str(error))
     out = pathlib.Path(args.output).resolve()
     out.mkdir(parents=True, exist_ok=True)
     host = HostLog(out)
@@ -287,7 +319,7 @@ def main():
             for locale in locales:
                 dest = out/locale/group
                 dest.mkdir(parents=True, exist_ok=True)
-                for index, scene in enumerate(SCENES + (['preview'] if args.videos else []), 1):
+                for index, scene in enumerate(selected_scenes, 1):
                     try:
                         evidence = launch_capture(host, udid, locale, scene, container, dest, args.startup_timeout)
                         record = {'locale':locale,'device_group':group,'device_name':device['name'],'runtime':runtime,'scene':scene,'app_evidence':evidence}

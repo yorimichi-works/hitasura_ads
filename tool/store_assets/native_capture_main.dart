@@ -1,12 +1,16 @@
 // Debug-only iOS simulator capture entry point; never used by release main.dart.
 // Displays unchanged production screens with a local, seeded progress fixture.
-// simctl launch passes locale/scene through SIMCTL_CHILD_HITASURA_CAPTURE_*.
+// Host writes a fixed app-owned request file; native debug channel attests simulator.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'capture_request.dart';
+
 import 'package:hitasura_ads/app.dart';
 import 'package:hitasura_ads/arcade/registry.dart';
 import 'package:hitasura_ads/data/app_store.dart';
@@ -33,8 +37,10 @@ class _NoAds extends RewardedAdService {
 }
 
 class _CaptureReporter {
-  final String? path = Platform.environment['HITASURA_CAPTURE_STATE_PATH'];
-  final String? launchId = Platform.environment['HITASURA_CAPTURE_ID'];
+  String? path;
+  CaptureRequest? request;
+  bool nativeSimulatorAttested = false;
+  String? get launchId => request?.launchId;
   bool failed = false;
 
   void stage(String value, [Map<String, Object?> details = const {}]) {
@@ -43,9 +49,10 @@ class _CaptureReporter {
     final data = <String, Object?>{
       'stage': value,
       'launch_id': launchId,
-      'locale': Platform.environment['HITASURA_CAPTURE_LOCALE'],
-      'requested_scene': Platform.environment['HITASURA_CAPTURE_SCENE'],
-      'simulator': Platform.environment['SIMULATOR_DEVICE_NAME'],
+      'locale': request?.locale,
+      'requested_scene': request?.scene,
+      'native_simulator_attested': nativeSimulatorAttested,
+      'request_transport': 'app_documents_json_v1',
       'debug_mode': kDebugMode,
       'is_ios': Platform.isIOS,
       'at': DateTime.now().toUtc().toIso8601String(),
@@ -53,7 +60,7 @@ class _CaptureReporter {
       ...details,
     };
     final json = jsonEncode(data);
-    // Only capture-specific environment values are logged, never all env vars.
+    // Only validated capture fields are logged; no environment values are read.
     stdout.writeln('HITASURA_CAPTURE $json');
     if (path != null) {
       final file = File(path!);
@@ -85,24 +92,32 @@ Future<void> main() async {
 Future<void> _capture(_CaptureReporter report) async {
   WidgetsFlutterBinding.ensureInitialized();
   report.stage('binding_initialized');
-  if (report.path == null || report.launchId == null) {
-    throw StateError('Missing capture state path or launch ID environment');
-  }
-  if (!kDebugMode ||
-      !Platform.isIOS ||
-      !Platform.environment.containsKey('SIMULATOR_DEVICE_NAME')) {
+  if (!kDebugMode || !Platform.isIOS) {
     throw StateError('Capture harness only runs on an iOS debug simulator.');
   }
-  final code = Platform.environment['HITASURA_CAPTURE_LOCALE'];
-  if (code == null) {
-    throw StateError('Missing capture locale launch environment');
+  report.stage('native_transport_start');
+  const bridge = MethodChannel('hitasura_ads/simulator_capture');
+  final response = await bridge
+      .invokeMethod<Object?>('documentsDirectory')
+      .timeout(const Duration(seconds: 10));
+  final documents = captureDocumentsPath(response);
+  report.nativeSimulatorAttested = true;
+  final captureDirectory = Directory('$documents/HitasuraCapture');
+  report.path = '${captureDirectory.path}/state.json';
+  report.stage('native_transport_ready');
+  final requestFile = File('${captureDirectory.path}/request.json');
+  if (requestFile.lengthSync() > 4096) {
+    throw const FormatException('Capture request exceeds 4096 bytes');
   }
-  final scene = Platform.environment['HITASURA_CAPTURE_SCENE'] ?? 'home';
-  if (!languages.any((l) => l.code == code)) {
-    throw ArgumentError.value(code, 'locale');
-  }
-  const scenes = {'home', 'collection', 'pin', 'runner', 'rush', 'preview'};
-  if (!scenes.contains(scene)) throw ArgumentError.value(scene, 'scene');
+  final request = CaptureRequest.parse(
+    jsonDecode(requestFile.readAsStringSync()),
+  );
+  report.request = request;
+  report.stage('request_loaded', {
+    'created_at': request.createdAt.toIso8601String(),
+  });
+  final code = request.locale;
+  final scene = request.scene;
   L10n.code = code;
   final now = DateTime.now();
   report.stage('controller_start');

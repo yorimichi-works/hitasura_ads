@@ -13,6 +13,31 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    #if DEBUG && targetEnvironment(simulator)
+      // Only the separate debug capture entrypoint uses this channel. It is
+      // absent from device/release builds and never exposes process environment.
+      if let captureRegistrar = engineBridge.pluginRegistry.registrar(
+        forPlugin: "HitasuraSimulatorCapture"
+      ) {
+        let captureChannel = FlutterMethodChannel(
+          name: "hitasura_ads/simulator_capture",
+          binaryMessenger: captureRegistrar.messenger()
+        )
+        captureChannel.setMethodCallHandler { call, result in
+          guard call.method == "documentsDirectory" else {
+            result(FlutterMethodNotImplemented)
+            return
+          }
+          guard let documents = FileManager.default.urls(
+            for: .documentDirectory, in: .userDomainMask
+          ).first else {
+            result(FlutterError(code: "no_documents", message: "Documents directory unavailable", details: nil))
+            return
+          }
+          result(["isSimulator": true, "documentsPath": documents.path])
+        }
+      }
+    #endif
     guard let registrar = engineBridge.pluginRegistry.registrar(
       forPlugin: "HitasuraPurchaseVerification"
     ) else { return }

@@ -176,3 +176,16 @@ language selection does not promise to override StoreKit/UMP system UI language.
 
 Google configuration ordering/content-filter guidance:
 https://developers.google.com/admob/flutter/targeting
+
+### Capture transport proof
+
+Run `37036555775` resolved the app container on its second bounded attempt and
+launched the capture app. Dart stdout then showed all requested environment
+fields absent, so the debug harness rejected its missing configuration before
+`runApp`. No production startup or StoreKit defect was established. The capture
+harness now reads a strict host-written JSON request from its own Documents
+directory, located through a `DEBUG && targetEnvironment(simulator)` native
+channel. Release/device builds contain no such channel, and no environment
+values or new dependencies are exposed. The next capture is deliberately one
+English iPhone home screen with a 10-minute step cap; broader capture awaits
+actual pixel and state evidence from that proof.
