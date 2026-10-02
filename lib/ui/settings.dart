@@ -190,8 +190,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 style: K.t(12, color: K.ink),
                               ),
                             TextButton(
-                              onPressed:
-                                  c.purchases.available && !c.purchases.busy
+                              onPressed: c.purchases.canRestore
                                   ? c.purchases.restore
                                   : null,
                               child: Text(L10n.ui('restore_purchases')),

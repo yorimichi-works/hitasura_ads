@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/app_models.dart';
+import '../models/premium_entitlement.dart';
 
 abstract interface class AppStore {
   Future<AppSnapshot> load();
@@ -24,6 +25,7 @@ class PreferencesAppStore implements AppStore {
   static const _soundEffectsEnabled = 'sound_effects_enabled';
   static const _notificationsEnabled = 'notifications_enabled';
   static const _premiumNoAds = 'premium_no_ads';
+  static const _premiumEntitlement = 'premium_entitlement_v1';
   static const _searchEnergy = 'search_energy';
   static const _searchEnergyRecoveryAnchor = 'search_energy_recovery_anchor';
   static const _statsDate = 'stats_date';
@@ -33,6 +35,11 @@ class PreferencesAppStore implements AppStore {
   @override
   Future<AppSnapshot> load() async {
     final prefs = await SharedPreferences.getInstance();
+    final entitlementJson = prefs.getString(_premiumEntitlement);
+    final entitlement = entitlementJson == null
+        ? PremiumEntitlement.legacy(prefs.getBool(_premiumNoAds) ?? false)
+        : PremiumEntitlement.decode(entitlementJson) ??
+              const PremiumEntitlement.legacy(false);
     final id = prefs.getString(_userId);
     final createdAt = DateTime.tryParse(prefs.getString(_createdAt) ?? '');
     final user = id == null
@@ -60,7 +67,8 @@ class PreferencesAppStore implements AppStore {
       watchCount: prefs.getInt(_watchCount) ?? 0,
       soundEffectsEnabled: prefs.getBool(_soundEffectsEnabled) ?? true,
       notificationsEnabled: prefs.getBool(_notificationsEnabled) ?? true,
-      premiumNoAds: prefs.getBool(_premiumNoAds) ?? false,
+      premiumNoAds: entitlement.active,
+      premiumEntitlement: entitlement,
       searchEnergy: prefs.getInt(_searchEnergy) ?? 5,
       searchEnergyRecoveryAnchor: DateTime.tryParse(
         prefs.getString(_searchEnergyRecoveryAnchor) ?? '',
@@ -98,9 +106,6 @@ class PreferencesAppStore implements AppStore {
     await prefs.setInt(_watchCount, snapshot.watchCount);
     await prefs.setBool(_soundEffectsEnabled, snapshot.soundEffectsEnabled);
     await prefs.setBool(_notificationsEnabled, snapshot.notificationsEnabled);
-    if (!await prefs.setBool(_premiumNoAds, snapshot.premiumNoAds)) {
-      throw StateError('Could not save purchase entitlement');
-    }
     await prefs.setInt(_searchEnergy, snapshot.searchEnergy);
     final anchor = snapshot.searchEnergyRecoveryAnchor;
     if (anchor != null) {
@@ -111,6 +116,14 @@ class PreferencesAppStore implements AppStore {
     }
     await _setNullable(prefs, _statsDate, snapshot.statsDate);
     await prefs.setString(_arcade, snapshot.arcade.encode());
+    // One value commits access and its StoreKit evidence together. Never use
+    // the old bool once this versioned record exists, including after refund.
+    final entitlement =
+        snapshot.premiumEntitlement ??
+        PremiumEntitlement.legacy(snapshot.premiumNoAds);
+    if (!await prefs.setString(_premiumEntitlement, entitlement.encode())) {
+      throw StateError('Could not save purchase entitlement');
+    }
   }
 
   Future<void> _setNullable(

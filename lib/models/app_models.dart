@@ -1,4 +1,5 @@
 import 'arcade_state.dart';
+import 'premium_entitlement.dart';
 
 export 'arcade_state.dart';
 
@@ -64,6 +65,7 @@ class AppSnapshot {
     this.soundEffectsEnabled = true,
     this.notificationsEnabled = true,
     this.premiumNoAds = false,
+    this.premiumEntitlement,
     this.searchEnergy = 5,
     this.searchEnergyRecoveryAnchor,
     this.statsDate,
@@ -79,6 +81,7 @@ class AppSnapshot {
   final bool soundEffectsEnabled;
   final bool notificationsEnabled;
   final bool premiumNoAds;
+  final PremiumEntitlement? premiumEntitlement;
   final int searchEnergy;
   final DateTime? searchEnergyRecoveryAnchor;
   final String? statsDate;

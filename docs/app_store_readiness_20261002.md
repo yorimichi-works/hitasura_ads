@@ -46,11 +46,12 @@ or a statement that App Review has approved the app.
   earlier JPY 200 planning note; overseas prices use Apple's Japan-base automatic
   equivalents. The app download is free. Buy and Restore remain available, and
   runtime price display comes from StoreKit; no currency/price is hardcoded.
-- New iOS purchase/restore events must match a current StoreKit2 **verified**
-  entitlement with the exact transaction and product, no revocation, and no
-  expiration/upgraded state. Durable local save must succeed before completing
-  the transaction. Failed verification or storage leaves an error and does not
-  complete delivery. No server receipt validation is claimed.
+- iOS premium access is reconciled at startup, app resume, matching purchase
+  updates and explicit Restore. Only StoreKit2 **verified** current ownership
+  grants access; a matching signed refund can revoke it. Unknown/offline results
+  preserve the last cache. A successful user-triggered `AppStore.sync()` is
+  required before absence can clear an account's cached access. Durable local
+  save precedes transaction completion. No server receipt validation is claimed.
 - Credits now distinguish fictional in-game parodies from real optional sponsor
   videos. Gameplay/art was not redesigned by this readiness change.
 
@@ -70,21 +71,21 @@ insufficient for this exact dependency version. The added native method checks
 StoreKit's `Transaction.currentEntitlements` and `.verified` result directly;
 it never accepts a locally decoded unsigned receipt as proof.
 
-This correction covers new delivery events. Android verification is unchanged.
-The existing cached premium entitlement is not periodically reconciled after a
-later refund/account change; exercise that lifecycle and decide the intended
-reconciliation/offline policy before commercial release. A separate backend is
-not inherently mandatory for an iOS non-consumable if StoreKit verification is
-correctly used.
+The versioned entitlement cache now also records transaction/original identity
+and signed date. Older evidence cannot undo a newer decision for the same
+purchase; valid replacement ownership wins over old refunds. Legacy access is
+preserved during ambiguous/offline reads and migrated when verified ownership
+arrives. Immediate offline account-switch detection is not promised. Android
+verification is unchanged. See [evidence rules and the signed Sandbox checklist](premium_entitlement.md).
 
 ## Remaining release checks and decisions
 
-1. **Mobile privacy policy and support page.** Source-backed web pages exist at
-   `https://hitasura.yorimichi-works.jp/privacy.html` and `/contact.html`, but the
-   historical policy describes the old browser/Firebase/AdSense product. It must
-   not be reused unchanged as the mobile AdMob/IAP policy. Confirm approved
-   mobile wording, publisher/contact information, and an authorized hosting
-   destination. This branch does not publish a policy or alter main/Vercel.
+1. **Mobile privacy policy and support page.** The approved mobile pages are
+   `https://yorimichi-works.jp/apps/hitasura-ads/privacy` and
+   `https://yorimichi-works.jp/apps/hitasura-ads/support`, with English links.
+   They were separately published and anonymously checked on 2026-10-02. The old
+   browser/Firebase/AdSense policy must not replace these mobile pages. This
+   branch does not deploy or alter the website.
 2. **AdMob account configuration.** Configure and publish applicable UMP privacy
    messages for the exact iOS AdMob application ID. Verify consent required/not
    required, refusal, update/form failure, retry, and later privacy changes on
@@ -100,10 +101,10 @@ correctly used.
    and retry, and revoked/refunded entitlement on iPhone/iPad. Confirm the
    store-side product metadata and price separately. Native compilation and
    real transactions cannot be established by Linux unit tests.
-5. **Signing/build.** An account operator confirmed the approved profile was
-   fetched into Codemagic on 2026-10-02 with the matching existing certificate
-   (profile expires 2027-09-28). Actual distribution signing, IPA export,
-   upload and Apple processing still require a separately started macOS build.
+5. **Signing/build.** Version 1.0.0(1), source `50e039b6e66630873b85e91259ba81b0bd0ece39`,
+   was separately signed, exported and uploaded on 2026-10-02. Later source
+   changes require a new build number and archive. Apple processing/export
+   compliance, owner TestFlight QA and App Review remain separate checks.
 6. **Screenshots.** Existing Japanese iPhone screenshots are 1290×2796. The app
    still supports iPad, so accurate iPad screenshots must be captured on an iPad
    simulator/device; do not stretch or crop iPhone shots to impersonate iPad.

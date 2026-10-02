@@ -83,6 +83,7 @@ class _HitasuraAdsAppState extends State<HitasuraAdsApp>
     final active = state == AppLifecycleState.resumed;
     if (active == _appActive) return;
     _appActive = active;
+    if (active) unawaited(widget.controller.purchases.refreshEntitlement());
     if (!widget.controller.isRegistered) return;
     unawaited(
       _notifications.updateInactivity(

@@ -45,6 +45,36 @@ import UIKit
       name: "hitasura_ads/purchases", binaryMessenger: registrar.messenger()
     )
     channel.setMethodCallHandler { call, result in
+      if call.method == "readPremiumEntitlement" {
+        guard let arguments = call.arguments as? [String: Any],
+          arguments["productId"] as? String == "ad_free_unlimited"
+        else {
+          result(["status": "unknown"])
+          return
+        }
+        let userInitiatedSync = arguments["userInitiatedSync"] as? Bool ?? false
+        let cachedID = arguments["cachedTransactionId"] as? String
+        let cachedOriginalID = arguments["cachedOriginalTransactionId"] as? String
+        Task { @MainActor in
+          do {
+            if userInitiatedSync {
+              // May show Apple sign-in UI. Never call this on startup/resume.
+              try await AppStore.sync()
+            }
+            result(await Self.readPremiumEntitlement(
+              cachedID: cachedID, cachedOriginalID: cachedOriginalID,
+              synchronized: userInitiatedSync
+            ))
+          } catch {
+            // Cancellation, offline and store errors are not negative evidence.
+            result(FlutterError(
+              code: "store_sync_failed", message: "Purchases could not be synchronized. Please try again.",
+              details: nil
+            ))
+          }
+        }
+        return
+      }
       guard call.method == "verifyCurrentEntitlement" else {
         result(FlutterMethodNotImplemented)
         return
@@ -74,5 +104,69 @@ import UIKit
         result(false)
       }
     }
+  }
+
+  private static func entitlementResult(
+    _ status: String, _ transaction: Transaction
+  ) -> [String: Any] {
+    return [
+      "status": status,
+      "transactionId": String(transaction.id),
+      "originalTransactionId": String(transaction.originalID),
+      "signedDateMs": Int64(transaction.signedDate.timeIntervalSince1970 * 1000)
+    ]
+  }
+
+  private static func readPremiumEntitlement(
+    cachedID: String?, cachedOriginalID: String?, synchronized: Bool
+  ) async -> [String: Any] {
+    var active: Transaction?
+    var hasUnverified = false
+    for await entitlement in Transaction.currentEntitlements {
+      switch entitlement {
+      case .verified(let transaction):
+        guard transaction.productID == "ad_free_unlimited",
+          transaction.productType == .nonConsumable,
+          transaction.revocationDate == nil, !transaction.isUpgraded,
+          transaction.expirationDate.map({ $0 > Date() }) ?? true
+        else { continue }
+        if active == nil || transaction.signedDate > active!.signedDate {
+          active = transaction
+        }
+      case .unverified:
+        // Even an unverified result must not turn absence into revocation.
+        hasUnverified = true
+      }
+    }
+    // A verified replacement purchase always wins over an older refund.
+    if let active = active { return entitlementResult("active", active) }
+    if hasUnverified { return ["status": "unknown"] }
+
+    // Refunded/revoked purchases are excluded from currentEntitlements.
+    // Look for signed revocation evidence, tied to the last cached purchase.
+    if let latest = await Transaction.latest(for: "ad_free_unlimited") {
+      switch latest {
+      case .verified(let transaction):
+        guard transaction.productID == "ad_free_unlimited",
+          transaction.productType == .nonConsumable
+        else { return ["status": "unknown"] }
+        if transaction.revocationDate != nil {
+          if String(transaction.id) == cachedID ||
+            String(transaction.originalID) == cachedOriginalID
+          {
+            return entitlementResult("revoked", transaction)
+          }
+        } else {
+          // History says owned but the current snapshot says absent. Treat
+          // inconsistent or stale store data as unknown, even after sync.
+          return ["status": "unknown"]
+        }
+      case .unverified:
+        return ["status": "unknown"]
+      }
+    }
+    // No account identifier is guessed. A completed, user-requested refresh
+    // is required to clear a legacy cache or an owning-account switch.
+    return ["status": synchronized ? "absentAfterSync" : "unknown"]
   }
 }

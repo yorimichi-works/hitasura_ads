@@ -8,6 +8,7 @@ import '../arcade/spec.dart';
 import '../data/app_store.dart';
 import '../l10n/l10n.dart';
 import '../models/app_models.dart';
+import '../models/premium_entitlement.dart';
 import '../services/search_energy_service.dart';
 import '../services/premium_purchase_service.dart';
 
@@ -51,7 +52,9 @@ class AppController extends ChangeNotifier {
        _watchCount = snapshot.watchCount,
        _soundEffectsEnabled = snapshot.soundEffectsEnabled,
        _notificationsEnabled = snapshot.notificationsEnabled,
-       _premiumNoAds = snapshot.premiumNoAds,
+       _premiumEntitlement =
+           snapshot.premiumEntitlement ??
+           PremiumEntitlement.legacy(snapshot.premiumNoAds),
        _arcade = snapshot.arcade,
        _searchEnergyService = searchEnergyService,
        _searchEnergyState = searchEnergyService.synchronize(
@@ -96,9 +99,15 @@ class AppController extends ChangeNotifier {
   int _watchCount;
   bool _soundEffectsEnabled;
   bool _notificationsEnabled;
-  bool _premiumNoAds;
+  PremiumEntitlement _premiumEntitlement;
+  bool get _premiumNoAds => _premiumEntitlement.active;
+  PremiumEntitlement get premiumEntitlement => _premiumEntitlement;
+  Future<void> _persistenceQueue = Future<void>.value();
+  bool _disposed = false;
   late final PremiumPurchaseService purchases = PremiumPurchaseService(
     onUnlocked: grantPremium,
+    cachedEntitlement: () => _premiumEntitlement,
+    onEntitlement: applyPremiumEntitlement,
   );
   ArcadeState _arcade;
   SearchEnergyState _searchEnergyState;
@@ -355,14 +364,28 @@ class AppController extends ChangeNotifier {
 
   Future<void> grantPremium() async {
     if (_premiumNoAds) return;
-    _premiumNoAds = true;
+    await _savePremiumEntitlement(const PremiumEntitlement.legacy(true));
+  }
+
+  Future<void> applyPremiumEntitlement(
+    PremiumEntitlementDecision decision,
+  ) async {
+    final next = decision.applyTo(_premiumEntitlement);
+    if (next == null) return;
+    await _savePremiumEntitlement(next);
+  }
+
+  Future<void> _savePremiumEntitlement(PremiumEntitlement next) async {
+    if (_disposed) return;
+    final previous = _premiumEntitlement;
+    _premiumEntitlement = next;
     try {
       await _persist();
     } catch (_) {
-      _premiumNoAds = false;
+      _premiumEntitlement = previous;
       rethrow;
     }
-    notifyListeners();
+    if (!_disposed) notifyListeners();
   }
 
   /// Admin/debug: view everything without saving it as discovered.
@@ -384,14 +407,24 @@ class AppController extends ChangeNotifier {
     soundEffectsEnabled: _soundEffectsEnabled,
     notificationsEnabled: _notificationsEnabled,
     premiumNoAds: _premiumNoAds,
+    premiumEntitlement: _premiumEntitlement,
     searchEnergy: _searchEnergyState.remaining,
     searchEnergyRecoveryAnchor: _searchEnergyState.recoveryAnchor,
     statsDate: _dateKey(_clock()),
     arcade: _arcade,
   );
 
-  Future<void> _persist() async {
-    await _store.save(_snapshot());
+  Future<void> _persist() {
+    final operation = _persistenceQueue.then((_) => _store.save(_snapshot()));
+    _persistenceQueue = operation.catchError((Object _) {});
+    return operation;
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    purchases.dispose();
+    super.dispose();
   }
 
   void _rolloverStats() {
