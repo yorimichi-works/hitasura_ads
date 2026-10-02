@@ -356,7 +356,12 @@ class AppController extends ChangeNotifier {
   Future<void> grantPremium() async {
     if (_premiumNoAds) return;
     _premiumNoAds = true;
-    await _persist();
+    try {
+      await _persist();
+    } catch (_) {
+      _premiumNoAds = false;
+      rethrow;
+    }
     notifyListeners();
   }
 

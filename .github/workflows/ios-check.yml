@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - codex/ios-purchase-build
+      - codex/app-store-readiness-20261002
   workflow_dispatch:
 
 jobs:

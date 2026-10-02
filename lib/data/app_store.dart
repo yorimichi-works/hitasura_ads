@@ -98,7 +98,9 @@ class PreferencesAppStore implements AppStore {
     await prefs.setInt(_watchCount, snapshot.watchCount);
     await prefs.setBool(_soundEffectsEnabled, snapshot.soundEffectsEnabled);
     await prefs.setBool(_notificationsEnabled, snapshot.notificationsEnabled);
-    await prefs.setBool(_premiumNoAds, snapshot.premiumNoAds);
+    if (!await prefs.setBool(_premiumNoAds, snapshot.premiumNoAds)) {
+      throw StateError('Could not save purchase entitlement');
+    }
     await prefs.setInt(_searchEnergy, snapshot.searchEnergy);
     final anchor = snapshot.searchEnergyRecoveryAnchor;
     if (anchor != null) {

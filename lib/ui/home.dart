@@ -45,7 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _ads = widget.rewardedAdService ?? GoogleRewardedAdService();
     _ads.addListener(_refresh);
-    unawaited(_ads.initialize());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) unawaited(_ads.preparePrivacy());
+    });
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) async {
       await c.refreshSearchEnergy();
       if (mounted) setState(() {});
@@ -275,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
         IconButton(
           onPressed: () {
             K.tap();
-            _open(SettingsScreen(controller: c));
+            _open(SettingsScreen(controller: c, rewardedAdService: _ads));
           },
           icon: const Icon(Icons.settings_rounded, color: Colors.white),
         ),

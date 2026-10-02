@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../arcade/engine/audio.dart';
 import '../arcade/engine/sfx.dart';
 import '../arcade/registry.dart';
 import '../l10n/l10n.dart';
+import '../services/release_links.dart';
+import '../services/rewarded_ad_service.dart';
 import '../state/app_controller.dart';
 import 'kit.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key, required this.controller});
+  const SettingsScreen({
+    super.key,
+    required this.controller,
+    this.rewardedAdService,
+  });
   final AppController controller;
+  final RewardedAdService? rewardedAdService;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -197,6 +205,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     _section(
+                      L10n.ui('privacy_and_support'),
+                      AnimatedBuilder(
+                        animation: widget.rewardedAdService ?? c,
+                        builder: (context, _) {
+                          final ads = widget.rewardedAdService;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextButton.icon(
+                                onPressed: () =>
+                                    _openLink(ReleaseLinks.privacyPolicy),
+                                icon: const Icon(Icons.privacy_tip_outlined),
+                                label: Text(L10n.ui('privacy_policy')),
+                              ),
+                              TextButton.icon(
+                                onPressed: () =>
+                                    _openLink(ReleaseLinks.support),
+                                icon: const Icon(Icons.help_outline),
+                                label: Text(L10n.ui('support')),
+                              ),
+                              if (ads?.privacyOptionsRequired ?? false)
+                                TextButton.icon(
+                                  onPressed: ads!.privacyBusy
+                                      ? null
+                                      : ads.showPrivacyOptions,
+                                  icon: const Icon(Icons.tune),
+                                  label: Text(L10n.ui('ad_privacy_options')),
+                                ),
+                              if (ads?.privacyHasError ?? false)
+                                Text(
+                                  L10n.ui('ad_privacy_failed'),
+                                  style: K.t(12, color: K.red),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    _section(
                       L10n.ui('language'),
                       Wrap(
                         spacing: 6,
@@ -248,7 +295,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         'ひたすら広告 / Nothing But Ads — AD DEMO 151\n'
                         'Games, art, music & sound: procedurally made for this app.\n'
                         'Font: Kosugi Maru (Apache License 2.0).\n'
-                        'All ads, products and prizes in this app are fictional parodies.',
+                        'In-game ads, products and prizes are fictional parodies.\n'
+                        'Optional sponsor videos are real third-party ads.',
                         style: K.t(
                           12,
                           color: K.ink.withValues(alpha: .7),
@@ -266,24 +314,43 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Future<void> _openLink(String value) async {
+    final uri = ReleaseLinks.parse(value);
+    var opened = false;
+    if (uri != null) {
+      try {
+        opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } catch (_) {
+        // Leave the user in Settings and offer a readable error below.
+      }
+    }
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(L10n.ui('link_unavailable'))));
+    }
+  }
+
   Widget _section(String title, Widget child) => Padding(
     padding: const EdgeInsets.only(bottom: 14),
     child: Sticker(
       padding: const EdgeInsets.all(14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            title,
-            style: K.t(
-              13,
-              color: K.ink.withValues(alpha: .55),
-              weight: FontWeight.w900,
+      child: Material(
+        type: MaterialType.transparency,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              title,
+              style: K.t(
+                13,
+                color: K.ink.withValues(alpha: .55),
+                weight: FontWeight.w900,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          child,
-        ],
+            const SizedBox(height: 8),
+            child,
+          ],
+        ),
       ),
     ),
   );

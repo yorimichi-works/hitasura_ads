@@ -1,5 +1,12 @@
 // UI strings — 日本語
 const Map<String, String> uiJa = {
+  'privacy_and_support': "プライバシー・サポート",
+  'privacy_policy': "プライバシーポリシー",
+  'support': "お問い合わせ",
+  'ad_privacy_options': "広告のプライバシー設定",
+  'ad_privacy_failed': "プライバシー設定を更新できませんでした。スポンサー広告を停止しています。もう一度お試しください。",
+  'link_unavailable': "現在このリンクを開けません。しばらくしてからお試しください。",
+
   'app_title': 'ひたすら広告',
   'app_sub': '151の広告デモ',
   'tagline': '世界中のウソ広告、ぜんぶ遊べます。',

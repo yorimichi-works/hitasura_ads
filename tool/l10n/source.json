@@ -127,7 +127,13 @@
   "rush_ready": "Get ready…",
   "rush_desc_long": "Short ads you have discovered play back to back. Clear them before time runs out. 4 lives.",
   "progress_title": "Ad Hunter",
-  "version": "Version"
+  "version": "Version",
+  "privacy_and_support": "Privacy & support",
+  "privacy_policy": "Privacy policy",
+  "support": "Support",
+  "ad_privacy_options": "Ad privacy choices",
+  "ad_privacy_failed": "Privacy settings could not be updated. Sponsor ads are paused. Please try again.",
+  "link_unavailable": "This link is currently unavailable. Please try again later."
  },
  "ui_ja": {
   "app_title": "ひたすら広告",
@@ -257,7 +263,13 @@
   "rush_ready": "よーい…",
   "rush_desc_long": "見つけた短い広告が次々に流れます。時間内にクリアしよう。ライフは4つ。",
   "progress_title": "広告ハンター",
-  "version": "バージョン"
+  "version": "バージョン",
+  "privacy_and_support": "プライバシー・サポート",
+  "privacy_policy": "プライバシーポリシー",
+  "support": "お問い合わせ",
+  "ad_privacy_options": "広告のプライバシー設定",
+  "ad_privacy_failed": "プライバシー設定を更新できませんでした。スポンサー広告を停止しています。もう一度お試しください。",
+  "link_unavailable": "現在このリンクを開けません。しばらくしてからお試しください。"
  },
  "games_en": {
   "1": [

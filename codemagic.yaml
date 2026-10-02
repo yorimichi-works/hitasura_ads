@@ -18,3 +18,79 @@ workflows:
     artifacts:
       - build/ios/iphonesimulator/Runner.app
       - /tmp/xcodebuild_logs/*.log
+
+  # Start manually after release prerequisites have been verified.
+  # There are deliberately no triggers or publishing steps.
+  ios-app-store-ipa:
+    name: Hitasura Ads signed App Store IPA (manual)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    inputs:
+      privacy_policy_url:
+        description: Published HTTPS privacy policy URL (required)
+        type: string
+      support_url:
+        description: Published HTTPS support URL (required)
+        type: string
+      build_number:
+        description: Positive build number greater than every uploaded iOS build
+        type: string
+        default: "1"
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      flutter: stable
+      xcode: latest
+      ios_signing:
+        # References to existing, approved Codemagic signing identities only.
+        # Profile registered and fetched with approval on 2026-10-02.
+        provisioning_profiles:
+          - profile: hitasura-app-store-profile
+            environment_variable: HITASURA_PROFILE_PATH
+        certificates:
+          - cirno-app-store
+      vars:
+        APP_STORE_APPLE_ID: "6818519730"
+        ADMOB_MODE: production
+        PRIVACY_POLICY_URL: ${{ inputs.privacy_policy_url }}
+        SUPPORT_URL: ${{ inputs.support_url }}
+        IOS_BUILD_NUMBER: ${{ inputs.build_number }}
+    scripts:
+      - name: Test release guards
+        script: python3 -m unittest discover -s tool/release/tests -v
+      - name: Validate release configuration, signing profile and build number
+        script: |
+          set -euo pipefail
+          python3 tool/release/preflight.py \
+            --check-app-store --allow-initial-build --check-profile \
+            --cm-env "${CM_ENV:?}" \
+            --report build/release/preflight.json
+      - name: Install Flutter dependencies
+        script: flutter pub get
+      - name: Analyze Dart code
+        script: flutter analyze --no-pub
+      - name: Run Flutter tests
+        script: flutter test --no-pub
+      - name: Apply only the approved App Store profile
+        script: |
+          set -euo pipefail
+          xcode-project use-profiles \
+            --project ios/Runner.xcodeproj \
+            --profile "${HITASURA_PROFILE_PATH:?}" \
+            --archive-method app-store \
+            --custom-export-options '{"manageAppVersionAndBuildNumber":false,"destination":"export"}'
+      - name: Build signed production IPA
+        script: |
+          set -euo pipefail
+          flutter build ipa --release --no-pub \
+            --build-name="${RELEASE_BUILD_NAME:?}" \
+            --build-number="${RELEASE_BUILD_NUMBER:?}" \
+            --export-options-plist="${HOME:?}/export_options.plist" \
+            --dart-define="ADMOB_MODE=${ADMOB_MODE:?}" \
+            --dart-define="PRIVACY_POLICY_URL=${PRIVACY_POLICY_URL:?}" \
+            --dart-define="SUPPORT_URL=${SUPPORT_URL:?}"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/archive/*.xcarchive/dSYMs/**/*.dSYM
+      - build/release/preflight.json
+      - /tmp/xcodebuild_logs/*.log
