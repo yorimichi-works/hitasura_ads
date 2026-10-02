@@ -47,3 +47,13 @@ References checked 2026-10-02:
 - https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
 - https://developer.apple.com/app-store/review/guidelines/#accurate-metadata
 - https://developer.apple.com/help/app-store-connect/reference/app-information/app-store-localizations
+
+## Native startup recovery
+
+The first macOS smoke build succeeded, but its initial capture could not find the late-written readiness file. It produced no valid screenshot or video. The recovery harness now writes startup stages before the simulator guard and controller initialization; controller creation still executes normal purchase initialization. It does not bypass or conceal StoreKit startup behavior.
+
+The host obtains the real app data container from simctl, passes an explicit app-owned Documents state path and unique launch ID, and polls for a matching ready state for at most 90 seconds. Startup errors are sticky. Captures retain the app console, state/event history, and failure screenshot/log/crash diagnostics. A timeout identifies the last observed stage without assuming the cause. The workflow remains the English/Japanese/Arabic smoke until real pixel review passes.
+
+## Test-renderer glyph correction
+
+Every production fallback font family must be explicitly loaded in Flutter tests. A missing family can resolve to the Ahem test font, turning supported accented Latin letters into squares. The renderer now loads all actual listed Noto fallback families once per process, including Noto Sans JP, and asserts coverage of the configured family list. The seven affected Latin-accent locales were regenerated and reviewed. This changes only the test harness, not production app styling.

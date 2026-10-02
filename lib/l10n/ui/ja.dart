@@ -8,7 +8,7 @@ const Map<String, String> uiJa = {
   'ad_privacy_failed': "プライバシー設定を更新できませんでした。スポンサー広告を停止しています。もう一度お試しください。",
   'link_unavailable': "現在このリンクを開けません。しばらくしてからお試しください。",
 
-  'app_title': 'ひたすら広告',
+  'app_title': '151のドパガキ向けミニゲーム集',
   'app_sub': '151の広告デモ',
   'tagline': '世界中のウソ広告、ぜんぶ遊べます。',
   'watch_next': '次の広告を見る',

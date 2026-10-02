@@ -10,8 +10,8 @@ or a statement that App Review has approved the app.
 
 - Latest owner-approved Japanese App Store title (2026-10-02):
   `151のドパガキ向けミニゲーム集`. This supersedes earlier store-title proposals.
-  The short installed name `Hitasura Ads`, other locale names, game art and core
-  UI titles remain unchanged. This title does not establish a Kids-category
+  The Japanese in-app title uses the same approved wording. The short installed
+  name `Hitasura Ads`, other locale names, game art and layouts remain unchanged. This title does not establish a Kids-category
   audience or replace truthful age-rating/content answers.
 - Production iOS bundle `com.syamo.hitasuraads`, team `3W8HVJ3U8W`, marketing
   version `1.0.0`. The source build number remains `1`; each uploaded build must

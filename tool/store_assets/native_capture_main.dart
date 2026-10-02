@@ -32,8 +32,62 @@ class _NoAds extends RewardedAdService {
       RewardedAdResult.unavailable;
 }
 
+class _CaptureReporter {
+  final String? path = Platform.environment['HITASURA_CAPTURE_STATE_PATH'];
+  final String? launchId = Platform.environment['HITASURA_CAPTURE_ID'];
+  bool failed = false;
+
+  void stage(String value, [Map<String, Object?> details = const {}]) {
+    if (failed && value != 'error') return;
+    if (value == 'error') failed = true;
+    final data = <String, Object?>{
+      'stage': value,
+      'launch_id': launchId,
+      'locale': Platform.environment['HITASURA_CAPTURE_LOCALE'],
+      'requested_scene': Platform.environment['HITASURA_CAPTURE_SCENE'],
+      'simulator': Platform.environment['SIMULATOR_DEVICE_NAME'],
+      'debug_mode': kDebugMode,
+      'is_ios': Platform.isIOS,
+      'at': DateTime.now().toUtc().toIso8601String(),
+      'capture_target': 'tool/store_assets/native_capture_main.dart',
+      ...details,
+    };
+    final json = jsonEncode(data);
+    // Only capture-specific environment values are logged, never all env vars.
+    stdout.writeln('HITASURA_CAPTURE $json');
+    if (path != null) {
+      final file = File(path!);
+      file.parent.createSync(recursive: true);
+      final pending = File('$path.pending');
+      pending.writeAsStringSync(json, flush: true);
+      pending.renameSync(path!);
+      File('$path.events.jsonl')
+          .writeAsStringSync('$json\n', mode: FileMode.append, flush: true);
+    }
+  }
+}
+
 Future<void> main() async {
+  final report = _CaptureReporter();
+  report.stage('dart_started');
+  FlutterError.onError = (details) {
+    report.stage('error', {'error': details.exceptionAsString()});
+    FlutterError.dumpErrorToConsole(details);
+  };
+  try {
+    await _capture(report);
+  } catch (error, stack) {
+    report.stage('error', {'error': '$error', 'stack': '$stack'});
+    rethrow;
+  }
+}
+
+Future<void> _capture(_CaptureReporter report) async {
   WidgetsFlutterBinding.ensureInitialized();
+  report.stage('binding_initialized');
+  if (report.path == null || report.launchId == null) {
+    throw StateError('Missing capture state path or launch ID environment');
+  }
   if (!kDebugMode ||
       !Platform.isIOS ||
       !Platform.environment.containsKey('SIMULATOR_DEVICE_NAME')) {
@@ -51,6 +105,7 @@ Future<void> main() async {
   if (!scenes.contains(scene)) throw ArgumentError.value(scene, 'scene');
   L10n.code = code;
   final now = DateTime.now();
+  report.stage('controller_start');
   final controller = await AppController.create(
     store: MemoryAppStore(
       AppSnapshot(
@@ -74,6 +129,7 @@ Future<void> main() async {
       ),
     ),
   );
+  report.stage('controller_ready');
   final appKey = GlobalKey();
   runApp(
     HitasuraAdsApp(
@@ -82,6 +138,9 @@ Future<void> main() async {
       rewardedAdService: _NoAds(),
     ),
   );
+  report.stage('run_app_requested');
+  await WidgetsBinding.instance.endOfFrame.timeout(const Duration(seconds: 30));
+  report.stage('first_frame');
   NavigatorState? navigator;
   void findNavigator(Element e) {
     if (e is StatefulElement && e.state is NavigatorState) {
@@ -112,7 +171,7 @@ Future<void> main() async {
     unawaited(nav.push(MaterialPageRoute<void>(builder: (_) => screen)));
   }
 
-  await Future<void>.delayed(const Duration(seconds: 2));
+  report.stage('scene_start');
   if (scene == 'preview') {
     // Continuous native runner recording, beginning about 3s after launch.
     // Production timing, game loop, HUD, and result screen remain unchanged.
@@ -120,15 +179,11 @@ Future<void> main() async {
   } else {
     await show(scene);
   }
-  await File('${Directory.systemTemp.path}/hitasura_capture_state.json')
-      .writeAsString(
-        jsonEncode({
-          'locale': L10n.code,
-          'requested_scene': scene,
-          'active_scene': scene == 'preview' ? 'runner' : scene,
-          'simulator': Platform.environment['SIMULATOR_DEVICE_NAME'],
-          'ready_at': DateTime.now().toUtc().toIso8601String(),
-          'capture_target': 'tool/store_assets/native_capture_main.dart',
-        }),
-      );
+  await Future<void>.delayed(const Duration(milliseconds: 400));
+  await WidgetsBinding.instance.endOfFrame.timeout(const Duration(seconds: 30));
+  report.stage('ready', {
+    'locale': L10n.code,
+    'active_scene': scene == 'preview' ? 'runner' : scene,
+    'ready_at': DateTime.now().toUtc().toIso8601String(),
+  });
 }

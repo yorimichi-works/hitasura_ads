@@ -9,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hitasura_ads/app.dart';
+import 'package:hitasura_ads/arcade/engine/draw.dart';
 import 'package:hitasura_ads/arcade/registry.dart';
 import 'package:hitasura_ads/data/app_store.dart';
 import 'package:hitasura_ads/l10n/l10n.dart';
@@ -35,28 +36,24 @@ class _NoAds extends RewardedAdService {
 
 final Set<String> _loadedFonts = {};
 
-Future<void> _fonts(String code) async {
+Future<void> _fonts() async {
+  // Every fallback family must be registered. A missing family in flutter_test
+  // can resolve to Ahem, whose Latin glyphs are solid squares. Load each actual
+  // fallback once per process, never once per device.
   final fonts = <String, String>{
     'KosugiMaru': 'assets/fonts/KosugiMaru-Regular.ttf',
     'Noto Sans': '/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf',
-    if (const {'ar', 'ur', 'fa'}.contains(code))
-      'Noto Sans Arabic':
-          '/usr/share/fonts/truetype/noto/NotoSansArabic-Regular.ttf',
-    if (code == 'hi')
-      'Noto Sans Devanagari':
-          '/usr/share/fonts/truetype/noto/NotoSansDevanagari-Regular.ttf',
-    if (code == 'bn')
-      'Noto Sans Bengali':
-          '/usr/share/fonts/truetype/noto/NotoSansBengali-Regular.ttf',
-    if (code == 'th')
-      'Noto Sans Thai':
-          '/usr/share/fonts/truetype/noto/NotoSansThai-Regular.ttf',
-    if (code == 'ko')
-      'Noto Sans KR': '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
-    if (code == 'zh')
-      'Noto Sans SC': '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
-    if (code == 'zh_TW')
-      'Noto Sans TC': '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+    'Noto Sans JP': '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+    'Noto Sans Arabic':
+        '/usr/share/fonts/truetype/noto/NotoSansArabic-Regular.ttf',
+    'Noto Sans Devanagari':
+        '/usr/share/fonts/truetype/noto/NotoSansDevanagari-Regular.ttf',
+    'Noto Sans Bengali':
+        '/usr/share/fonts/truetype/noto/NotoSansBengali-Regular.ttf',
+    'Noto Sans Thai': '/usr/share/fonts/truetype/noto/NotoSansThai-Regular.ttf',
+    'Noto Sans KR': '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+    'Noto Sans SC': '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+    'Noto Sans TC': '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
   };
   for (final e in fonts.entries) {
     if (_loadedFonts.contains(e.key)) continue;
@@ -67,6 +64,11 @@ Future<void> _fonts(String code) async {
       e.key,
     )..addFont(Future.value(ByteData.view(bytes.buffer)))).load();
     _loadedFonts.add(e.key);
+  }
+  for (final family in D.fontFallback) {
+    if (!_loadedFonts.contains(family)) {
+      throw StateError('Unregistered production font fallback: $family');
+    }
   }
   if (_loadedFonts.add('MaterialIcons')) {
     await (FontLoader(
@@ -91,7 +93,7 @@ void main() {
               : const Size(1290, 2796);
           tester.view.devicePixelRatio = ratio;
           addTearDown(tester.view.reset);
-          await tester.runAsync(() => _fonts(code));
+          await tester.runAsync(_fonts);
           L10n.code = code;
           final now = DateTime.now();
           final controller = await AppController.create(
