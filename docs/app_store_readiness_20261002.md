@@ -189,3 +189,11 @@ channel. Release/device builds contain no such channel, and no environment
 values or new dependencies are exposed. The next capture is deliberately one
 English iPhone home screen with a 10-minute step cap; broader capture awaits
 actual pixel and state evidence from that proof.
+
+The first file-transport proof (`37039897176`) exposed a native build-condition
+issue: the Runner Debug target did not define Swift `DEBUG` (only RunnerTests
+did), so the simulator-only channel was absent from the actual native dylib.
+The next patch sets `$(inherited) DEBUG` on Runner Debug only, leaves Release and
+Profile unchanged, and verifies the channel marker in native Mach-O images
+before boot. The guard rejects the actual failed artifact and cannot be fooled
+by the same channel name in a Dart kernel asset. Runtime proof remains pending.

@@ -58,6 +58,9 @@ jobs:
       - name: Build native capture harness
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
         run: flutter build ios --simulator --debug --no-codesign -t tool/store_assets/native_capture_main.dart --dart-define=ADMOB_MODE=disabled
+      - name: Verify native capture bridge is compiled
+        if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
+        run: python3 tool/store_assets/verify_native_bridge.py
       - name: Package native capture harness
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
         run: |
