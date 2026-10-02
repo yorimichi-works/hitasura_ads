@@ -22,7 +22,7 @@ python3 tool/store_assets/capture_ios_simulator.py --locales en,ja,ar --videos
 
 The capture manifest contains device/runtime, original dimensions, actual app locale/scene evidence, and hashes. `bundled_privacy_and_packages.json` exports the built app's vendor privacy manifest contents and resolved native package metadata without modifying them.
 
-The fixture has 40 discovered games, 1234 coins, 900 XP, 5 tickets, and the ordinary UI. Notifications/audio/external rewarded ads are disabled for isolated capture. No fake paid entitlement, user data, or game result is inserted. Existing Japanese marketing screenshots remain untouched. New proposed store title is not baked into app captures.
+The fixture has 40 discovered games, 1234 coins, 900 XP, 5 tickets, and the ordinary UI. Notifications/audio/external rewarded ads are disabled for isolated capture. No fake paid entitlement, user data, or game result is inserted. Existing Japanese marketing screenshots remain untouched. Approved Japanese/English title copy is rendered from the app locale tables; other locale names and UI artwork remain unchanged.
 
 ## Localized Flutter-content previews (Linux)
 
@@ -57,3 +57,7 @@ The host obtains the real app data container from simctl, passes an explicit app
 ## Test-renderer glyph correction
 
 Every production fallback font family must be explicitly loaded in Flutter tests. A missing family can resolve to the Ahem test font, turning supported accented Latin letters into squares. The renderer now loads all actual listed Noto fallback families once per process, including Noto Sans JP, and asserts coverage of the configured family list. The seven affected Latin-accent locales were regenerated and reviewed. This changes only the test harness, not production app styling.
+
+The second smoke run reached its 20-minute limit before any locale output. Its artifact cannot identify which unlogged setup command stalled. The host now resolves the actual selected Xcode simulator SDK and requires an available matching iOS major/minor runtime before considering device names. It refuses to silently choose a newer, incompatible runtime.
+
+Every host command persists an intent/result event and independent stdout/stderr files. Boot/bootstatus are bounded at 120 seconds, install at 60, launch/container/screenshot at 30, termination at 10, and shutdown at 30. Failure diagnostics have 10-second bounds each, including failures before an app container exists. Launch uses nonblocking `--stdout`/`--stderr`, records its PID, and detects an exited app during readiness polling; `--console` is intentionally avoided because it lasts for the app's lifetime. Native recording is limited to 20 seconds plus a bounded finalization/kill wait. No production startup code was bypassed.

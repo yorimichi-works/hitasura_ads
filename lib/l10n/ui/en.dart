@@ -8,7 +8,7 @@ const Map<String, String> uiEn = {
   'ad_privacy_failed': "Privacy settings could not be updated. Sponsor ads are paused. Please try again.",
   'link_unavailable':
       "This link is currently unavailable. Please try again later.",
-  'app_title': 'Nothing But Ads',
+  'app_title': 'Nothing But Ads: 151 Games',
   'app_sub': '151 AD DEMOS',
   'tagline': 'Every fake ad in the universe. Playable.',
   'watch_next': 'WATCH NEXT AD',

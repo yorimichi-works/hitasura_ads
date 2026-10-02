@@ -9,10 +9,13 @@ or a statement that App Review has approved the app.
 ## Prepared in code
 
 - Latest owner-approved Japanese App Store title (2026-10-02):
-  `151のドパガキ向けミニゲーム集`. This supersedes earlier store-title proposals.
+  `ひたすら広告　151のドパガキ向けミニゲーム集`. This supersedes earlier store-title proposals.
   The Japanese in-app title uses the same approved wording. The short installed
   name `Hitasura Ads`, other locale names, game art and layouts remain unchanged. This title does not establish a Kids-category
   audience or replace truthful age-rating/content answers.
+- Latest owner-approved English App Store and in-app title (2026-10-02):
+  `Nothing But Ads: 151 Games`, selected after the shorter App Store name was
+  unavailable. Other locale names, game art and layouts remain unchanged.
 - Production iOS bundle `com.syamo.hitasuraads`, team `3W8HVJ3U8W`, marketing
   version `1.0.0`. The source build number remains `1`; each uploaded build must
   have a new number checked against App Store Connect app `6818519730`.
@@ -120,3 +123,30 @@ correctly used.
 - [Apple user privacy and data use](https://developer.apple.com/app-store/user-privacy-and-data-use/)
 - [Codemagic named signing identities](https://docs.codemagic.io/yaml-code-signing/signing-ios/)
 - [Codemagic App Store Connect upload and submission controls](https://docs.codemagic.io/yaml-publishing/app-store-connect/)
+
+### Native capture retry evidence (2026-10-02)
+
+- Commit `6f3d751` passed analyzer, tests, ordinary simulator compilation,
+  capture-target compilation and Android CI. Native capture run `37026549389`
+  timed out before its first app launch/capture; the uploaded evidence contains
+  zero images. Do not treat a successful compile as runtime or screenshot QA.
+- The runner selected its default Xcode 16.4 while the device selector preferred
+  an iOS 26 iPhone. The next bounded retry selects Xcode 26.3, the latest stable
+  installation listed for that macOS 15 runner image, and matches the simulator
+  runtime to its SDK. Setup commands now need individual timeouts and durable
+  stage logs so simulator setup cannot consume the whole capture budget silently.
+- Runner tool inventory: https://github.com/actions/runner-images/blob/macos-15-arm64/20260907.0337/images/macos/macos-15-arm64-Readme.md
+
+### Native language declaration
+
+The iOS bundle now declares the same 20 languages actually provided by the Dart
+UI tables via `CFBundleLocalizations` (Chinese variants use `zh-Hans` and
+`zh-Hant`). No empty UIKit translations or new SDK features are introduced. A
+source-level test keeps the native list aligned with the Flutter language list;
+the processed App Store build's Languages field still needs readback. In-app
+language selection does not promise to override StoreKit/UMP system UI language.
+
+- Apple guidance for manually localized resources and the App Store Languages field:
+  https://developer.apple.com/library/archive/qa/qa1828/_index.html
+- Flutter iOS bundle localization guidance:
+  https://docs.flutter.dev/ui/internationalization#localizing-for-ios-updating-the-ios-app-bundle
