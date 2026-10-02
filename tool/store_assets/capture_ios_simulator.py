@@ -345,10 +345,19 @@ def main():
     parser.add_argument('--natural-status-bar', action='store_true',
                         help='Keep actual system status for a transport proof')
     parser.add_argument('--scenes', default=','.join(SCENES), help='Comma-separated screenshot scenes; home for a one-scene proof')
+    parser.add_argument('--screenshot-xctestrun', help='Use a separately compiled foreground-only XCTest screenshot driver')
+    parser.add_argument('--screenshot-driver-sha', help='Exact separate screenshot driver source SHA')
     parser.add_argument('--startup-timeout', type=float, default=90)
     args = parser.parse_args()
     if sys.platform != 'darwin':
         parser.error('Native captures require macOS/Xcode; Flutter previews are not native captures.')
+    if args.screenshot_xctestrun:
+        if not args.session_loop or not pathlib.Path(args.screenshot_xctestrun).is_file():
+            parser.error('XCTest screenshots require session-loop and an existing xctestrun file.')
+        if not re.fullmatch(r'[0-9a-f]{40}', args.screenshot_driver_sha or ''):
+            parser.error('XCTest screenshot driver must have an exact source SHA.')
+    elif args.screenshot_driver_sha is not None:
+        parser.error('Screenshot driver SHA requires an xctestrun file.')
     locales = args.locales.split(',')
     if len(set(locales)) != len(locales) or any(locale not in LOCALES for locale in locales):
         parser.error('Unknown locale')
@@ -378,6 +387,8 @@ def main():
         'app_source_sha':args.app_source_sha,'capture_script_sha':os.environ.get('GITHUB_SHA'),
         'ci':{name:os.environ.get(key) for name,key in [('run_id','GITHUB_RUN_ID'),('job','GITHUB_JOB'),('workflow','GITHUB_WORKFLOW'),('run_attempt','GITHUB_RUN_ATTEMPT')]},
         'session_loop':args.session_loop,'work_deadline_seconds':args.work_deadline_seconds,
+        'screenshot_method':'xctest_existing_foreground_app' if args.screenshot_xctestrun else 'simctl_io_screenshot',
+        'screenshot_driver_source_sha':args.screenshot_driver_sha,
         'requested_locales':locales,'requested_scenes':selected_scenes,
         'fixture':'40 discovered games, 1234 coins, 900 XP, 5 tickets; notifications/audio/external ads disabled; production purchase initialization preserved',
         'status':'in_progress','records':[], 'status_bar_overrides': {}}
@@ -430,7 +441,9 @@ def main():
                 dest = out/locale/group
                 dest.mkdir(parents=True, exist_ok=True)
                 if session_class is not None:
-                    session = session_class(host, udid, container, locale, dest, out, args.startup_timeout)
+                    session = session_class(host, udid, container, locale, dest, out, args.startup_timeout,
+                                            screenshot_xctestrun=args.screenshot_xctestrun,
+                                            screenshot_driver_sha=args.screenshot_driver_sha)
                     common = {'locale':locale,'device_group':group,'device_name':device['name'],
                               'device_udid':udid,'runtime':runtime,'status_bar_override_applied':status_bar_applied}
                     def append_record(record):

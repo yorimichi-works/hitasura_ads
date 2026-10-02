@@ -1,0 +1,69 @@
+// !$*UTF8*$!
+{
+  archiveVersion = 1;
+  classes = {};
+  objectVersion = 56;
+  objects = {
+    B30000000000000000000001 = {isa = PBXBuildFile; fileRef = B30000000000000000000002; };
+    B30000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeScreenshotUITests.swift; sourceTree = SOURCE_ROOT; };
+    B30000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NativeScreenshotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+    B30000000000000000000004 = {isa = PBXGroup; children = (B30000000000000000000002, B30000000000000000000005); sourceTree = "<group>"; };
+    B30000000000000000000005 = {isa = PBXGroup; children = (B30000000000000000000003); name = Products; sourceTree = "<group>"; };
+    B30000000000000000000006 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B30000000000000000000001); runOnlyForDeploymentPostprocessing = 0; };
+    B30000000000000000000007 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+    B30000000000000000000008 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+    B30000000000000000000009 = {
+      isa = PBXNativeTarget;
+      buildConfigurationList = B3000000000000000000000D;
+      buildPhases = (B30000000000000000000006, B30000000000000000000007, B30000000000000000000008);
+      buildRules = ();
+      dependencies = ();
+      name = NativeScreenshotUITests;
+      productName = NativeScreenshotUITests;
+      productReference = B30000000000000000000003;
+      productType = "com.apple.product-type.bundle.ui-testing";
+    };
+    B3000000000000000000000A = {
+      isa = PBXProject;
+      attributes = {BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 2630; };
+      buildConfigurationList = B3000000000000000000000E;
+      compatibilityVersion = "Xcode 14.0";
+      developmentRegion = en;
+      hasScannedForEncodings = 0;
+      knownRegions = (en, Base);
+      mainGroup = B30000000000000000000004;
+      productRefGroup = B30000000000000000000005;
+      projectDirPath = "";
+      projectRoot = "";
+      targets = (B30000000000000000000009);
+    };
+    B3000000000000000000000B = {
+      isa = XCBuildConfiguration;
+      buildSettings = {
+        CODE_SIGNING_ALLOWED = NO;
+        ENABLE_TESTING_SEARCH_PATHS = YES;
+        GENERATE_INFOPLIST_FILE = YES;
+        IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+        LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@loader_path/Frameworks");
+        PRODUCT_BUNDLE_IDENTIFIER = com.syamo.hitasuraads.captureproof.tests;
+        PRODUCT_NAME = "$(TARGET_NAME)";
+        SDKROOT = iphonesimulator;
+        SUPPORTED_PLATFORMS = iphonesimulator;
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+        SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+        SWIFT_VERSION = 5.0;
+        TARGETED_DEVICE_FAMILY = "1,2";
+        USES_XCTRUNNER = YES;
+      };
+      name = Debug;
+    };
+    B3000000000000000000000C = {
+      isa = XCBuildConfiguration;
+      buildSettings = {CLANG_ENABLE_MODULES = YES; ENABLE_TESTABILITY = YES; SDKROOT = iphonesimulator; };
+      name = Debug;
+    };
+    B3000000000000000000000D = {isa = XCConfigurationList; buildConfigurations = (B3000000000000000000000B); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+    B3000000000000000000000E = {isa = XCConfigurationList; buildConfigurations = (B3000000000000000000000C); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+  };
+  rootObject = B3000000000000000000000A;
+}

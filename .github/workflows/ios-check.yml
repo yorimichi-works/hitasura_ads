@@ -10,7 +10,7 @@ on:
 jobs:
   ios:
     # A reuse-only probe must independently verify that no compiled source changed.
-    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]') && !contains(github.event.head_commit.message, '[ump-reuse]') && !contains(github.event.head_commit.message, '[capture-phones]'))
+    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]') && !contains(github.event.head_commit.message, '[ump-reuse]') && !contains(github.event.head_commit.message, '[capture-phones]') && !contains(github.event.head_commit.message, '[encode-captures]') && !contains(github.event.head_commit.message, '[capture-xctest]'))
     runs-on: macos-15
     timeout-minutes: 60
     outputs:

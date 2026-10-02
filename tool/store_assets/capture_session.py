@@ -1,6 +1,7 @@
 """Native-only schema-2 scene sessions. One fresh app process per locale."""
 import datetime
 import hashlib
+import importlib.util
 import json
 import os
 import pathlib
@@ -86,11 +87,22 @@ def validate_gameplay(ready, started, complete, scene):
         raise RuntimeError('Gameplay UTC interval is shorter than ten seconds')
 
 
+def xctest_capture(*args, **kwargs):
+    spec = importlib.util.spec_from_file_location(
+        'hitasura_xctest_screenshot', pathlib.Path(__file__).with_name('xctest_screenshot.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.capture(*args, **kwargs)
+
+
 class CaptureSession:
-    def __init__(self, host, udid, container, locale, dest, output_root, timeout=90):
+    def __init__(self, host, udid, container, locale, dest, output_root, timeout=90,
+                 *, screenshot_xctestrun=None, screenshot_driver_sha=None):
         self.host, self.udid, self.container = host, udid, container
         self.locale, self.dest, self.output_root = locale, dest, output_root
         self.timeout = timeout
+        self.screenshot_xctestrun = screenshot_xctestrun
+        self.screenshot_driver_sha = screenshot_driver_sha
         self.session_id = str(uuid.uuid4())
         self.state_path = container / 'Documents/HitasuraCapture/state.json'
         self.pid = None
@@ -190,6 +202,8 @@ class CaptureSession:
         return state
 
     def screenshot(self, scene, index, group, ready=None):
+        if self.screenshot_xctestrun is not None:
+            return self.screenshot_via_xctest(scene, index, group, ready)
         if self.budget(45) < 45:
             raise TimeoutError('Capture work deadline leaves less than the 45-second screenshot reserve')
         ready = ready or self.show(scene)
@@ -231,6 +245,42 @@ class CaptureSession:
                 'path': str(path), 'relative_path': str(path.relative_to(self.output_root)),
                 'sha256': sha256(path), 'dimensions': list(dimensions),
                 'screenshot_attempt': attempt, 'failed_screenshot_attempts': failed_attempts}
+
+    def screenshot_via_xctest(self, scene, index, group, ready=None):
+        # 120s test + 30s attachment export, with frame/identity-check margin.
+        if self.budget(165) < 165:
+            raise TimeoutError('Capture work deadline leaves less than the 165-second XCTest reserve')
+        ready = ready or self.show(scene)
+        request = {'session_id': self.session_id, 'request_id': ready['request_id'],
+                   'locale': self.locale, 'scene': scene, 'action': 'show'}
+        self.wait(request, 'ready', maximum=5)
+        if self.pid is None:
+            raise RuntimeError('XCTest screenshot requires the original running native PID')
+        path = self.dest / f'{index:02}_{scene}.png'
+        candidate = self.dest / f'{index:02}_{scene}.xctest.png'
+        proof = xctest_capture(self.host, self.udid, self.screenshot_xctestrun,
+                              candidate, self.pid, self.screenshot_driver_sha)
+        current = json.loads(self.state_path.read_text())
+        if (not state_matches(current, request) or current.get('stage') != 'ready'
+                or current.get('active_scene') != scene
+                or any(current.get(key) is not True for key in
+                       ('native_simulator_attested', 'debug_mode', 'is_ios'))):
+            raise RuntimeError('Native prepared session changed during XCTest screenshot')
+        with candidate.open('rb') as source:
+            source.seek(16)
+            dimensions = struct.unpack('>II', source.read(8))
+        allowed = {(1290, 2796), (1320, 2868), (1260, 2736)} if group == 'iphone_6_9' else {(2048, 2732), (2064, 2752)}
+        if dimensions not in allowed:
+            raise RuntimeError(f'Unexpected XCTest native screenshot dimensions: {dimensions}')
+        candidate.replace(path)
+        self.dimensions = list(dimensions)
+        return {'media_type': 'image', 'scene': scene, 'app_evidence': ready,
+                'app_evidence_after_screenshot': current,
+                'path': str(path), 'relative_path': str(path.relative_to(self.output_root)),
+                'sha256': sha256(path), 'dimensions': list(dimensions),
+                'screenshot_method': 'xctest_existing_foreground_app',
+                'xctest_provenance': proof, 'screenshot_attempt': 1,
+                'failed_screenshot_attempts': []}
 
     def gameplay(self, scene, index):
         if self.dimensions is None:

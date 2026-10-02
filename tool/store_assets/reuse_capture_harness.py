@@ -39,6 +39,15 @@ ALLOWED_DELTA = {
     'tool/store_assets/tests/test_encode_native_preview.py',
     'tool/store_assets/native_capture_artifact.json',
     'tool/store_assets/native_capture_batches.json',
+    '.github/workflows/native-xctest-proof.yml',
+    'tool/store_assets/xctest_screenshot.py',
+    'tool/store_assets/NativeScreenshotUITests.swift',
+    'tool/store_assets/NativeScreenshotUITests.xcodeproj/project.pbxproj',
+    'tool/store_assets/NativeScreenshotUITests.xcodeproj/xcshareddata/xcschemes/NativeScreenshotUITests.xcscheme',
+    'tool/store_assets/tests/test_xctest_screenshot.py',
+    'tool/store_assets/tests/test_xctest_session_integration.py',
+    'tool/store_assets/tests/test_native_screenshot_driver.py',
+    'tool/store_assets/tests/test_xctest_proof_workflow.py',
 }
 
 
