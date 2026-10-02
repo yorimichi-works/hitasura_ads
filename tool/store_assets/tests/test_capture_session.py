@@ -2,6 +2,8 @@ import copy
 import importlib.util
 import json
 import pathlib
+import struct
+import subprocess
 import tempfile
 import unittest
 import uuid
@@ -101,6 +103,41 @@ class SessionTests(unittest.TestCase):
                 self.capture.gameplay('liquid', 6)
         command.assert_not_called()
         process.send_signal.assert_called_once()
+
+    def test_screenshot_timeout_retries_a_fresh_scene_using_another_file(self):
+        paths = []
+        def run(*args, **kwargs):
+            path = pathlib.Path(args[-1]); paths.append(path)
+            if len(paths) == 1:
+                path.write_bytes(b'unaccepted partial output')
+                raise subprocess.TimeoutExpired('simctl', 30)
+            path.write_bytes(b'\x89PNG\r\n\x1a\n' + b'\x00\x00\x00\rIHDR' + struct.pack('>II', 2064, 2752))
+        self.host.run.side_effect = run
+        fresh = {'request_id': 'second'}
+        with mock.patch.object(self.capture, 'show', return_value=fresh) as show, mock.patch.object(session.time, 'sleep'):
+            result = self.capture.screenshot('home', 1, 'ipad_13', {'request_id': 'first'})
+        show.assert_called_once_with('home')
+        self.assertEqual(result['app_evidence'], fresh)
+        self.assertEqual(result['screenshot_attempt'], 2)
+        self.assertEqual(result['dimensions'], [2064, 2752])
+        self.assertNotEqual(paths[0], paths[1])
+        self.assertEqual(paths[0].read_bytes(), b'unaccepted partial output')
+
+    def test_screenshot_explicit_error_is_not_retried(self):
+        self.host.run.side_effect = subprocess.CalledProcessError(2, 'simctl')
+        with mock.patch.object(self.capture, 'show') as show, mock.patch.object(session.time, 'sleep'):
+            with self.assertRaises(subprocess.CalledProcessError):
+                self.capture.screenshot('home', 1, 'ipad_13', {'request_id': 'first'})
+        self.assertEqual(self.host.run.call_count, 1)
+        show.assert_not_called()
+
+    def test_second_screenshot_timeout_stops_without_accepting_partial_files(self):
+        self.host.run.side_effect = subprocess.TimeoutExpired('simctl', 30)
+        with mock.patch.object(self.capture, 'show', return_value={'request_id': 'second'}), mock.patch.object(session.time, 'sleep'):
+            with self.assertRaises(subprocess.TimeoutExpired):
+                self.capture.screenshot('home', 1, 'ipad_13', {'request_id': 'first'})
+        self.assertEqual(self.host.run.call_count, 2)
+        self.assertFalse((self.capture.dest / '01_home.png').exists())
 
 
 class GameplayEvidenceTests(unittest.TestCase):

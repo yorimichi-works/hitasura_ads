@@ -15,6 +15,7 @@ RUN_ID = 37042725105
 ARTIFACT_ID = 11243670913
 DIGEST = 'bc61661d3e65df2618bf5794dc749df5a9e1a7edf9cf80762de3891b68e432d4'
 ALLOWED_DELTA = {
+    'tool/ump_qa/retained_build.json', 'tool/ump_qa/reuse_qa_build.py',
     'tool/ump_qa/README.md',
     'tool/ump_qa/UmpQaUITests.swift',
     'tool/ump_qa/UmpQaUITests.xcodeproj/project.pbxproj',

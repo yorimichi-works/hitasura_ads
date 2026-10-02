@@ -119,3 +119,31 @@ script revisions. Each capture chunk has an eight-minute work deadline, one
 90-second cleanup reserve and a ten-minute step cap. After the pinned artifact
 expires on 2026-10-09, a fresh compile is required. Ordinary unmarked pushes retain
 the existing build workflow; Android checks are unchanged.
+
+## Remaining native phone locales
+
+`[capture-phones]` runs nine independent two-locale phone chunks, with at most two
+standard macOS jobs at once. It does not wait for the iPad recovery. The current
+descriptor pins source `89d1964`, run `37057150265`, artifact `11249990802`, including
+the purchase-verification correction. Both ordinary native builds and UMP tag
+routing remain separate.
+
+Repeated iOS 26 screenshot reads timed out after actual app readiness. The retained
+inventory explicitly lists available iOS 18.6, iPhone 16 Pro Max and iPad Pro 13-inch
+(M4); a separate native UMP run completed interactions and a screenshot on 18.6.
+The phone chunks therefore explicitly request that installed compatible runtime.
+The host checks the app's actual MinimumOSVersion, never downloads a runtime, and
+records the real device/runtime alongside SDK version. Default selection remains
+SDK-matched when no explicit compatibility probe is requested.
+
+A screenshot timeout permits one more bounded attempt only, with a fresh scene
+request and a distinct attempt file. Uncertain earlier files are never accepted
+as completed outputs. The work and cleanup deadlines remain unchanged.
+
+Native simctl MOV files can omit sample-aspect metadata. The encoder accepts that
+case only with a hash-verified, complete PNG from the same native app session and
+matching device raster; explicit non-square metadata is still rejected. A first
+native sample undershot 10 Mbps with ordinary average-rate encoding. The encoder
+now uses an 11 Mbps VBV target/cap and filler with VBR HRD signaling, preserving
+MP4 compatibility and the unchanged 10–12 Mbps measured acceptance gate. Filler
+changes stream padding; it does not synthesize video frames or alter game timing.

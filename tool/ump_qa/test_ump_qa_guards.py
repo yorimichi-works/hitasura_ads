@@ -4,6 +4,7 @@ import pathlib
 import plistlib
 import tempfile
 import unittest
+from unittest import mock
 import xml.etree.ElementTree as ET
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -178,15 +179,34 @@ class QaGuardTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 REUSE.verify_metadata({**meta, **change}, descriptor)
 
-    def test_reuse_job_does_not_compile_or_change_release_configuration(self):
+    def test_reuse_job_only_rebuilds_native_test_driver_without_app_or_release(self):
         workflow = (ROOT / '.github/workflows/ios-check.yml').read_text()
-        job = workflow.split('  ump-qa-reuse:', 1)[1]
+        job = workflow.split('  ump-qa-reuse:', 1)[1].split('  native-phone-batches:', 1)[0]
         self.assertIn("contains(github.event.head_commit.message, '[ump-reuse]')", job)
         self.assertIn('--runtime-version 18.6', job)
         self.assertIn('runs-on: macos-15', job)
         self.assertIn('actions: read', job)
         self.assertNotIn('flutter build', job)
-        self.assertNotIn('xcodebuild build', job)
+        self.assertIn('--rebuild-ui-driver', job)
+        self.assertIn('xcodebuild build-for-testing -project tool/ump_qa/UmpQaUITests.xcodeproj', job)
+        self.assertIn('--ui-driver-source-sha "$GITHUB_SHA"', job)
+        self.assertNotIn('flutter build ipa', job)
+
+    def test_only_explicit_driver_rebuild_can_change_ui_test_source(self):
+        native = (ROOT / 'ios/Runner/AppDelegate.swift').read_text()
+        changed = {'tool/ump_qa/UmpQaUITests.swift'}
+        def read(command, **kwargs):
+            ref, path = command[-1].split(':', 1)
+            if path == 'ios/Runner/AppDelegate.swift':
+                return native
+            return b'new' if ref == 'HEAD' and path in changed else b'old'
+        with mock.patch.object(REUSE.subprocess, 'check_output', side_effect=read):
+            with self.assertRaises(ValueError):
+                REUSE.verify_dependencies('a' * 40)
+            REUSE.verify_dependencies('a' * 40, rebuild_ui_driver=True)
+            changed.add('lib/services/ads_privacy_service.dart')
+            with self.assertRaises(ValueError):
+                REUSE.verify_dependencies('a' * 40, rebuild_ui_driver=True)
 
     def test_older_runtime_selection_requires_actual_compatible_inventory(self):
         capture = RUN.module('capture_test', ROOT / 'tool/store_assets/capture_ios_simulator.py')

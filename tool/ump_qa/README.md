@@ -72,3 +72,13 @@ revision is additionally permitted; the simulator attestation block must remain
 identical and the QA target does not call the purchase bridge. Unknown native
 revisions require a fresh build. No runtime download, signing or larger runner
 is used, and repeated installation is not attempted after an uncertain timeout.
+
+The iOS 18.6 reuse run `37058333102` reached the actual Hitasura form. Native
+XCTest tapped both Consent and Do not consent, and both completed with no SDK
+error; the required privacy-options entry reopened the form. The test then
+stopped because it expected a different form layout. The observed reopened
+page has Consent / Do not consent / Manage options. The corrected driver changes
+the previous choice using those observed buttons, then requires the shipping
+service's privacy-options completion callback. A driver-only rebuild can reuse
+the unchanged Flutter app, with separate app/driver/source provenance; it cannot
+skip dependency checks for the shipping UMP service or other compiled files.

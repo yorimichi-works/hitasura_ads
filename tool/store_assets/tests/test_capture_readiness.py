@@ -91,6 +91,16 @@ class RuntimeSelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'Unexpected'):
             capture.select_devices(self.inventory, self.runtimes, 'unknown', ['iphone_6_9'])
 
+    def test_explicit_older_installed_runtime_retains_real_device_identity(self):
+        value = capture.select_devices(self.inventory, self.runtimes, '26.2', ['iphone_6_9'], '18.5', '15.0')
+        self.assertEqual(value[0][1], self.old)
+        self.assertEqual(value[0][2]['name'], 'iPhone 16 Pro Max')
+
+    def test_compatibility_override_requires_minimum_os_and_real_availability(self):
+        for runtime, minimum in [('18.5', None), ('18.5', '19.0'), ('18.6', '15.0'), ('27.0', '15.0')]:
+            with self.subTest(runtime=runtime, minimum=minimum), self.assertRaises(RuntimeError):
+                capture.select_devices(self.inventory, self.runtimes, '26.2', ['iphone_6_9'], runtime, minimum)
+
 
 class HostCommandTests(unittest.TestCase):
     def setUp(self):

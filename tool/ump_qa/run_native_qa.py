@@ -68,11 +68,15 @@ def main():
     parser.add_argument('--app', default='build/ump_qa_app/Runner.app')
     parser.add_argument('--xctestrun', required=True)
     parser.add_argument('--source-sha', required=True)
+    parser.add_argument('--ui-driver-source-sha', help='Separate source when only the native test driver was rebuilt')
     parser.add_argument('--runtime-version', help='Explicit installed compatible runtime for infrastructure diagnosis')
     parser.add_argument('--output', default='build/ump_qa_evidence')
     args = parser.parse_args()
     if not re.fullmatch(r'[0-9a-f]{40}', args.source_sha):
         raise ValueError('Exact built/tested source SHA is required')
+    driver_sha = args.ui_driver_source_sha or args.source_sha
+    if not re.fullmatch(r'[0-9a-f]{40}', driver_sha):
+        raise ValueError('Exact native UI-driver source SHA is required')
     out = pathlib.Path(args.output).resolve()
     out.mkdir(parents=True, exist_ok=False)
     capture = module('capture_host', ROOT / 'tool/store_assets/capture_ios_simulator.py')
@@ -87,6 +91,7 @@ def main():
     container = None
     result = {'native_ump': True, 'status': 'not_run', 'native_bridge': native,
               'source_sha': args.source_sha,
+              'ui_driver_source_sha': driver_sha,
               'host_script_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True, timeout=10).strip(),
               'ad_initialization_requested': False, 'ad_load_requested': False}
     shutil.copyfile(app.parent / 'provenance.json', out / 'qa_app_provenance.json')

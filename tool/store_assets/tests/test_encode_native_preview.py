@@ -2,9 +2,11 @@ import copy
 import importlib.util
 import json
 import pathlib
+import struct
 import subprocess
 import tempfile
 import unittest
+import zlib
 from unittest import mock
 
 
@@ -90,9 +92,11 @@ class CommandTests(unittest.TestCase):
     def test_exact_codec_and_thread_limits(self):
         command = self.command(threads=1)
         for key, value in {'-profile:v': 'high', '-level:v': '4.0', '-b:v': '11M',
-                           '-maxrate:v': '12M', '-frames:v': '600', '-ar': '48000',
+                           '-minrate:v': '11M', '-maxrate:v': '11M', '-frames:v': '600', '-ar': '48000',
                            '-b:a': '256k', '-threads:v': '1', '-filter_complex_threads': '1'}.items():
             self.assertEqual(command[command.index(key) + 1], value)
+        self.assertIn('nal-hrd=vbr:filler=1:force-cfr=1', command)
+        self.assertNotIn('nal-hrd=cbr', ' '.join(command))
         for threads in (0, 3, 8):
             with self.assertRaises(encoder.PreviewError):
                 self.command(threads=threads)
@@ -295,6 +299,55 @@ class PlanAndExecutionTests(unittest.TestCase):
     def plan(self):
         return encoder.build_plan(self.manifest_path, [r['id'] for r in self.records], self.output,
                                   self.audio_path, probe=self.source_probe)
+
+    def add_native_png_witness(self):
+        record = self.records[0]
+        def chunk(kind, payload):
+            return struct.pack('>I', len(payload)) + kind + payload + struct.pack('>I', zlib.crc32(kind + payload) & 0xffffffff)
+        data = b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', 1320, 2868, 8, 2, 0, 0, 0))
+        data += chunk(b'IDAT', zlib.compress((b'\x00' + b'\x00' * 3960) * 2868)) + chunk(b'IEND', b'')
+        path = self.root / 'native_home.png'; path.write_bytes(data)
+        witness = {**record, 'id': 'ja/iphone_6_9/home', 'scene': 'home', 'media_type': 'image',
+            'relative_path': 'native_home.png', 'sha256': encoder.sha256_file(path),
+            'app_evidence': {**record['scene_ready'], 'active_scene': 'home', 'requested_scene': 'home'}}
+        self.manifest['records'] = [*self.records, witness]; self.write_manifest()
+        return witness
+
+    def missing_sar_plan(self):
+        def probe(path, **kwargs):
+            value = self.source_probe(path, **kwargs)
+            if pathlib.Path(path).suffix != '.mp3': value['streams'][0].pop('sample_aspect_ratio')
+            return value
+        return encoder.build_plan(self.manifest_path, [r['id'] for r in self.records], self.output,
+                                  self.audio_path, probe=probe)
+
+    def test_missing_native_sar_requires_verified_same_session_png(self):
+        with self.assertRaisesRegex(encoder.PreviewError, 'PNG witness'):
+            self.missing_sar_plan()
+        witness = self.add_native_png_witness()
+        plan = self.missing_sar_plan()
+        self.assertEqual(plan['segments'][0]['native_pixel_witness']['sha256'], witness['sha256'])
+        self.assertIsNone(plan['segments'][0]['geometry']['source_pixel_aspect_ratio']['reported'])
+        self.assertEqual(plan['segments'][0]['geometry']['source_pixel_aspect_ratio']['resolved'], '1:1')
+
+    def test_missing_sar_rejects_wrong_session_and_corrupt_witness(self):
+        witness = self.add_native_png_witness()
+        witness['app_evidence']['session_id'] = 'other'; self.write_manifest()
+        with self.assertRaisesRegex(encoder.PreviewError, 'PNG witness'):
+            self.missing_sar_plan()
+        witness = self.add_native_png_witness()
+        path = self.root / witness['relative_path']; path.write_bytes(path.read_bytes()[:-1])
+        witness['sha256'] = encoder.sha256_file(path); self.write_manifest()
+        with self.assertRaisesRegex(encoder.PreviewError, 'PNG witness'):
+            self.missing_sar_plan()
+
+    def test_explicit_anamorphic_sar_is_never_overridden_by_native_witness(self):
+        self.add_native_png_witness()
+        witness = encoder.native_png_witness(self.manifest, self.records[0], self.root)
+        probe = self.source_probe(self.root / self.records[0]['relative_path'])
+        probe['streams'][0]['sample_aspect_ratio'] = '2:1'
+        with self.assertRaisesRegex(encoder.PreviewError, 'square'):
+            encoder.validate_source_probe(probe, 'iphone_6_9', 1.3, witness)
 
     def test_plan_preserves_complete_provenance_and_audio_separation(self):
         plan = self.plan()

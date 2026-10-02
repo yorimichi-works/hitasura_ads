@@ -59,7 +59,10 @@ final class UmpQaUITests: XCTestCase {
     let options = try exactButton(["Open required privacy options"], timeout: 5)
     XCTAssertTrue(options.isEnabled)
     options.tap()
-    let confirm = try exactButton(["Confirm choices", "Confirm Choices"], timeout: 30)
+    // Observed Hitasura UMP privacy-options UI reopens the three-choice page.
+    // Exercise a real change, including withdrawal after the accept path.
+    let changedChoice = choice == "Consent" ? "Do not consent" : "Consent"
+    let confirm = try exactButton([changedChoice], timeout: 30)
     retainEvidence("\(evidence)-reopened-privacy-options")
     confirm.tap()
     XCTAssertTrue(app.staticTexts["privacy_options_complete"].waitForExistence(timeout: 30))

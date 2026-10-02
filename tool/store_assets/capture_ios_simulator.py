@@ -87,14 +87,27 @@ class HostLog:
             return ''
 
 
-def select_devices(inventory, runtimes, sdk_version, groups):
-    """Only use an available iOS runtime matching the selected Xcode SDK major/minor."""
+def select_devices(inventory, runtimes, sdk_version, groups, runtime_version=None, minimum_os=None):
+    """Default to SDK-matched iOS; explicit older-runtime probes must fit the app."""
     if not re.fullmatch(r'\d+\.\d+(?:\.\d+)?', sdk_version):
         raise RuntimeError(f'Unexpected iPhoneSimulator SDK version: {sdk_version!r}')
-    target = tuple(int(part) for part in sdk_version.split('.')[:2])
+    def version(value):
+        parts = tuple(int(part) for part in value.split('.'))
+        return parts + (0,) * (3 - len(parts))
+    selected_version = runtime_version or sdk_version
+    minimum = (0, 0, 0)
+    if runtime_version is not None:
+        if not re.fullmatch(r'\d+\.\d+(?:\.\d+)?', runtime_version):
+            raise RuntimeError('Explicit runtime needs an exact installed iOS version')
+        if not isinstance(minimum_os, str) or not re.fullmatch(r'\d+\.\d+(?:\.\d+)?', minimum_os):
+            raise RuntimeError('Explicit compatible runtime requires the app MinimumOSVersion')
+        if version(runtime_version) > version(sdk_version):
+            raise RuntimeError('Explicit compatibility probe must not exceed the selected SDK')
+        minimum = version(minimum_os)
+    target = version(selected_version)[:2]
     eligible = [runtime for runtime in runtimes['runtimes']
                 if runtime.get('isAvailable') and runtime.get('identifier', '').startswith('com.apple.CoreSimulator.SimRuntime.iOS-')
-                and tuple(int(part) for part in runtime['version'].split('.')[:2]) == target]
+                and version(runtime['version'])[:2] == target and version(runtime['version']) >= minimum]
     eligible.sort(key=lambda runtime: tuple(int(p) for p in runtime['version'].split('.')), reverse=True)
     choices = {
         'iphone_6_9': ['iPhone 17 Pro Max', 'iPhone 16 Pro Max', 'iPhone 15 Pro Max', 'iPhone 14 Pro Max'],
@@ -109,7 +122,8 @@ def select_devices(inventory, runtimes, sdk_version, groups):
                        for device in inventory['devices'].get(runtime['identifier'], [])
                        if device.get('isAvailable') and device['name'] == name), None)
         if chosen is None:
-            raise RuntimeError(f'No eligible {group} on an available iOS {sdk_version} SDK-matched runtime; refusing a different runtime or stretched image.')
+            mode = 'explicit compatible' if runtime_version else 'SDK-matched'
+            raise RuntimeError(f'No eligible {group} on the requested available iOS {selected_version} {mode} runtime compatible with app minimum {minimum_os}; refusing a different runtime or stretched image.')
         selected.append((group, *chosen))
     return selected
 
@@ -321,6 +335,7 @@ def main():
     parser.add_argument('--output', default='build/store_assets/native_ios')
     parser.add_argument('--locales', default=','.join(LOCALES))
     parser.add_argument('--devices', default='iphone_6_9,ipad_13')
+    parser.add_argument('--runtime-version', help='Explicit installed older iOS compatibility probe; validated against app MinimumOSVersion')
     parser.add_argument('--videos', action='store_true')
     parser.add_argument('--session-loop', action='store_true',
                         help='Use one schema-2 app process per locale and real G003/G008 input clips')
@@ -379,17 +394,21 @@ def main():
     state_path = None
     try:
         host.stage('inventory_start')
+        app = pathlib.Path(args.app).resolve()
+        app_info = plistlib.loads((app / 'Info.plist').read_bytes())
+        minimum_os = app_info.get('MinimumOSVersion')
         inventory = read_simulator_inventory(host, 'devices')
         runtimes = read_simulator_inventory(host, 'runtimes')
         sdk_version = host.run('xcrun','--sdk','iphonesimulator','--show-sdk-version', timeout=30).strip()
         (out/'simulator_inventory.json').write_text(json.dumps(inventory, indent=2))
         (out/'simulator_runtimes.json').write_text(json.dumps(runtimes, indent=2))
         (out/'simctl_launch_help.txt').write_text(host.run('xcrun','simctl','help','launch', timeout=30))
-        selected = select_devices(inventory, runtimes, sdk_version, args.devices.split(','))
-        manifest.update({'simulator_sdk_version':sdk_version, 'selected_devices':selected})
+        selected = select_devices(inventory, runtimes, sdk_version, args.devices.split(','), args.runtime_version, minimum_os)
+        manifest.update({'simulator_sdk_version':sdk_version, 'selected_devices':selected,
+                         'app_minimum_os_version':minimum_os,'requested_runtime_version':args.runtime_version,
+                         'runtime_selection':'explicit_compatible_installed' if args.runtime_version else 'sdk_major_minor_match'})
         save()
         host.stage('runtime_selected', sdk_version=sdk_version, devices=selected)
-        app = pathlib.Path(args.app).resolve()
         privacy = [{'path':str(file.relative_to(app)), 'contents':plistlib.loads(file.read_bytes())} for file in app.rglob('PrivacyInfo.xcprivacy')]
         packages = [{'path':str(file), 'contents':json.loads(file.read_text())} for file in pathlib.Path('ios').rglob('Package.resolved')]
         (out/'bundled_privacy_and_packages.json').write_text(json.dumps({'privacy_manifests':privacy,'resolved_packages':packages}, indent=2))

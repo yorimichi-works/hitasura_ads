@@ -3,6 +3,7 @@ import hashlib
 import importlib.util
 import json
 import pathlib
+import re
 import tempfile
 import unittest
 from unittest import mock
@@ -13,11 +14,34 @@ spec.loader.exec_module(reuse)
 
 
 class ReuseHarnessTests(unittest.TestCase):
+    def test_remaining_phone_matrix_is_complete_bounded_and_independent(self):
+        root = pathlib.Path(__file__).parents[3]
+        source = (root / '.github/workflows/ios-check.yml').read_text()
+        matrix = source.split('  native-phone-batches:', 1)[1]
+        compatibility = source.split('  native-phone-compatibility:', 1)[1].split('  native-phone-batches:', 1)[0]
+        pairs = re.findall(r'^\s+locales: ([a-zA-Z_,]+)$', compatibility + matrix, re.MULTILINE)
+        flattened = [locale for pair in pairs for locale in pair.split(',')]
+        expected = {'en','zh','zh_TW','ko','es','fr','de','pt','ru','it','hi','bn','ur','fa','id','tr','vi','th'}
+        self.assertEqual(len(pairs), 9)
+        self.assertTrue(all(len(pair.split(',')) == 2 for pair in pairs))
+        self.assertEqual(len(flattened), len(set(flattened)))
+        self.assertEqual(set(flattened), expected)
+        self.assertEqual((compatibility + matrix).count('runtime: "18.6"'), 9)
+        self.assertIn('max-parallel: 2', matrix)
+        self.assertIn('timeout-minutes: 10', matrix)
+        self.assertIn('--work-deadline-seconds 480', matrix)
+        self.assertIn('needs: native-phone-compatibility', matrix)
+        self.assertNotIn('native-media-recovery', matrix)
+        self.assertNotIn('flutter build', matrix)
+        self.assertIn('[capture-phones]', source.split('  native-smoke:', 1)[0])
+        self.assertIn('[ump-qa]', source)
+        self.assertIn('[ump-reuse]', source)
+
     def test_reviewed_recovery_uses_retained_dc10_and_prioritizes_real_settings(self):
         root = pathlib.Path(__file__).parents[3]
         approved = reuse.descriptor(json.loads((root / 'tool/store_assets/native_capture_artifact.json').read_text()))
-        self.assertEqual(approved['source_sha'], 'dc10fbe5f05f12ecfaa2edea9eb3dabcac786f91')
-        self.assertEqual(approved['artifact_id'], 11247365869)
+        self.assertEqual(approved['source_sha'], '89d1964d106ddf0edea5f964148edd16373bfbe9')
+        self.assertEqual(approved['artifact_id'], 11249990802)
         source = (root / '.github/workflows/ios-check.yml').read_text()
         settings = source.split('  native-probe:', 1)[1].split('  native-media-recovery:', 1)[0]
         media = source.split('  native-media-recovery:', 1)[1].split('  ump-qa-build:', 1)[0]

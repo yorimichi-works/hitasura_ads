@@ -14,8 +14,10 @@ import json
 import math
 import pathlib
 import re
+import struct
 import subprocess
 import uuid
+import zlib
 
 
 SCENES = (('liquid', 'G003'), ('fruit', 'G008'))
@@ -99,10 +101,18 @@ def only_stream(probe, kind):
     return streams[0]
 
 
-def validate_source_probe(probe, device_group, trim_start):
+def validate_source_probe(probe, device_group, trim_start, native_witness=None):
     video = only_stream(probe, 'video')
-    require(ratio(video.get('sample_aspect_ratio'), 'source SAR') == 1,
-            'Source pixels must be square')
+    sar = video.get('sample_aspect_ratio')
+    if sar is None:
+        require(native_witness is not None and native_witness.get('dimensions') ==
+                [video.get('width'), video.get('height')],
+                'Missing source SAR requires a verified same-session native PNG witness')
+        if video.get('display_aspect_ratio') is not None:
+            require(ratio(video['display_aspect_ratio'], 'source DAR') == Fraction(video['width'], video['height']),
+                    'Native display aspect ratio is inconsistent')
+    else:
+        require(ratio(sar, 'source SAR') == 1, 'Source pixels must be square')
     require(number(video.get('start_time', 0), 'source start time') == 0,
             'Source video must start at timestamp zero for acknowledged trims')
     for side in video.get('side_data_list', []):
@@ -116,6 +126,8 @@ def validate_source_probe(probe, device_group, trim_start):
     require(ratio(video.get('avg_frame_rate'), 'source frame rate') > 0,
             'Source frame rate must be positive')
     geometry = geometry_for(device_group, video.get('width'), video.get('height'))
+    geometry['source_pixel_aspect_ratio'] = {'reported': sar, 'resolved': '1:1',
+        'basis': 'reported_source_metadata' if sar is not None else 'verified_native_screen_png_same_session'}
     return geometry
 
 
@@ -148,8 +160,8 @@ def build_ffmpeg_command(segments, audio_path, output_path, *, threads=2, ffmpeg
     command += ['-filter_complex', ';'.join(filters), '-map', '[video]', '-map', '[audio]',
                 '-map_metadata', '-1', '-map_chapters', '-1', '-c:v', 'libx264',
                 '-preset', 'medium', '-profile:v', 'high', '-level:v', '4.0',
-                '-pix_fmt', 'yuv420p', '-b:v', '11M', '-maxrate:v', '12M', '-bufsize:v', '24M',
-                '-x264-params', 'nal-hrd=vbr:force-cfr=1', '-threads:v', str(threads),
+                '-pix_fmt', 'yuv420p', '-b:v', '11M', '-minrate:v', '11M', '-maxrate:v', '11M', '-bufsize:v', '22M',
+                '-x264-params', 'nal-hrd=vbr:filler=1:force-cfr=1', '-threads:v', str(threads),
                 '-fps_mode:v', 'cfr', '-r:v', '30', '-frames:v', '600',
                 '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-ac', '2',
                 '-disposition:a:0', 'default', '-t', '20', '-video_track_timescale', '30000',
@@ -374,6 +386,50 @@ def source_path(root, relative_path):
     return result
 
 
+def native_png_witness(manifest, record, root):
+    """simctl MOV may omit SAR; prove its raster against the same native screen."""
+    session_id = record['scene_ready']['session_id']
+    for candidate in manifest.get('records', []):
+        evidence = candidate.get('app_evidence', {})
+        if not (candidate.get('media_type') == 'image' and
+                candidate.get('locale') == record['locale'] and
+                candidate.get('device_group') == record['device_group'] and
+                candidate.get('device_udid') == record['device_udid'] and
+                evidence.get('session_id') == session_id and evidence.get('stage') == 'ready' and
+                evidence.get('launch_id') == session_id and evidence.get('locale') == candidate['locale'] and
+                evidence.get('active_scene') == evidence.get('requested_scene') == candidate.get('scene') and
+                all(evidence.get(k) is True for k in ('native_simulator_attested', 'debug_mode', 'is_ios'))):
+            continue
+        path = source_path(root, candidate.get('relative_path'))
+        require(sha256_file(path) == candidate.get('sha256'), 'Native PNG witness hash mismatch')
+        data = path.read_bytes()
+        require(data[:8] == b'\x89PNG\r\n\x1a\n', 'Native PNG witness signature is invalid')
+        offset, dimensions, image_data, ended = 8, None, False, False
+        while offset + 12 <= len(data):
+            size = struct.unpack('>I', data[offset:offset + 4])[0]
+            kind = data[offset + 4:offset + 8]
+            payload = data[offset + 8:offset + 8 + size]
+            end = offset + 12 + size
+            require(end <= len(data), 'Native PNG witness is truncated')
+            crc = struct.unpack('>I', data[offset + 8 + size:end])[0]
+            require(zlib.crc32(kind + payload) & 0xffffffff == crc, 'Native PNG witness CRC mismatch')
+            if kind == b'IHDR':
+                require(offset == 8 and size == 13, 'Native PNG witness header is invalid')
+                dimensions = list(struct.unpack('>II', payload[:8]))
+            if kind == b'IDAT': image_data = True
+            if kind == b'IEND':
+                require(size == 0 and end == len(data), 'Native PNG witness ending is invalid')
+                ended = True
+                break
+            offset = end
+        require(ended and image_data and dimensions == record['dimensions'] == candidate.get('dimensions'),
+                'Native PNG witness is incomplete or has mismatched dimensions')
+        return {'record_id': candidate['id'], 'path': str(path), 'sha256': candidate['sha256'],
+                'dimensions': dimensions, 'session_id': session_id,
+                'basis': 'Same-session native simulator screen raster, verified PNG bytes and source hash'}
+    raise PreviewError('Missing source SAR requires a verified same-session native PNG witness')
+
+
 def build_plan(manifest_path, record_ids, output_path, audio_path, *, threads=2, ffmpeg='ffmpeg',
                ffprobe='ffprobe', probe=probe_media):
     manifest_path = pathlib.Path(manifest_path).resolve()
@@ -403,7 +459,8 @@ def build_plan(manifest_path, record_ids, output_path, audio_path, *, threads=2,
         source_hash = sha256_file(path)
         require(source_hash == record.get('sha256'), f'Native source hash mismatch: {record["id"]}')
         source_probe = probe(path, ffprobe=ffprobe)
-        geometry = validate_source_probe(source_probe, device_group, trim)
+        witness = native_png_witness(manifest, record, manifest_path.parent) if only_stream(source_probe, 'video').get('sample_aspect_ratio') is None else None
+        geometry = validate_source_probe(source_probe, device_group, trim, witness)
         require(record.get('dimensions') == geometry['source_dimensions'] and
                 record.get('dimension_source') == 'native_screenshot_same_session',
                 'Probed native dimensions disagree with same-session capture evidence')
@@ -417,6 +474,7 @@ def build_plan(manifest_path, record_ids, output_path, audio_path, *, threads=2,
                          'path': str(path), 'sha256': source_hash, 'trim_start_seconds': trim,
                          'trim_duration_seconds': 10, 'geometry': geometry,
                          'source_probe': source_probe, 'capture_evidence': copy.deepcopy(record),
+                         'native_pixel_witness': witness,
                          'acknowledgment_log': {'path': str(ack_path), 'sha256': sha256_file(ack_path)},
                          'trim_interval_utc_bounds': {
                              'start_earliest': earliest.isoformat(), 'start_latest': latest.isoformat(),
@@ -435,6 +493,7 @@ def build_plan(manifest_path, record_ids, output_path, audio_path, *, threads=2,
     command = build_ffmpeg_command(segments, audio_path, output_path, threads=threads, ffmpeg=ffmpeg)
     input_paths = {manifest_path, audio_path, *(pathlib.Path(segment['path']) for segment in segments),
                    *(pathlib.Path(segment['acknowledgment_log']['path']) for segment in segments)}
+    input_paths.update(pathlib.Path(segment['native_pixel_witness']['path']) for segment in segments if segment['native_pixel_witness'])
     require(all(path not in input_paths for path in
                 (output_path, output_path.with_suffix('.manifest.json'), output_path.with_suffix('.encode.log'),
                  output_path.with_suffix('.decode.log'))), 'Output or evidence would overwrite an input')
@@ -460,6 +519,9 @@ def assert_inputs_unchanged(plan):
         require(sha256_file(segment['path']) == segment['sha256'], 'Native source changed after planning')
         ack = segment['acknowledgment_log']
         require(sha256_file(ack['path']) == ack['sha256'], 'Recorder acknowledgment evidence changed')
+        witness = segment.get('native_pixel_witness')
+        if witness:
+            require(sha256_file(witness['path']) == witness['sha256'], 'Native PNG witness changed after planning')
     require(sha256_file(plan['audio']['source_path']) == plan['audio']['source_sha256'],
             'Music source changed after planning')
 

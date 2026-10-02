@@ -194,12 +194,32 @@ class CaptureSession:
             raise TimeoutError('Capture work deadline leaves less than the 45-second screenshot reserve')
         ready = ready or self.show(scene)
         pause = 4 if scene in {'pin', 'runner'} else 2
-        if self.budget(45) < 45:
-            raise TimeoutError('Capture work deadline leaves less than the 45-second screenshot reserve')
-        time.sleep(pause)
         path = self.dest / f'{index:02}_{scene}.png'
-        self.host.run('xcrun', 'simctl', 'io', self.udid, 'screenshot', '--type=png',
-                      str(path), timeout=30)
+        failed_attempts = []
+        for attempt in (1, 2):
+            if self.budget(45) < 45:
+                raise TimeoutError('Capture work deadline leaves less than the 45-second screenshot reserve')
+            time.sleep(pause)
+            candidate = self.dest / f'{index:02}_{scene}.attempt{attempt}.png'
+            self.host.stage('screenshot_attempt', locale=self.locale, scene=scene,
+                            attempt=attempt, maximum_attempts=2, path=str(candidate))
+            try:
+                self.host.run('xcrun', 'simctl', 'io', self.udid, 'screenshot', '--type=png',
+                              str(candidate), timeout=30)
+            except subprocess.TimeoutExpired:
+                failed_attempts.append({'attempt': attempt, 'path': str(candidate.relative_to(self.output_root)),
+                                        'status': 'command_timeout_not_accepted'})
+                if attempt == 2 or self.budget(48) < 48:
+                    raise
+                self.host.stage('screenshot_retry_scene_reset', locale=self.locale, scene=scene,
+                                wait_seconds=3, reason='timeout_only')
+                time.sleep(3)
+                # A timed-out game may have reached its result page. Request the
+                # real scene afresh before taking a second independent image.
+                ready = self.show(scene)
+                continue
+            candidate.replace(path)
+            break
         with path.open('rb') as source:
             source.seek(16)
             dimensions = struct.unpack('>II', source.read(8))
@@ -209,7 +229,8 @@ class CaptureSession:
         self.dimensions = list(dimensions)
         return {'media_type': 'image', 'scene': scene, 'app_evidence': ready,
                 'path': str(path), 'relative_path': str(path.relative_to(self.output_root)),
-                'sha256': sha256(path), 'dimensions': list(dimensions)}
+                'sha256': sha256(path), 'dimensions': list(dimensions),
+                'screenshot_attempt': attempt, 'failed_screenshot_attempts': failed_attempts}
 
     def gameplay(self, scene, index):
         if self.dimensions is None:

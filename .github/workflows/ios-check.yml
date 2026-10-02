@@ -10,7 +10,7 @@ on:
 jobs:
   ios:
     # A reuse-only probe must independently verify that no compiled source changed.
-    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]') && !contains(github.event.head_commit.message, '[ump-reuse]'))
+    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]') && !contains(github.event.head_commit.message, '[ump-reuse]') && !contains(github.event.head_commit.message, '[capture-phones]'))
     runs-on: macos-15
     timeout-minutes: 60
     outputs:
@@ -367,7 +367,7 @@ jobs:
   ump-qa-reuse:
     if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[ump-reuse]')
     runs-on: macos-15
-    timeout-minutes: 20
+    timeout-minutes: 25
     permissions:
       contents: read
       actions: read
@@ -394,12 +394,15 @@ jobs:
                   subprocess.run(['gh', 'api', endpoint], stdout=stream, check=True, timeout=120)
           PYTHON
       - name: Verify retained UMP identity, hashes and unchanged consent dependencies
-        run: python3 tool/ump_qa/reuse_qa_build.py --metadata build/ump_qa_reuse_download/metadata.json --zip build/ump_qa_reuse_download/artifact.zip > build/ump_qa_xctestrun.txt
+        run: python3 tool/ump_qa/reuse_qa_build.py --metadata build/ump_qa_reuse_download/metadata.json --zip build/ump_qa_reuse_download/artifact.zip --rebuild-ui-driver > build/ump_qa_xctestrun.txt
+      - name: Rebuild only the native driver for the observed privacy-options layout
+        timeout-minutes: 3
+        run: xcodebuild build-for-testing -project tool/ump_qa/UmpQaUITests.xcodeproj -scheme UmpQaUITests -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/ump_qa_ui CODE_SIGNING_ALLOWED=NO
       - name: Test real consent on the confirmed installed compatible runtime
         timeout-minutes: 14
         run: |
-          xctestrun=$(cat build/ump_qa_xctestrun.txt)
-          python3 -u tool/ump_qa/run_native_qa.py --app build/ump_qa_retained/verified/qa_app/Runner.app --xctestrun "$xctestrun" --source-sha 95977f83a70e1c4818d44f25f2260fc54809160e --runtime-version 18.6
+          xctestrun=$(python3 -c "import pathlib; files=list(pathlib.Path('build/ump_qa_ui/Build/Products').glob('*.xctestrun')); assert len(files)==1; print(files[0])")
+          python3 -u tool/ump_qa/run_native_qa.py --app build/ump_qa_retained/verified/qa_app/Runner.app --xctestrun "$xctestrun" --source-sha 95977f83a70e1c4818d44f25f2260fc54809160e --ui-driver-source-sha "$GITHUB_SHA" --runtime-version 18.6
       - name: Retain UMP reuse and real-runtime evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -409,5 +412,165 @@ jobs:
             build/ump_qa_evidence
             build/ump_qa_retained/verified_reuse.json
             build/ump_qa_reuse_download/metadata.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  native-phone-compatibility:
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[capture-phones]')
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - id: en-zh
+            locales: en,zh
+            runtime: "18.6"
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test capture and release guards
+        run: |
+          python3 -m unittest discover -s tool/store_assets/tests -v
+          python3 -m unittest discover -s tool/release/tests -v
+      - name: Download pinned retained simulator harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/reuse_download build/store_assets/native_ios
+          python3 - <<'PYTHON'
+          import json, subprocess, pathlib, shutil, importlib.util
+          spec = importlib.util.spec_from_file_location('reuse', 'tool/store_assets/reuse_capture_harness.py')
+          reuse = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(reuse)
+          descriptor_path = pathlib.Path('tool/store_assets/native_capture_artifact.json')
+          expected = reuse.descriptor(json.loads(descriptor_path.read_text()))
+          shutil.copyfile(descriptor_path, 'build/store_assets/native_ios/expected_artifact.json')
+          base = f"repos/{expected['repository']}/actions/artifacts/{expected['artifact_id']}"
+          for endpoint, name in [(base, 'metadata.json'), (base + '/zip', 'artifact.zip')]:
+              with pathlib.Path('build/reuse_download', name).open('wb') as output:
+                  subprocess.run(['gh', 'api', endpoint], stdout=output, check=True, timeout=120)
+              if name == 'metadata.json':
+                  shutil.copyfile('build/reuse_download/metadata.json', 'build/store_assets/native_ios/download_metadata.json')
+          PYTHON
+      - name: Verify exact retained source and native bridge
+        run: |
+          python3 tool/store_assets/reuse_capture_harness.py --descriptor tool/store_assets/native_capture_artifact.json --metadata build/reuse_download/metadata.json --zip build/reuse_download/artifact.zip
+          python3 tool/store_assets/verify_native_bridge.py --app build/reused_native_harness/Runner.app > build/store_assets/native_ios/native_bridge_check.json
+      - name: Capture bounded native phone chunk
+        timeout-minutes: 10
+        env:
+          CAPTURE_LOCALES: ${{ matrix.locales }}
+          CAPTURE_RUNTIME: ${{ matrix.runtime }}
+        run: |
+          xcodebuild -version
+          APP_SOURCE_SHA=$(python3 -c "import json; print(json.load(open('tool/store_assets/native_capture_artifact.json'))['source_sha'])")
+          runtime_args=()
+          if [ -n "$CAPTURE_RUNTIME" ]; then runtime_args=(--runtime-version "$CAPTURE_RUNTIME"); fi
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$APP_SOURCE_SHA" --locales "$CAPTURE_LOCALES" --devices iphone_6_9 --session-loop --videos --work-deadline-seconds 480 --natural-status-bar "${runtime_args[@]}"
+      - name: Upload completed media and exact remaining checkpoints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-native-phone-${{ matrix.id }}
+          path: build/store_assets/native_ios
+          if-no-files-found: warn
+          retention-days: 7
+
+  native-phone-batches:
+    needs: native-phone-compatibility
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[capture-phones]')
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - id: zh_tw-ko
+            locales: zh_TW,ko
+            runtime: "18.6"
+          - id: es-fr
+            locales: es,fr
+            runtime: "18.6"
+          - id: de-pt
+            locales: de,pt
+            runtime: "18.6"
+          - id: ru-it
+            locales: ru,it
+            runtime: "18.6"
+          - id: hi-bn
+            locales: hi,bn
+            runtime: "18.6"
+          - id: ur-fa
+            locales: ur,fa
+            runtime: "18.6"
+          - id: id-tr
+            locales: id,tr
+            runtime: "18.6"
+          - id: vi-th
+            locales: vi,th
+            runtime: "18.6"
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test capture and release guards
+        run: |
+          python3 -m unittest discover -s tool/store_assets/tests -v
+          python3 -m unittest discover -s tool/release/tests -v
+      - name: Download pinned retained simulator harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/reuse_download build/store_assets/native_ios
+          python3 - <<'PYTHON'
+          import json, subprocess, pathlib, shutil, importlib.util
+          spec = importlib.util.spec_from_file_location('reuse', 'tool/store_assets/reuse_capture_harness.py')
+          reuse = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(reuse)
+          descriptor_path = pathlib.Path('tool/store_assets/native_capture_artifact.json')
+          expected = reuse.descriptor(json.loads(descriptor_path.read_text()))
+          shutil.copyfile(descriptor_path, 'build/store_assets/native_ios/expected_artifact.json')
+          base = f"repos/{expected['repository']}/actions/artifacts/{expected['artifact_id']}"
+          for endpoint, name in [(base, 'metadata.json'), (base + '/zip', 'artifact.zip')]:
+              with pathlib.Path('build/reuse_download', name).open('wb') as output:
+                  subprocess.run(['gh', 'api', endpoint], stdout=output, check=True, timeout=120)
+              if name == 'metadata.json':
+                  shutil.copyfile('build/reuse_download/metadata.json', 'build/store_assets/native_ios/download_metadata.json')
+          PYTHON
+      - name: Verify exact retained source and native bridge
+        run: |
+          python3 tool/store_assets/reuse_capture_harness.py --descriptor tool/store_assets/native_capture_artifact.json --metadata build/reuse_download/metadata.json --zip build/reuse_download/artifact.zip
+          python3 tool/store_assets/verify_native_bridge.py --app build/reused_native_harness/Runner.app > build/store_assets/native_ios/native_bridge_check.json
+      - name: Capture bounded native phone chunk
+        timeout-minutes: 10
+        env:
+          CAPTURE_LOCALES: ${{ matrix.locales }}
+          CAPTURE_RUNTIME: ${{ matrix.runtime }}
+        run: |
+          xcodebuild -version
+          APP_SOURCE_SHA=$(python3 -c "import json; print(json.load(open('tool/store_assets/native_capture_artifact.json'))['source_sha'])")
+          runtime_args=()
+          if [ -n "$CAPTURE_RUNTIME" ]; then runtime_args=(--runtime-version "$CAPTURE_RUNTIME"); fi
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$APP_SOURCE_SHA" --locales "$CAPTURE_LOCALES" --devices iphone_6_9 --session-loop --videos --work-deadline-seconds 480 --natural-status-bar "${runtime_args[@]}"
+      - name: Upload completed media and exact remaining checkpoints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-native-phone-${{ matrix.id }}
+          path: build/store_assets/native_ios
           if-no-files-found: warn
           retention-days: 7

@@ -30,8 +30,10 @@ def bridge_block(source):
     return source.split(marker, 1)[1].split('#endif', 1)[0]
 
 
-def verify_dependencies(source_sha):
+def verify_dependencies(source_sha, rebuild_ui_driver=False):
     for path in COMPILED_PATHS:
+        if rebuild_ui_driver and path == 'tool/ump_qa/UmpQaUITests.swift':
+            continue
         original = subprocess.check_output(['git', 'show', f'{source_sha}:{path}'], timeout=10)
         current = subprocess.check_output(['git', 'show', f'HEAD:{path}'], timeout=10)
         if original != current:
@@ -64,10 +66,12 @@ def main():
     parser.add_argument('--metadata', required=True)
     parser.add_argument('--zip', dest='archive', required=True)
     parser.add_argument('--output', default='build/ump_qa_retained')
+    parser.add_argument('--rebuild-ui-driver', action='store_true',
+                        help='Reuse only the app; compile current UI-test Swift separately')
     args = parser.parse_args()
     descriptor = json.loads((ROOT / 'tool/ump_qa/retained_build.json').read_text())
     verify_metadata(json.loads(pathlib.Path(args.metadata).read_text()), descriptor)
-    verify_dependencies(descriptor['source_sha'])
+    verify_dependencies(descriptor['source_sha'], args.rebuild_ui_driver)
     archive = pathlib.Path(args.archive)
     with archive.open('rb') as stream:
         if hashlib.file_digest(stream, 'sha256').hexdigest() != descriptor['zip_sha256']:
@@ -85,7 +89,8 @@ def main():
                              descriptor['source_sha'], descriptor['tar_sha256'])
     (out / 'verified_reuse.json').write_text(json.dumps({**descriptor,
         'ump_dependencies_unchanged': True, 'native_bridge_unchanged': True,
-        'purchase_bridge_used_by_qa': False, 'xctestrun': str(xctestrun)}, indent=2))
+        'purchase_bridge_used_by_qa': False, 'ui_driver_rebuild_required': args.rebuild_ui_driver,
+        'xctestrun': str(xctestrun)}, indent=2))
     print(xctestrun)
 
 
