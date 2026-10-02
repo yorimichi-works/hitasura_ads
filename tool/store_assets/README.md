@@ -11,18 +11,40 @@ These tools do not change production app UI or upload anything to App Store Conn
 
 ## Native capture (macOS only)
 
-The existing `ios-check.yml` readiness-branch job builds the normal simulator app first, uploads it, then builds the separate capture target. It captures English, Japanese, and Arabic on an eligible high-resolution iPhone and iPad, including 20-second continuous native runner source videos. The harness records requested and applied locale/scene in its sandbox; the host verifies these values. No Apple credentials, signing, uploads, release archive, or store metadata mutations occur. The capture target refuses release/device execution.
+The isolated reuse run `37045784008` produced a pixel-reviewed English iPhone
+home frame at 1320×2868, with native request/controller/first-frame evidence.
+The current validation workflow compiles the updated capture harness once, then
+downloads the exact artifact into separate Japanese/Arabic phone and iPad jobs.
+Each job uses one fresh app process per locale, five native UI scenes, and two
+10-second G003/G008 source clips driven through the real Flutter pointer path.
+The per-job work deadline is eight minutes, followed by one shared 90-second
+cleanup reserve inside the ten-minute capture cap; every completed scene is
+checkpointed with explicit remaining keys. At most two standard macos-15 jobs
+run in parallel. The full 20-locale batch waits for this native validation.
+
+See [NATIVE_CAPTURE_PROTOCOL.md](NATIVE_CAPTURE_PROTOCOL.md) for exact v1/v2
+requests and state evidence. No Apple credentials, signing, App Store uploads,
+release archive, or production game/UI changes occur. Native video sources are
+silent; the preview encoder documents any use of the existing cute.mp3 music
+bed as postproduction audio. The old single-scene `preview` runner recording
+mode is legacy/unreviewed and is not used for the new G003/G008 previews.
 
 ```sh
 flutter build ios --simulator --debug --no-codesign \
   -t tool/store_assets/native_capture_main.dart --dart-define=ADMOB_MODE=disabled
-python3 tool/store_assets/capture_ios_simulator.py --locales en,ja,ar --videos
-# After smoke review, request all 20 with --locales en,ja,zh,zh_TW,ko,es,fr,de,pt,ru,it,hi,bn,ar,ur,fa,id,tr,vi,th
+python3 tool/store_assets/capture_ios_simulator.py \
+  --locales ja,ar --devices iphone_6_9 --session-loop --videos \
+  --natural-status-bar --work-deadline-seconds 480
+# Run the iPad chunk separately with --devices ipad_13.
 ```
+
+The optional settings scene can be requested explicitly for truthful IAP review
+evidence; it never fabricates prices or transactions. Initial media validation
+omits it so it cannot consume time needed by the required screenshots/previews.
 
 The capture manifest contains device/runtime, original dimensions, actual app locale/scene evidence, and hashes. `bundled_privacy_and_packages.json` exports the built app's vendor privacy manifest contents and resolved native package metadata without modifying them.
 
-The fixture has 40 discovered games, 1234 coins, 900 XP, 5 tickets, and the ordinary UI. Notifications/audio/external rewarded ads are disabled for isolated capture. No fake paid entitlement, user data, or game result is inserted. Existing Japanese marketing screenshots remain untouched. Approved Japanese/English title copy is rendered from the app locale tables; other locale names and UI artwork remain unchanged.
+The fixture has 40 discovered games, 1234 coins, 900 XP, 5 tickets, and the ordinary UI. Notifications/audio/external rewarded ads are disabled for isolated capture. The local PLAYER/progress fixture is synthetic and disclosed; no paid entitlement, purchase price, transaction, or game result is fabricated. Existing Japanese marketing screenshots remain untouched. Approved Japanese/English title copy is rendered from the app locale tables; other locale names and UI artwork remain unchanged.
 
 ## Localized Flutter-content previews (Linux)
 
@@ -52,7 +74,7 @@ References checked 2026-10-02:
 
 The first macOS smoke build succeeded, but its initial capture could not find the late-written readiness file. It produced no valid screenshot or video. The recovery harness now writes startup stages before the simulator guard and controller initialization; controller creation still executes normal purchase initialization. It does not bypass or conceal StoreKit startup behavior.
 
-The host obtains the real app data container from simctl, atomically writes a strict request with a unique launch ID to Documents/HitasuraCapture/request.json, and polls for a matching ready state for at most 90 seconds. The debug-only Dart target obtains the actual Documents path through a native channel compiled only for DEBUG simulator builds; it does not read capture environment variables. Startup errors are sticky. Captures retain the app console, state/event history, and failure screenshot/log/crash diagnostics. A timeout identifies the last observed stage without assuming the cause. The workflow remains the English/Japanese/Arabic smoke until real pixel review passes.
+The host obtains the real app data container from simctl, atomically writes a strict request with a unique launch ID to Documents/HitasuraCapture/request.json, and polls for a matching ready state for at most 90 seconds. The debug-only Dart target obtains the actual Documents path through a native channel compiled only for DEBUG simulator builds; it does not read capture environment variables. Startup errors are sticky. Captures retain the app console, state/event history, and failure screenshot/log/crash diagnostics. A timeout identifies the last observed stage without assuming the cause. The English one-home proof passed; current expansion validates Japanese/Arabic phone and iPad sessions before all 20 locales.
 
 ## Test-renderer glyph correction
 
@@ -64,7 +86,7 @@ Every host command persists an intent/result event and independent stdout/stderr
 
 ## File-based capture transport proof
 
-Run866c8d4 reached Dart startup, but all Platform.environment capture values were null. It failed at the harness's pre-runApp configuration guard, before production controller/StoreKit initialization. The replacement protocol reads a fixed app-owned request file after the `hitasura_ads/simulator_capture` / `documentsDirectory` channel attests a native debug simulator. Both the Dart debug/iOS guard and Swift `DEBUG && targetEnvironment(simulator)` guard remain required; release and real-device builds expose no capture channel. Request schema, UUID, locale, scene, UTC freshness, fixed paths, atomic writes and one-scene selection have focused tests. The next workflow proves only `--locales en --devices iphone_6_9 --scenes home`, with no video, before broader capture resumes.
+Run866c8d4 reached Dart startup, but all Platform.environment capture values were null. It failed at the harness's pre-runApp configuration guard, before production controller/StoreKit initialization. The replacement protocol reads a fixed app-owned request file after the `hitasura_ads/simulator_capture` / `documentsDirectory` channel attests a native debug simulator. Both the Dart debug/iOS guard and Swift `DEBUG && targetEnvironment(simulator)` guard remain required; release and real-device builds expose no capture channel. Request schema, UUID, locale, scene, UTC freshness, fixed paths, atomic writes and one-scene selection have focused tests. The one-home proof subsequently passed with app17321d1 and script2180a893; the v2 multi-scene validation now runs in isolated jobs.
 
 ### Isolated reuse proof
 

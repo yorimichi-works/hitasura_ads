@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'capture_request.dart';
+import 'capture_gameplay.dart';
 
 import 'package:hitasura_ads/app.dart';
 import 'package:hitasura_ads/arcade/registry.dart';
+import 'package:hitasura_ads/arcade/engine/game_view.dart';
 import 'package:hitasura_ads/data/app_store.dart';
 import 'package:hitasura_ads/l10n/l10n.dart';
 import 'package:hitasura_ads/models/app_models.dart';
@@ -21,6 +23,7 @@ import 'package:hitasura_ads/state/app_controller.dart';
 import 'package:hitasura_ads/ui/ad_player.dart';
 import 'package:hitasura_ads/ui/collection.dart';
 import 'package:hitasura_ads/ui/rush.dart';
+import 'package:hitasura_ads/ui/settings.dart';
 
 class _NoAds extends RewardedAdService {
   @override
@@ -39,8 +42,9 @@ class _NoAds extends RewardedAdService {
 class _CaptureReporter {
   String? path;
   CaptureRequest? request;
+  CaptureCommand? command;
   bool nativeSimulatorAttested = false;
-  String? get launchId => request?.launchId;
+  String? get launchId => command?.sessionId ?? request?.launchId;
   bool failed = false;
 
   void stage(String value, [Map<String, Object?> details = const {}]) {
@@ -49,10 +53,15 @@ class _CaptureReporter {
     final data = <String, Object?>{
       'stage': value,
       'launch_id': launchId,
-      'locale': request?.locale,
-      'requested_scene': request?.scene,
+      if (command != null) 'session_id': command!.sessionId,
+      if (command != null) 'request_id': command!.requestId,
+      if (command != null) 'action': command!.action,
+      'locale': command?.locale ?? request?.locale,
+      'requested_scene': command?.scene ?? request?.scene,
       'native_simulator_attested': nativeSimulatorAttested,
-      'request_transport': 'app_documents_json_v1',
+      'request_transport': command == null
+          ? 'app_documents_json_v1'
+          : 'app_documents_json_v2',
       'debug_mode': kDebugMode,
       'is_ios': Platform.isIOS,
       'at': DateTime.now().toUtc().toIso8601String(),
@@ -109,15 +118,23 @@ Future<void> _capture(_CaptureReporter report) async {
   if (requestFile.lengthSync() > 4096) {
     throw const FormatException('Capture request exceeds 4096 bytes');
   }
-  final request = CaptureRequest.parse(
-    jsonDecode(requestFile.readAsStringSync()),
-  );
-  report.request = request;
+  var lastRequestBytes = requestFile.readAsStringSync();
+  final initial = jsonDecode(lastRequestBytes);
+  if (initial is Map && initial['schema_version'] == 2) {
+    report.command = CaptureCommand.parse(initial);
+  } else {
+    report.request = CaptureRequest.parse(initial);
+  }
+  final firstCommand = report.command;
+  final sessionGuard = firstCommand == null
+      ? null
+      : CaptureSessionGuard(firstCommand.sessionId, firstCommand.locale);
+  if (firstCommand != null) sessionGuard!.accept(firstCommand);
   report.stage('request_loaded', {
-    'created_at': request.createdAt.toIso8601String(),
+    'created_at': (firstCommand?.createdAt ?? report.request!.createdAt)
+        .toIso8601String(),
   });
-  final code = request.locale;
-  final scene = request.scene;
+  final code = firstCommand?.locale ?? report.request!.locale;
   L10n.code = code;
   final now = DateTime.now();
   report.stage('controller_start');
@@ -165,6 +182,7 @@ Future<void> _capture(_CaptureReporter report) async {
     e.visitChildElements(findNavigator);
   }
 
+  GlobalKey? routeKey;
   Future<void> show(String target) async {
     final context = appKey.currentContext;
     if (context == null) throw StateError('App did not mount');
@@ -172,13 +190,30 @@ Future<void> _capture(_CaptureReporter report) async {
     final nav = navigator;
     if (nav == null) throw StateError('App navigator missing');
     nav.popUntil((r) => r.isFirst);
+    await Future<void>.delayed(const Duration(milliseconds: 400));
     if (target == 'home') return;
+    routeKey = GlobalKey();
     final Widget screen = switch (target) {
-      'collection' => CollectionScreen(controller: controller),
-      'rush' => RushScreen(controller: controller),
-      _ => AdPlayerScreen(
+      'collection' => CollectionScreen(key: routeKey, controller: controller),
+      'rush' => RushScreen(key: routeKey, controller: controller),
+      'settings' => SettingsScreen(
+        key: routeKey,
         controller: controller,
-        first: allGames.firstWhere((g) => g.no == (target == 'pin' ? 1 : 18)),
+        rewardedAdService: _NoAds(),
+      ),
+      _ => AdPlayerScreen(
+        key: routeKey,
+        controller: controller,
+        first: allGames.firstWhere(
+          (g) =>
+              g.no ==
+              switch (target) {
+                'pin' => 1,
+                'liquid' => 3,
+                'fruit' => 8,
+                _ => 18,
+              },
+        ),
         roulette: false,
         replayMode: true,
       ),
@@ -186,19 +221,170 @@ Future<void> _capture(_CaptureReporter report) async {
     unawaited(nav.push(MaterialPageRoute<void>(builder: (_) => screen)));
   }
 
-  report.stage('scene_start');
-  if (scene == 'preview') {
-    // Continuous native runner recording, beginning about 3s after launch.
-    // Production timing, game loop, HUD, and result screen remain unchanged.
-    await show('runner');
-  } else {
-    await show(scene);
+  (GameView, Element) currentGame() {
+    final root = routeKey?.currentContext;
+    if (root == null) throw StateError('Game route is not mounted');
+    (GameView, Element)? found;
+    void visit(Element element) {
+      if (element.widget case final GameView view) found = (view, element);
+      element.visitChildElements(visit);
+    }
+
+    visit(root as Element);
+    if (found == null) throw StateError('GameView is not mounted');
+    return found!;
   }
-  await Future<void>.delayed(const Duration(milliseconds: 400));
-  await WidgetsBinding.instance.endOfFrame.timeout(const Duration(seconds: 30));
-  report.stage('ready', {
-    'locale': L10n.code,
-    'active_scene': scene == 'preview' ? 'runner' : scene,
-    'ready_at': DateTime.now().toUtc().toIso8601String(),
-  });
+
+  Future<void> showReady(String scene) async {
+    report.stage('scene_start');
+    final target = scene == 'preview' ? 'runner' : scene;
+    await show(target);
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    final details = <String, Object?>{};
+    if (target == 'liquid' || target == 'fruit') {
+      final deadline = DateTime.now().add(const Duration(seconds: 12));
+      GameSession? session;
+      while (DateTime.now().isBefore(deadline)) {
+        try {
+          session = currentGame().$1.session;
+        } on StateError {
+          /* title card */
+        }
+        if (session?.phase == SessionPhase.play) break;
+        await Future<void>.delayed(const Duration(milliseconds: 25));
+      }
+      if (session == null || session.phase != SessionPhase.play) {
+        throw StateError('Actual gameplay did not become active');
+      }
+      details.addAll({
+        'game_no': target == 'liquid' ? 3 : 8,
+        'phase': session.phase.name,
+        'game_time': session.time,
+        'time_left': session.timeLeft,
+      });
+    }
+    await WidgetsBinding.instance.endOfFrame.timeout(
+      const Duration(seconds: 30),
+    );
+    report.stage('ready', {
+      'locale': L10n.code,
+      'active_scene': target,
+      'ready_at': DateTime.now().toUtc().toIso8601String(),
+      ...details,
+    });
+  }
+
+  Future<void> playRecorded(String scene) async {
+    final (view, element) = currentGame();
+    final session = view.session;
+    final gameNo = scene == 'liquid' ? 3 : 8;
+    if (session.phase != SessionPhase.play || session.timeLeft < 10.5) {
+      throw StateError(
+        'Recorder arrived too late for ten seconds of active gameplay',
+      );
+    }
+    final startGameTime = session.time;
+    final startedAt = DateTime.now().toUtc();
+    final clock = Stopwatch()..start();
+    final inputs = <Map<String, Object?>>[];
+    final steps = captureInputPlan(gameNo);
+    var next = 0;
+    Offset? previous;
+    report.stage('gameplay_started', {
+      'active_scene': scene,
+      'game_no': gameNo,
+      'phase': session.phase.name,
+      'game_time': startGameTime,
+      'started_at': startedAt.toIso8601String(),
+      'duration_seconds': 10,
+      'input_method': 'flutter_gesture_binding_pointer_events',
+      'random_seed': 'shipping_time_seed_unmodified',
+    });
+    while (clock.elapsedMicroseconds < 10000000) {
+      if (report.failed || session.phase != SessionPhase.play) {
+        throw StateError(
+          'Gameplay ended or failed before the full native segment',
+        );
+      }
+      final elapsed = clock.elapsedMicroseconds / 1e6;
+      while (next < steps.length && steps[next].at <= elapsed) {
+        final step = steps[next++];
+        final box = element.findRenderObject();
+        if (box is! RenderBox || !box.hasSize) {
+          throw StateError('Actual GameView has no sized render box');
+        }
+        final global = captureGlobalPoint(box, step.point);
+        dispatchCapturePointer(
+          step,
+          global,
+          clock.elapsed,
+          delta: step.kind == 'move' && previous != null
+              ? global - previous
+              : Offset.zero,
+        );
+        previous = global;
+        final event = <String, Object?>{
+          'kind': step.kind,
+          'pointer': step.pointer,
+          'virtual_xy': [step.point.dx, step.point.dy],
+          'global_logical_xy': [global.dx, global.dy],
+          'scheduled_seconds': step.at,
+          'actual_elapsed_seconds': elapsed,
+          'game_time': session.time,
+        };
+        inputs.add(event);
+        report.stage('pointer_input', event);
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+    }
+    if (session.phase != SessionPhase.play ||
+        session.time - startGameTime < 8) {
+      throw StateError(
+        'Native segment did not preserve sufficient active game time',
+      );
+    }
+    report.stage('gameplay_complete', {
+      'active_scene': scene,
+      'game_no': gameNo,
+      'phase': session.phase.name,
+      'started_at': startedAt.toIso8601String(),
+      'completed_at': DateTime.now().toUtc().toIso8601String(),
+      'elapsed_seconds': clock.elapsedMicroseconds / 1e6,
+      'game_time_start': startGameTime,
+      'game_time_end': session.time,
+      'score_observed': session.score,
+      'input_events': inputs,
+      'input_method': 'flutter_gesture_binding_pointer_events',
+      'random_seed': 'shipping_time_seed_unmodified',
+    });
+  }
+
+  await showReady(firstCommand?.scene ?? report.request!.scene);
+  if (firstCommand == null) return;
+  final deadline = DateTime.now().add(const Duration(minutes: 8));
+  while (DateTime.now().isBefore(deadline) && !report.failed) {
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+    if (requestFile.lengthSync() > 4096) {
+      throw const FormatException('Capture request exceeds 4096 bytes');
+    }
+    final bytes = requestFile.readAsStringSync();
+    if (bytes == lastRequestBytes) continue;
+    final command = CaptureCommand.parse(jsonDecode(bytes));
+    sessionGuard!.accept(command);
+    lastRequestBytes = bytes;
+    report.command = command;
+    report.stage('command_loaded');
+    if (command.action == 'stop') {
+      report.stage('stopped');
+      return;
+    }
+    if (command.action == 'show') {
+      await showReady(command.scene);
+    } else {
+      await playRecorded(command.scene);
+    }
+  }
+  if (!report.failed) {
+    throw StateError('Capture session exceeded eight minutes');
+  }
 }

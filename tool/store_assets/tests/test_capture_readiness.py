@@ -265,5 +265,27 @@ class CosmeticStatusTests(unittest.TestCase):
         self.assertFalse(capture.override_status_bar(host, 'device'))
 
 
+class BatchDeadlineTests(unittest.TestCase):
+    def test_session_video_mode_does_not_append_legacy_preview(self):
+        scenes = capture.select_capture_scenes('home,collection,pin,runner,rush', True, session_loop=True)
+        self.assertEqual(scenes, ['home', 'collection', 'pin', 'runner', 'rush'])
+        self.assertEqual(capture.select_capture_scenes('home', True), ['home', 'preview'])
+
+    def test_cleanup_uses_one_shared_reserve_and_stops_commands_when_spent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            host = capture.HostLog(pathlib.Path(directory))
+            host.work_deadline = 100
+            with mock.patch.object(capture.time, 'monotonic', return_value=105):
+                host.begin_cleanup()
+            self.assertEqual(host.cleanup_deadline, 190)
+            with mock.patch.object(capture.time, 'monotonic', return_value=150):
+                host.begin_cleanup()
+            self.assertEqual(host.cleanup_deadline, 190)
+            with mock.patch.object(capture.time, 'monotonic', return_value=195), \
+                    mock.patch.object(capture.subprocess, 'run') as run:
+                host.best_effort('xcrun', 'simctl', 'shutdown', 'device', timeout=30)
+            run.assert_not_called()
+
+
 if __name__ == '__main__':
     unittest.main()

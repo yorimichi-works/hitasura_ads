@@ -42,6 +42,9 @@ class CaptureRequest {
     'runner',
     'rush',
     'preview',
+    'settings',
+    'liquid',
+    'fruit',
   };
 
   factory CaptureRequest.parse(Object? value, {DateTime? now}) {
@@ -92,6 +95,109 @@ class CaptureRequest {
       scene: scene,
       createdAt: timestamp,
     );
+  }
+}
+
+/// Commands are capture navigation/input only, never arbitrary paths or state.
+class CaptureCommand {
+  const CaptureCommand({
+    required this.sessionId,
+    required this.requestId,
+    required this.locale,
+    required this.scene,
+    required this.action,
+    required this.createdAt,
+  });
+  final String sessionId;
+  final String requestId;
+  final String locale;
+  final String scene;
+  final String action;
+  final DateTime createdAt;
+
+  factory CaptureCommand.parse(Object? value, {DateTime? now}) {
+    const keys = {
+      'schema_version',
+      'session_id',
+      'request_id',
+      'locale',
+      'scene',
+      'action',
+      'created_at',
+    };
+    if (value is! Map<String, dynamic> ||
+        value['schema_version'] is! int ||
+        value['schema_version'] != 2 ||
+        value.keys.length != keys.length ||
+        !value.keys.toSet().containsAll(keys)) {
+      throw const FormatException('Invalid capture command schema');
+    }
+    final base = CaptureRequest.parse({
+      'schema_version': 1,
+      'launch_id': value['session_id'],
+      'locale': value['locale'],
+      'scene': value['scene'],
+      'created_at': value['created_at'],
+    }, now: now);
+    CaptureRequest.parse({
+      'schema_version': 1,
+      'launch_id': value['request_id'],
+      'locale': value['locale'],
+      'scene': value['scene'],
+      'created_at': value['created_at'],
+    }, now: now);
+    final action = value['action'];
+    if (action is! String ||
+        !{'show', 'record_start', 'stop'}.contains(action)) {
+      throw const FormatException('Unsupported capture action');
+    }
+    if (action == 'record_start' && !{'liquid', 'fruit'}.contains(base.scene)) {
+      throw const FormatException('Only approved gameplay scenes may record');
+    }
+    return CaptureCommand(
+      sessionId: base.launchId,
+      requestId: value['request_id'] as String,
+      locale: base.locale,
+      scene: base.scene,
+      action: action,
+      createdAt: base.createdAt,
+    );
+  }
+}
+
+/// Each process is permanently bound to one locale to keep thumbnails correct.
+class CaptureSessionGuard {
+  CaptureSessionGuard(this.sessionId, this.locale);
+  final String sessionId;
+  final String locale;
+  final Set<String> _seen = {};
+  String? _scene;
+  bool _recorded = false;
+  bool _stopped = false;
+
+  void accept(CaptureCommand command) {
+    if (_stopped ||
+        command.sessionId != sessionId ||
+        command.locale != locale ||
+        _seen.contains(command.requestId)) {
+      throw StateError('Stale, stopped, or cross-session capture command');
+    }
+    if (_scene == null && command.action != 'show') {
+      throw StateError('First capture command must show a scene');
+    }
+    if (command.action == 'record_start' &&
+        (command.scene != _scene || _recorded)) {
+      throw StateError('Recording requires the current, unrecorded game scene');
+    }
+    _seen.add(command.requestId);
+    if (command.action == 'show') {
+      _scene = command.scene;
+      _recorded = false;
+    } else if (command.action == 'record_start') {
+      _recorded = true;
+    } else {
+      _stopped = true;
+    }
   }
 }
 

@@ -12,6 +12,24 @@ spec.loader.exec_module(reuse)
 
 
 class ReuseHarnessTests(unittest.TestCase):
+    def test_descriptor_requires_exact_repository_and_full_identities(self):
+        baseline = reuse.descriptor()
+        self.assertEqual(reuse.descriptor(baseline), baseline)
+        for change in ({}, {**baseline, 'repository': 'other/repo'},
+                       {**baseline, 'source_sha': 'short'}, {**baseline, 'zip_sha256': 'wrong'},
+                       {**baseline, 'artifact_id': True}, {**baseline, 'extra': 'ignored'}):
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                reuse.descriptor(change)
+
+    def test_fresh_same_run_descriptor_is_bound_to_metadata_and_provenance(self):
+        approved = {**reuse.descriptor(), 'source_sha': 'a' * 40, 'run_id': 99, 'artifact_id': 100}
+        metadata = {**self.metadata, 'id': 100, 'workflow_run': {'id': 99, 'head_sha': 'a' * 40}}
+        provenance = {**self.provenance, 'source_sha': 'a' * 40}
+        reuse.verify_metadata(metadata, approved)
+        reuse.verify_provenance(provenance, approved)
+        with self.assertRaises(ValueError):
+            reuse.verify_metadata(metadata)
+
     def setUp(self):
         self.metadata = {'id': reuse.ARTIFACT_ID, 'name': 'hitasura-native-capture-harness',
                          'digest': f'sha256:{reuse.DIGEST}', 'expired': False,

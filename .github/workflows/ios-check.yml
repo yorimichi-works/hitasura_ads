@@ -13,6 +13,9 @@ jobs:
     if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || !contains(github.event.head_commit.message, '[capture-reuse]')
     runs-on: macos-15
     timeout-minutes: 60
+    outputs:
+      capture_artifact_id: ${{ steps.capture_harness.outputs.artifact-id }}
+      capture_artifact_digest: ${{ steps.capture_harness.outputs.artifact-digest }}
     steps:
       - uses: actions/checkout@v4
       - name: Select installed Xcode for native capture
@@ -79,6 +82,7 @@ jobs:
           }, indent=2))
           PY
       - name: Retain native capture harness
+        id: capture_harness
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
         uses: actions/upload-artifact@v4
         with:
@@ -88,24 +92,82 @@ jobs:
             build/native-capture-provenance.json
           retention-days: 7
           compression-level: 0
-      - name: Prove native capture transport
-        if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
-        timeout-minutes: 10
-        run: python3 -u tool/store_assets/capture_ios_simulator.py --locales en --devices iphone_6_9 --scenes home
-      - name: Upload native capture evidence
-        if: always() && github.ref == 'refs/heads/codex/app-store-readiness-20261002'
-        uses: actions/upload-artifact@v4
-        with:
-          name: hitasura-native-localized-store-captures
-          path: build/store_assets/native_ios
-          if-no-files-found: warn
-          retention-days: 30
       - name: Upload iOS build log
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ios-build-log
           path: ios-build.log
+
+
+  native-smoke:
+    needs: ios
+    if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        device: [iphone_6_9, ipad_13]
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test capture and release guards
+        run: |
+          python3 -m unittest discover -s tool/store_assets/tests -v
+          python3 -m unittest discover -s tool/release/tests -v
+      - name: Download and pin this run's compiled harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_ARTIFACT_ID: ${{ needs.ios.outputs.capture_artifact_id }}
+          EXPECTED_ARTIFACT_DIGEST: ${{ needs.ios.outputs.capture_artifact_digest }}
+        run: |
+          mkdir -p build/reuse_download build/store_assets/native_ios
+          python3 - <<'PYTHON'
+          import json, os, pathlib, shutil, subprocess, importlib.util
+          spec = importlib.util.spec_from_file_location('reuse', 'tool/store_assets/reuse_capture_harness.py')
+          reuse = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(reuse)
+          expected = reuse.descriptor({
+              'repository': 'yorimichi-works/hitasura_ads',
+              'source_sha': os.environ['GITHUB_SHA'],
+              'run_id': int(os.environ['GITHUB_RUN_ID']),
+              'artifact_id': int(os.environ['EXPECTED_ARTIFACT_ID']),
+              'zip_sha256': os.environ['EXPECTED_ARTIFACT_DIGEST'].removeprefix('sha256:'),
+          })
+          pathlib.Path('build/reuse_download/descriptor.json').write_text(json.dumps(expected, indent=2))
+          shutil.copyfile('build/reuse_download/descriptor.json', 'build/store_assets/native_ios/expected_artifact.json')
+          base = f"repos/yorimichi-works/hitasura_ads/actions/artifacts/{expected['artifact_id']}"
+          for endpoint, name in [(base, 'metadata.json'), (base + '/zip', 'artifact.zip')]:
+              with pathlib.Path('build/reuse_download', name).open('wb') as output:
+                  subprocess.run(['gh', 'api', endpoint], stdout=output, check=True, timeout=120)
+              if name == 'metadata.json':
+                  shutil.copyfile('build/reuse_download/metadata.json', 'build/store_assets/native_ios/download_metadata.json')
+          PYTHON
+      - name: Verify exact native artifact and compiled source
+        run: |
+          python3 tool/store_assets/reuse_capture_harness.py --descriptor build/reuse_download/descriptor.json --metadata build/reuse_download/metadata.json --zip build/reuse_download/artifact.zip
+          python3 tool/store_assets/verify_native_bridge.py --app build/reused_native_harness/Runner.app > build/store_assets/native_ios/native_bridge_check.json
+      - name: Capture Japanese and Arabic native validation chunk
+        timeout-minutes: 10
+        env:
+          CAPTURE_DEVICE: ${{ matrix.device }}
+        run: |
+          xcodebuild -version
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales ja,ar --devices "$CAPTURE_DEVICE" --session-loop --work-deadline-seconds 480 --natural-status-bar --videos
+      - name: Upload native checkpoints and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-native-smoke-${{ matrix.device }}
+          path: build/store_assets/native_ios
+          if-no-files-found: warn
+          retention-days: 7
 
   native-probe:
     if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[capture-reuse]')

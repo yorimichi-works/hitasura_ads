@@ -96,4 +96,91 @@ void main() {
       expect(() => captureDocumentsPath(response), throwsStateError);
     }
   });
+
+  Map<String, dynamic> command({
+    String id = 'c1a9a9ab-3fb1-4300-a6f6-1ca229506790',
+    String action = 'show',
+    String scene = 'home',
+  }) => {
+    'schema_version': 2,
+    'session_id': request()['launch_id'],
+    'request_id': id,
+    'locale': 'en',
+    'scene': scene,
+    'action': action,
+    'created_at': now.toIso8601String(),
+  };
+
+  test(
+    'v2 commands preserve strict identities and disallow arbitrary actions',
+    () {
+      final parsed = CaptureCommand.parse(command(), now: now);
+      expect(parsed.sessionId, request()['launch_id']);
+      for (final change in [
+        {'action': 'set_score'},
+        {'action': 'record_start'},
+        {'isSimulator': true},
+        {'path': '/tmp/output'},
+        {'request_id': 'bad'},
+        {'schema_version': 2.0},
+        {
+          'created_at': now
+              .subtract(const Duration(minutes: 6))
+              .toIso8601String(),
+        },
+      ]) {
+        expect(
+          () => CaptureCommand.parse(command()..addAll(change), now: now),
+          throwsFormatException,
+        );
+      }
+    },
+  );
+
+  test('v2 session rejects cross-locale, stale and out-of-order commands', () {
+    final initial = CaptureCommand.parse(command(scene: 'liquid'), now: now);
+    final guard = CaptureSessionGuard(initial.sessionId, initial.locale);
+    final record = CaptureCommand.parse(
+      command(
+        action: 'record_start',
+        scene: 'liquid',
+        id: 'c1a9a9ab-3fb1-4300-a6f6-1ca229506791',
+      ),
+      now: now,
+    );
+    expect(() => guard.accept(record), throwsStateError);
+    guard.accept(initial);
+    expect(() => guard.accept(initial), throwsStateError);
+    for (final change in [
+      {'locale': 'ja'},
+      {'session_id': 'c1a9a9ab-3fb1-4300-a6f6-1ca229506792'},
+      {'scene': 'fruit'},
+    ]) {
+      final invalid = CaptureCommand.parse(
+        command(
+          action: 'record_start',
+          scene: 'liquid',
+          id: 'c1a9a9ab-3fb1-4300-a6f6-1ca229506791',
+        )..addAll(change),
+        now: now,
+      );
+      expect(() => guard.accept(invalid), throwsStateError);
+    }
+    guard.accept(record);
+    final duplicateRecording = CaptureCommand.parse(
+      command(
+        action: 'record_start',
+        scene: 'liquid',
+        id: 'c1a9a9ab-3fb1-4300-a6f6-1ca229506793',
+      ),
+      now: now,
+    );
+    expect(() => guard.accept(duplicateRecording), throwsStateError);
+    final stop = CaptureCommand.parse(
+      command(action: 'stop', id: 'c1a9a9ab-3fb1-4300-a6f6-1ca229506794'),
+      now: now,
+    );
+    guard.accept(stop);
+    expect(() => guard.accept(initial), throwsStateError);
+  });
 }

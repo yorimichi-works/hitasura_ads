@@ -5,6 +5,7 @@ No signing, credentials, or App Store upload. Raw screenshots/video require QA.
 import argparse
 import datetime
 import hashlib
+import importlib.util
 import json
 import os
 import pathlib
@@ -29,6 +30,13 @@ class HostLog:
         self.commands = output / 'host_commands'
         self.commands.mkdir(parents=True, exist_ok=True)
         self.sequence = 0
+        self.work_deadline = None
+        self.cleanup_deadline = None
+
+    def begin_cleanup(self):
+        if self.cleanup_deadline is None:
+            self.cleanup_deadline = min(time.monotonic() + 90,
+                                        (self.work_deadline or time.monotonic()) + 90)
 
     def stage(self, name, **details):
         event = {'time_utc': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
@@ -43,7 +51,15 @@ class HostLog:
         pending.replace(self.output / 'host_state.json')
         print(encoded, flush=True)
 
-    def run(self, *args, timeout=30, check=True, env=None):
+    def run(self, *args, timeout=30, check=True, env=None, respect_deadline=True):
+        if respect_deadline and self.work_deadline is not None:
+            timeout = min(timeout, self.work_deadline - time.monotonic())
+            if timeout <= 0:
+                raise TimeoutError('Capture work deadline reached; checkpoints retained')
+        if not respect_deadline and self.cleanup_deadline is not None:
+            timeout = min(timeout, self.cleanup_deadline - time.monotonic())
+            if timeout <= 0:
+                raise TimeoutError('Shared cleanup deadline reached; checkpoints retained')
         self.sequence += 1
         prefix = self.commands / f'{self.sequence:04}'
         self.stage('command_start', command=list(args), timeout_seconds=timeout,
@@ -65,7 +81,7 @@ class HostLog:
 
     def best_effort(self, *args, timeout=10):
         try:
-            return self.run(*args, timeout=timeout, check=False)
+            return self.run(*args, timeout=timeout, check=False, respect_deadline=False)
         except Exception as error:
             self.stage('diagnostic_or_cleanup_failed', command=list(args), error=str(error))
             return ''
@@ -191,12 +207,12 @@ def collect_diagnostics(host, udid, state_path, dest):
             shutil.copyfile(source, dest / source.name)
 
 
-def select_capture_scenes(value, include_videos=False):
+def select_capture_scenes(value, include_videos=False, session_loop=False):
     selected = value.split(',')
     if (not selected or any(scene not in SCENES for scene in selected)
             or len(set(selected)) != len(selected)):
         raise ValueError('Unknown or duplicate screenshot scene')
-    return selected + (['preview'] if include_videos else [])
+    return selected + (['preview'] if include_videos and not session_loop else [])
 
 
 def write_capture_request(container, locale, scene, launch_id):
@@ -276,6 +292,11 @@ def main():
     parser.add_argument('--locales', default=','.join(LOCALES))
     parser.add_argument('--devices', default='iphone_6_9,ipad_13')
     parser.add_argument('--videos', action='store_true')
+    parser.add_argument('--session-loop', action='store_true',
+                        help='Use one schema-2 app process per locale and real G003/G008 input clips')
+    parser.add_argument('--include-settings', action='store_true',
+                        help='Try a truthful optional settings screenshot after required media')
+    parser.add_argument('--work-deadline-seconds', type=float, default=480)
     parser.add_argument('--natural-status-bar', action='store_true',
                         help='Keep actual system status for a transport proof')
     parser.add_argument('--scenes', default=','.join(SCENES), help='Comma-separated screenshot scenes; home for a one-scene proof')
@@ -284,24 +305,42 @@ def main():
     if sys.platform != 'darwin':
         parser.error('Native captures require macOS/Xcode; Flutter previews are not native captures.')
     locales = args.locales.split(',')
-    if any(locale not in LOCALES for locale in locales):
+    if len(set(locales)) != len(locales) or any(locale not in LOCALES for locale in locales):
         parser.error('Unknown locale')
+    if not 60 <= args.work_deadline_seconds <= 480:
+        parser.error('Capture work deadline must be between 60 and 480 seconds.')
+    if len(set(args.devices.split(','))) != len(args.devices.split(',')):
+        parser.error('Duplicate device group')
     if not 0 < args.startup_timeout <= 120:
         parser.error('Startup timeout must be between 0 and 120 seconds.')
     if args.app_source_sha is not None and not re.fullmatch(r'[0-9a-f]{40}', args.app_source_sha):
         parser.error('App source SHA must be a full lowercase Git SHA.')
     try:
-        selected_scenes = select_capture_scenes(args.scenes, args.videos)
+        selected_scenes = select_capture_scenes(args.scenes, args.videos, session_loop=args.session_loop)
     except ValueError as error:
         parser.error(str(error))
     out = pathlib.Path(args.output).resolve()
     out.mkdir(parents=True, exist_ok=True)
     host = HostLog(out)
+    host.work_deadline = time.monotonic() + args.work_deadline_seconds
+    session_class = None
+    if args.session_loop:
+        spec = importlib.util.spec_from_file_location('hitasura_capture_session', pathlib.Path(__file__).with_name('capture_session.py'))
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        session_class = module.CaptureSession
     manifest = {'origin':'native_ios_simulator','app_target':'tool/store_assets/native_capture_main.dart','production_ui_unchanged':True,
         'app_source_sha':args.app_source_sha,'capture_script_sha':os.environ.get('GITHUB_SHA'),
+        'ci':{name:os.environ.get(key) for name,key in [('run_id','GITHUB_RUN_ID'),('job','GITHUB_JOB'),('workflow','GITHUB_WORKFLOW'),('run_attempt','GITHUB_RUN_ATTEMPT')]},
+        'session_loop':args.session_loop,'work_deadline_seconds':args.work_deadline_seconds,
+        'requested_locales':locales,'requested_scenes':selected_scenes,
         'fixture':'40 discovered games, 1234 coins, 900 XP, 5 tickets; notifications/audio/external ads disabled; production purchase initialization preserved',
         'status':'in_progress','records':[], 'status_bar_overrides': {}}
+    required_scenes = selected_scenes + (['liquid','fruit'] if args.session_loop and args.videos else [])
+    manifest['required_record_keys'] = [f'{locale}/{group}/{scene}' for group in args.devices.split(',') for locale in locales for scene in required_scenes]
     def save():
+        completed = {record.get('record_key', f"{record['locale']}/{record['device_group']}/{record['scene']}") for record in manifest['records']}
+        manifest['remaining_required_scene_keys'] = [key for key in manifest['required_record_keys'] if key not in completed]
         pending = out / 'manifest.pending'
         pending.write_text(json.dumps(manifest, indent=2))
         pending.replace(out / 'manifest.json')
@@ -341,6 +380,36 @@ def main():
             for locale in locales:
                 dest = out/locale/group
                 dest.mkdir(parents=True, exist_ok=True)
+                if session_class is not None:
+                    session = session_class(host, udid, container, locale, dest, out, args.startup_timeout)
+                    common = {'locale':locale,'device_group':group,'device_name':device['name'],
+                              'device_udid':udid,'runtime':runtime,'status_bar_override_applied':status_bar_applied}
+                    def append_record(record):
+                        record.update(common)
+                        record['id'] = record['record_key'] = f"{locale}/{group}/{record['scene']}"
+                        record['status'] = 'raw_native_capture_requires_pixel_review_and_normalization'
+                        manifest['records'].append(record)
+                        save()
+                    try:
+                        first_ready = session.start(selected_scenes[0])
+                        for index, scene in enumerate(selected_scenes, 1):
+                            append_record(session.screenshot(scene, index, group, first_ready if index == 1 else None))
+                        if args.videos:
+                            for index, scene in enumerate(('liquid','fruit'), len(selected_scenes) + 1):
+                                append_record(session.gameplay(scene, index))
+                        if args.include_settings:
+                            try:
+                                append_record(session.screenshot('settings', len(selected_scenes) + 3, group))
+                            except Exception as error:
+                                manifest.setdefault('optional_settings_failures', []).append({'locale':locale,'device_group':group,'error':str(error)})
+                                host.stage('optional_settings_capture_failed', locale=locale, error=str(error))
+                                save()
+                    except Exception:
+                        host.begin_cleanup()
+                        raise
+                    finally:
+                        session.close()
+                    continue
                 for index, scene in enumerate(selected_scenes, 1):
                     try:
                         evidence = launch_capture(host, udid, locale, scene, container, dest, args.startup_timeout)
@@ -365,17 +434,23 @@ def main():
                         manifest['records'].append(record)
                         save()
                     except Exception:
-                        collect_diagnostics(host, udid, state_path, dest / f'{scene}_failure')
+                        host.begin_cleanup()
                         raise
                     finally:
                         host.best_effort('xcrun','simctl','terminate',udid,BUNDLE, timeout=10)
             host.run('xcrun','simctl','shutdown',udid, timeout=30)
             udid = None
+        save()
+        if manifest['remaining_required_scene_keys']:
+            raise RuntimeError('Required native scene records are incomplete')
         manifest['status'] = 'captured_pending_pixel_review'
         save()
         host.stage('capture_complete', records=len(manifest['records']))
     except Exception as error:
-        manifest.update({'status':'failed','error':str(error)})
+        host.begin_cleanup()
+        deadline_reached = time.monotonic() >= host.work_deadline
+        manifest.update({'status':'partial_deadline' if deadline_reached else 'failed',
+                         'work_deadline_reached':deadline_reached,'error':str(error)})
         save()
         host.stage('capture_failed', error=str(error), udid=udid)
         record_host_resources(host)

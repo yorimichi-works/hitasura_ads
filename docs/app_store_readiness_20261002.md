@@ -208,3 +208,16 @@ available. Natural status-bar pixels are retained and source revisions remain
 explicit. Host snapshots show heavy Apple background activity and memory
 compression, but do not establish an out-of-memory event or prove that the prior
 compile caused the simulator latency.
+
+### Native media expansion
+
+The isolated exact-artifact proof `37045784008` succeeded: real English iPhone
+1320x2868 pixels, native simulator attestation, controller readiness and a real
+first frame were verified. The v2 target now uses one process per locale to
+avoid cross-language thumbnail-cache reuse, and real pointer inputs for ten
+seconds each of G003/G008. The next validation builds that target once and runs
+Japanese/Arabic phone and iPad chunks in separate standard macOS jobs. Raw clips
+require native evidence, encoder validation and pixel review; postproduction
+music is explicitly distinguished from native captured audio. No shipping game
+logic/art changed. Full20-locale capture and actual UMP accept/refuse/options QA
+remain separate gates; neither mock tests nor this media harness prove UMP.
