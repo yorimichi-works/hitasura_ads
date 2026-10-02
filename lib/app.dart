@@ -9,6 +9,7 @@ import 'arcade/engine/game_view.dart';
 import 'l10n/l10n.dart';
 import 'services/rewarded_ad_service.dart';
 import 'services/app_notification_service.dart';
+import 'services/app_licenses.dart';
 import 'state/app_controller.dart';
 import 'ui/first_launch.dart';
 import 'ui/home.dart';
@@ -47,6 +48,7 @@ class _HitasuraAdsAppState extends State<HitasuraAdsApp>
   @override
   void initState() {
     super.initState();
+    registerAppLicenses();
     WidgetsBinding.instance.addObserver(this);
     widget.controller.addListener(_syncNotifications);
     WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -8,14 +8,22 @@ or a statement that App Review has approved the app.
 
 ## Prepared in code
 
+- Latest owner-approved Japanese App Store title (2026-10-02):
+  `151のドパガキ向けミニゲーム集`. This supersedes earlier store-title proposals.
+  The short installed name `Hitasura Ads`, other locale names, game art and core
+  UI titles remain unchanged. This title does not establish a Kids-category
+  audience or replace truthful age-rating/content answers.
 - Production iOS bundle `com.syamo.hitasuraads`, team `3W8HVJ3U8W`, marketing
   version `1.0.0`. The source build number remains `1`; each uploaded build must
   have a new number checked against App Store Connect app `6818519730`.
 - Manual signed-IPA workflow using `xcode: latest`, existing integration
   `codemagic`, existing certificate `cirno-app-store`, and approved profile
-  `hitasura-app-store-profile`. No automatic upload, TestFlight distribution,
-  App Review submission, signing-resource creation, or paid build is initiated
-  by this code change. See [release workflow instructions](../tool/release/README.md).
+  `hitasura-app-store-profile`. After a separately authorized manual start, the
+  workflow builds and uploads the IPA to App Store Connect with both review
+  submission flags disabled and `release_type: MANUAL`. No Git trigger, beta
+  group, cancellation, expiry action, or signing-resource creation is configured.
+  This local code change starts no paid build and performs no upload or review
+  submission. See [release workflow instructions](../tool/release/README.md).
 - UMP consent-info refresh per app/service session, required privacy-options
   entry in Settings, and a consent form only when an ad is actually requested.
   No Mobile Ads initialization or ad load happens until UMP completes and
@@ -29,8 +37,11 @@ or a statement that App Review has approved the app.
   missing, local or placeholder URLs. The unsigned simulator workflow remains
   usable without those production values. The release operator must also open
   the actual pages and confirm their contents; URL syntax alone is insufficient.
-- The non-consumable product remains exactly `ad_free_unlimited`. Buy and Restore
-  remain available and price display comes from StoreKit; no price is hardcoded.
+- The non-consumable product remains exactly `ad_free_unlimited`. The latest
+  owner-approved Japan price is JPY 300 one-time (2026-10-02), superseding the
+  earlier JPY 200 planning note; overseas prices use Apple's Japan-base automatic
+  equivalents. The app download is free. Buy and Restore remain available, and
+  runtime price display comes from StoreKit; no currency/price is hardcoded.
 - New iOS purchase/restore events must match a current StoreKit2 **verified**
   entitlement with the exact transaction and product, no revocation, and no
   expiration/upgraded state. Durable local save must succeed before completing
@@ -38,6 +49,11 @@ or a statement that App Review has approved the app.
   complete delivery. No server receipt validation is claimed.
 - Credits now distinguish fictional in-game parodies from real optional sponsor
   videos. Gameplay/art was not redesigned by this readiness change.
+
+- The complete bundled Kosugi Maru Apache 2.0 license and copyright/designer
+  attribution are packaged as assets and accessible under Settings → Credits →
+  Licenses, alongside standard Flutter/plugin acknowledgements. Font/game art
+  is unchanged.
 
 ## Why the extra StoreKit check exists
 
@@ -82,7 +98,7 @@ correctly used.
    real transactions cannot be established by Linux unit tests.
 5. **Signing/build.** An account operator confirmed the approved profile was
    fetched into Codemagic on 2026-10-02 with the matching existing certificate
-   (profile expires 2027-09-28). Actual signing, native compilation, IPA export,
+   (profile expires 2027-09-28). Actual distribution signing, IPA export,
    upload and Apple processing still require a separately started macOS build.
 6. **Screenshots.** Existing Japanese iPhone screenshots are 1290×2796. The app
    still supports iPad, so accurate iPad screenshots must be captured on an iPad
@@ -103,3 +119,4 @@ correctly used.
 - [Apple verification result](https://developer.apple.com/documentation/storekit/verificationresult)
 - [Apple user privacy and data use](https://developer.apple.com/app-store/user-privacy-and-data-use/)
 - [Codemagic named signing identities](https://docs.codemagic.io/yaml-code-signing/signing-ios/)
+- [Codemagic App Store Connect upload and submission controls](https://docs.codemagic.io/yaml-publishing/app-store-connect/)

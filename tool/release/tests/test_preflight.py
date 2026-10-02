@@ -209,9 +209,9 @@ class RepositoryConfigurationTests(unittest.TestCase):
             with self.assertRaises(preflight.PreflightError):
                 preflight.validate_project(invalid)
 
-    def test_workflow_has_no_auto_trigger_publisher_or_signing_creation(self):
+    def test_workflow_has_no_auto_trigger_or_signing_creation(self):
         workflow = (preflight.ROOT / "codemagic.yaml").read_text().split("  ios-app-store-ipa:", 1)[1]
-        for forbidden in ["triggering:", "publishing:", "fetch-signing-files", "--create", "app-store-connect publish"]:
+        for forbidden in ["triggering:", "fetch-signing-files", "--create", "app-store-connect publish"]:
             self.assertNotIn(forbidden, workflow)
         self.assertIn("max_build_duration: 60", workflow)
         self.assertIn("profile: hitasura-app-store-profile", workflow)
@@ -223,6 +223,20 @@ class RepositoryConfigurationTests(unittest.TestCase):
         self.assertIn('--dart-define="ADMOB_MODE=${ADMOB_MODE:?}"', workflow)
         self.assertIn('--dart-define="PRIVACY_POLICY_URL=${PRIVACY_POLICY_URL:?}"', workflow)
         self.assertIn('--dart-define="SUPPORT_URL=${SUPPORT_URL:?}"', workflow)
+
+    def test_publisher_uploads_only_with_existing_integration(self):
+        workflow = (preflight.ROOT / "codemagic.yaml").read_text().split("  ios-app-store-ipa:", 1)[1]
+        self.assertEqual(workflow.count("    publishing:\n"), 1)
+        publisher = workflow.split("    publishing:\n", 1)[1]
+        self.assertEqual(publisher.strip(), (
+            "app_store_connect:\n"
+            "        auth: integration\n"
+            "        submit_to_testflight: false\n"
+            "        submit_to_app_store: false\n"
+            "        release_type: MANUAL"
+        ))
+        for forbidden in ["beta_groups:", "cancel_previous_submissions:", "expire_build_submitted_for_review:", "expire_previous_builds:"]:
+            self.assertNotIn(forbidden, workflow)
 
     @mock.patch.dict(preflight.os.environ, {}, clear=True)
     def test_failed_configuration_exports_nothing(self):

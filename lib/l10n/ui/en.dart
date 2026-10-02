@@ -1,5 +1,6 @@
 // UI strings — English (source language). Placeholders: {n}, {t}, {name}.
 const Map<String, String> uiEn = {
+  'licenses': 'Licenses',
   'privacy_and_support': "Privacy & support",
   'privacy_policy': "Privacy policy",
   'support': "Support",

@@ -6,6 +6,7 @@ import '../arcade/engine/sfx.dart';
 import '../arcade/registry.dart';
 import '../l10n/l10n.dart';
 import '../services/release_links.dart';
+import '../services/app_licenses.dart';
 import '../services/rewarded_ad_service.dart';
 import '../state/app_controller.dart';
 import 'kit.dart';
@@ -291,17 +292,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     _section(
                       L10n.ui('credits'),
-                      Text(
-                        'ひたすら広告 / Nothing But Ads — AD DEMO 151\n'
-                        'Games, art, music & sound: procedurally made for this app.\n'
-                        'Font: Kosugi Maru (Apache License 2.0).\n'
-                        'In-game ads, products and prizes are fictional parodies.\n'
-                        'Optional sponsor videos are real third-party ads.',
-                        style: K.t(
-                          12,
-                          color: K.ink.withValues(alpha: .7),
-                          weight: FontWeight.w600,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'ひたすら広告 / Nothing But Ads — AD DEMO 151\n'
+                            'Games, art, music & sound: procedurally made for this app.\n'
+                            'Font: Kosugi Maru (Apache License 2.0).\n'
+                            'In-game ads, products and prizes are fictional parodies.\n'
+                            'Optional sponsor videos are real third-party ads.',
+                            style: K.t(
+                              12,
+                              color: K.ink.withValues(alpha: .7),
+                              weight: FontWeight.w600,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              registerAppLicenses();
+                              showLicensePage(
+                                context: context,
+                                applicationName: L10n.ui('app_title'),
+                              );
+                            },
+                            child: Text(L10n.ui('licenses')),
+                          ),
+                        ],
                       ),
                     ),
                   ],

@@ -10,7 +10,7 @@ on:
 jobs:
   ios:
     runs-on: macos-15
-    timeout-minutes: 120
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -42,6 +42,21 @@ jobs:
         with:
           name: hitasura-ads-ios-simulator
           path: build/ios/iphonesimulator/Runner.app
+      - name: Build native capture harness
+        if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
+        run: flutter build ios --simulator --debug --no-codesign -t tool/store_assets/native_capture_main.dart --dart-define=ADMOB_MODE=disabled
+      - name: Capture localized native smoke assets
+        if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
+        timeout-minutes: 20
+        run: python3 tool/store_assets/capture_ios_simulator.py --locales en,ja,ar --videos
+      - name: Upload native capture evidence
+        if: always() && github.ref == 'refs/heads/codex/app-store-readiness-20261002'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-native-localized-store-captures
+          path: build/store_assets/native_ios
+          if-no-files-found: warn
+          retention-days: 30
       - name: Upload iOS build log
         if: always()
         uses: actions/upload-artifact@v4

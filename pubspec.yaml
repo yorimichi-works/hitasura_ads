@@ -66,6 +66,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/fonts/KosugiMaru-LICENSE.txt
+    - assets/fonts/KosugiMaru-ATTRIBUTION.txt
     - assets/audio/sfx/
     - assets/audio/bgm/
   fonts:

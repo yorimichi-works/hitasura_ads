@@ -1,5 +1,6 @@
 // UI strings — 日本語
 const Map<String, String> uiJa = {
+  'licenses': 'ライセンス',
   'privacy_and_support': "プライバシー・サポート",
   'privacy_policy': "プライバシーポリシー",
   'support': "お問い合わせ",

@@ -133,7 +133,8 @@
   "support": "Support",
   "ad_privacy_options": "Ad privacy choices",
   "ad_privacy_failed": "Privacy settings could not be updated. Sponsor ads are paused. Please try again.",
-  "link_unavailable": "This link is currently unavailable. Please try again later."
+  "link_unavailable": "This link is currently unavailable. Please try again later.",
+  "licenses": "Licenses"
  },
  "ui_ja": {
   "app_title": "ひたすら広告",
@@ -269,7 +270,8 @@
   "support": "お問い合わせ",
   "ad_privacy_options": "広告のプライバシー設定",
   "ad_privacy_failed": "プライバシー設定を更新できませんでした。スポンサー広告を停止しています。もう一度お試しください。",
-  "link_unavailable": "現在このリンクを開けません。しばらくしてからお試しください。"
+  "link_unavailable": "現在このリンクを開けません。しばらくしてからお試しください。",
+  "licenses": "ライセンス"
  },
  "games_en": {
   "1": [

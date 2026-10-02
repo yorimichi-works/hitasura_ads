@@ -1,9 +1,11 @@
 # Manual iOS release build
 
 `ios-app-store-ipa` in `codemagic.yaml` builds a signed production IPA only when
-started manually. It has no Git triggers, upload/publishing configuration,
-TestFlight submission, or App Review submission. Its maximum duration is 60
-minutes. Preparing this workflow does **not** start or authorize a paid build.
+started manually, then uploads the IPA to App Store Connect through the existing
+`codemagic` integration. It has no Git triggers, TestFlight review submission or
+tester-group assignment, App Review submission, or automatic release. Its
+maximum duration is 60 minutes. Preparing this workflow locally does **not**
+start or authorize a paid build or perform an upload.
 
 ## Prerequisites before starting
 
@@ -53,7 +55,12 @@ retry after an upload, supply a higher positive integer as `build_number`
 7. Apply only the named profile and build the signed production IPA, with
    automatic build-number management disabled in the export options.
 8. Retain the IPA, dSYMs, Xcode logs, and a non-secret preflight report as build
-   artifacts. Upload and submission are separate, authorized steps.
+   artifacts. The publisher uploads the IPA using `auth: integration`, with
+   `submit_to_testflight: false`, `submit_to_app_store: false`, and
+   `release_type: MANUAL`. No beta groups, cancellation, or build-expiry actions
+   are configured. Apple processing must then be checked; upload alone is not
+   App Review submission, distribution, or approval. Those later actions remain
+   separate, authorized steps.
 
 Run the standard-library tests locally without Apple credentials or macOS:
 
@@ -71,11 +78,13 @@ APP_STORE_APPLE_ID=6818519730 ADMOB_MODE=production python3 tool/release/preflig
 Offline success is not a signed-build, live-App-Store, URL-availability, purchase,
 advertising, or physical-device verification. A preflight lookup is a point-in-time
 check, not a reservation; do not run concurrent release builds with the same
-number, and recheck immediately before a later manual upload.
+number. If uploading an artifact later outside this workflow, recheck its build
+number immediately before that upload.
 
 ## Official references (checked 2026-10-02)
 
 - [Codemagic named signing references](https://docs.codemagic.io/yaml-code-signing/signing-ios/)
+- [Codemagic App Store Connect upload and submission controls](https://docs.codemagic.io/yaml-publishing/app-store-connect/)
 - [Codemagic build inputs](https://docs.codemagic.io/knowledge-codemagic/build-inputs/)
 - [Build-number CLI options](https://github.com/codemagic-ci-cd/cli-tools/blob/master/docs/app-store-connect/get-latest-build-number.md)
 - [CLI no-build output and all-version lookup implementation](https://github.com/codemagic-ci-cd/cli-tools/blob/master/src/codemagic/tools/app_store_connect/actions/latest_build_number_actions.py)

@@ -1,0 +1,8 @@
+Kosugi Maru
+
+Copyright 2010 The Kosugi Maru Project Authors
+(https://github.com/googlefonts/kosugi-maru)
+
+Designer: MOTOYA
+Licensed under the Apache License, Version 2.0.
+The bundled font is distributed unchanged. The full license follows.
