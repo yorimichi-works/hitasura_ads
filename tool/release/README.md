@@ -56,8 +56,10 @@ retry after an upload, supply a higher positive integer as `build_number`
    automatic build-number management disabled in the export options.
 8. Retain the IPA, dSYMs, Xcode logs, and a non-secret preflight report as build
    artifacts. The publisher uploads the IPA using `auth: integration`, with
-   `submit_to_testflight: false`, `submit_to_app_store: false`, and
-   `release_type: MANUAL`. No beta groups, cancellation, or build-expiry actions
+   `submit_to_testflight: false` and `submit_to_app_store: false`.
+   `release_type` is omitted because Codemagic requires review submission for
+   that field; manual public release is controlled separately in App Store
+   Connect. No beta groups, cancellation, or build-expiry actions
    are configured. Apple processing must then be checked; upload alone is not
    App Review submission, distribution, or approval. Those later actions remain
    separate, authorized steps.

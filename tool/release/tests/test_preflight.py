@@ -232,10 +232,9 @@ class RepositoryConfigurationTests(unittest.TestCase):
             "app_store_connect:\n"
             "        auth: integration\n"
             "        submit_to_testflight: false\n"
-            "        submit_to_app_store: false\n"
-            "        release_type: MANUAL"
+            "        submit_to_app_store: false"
         ))
-        for forbidden in ["beta_groups:", "cancel_previous_submissions:", "expire_build_submitted_for_review:", "expire_previous_builds:"]:
+        for forbidden in ["release_type:", "beta_groups:", "cancel_previous_submissions:", "expire_build_submitted_for_review:", "expire_previous_builds:"]:
             self.assertNotIn(forbidden, workflow)
 
     @mock.patch.dict(preflight.os.environ, {}, clear=True)

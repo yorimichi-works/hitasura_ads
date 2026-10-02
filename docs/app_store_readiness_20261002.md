@@ -23,7 +23,8 @@ or a statement that App Review has approved the app.
   `codemagic`, existing certificate `cirno-app-store`, and approved profile
   `hitasura-app-store-profile`. After a separately authorized manual start, the
   workflow builds and uploads the IPA to App Store Connect with both review
-  submission flags disabled and `release_type: MANUAL`. No Git trigger, beta
+  submission flags disabled. Manual public release is controlled separately in
+  App Store Connect; the upload-only YAML omits `release_type`. No Git trigger, beta
   group, cancellation, expiry action, or signing-resource creation is configured.
   This local code change starts no paid build and performs no upload or review
   submission. See [release workflow instructions](../tool/release/README.md).
