@@ -10,7 +10,7 @@ on:
 jobs:
   ios:
     # A reuse-only probe must independently verify that no compiled source changed.
-    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || !contains(github.event.head_commit.message, '[capture-reuse]')
+    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]'))
     runs-on: macos-15
     timeout-minutes: 60
     outputs:
@@ -279,5 +279,87 @@ jobs:
         with:
           name: hitasura-native-recovery-ja-ar-ipad
           path: build/store_assets/native_ios
+          if-no-files-found: warn
+          retention-days: 7
+
+  ump-qa-build:
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[ump-qa]')
+    runs-on: macos-15
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    outputs:
+      artifact_id: ${{ steps.ump_harness.outputs.artifact-id }}
+      tar_sha256: ${{ steps.ump_package.outputs.tar_sha256 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Check isolated UMP QA guards
+        run: |
+          test -d "$DEVELOPER_DIR"
+          xcodebuild -version
+          flutter pub get
+          flutter test --no-pub test/ump_qa_test.dart
+          flutter analyze --no-pub tool/ump_qa test/ump_qa_test.dart
+          python3 -m unittest discover -s tool/ump_qa -p 'test_*.py' -v
+      - name: Compile standalone simulator UI-test driver
+        timeout-minutes: 10
+        run: xcodebuild build-for-testing -project tool/ump_qa/UmpQaUITests.xcodeproj -scheme UmpQaUITests -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/ump_qa_ui CODE_SIGNING_ALLOWED=NO
+      - name: Build guarded actual-UMP target without ads
+        timeout-minutes: 20
+        run: |
+          flutter build ios --simulator --debug --no-codesign -t tool/ump_qa/ump_qa_main.dart --dart-define=HITASURA_UMP_QA=true --dart-define=ADMOB_MODE=disabled
+          python3 tool/ump_qa/prepare_simulator_app.py
+      - name: Pin same-run unsigned UMP QA products
+        id: ump_package
+        run: |
+          digest=$(python3 tool/ump_qa/archive_qa_build.py pack --source-sha "$GITHUB_SHA")
+          echo "tar_sha256=$digest" >> "$GITHUB_OUTPUT"
+      - name: Retain unsigned UMP QA products
+        id: ump_harness
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-ump-qa-harness
+          path: build/ump-qa-build.tar.gz
+          retention-days: 7
+          compression-level: 0
+
+  ump-qa-native:
+    needs: ump-qa-build
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.ump-qa-build.outputs.artifact_id }}
+          path: build/ump_qa_download
+          merge-multiple: true
+      - name: Verify same-run UMP QA source and binary digest
+        env:
+          EXPECTED_TAR_SHA256: ${{ needs.ump-qa-build.outputs.tar_sha256 }}
+        run: |
+          python3 tool/ump_qa/archive_qa_build.py unpack --archive build/ump_qa_download/ump-qa-build.tar.gz --source-sha "$GITHUB_SHA" --sha256 "$EXPECTED_TAR_SHA256" > build/ump_qa_xctestrun.txt
+      - name: Check actual accept, refuse and privacy options without ads
+        timeout-minutes: 14
+        run: |
+          xctestrun=$(cat build/ump_qa_xctestrun.txt)
+          python3 -u tool/ump_qa/run_native_qa.py --app build/ump_qa_reused/qa_app/Runner.app --xctestrun "$xctestrun" --source-sha "$GITHUB_SHA"
+      - name: Retain actual UMP native evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-ump-native-evidence
+          path: build/ump_qa_evidence
           if-no-files-found: warn
           retention-days: 7

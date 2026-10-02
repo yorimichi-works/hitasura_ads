@@ -15,6 +15,17 @@ RUN_ID = 37042725105
 ARTIFACT_ID = 11243670913
 DIGEST = 'bc61661d3e65df2618bf5794dc749df5a9e1a7edf9cf80762de3891b68e432d4'
 ALLOWED_DELTA = {
+    'tool/ump_qa/README.md',
+    'tool/ump_qa/UmpQaUITests.swift',
+    'tool/ump_qa/UmpQaUITests.xcodeproj/project.pbxproj',
+    'tool/ump_qa/UmpQaUITests.xcodeproj/xcshareddata/xcschemes/UmpQaUITests.xcscheme',
+    'tool/ump_qa/archive_qa_build.py',
+    'tool/ump_qa/prepare_simulator_app.py',
+    'tool/ump_qa/run_native_qa.py',
+    'tool/ump_qa/test_ump_qa_guards.py',
+    'tool/ump_qa/ump_qa_gateway.dart',
+    'tool/ump_qa/ump_qa_main.dart',
+    'test/ump_qa_test.dart',
     'codemagic.yaml', 'tool/release/README.md', 'tool/release/tests/test_preflight.py',
     '.github/workflows/ios-check.yml', 'docs/app_store_readiness_20261002.md',
     'tool/store_assets/README.md', 'tool/store_assets/capture_ios_simulator.py',

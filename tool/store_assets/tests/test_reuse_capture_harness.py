@@ -20,7 +20,7 @@ class ReuseHarnessTests(unittest.TestCase):
         self.assertEqual(approved['artifact_id'], 11247365869)
         source = (root / '.github/workflows/ios-check.yml').read_text()
         settings = source.split('  native-probe:', 1)[1].split('  native-media-recovery:', 1)[0]
-        media = source.split('  native-media-recovery:', 1)[1]
+        media = source.split('  native-media-recovery:', 1)[1].split('  ump-qa-build:', 1)[0]
         self.assertIn('--locales en --devices ipad_13 --scenes home', settings)
         self.assertIn('--include-settings', settings)
         self.assertNotIn('--videos', settings)
