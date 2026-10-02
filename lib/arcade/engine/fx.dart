@@ -37,7 +37,7 @@ class Particle {
 }
 
 class FloatText {
-  FloatText(this.text, this.pos, this.color, this.size, this.life, this.rise) : maxLife = life;
+  FloatText(this.text, this.pos, this.color, this.size, this.life, this.rise, {this.direction}) : maxLife = life;
   final String text;
   Offset pos;
   final Color color;
@@ -45,6 +45,7 @@ class FloatText {
   double life;
   final double maxLife;
   final double rise;
+  final TextDirection? direction;
 }
 
 /// Particle + floating text system. The host updates and renders it on top
@@ -156,8 +157,8 @@ class Fx {
   }
 
   /// Floating score / word popup ("+10", "PERFECT!").
-  void pop(String text, Offset at, {Color color = Pal.yellow, double size = 26, double life = .8, double rise = 60}) {
-    if (texts.length < 40) texts.add(FloatText(text, at, color, size, life, rise));
+  void pop(String text, Offset at, {Color color = Pal.yellow, double size = 26, double life = .8, double rise = 60, TextDirection? direction}) {
+    if (texts.length < 40) texts.add(FloatText(text, at, color, size, life, rise, direction: direction));
   }
 
   void clear() {
@@ -241,7 +242,7 @@ class Fx {
       c.translate(t.pos.dx, t.pos.dy);
       c.scale(scale);
       if (alpha < 1) c.saveLayer(null, Paint()..color = Color.fromRGBO(0, 0, 0, alpha));
-      D.text(c, t.text, Offset.zero, size: t.size, color: t.color, stroke: Pal.ink);
+      D.text(c, t.text, Offset.zero, size: t.size, color: t.color, stroke: Pal.ink, direction: t.direction);
       if (alpha < 1) c.restore();
       c.restore();
     }

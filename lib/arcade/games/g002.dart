@@ -178,12 +178,12 @@ class G002 extends MiniGame {
     _flagPop = 1;
     if (diff > 0) {
       host.sfx(Sfx.powerup, rate: 1 + min(diff, 60) / 120);
-      host.fx.pop('+$diff', at, color: Pal.sky, size: 30);
+      host.fx.pop('+$diff', at, color: Pal.sky, size: 30, direction: TextDirection.ltr);
       host.fx.burst(at, Pal.sky, count: 18, speed: 240, colors: const [Pal.sky, Pal.white, Pal.yellow]);
       host.addScore(diff);
     } else if (diff < 0) {
       host.sfx(Sfx.wrong, volume: .7);
-      host.fx.pop('$diff', at, color: Pal.red, size: 30);
+      host.fx.pop('$diff', at, color: Pal.red, size: 30, direction: TextDirection.ltr);
       host.shake(5);
     }
     _syncRunners();

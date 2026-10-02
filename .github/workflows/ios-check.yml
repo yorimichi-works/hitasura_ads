@@ -65,7 +65,9 @@ jobs:
         run: flutter build ios --simulator --debug --no-codesign -t tool/store_assets/native_capture_main.dart --dart-define=ADMOB_MODE=disabled
       - name: Verify native capture bridge is compiled
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
-        run: python3 tool/store_assets/verify_native_bridge.py
+        run: |
+          python3 tool/store_assets/verify_native_bridge.py
+          python3 tool/release/verify_localized_display_names.py --app build/ios/iphonesimulator/Runner.app > build/localized-display-names.json
       - name: Package native capture harness
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
         run: |
@@ -97,7 +99,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-build-log
-          path: ios-build.log
+          path: |
+            ios-build.log
+            build/localized-display-names.json
 
 
   native-smoke:
@@ -572,5 +576,171 @@ jobs:
         with:
           name: hitasura-native-phone-${{ matrix.id }}
           path: build/store_assets/native_ios
+          if-no-files-found: warn
+          retention-days: 7
+
+  native-all-media:
+    # Every matrix child downloads the exact harness compiled by this run.
+    # Both device smoke proofs must pass before these larger locale batches.
+    needs: [ios, native-smoke]
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[capture-all]')
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        # Pair axis first: phone and iPad progress together for each pair.
+        chunk:
+          - {id: ja-ar, locales: "ja,ar"}
+          - {id: en-zh, locales: "en,zh"}
+          - {id: zh_tw-ko, locales: "zh_TW,ko"}
+          - {id: es-fr, locales: "es,fr"}
+          - {id: de-pt, locales: "de,pt"}
+          - {id: ru-it, locales: "ru,it"}
+          - {id: hi-bn, locales: "hi,bn"}
+          - {id: ur-fa, locales: "ur,fa"}
+          - {id: id-tr, locales: "id,tr"}
+          - {id: vi-th, locales: "vi,th"}
+        device: [iphone_6_9, ipad_13]
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test capture and release guards
+        run: |
+          python3 -m unittest discover -s tool/store_assets/tests -v
+          python3 -m unittest discover -s tool/release/tests -v
+      - name: Download and pin this run's compiled harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_ARTIFACT_ID: ${{ needs.ios.outputs.capture_artifact_id }}
+          EXPECTED_ARTIFACT_DIGEST: ${{ needs.ios.outputs.capture_artifact_digest }}
+        run: |
+          mkdir -p build/reuse_download build/store_assets/native_ios
+          python3 - <<'PYTHON'
+          import json, os, pathlib, shutil, subprocess, importlib.util
+          spec = importlib.util.spec_from_file_location('reuse', 'tool/store_assets/reuse_capture_harness.py')
+          reuse = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(reuse)
+          expected = reuse.descriptor({
+              'repository': 'yorimichi-works/hitasura_ads',
+              'source_sha': os.environ['GITHUB_SHA'],
+              'run_id': int(os.environ['GITHUB_RUN_ID']),
+              'artifact_id': int(os.environ['EXPECTED_ARTIFACT_ID']),
+              'zip_sha256': os.environ['EXPECTED_ARTIFACT_DIGEST'].removeprefix('sha256:'),
+          })
+          pathlib.Path('build/reuse_download/descriptor.json').write_text(json.dumps(expected, indent=2))
+          shutil.copyfile('build/reuse_download/descriptor.json', 'build/store_assets/native_ios/expected_artifact.json')
+          base = f"repos/yorimichi-works/hitasura_ads/actions/artifacts/{expected['artifact_id']}"
+          for endpoint, name in [(base, 'metadata.json'), (base + '/zip', 'artifact.zip')]:
+              with pathlib.Path('build/reuse_download', name).open('wb') as output:
+                  subprocess.run(['gh', 'api', endpoint], stdout=output, check=True, timeout=120)
+              if name == 'metadata.json':
+                  shutil.copyfile('build/reuse_download/metadata.json', 'build/store_assets/native_ios/download_metadata.json')
+          PYTHON
+      - name: Verify exact native artifact and compiled source
+        run: |
+          python3 tool/store_assets/reuse_capture_harness.py --descriptor build/reuse_download/descriptor.json --metadata build/reuse_download/metadata.json --zip build/reuse_download/artifact.zip
+          python3 tool/store_assets/verify_native_bridge.py --app build/reused_native_harness/Runner.app > build/store_assets/native_ios/native_bridge_check.json
+      - name: Capture full native locale pair
+        timeout-minutes: 10
+        env:
+          CAPTURE_DEVICE: ${{ matrix.device }}
+          CAPTURE_LOCALES: ${{ matrix.chunk.locales }}
+        run: |
+          xcodebuild -version
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales "$CAPTURE_LOCALES" --devices "$CAPTURE_DEVICE" --session-loop --videos --work-deadline-seconds 480 --natural-status-bar --runtime-version 18.6
+      - name: Upload native checkpoints and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-native-media-${{ matrix.chunk.id }}-${{ matrix.device }}
+          path: build/store_assets/native_ios
+          if-no-files-found: warn
+          retention-days: 7
+
+  rewarded-qa-build:
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[ad-qa]')
+    runs-on: macos-15
+    timeout-minutes: 35
+    permissions:
+      contents: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    outputs:
+      artifact_id: ${{ steps.rewarded_harness.outputs.artifact-id }}
+      tar_sha256: ${{ steps.rewarded_package.outputs.tar_sha256 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Check isolated rewarded QA guards
+        run: |
+          test -d "$DEVELOPER_DIR"
+          xcodebuild -version
+          flutter pub get
+          flutter test --no-pub tool/ad_qa/ad_qa_guard_test.dart
+          flutter analyze --no-pub tool/ad_qa
+          python3 -m unittest discover -s tool/ad_qa -p 'test_*.py' -v
+      - name: Compile standalone simulator UI-test driver
+        timeout-minutes: 10
+        run: xcodebuild build-for-testing -project tool/ad_qa/RewardedQaUITests.xcodeproj -scheme RewardedQaUITests -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/rewarded_qa_ui CODE_SIGNING_ALLOWED=NO
+      - name: Build guarded Google demo-only rewarded target
+        timeout-minutes: 20
+        run: |
+          flutter build ios --simulator --debug --no-codesign -t tool/ad_qa/rewarded_ad_qa_main.dart --dart-define=HITASURA_REWARDED_AD_QA=true --dart-define=ADMOB_MODE=test
+          python3 tool/ad_qa/prepare_simulator_app.py --source-sha "$GITHUB_SHA"
+      - name: Pin same-run unsigned rewarded QA products
+        id: rewarded_package
+        run: |
+          digest=$(python3 tool/ad_qa/archive_qa_build.py pack --source-sha "$GITHUB_SHA")
+          echo "tar_sha256=$digest" >> "$GITHUB_OUTPUT"
+      - name: Retain unsigned rewarded QA products
+        id: rewarded_harness
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-rewarded-qa-harness
+          path: build/rewarded-qa-build.tar.gz
+          retention-days: 7
+          compression-level: 0
+
+  rewarded-qa-native:
+    needs: rewarded-qa-build
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.rewarded-qa-build.outputs.artifact_id }}
+          path: build/rewarded_qa_download
+          merge-multiple: true
+      - name: Verify same-run rewarded QA source and binary digest
+        env:
+          EXPECTED_TAR_SHA256: ${{ needs.rewarded-qa-build.outputs.tar_sha256 }}
+        run: |
+          python3 tool/ad_qa/archive_qa_build.py unpack --archive build/rewarded_qa_download/rewarded-qa-build.tar.gz --source-sha "$GITHUB_SHA" --sha256 "$EXPECTED_TAR_SHA256" > build/rewarded_qa_xctestrun.txt
+      - name: Check one actual Google demo reward with native Test mode proof
+        timeout-minutes: 14
+        run: |
+          xctestrun=$(cat build/rewarded_qa_xctestrun.txt)
+          python3 -u tool/ad_qa/run_native_qa.py --app build/rewarded_qa_reused/qa_app/Runner.app --xctestrun "$xctestrun" --source-sha "$GITHUB_SHA" --runtime-version 18.6
+      - name: Retain actual demo-ad native evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-rewarded-native-evidence
+          path: build/rewarded_qa_evidence
           if-no-files-found: warn
           retention-days: 7

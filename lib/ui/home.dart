@@ -418,7 +418,15 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 6),
               Text(L10n.ui('discovered'), style: K.t(15)),
               const Spacer(),
-              InkText('$n / $total', size: 20, color: K.yellow, shadow: false),
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: InkText(
+                  '$n / $total',
+                  size: 20,
+                  color: K.yellow,
+                  shadow: false,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -457,6 +465,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required Color color,
     required VoidCallback onTap,
     bool locked = false,
+    TextDirection? subDirection,
   }) {
     return GestureDetector(
       onTap: () {
@@ -492,6 +501,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 2),
               Text(
                 sub,
+                textDirection: subDirection,
                 style: K.t(11, color: Colors.white.withValues(alpha: .85)),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -527,6 +537,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _collectionCard() => _modeCard(
     title: L10n.ui('collection'),
     sub: '${c.discoveredCount} / ${allGames.length}',
+    subDirection: TextDirection.ltr,
     icon: Icons.grid_view_rounded,
     color: K.purple,
     onTap: () => _open(

@@ -223,14 +223,14 @@ class G018 extends MiniGame {
     final at = Offset(xs[best], _armyY - 90);
     if (gain >= 0) {
       host.sfx(op.sym == 'x' ? Sfx.levelup : Sfx.powerup, rate: 1 + _gates.indexOf(g) * .06);
-      host.fx.pop('+${gain.round()}', at, color: Pal.lime, size: 34, life: 1);
+      host.fx.pop('+${gain.round()}', at, color: Pal.lime, size: 34, life: 1, direction: TextDirection.ltr);
       host.fx.burst(at, Pal.sky, count: 20, speed: 260, shape: PartShape.star, colors: const [Pal.sky, Pal.white, Pal.yellow]);
       host.punch(.03);
       host.addScore(gain.round());
     } else {
       host.sfx(Sfx.wrong);
       host.sfx(Sfx.aww, volume: .4);
-      host.fx.pop('${gain.round()}', at, color: Pal.red, size: 34, life: 1);
+      host.fx.pop('${gain.round()}', at, color: Pal.red, size: 34, life: 1, direction: TextDirection.ltr);
       host.fx.burst(at, Pal.red, count: 14, speed: 200, size: 6);
       host.shake(6);
     }

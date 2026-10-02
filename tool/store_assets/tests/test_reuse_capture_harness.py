@@ -18,6 +18,7 @@ class ReuseHarnessTests(unittest.TestCase):
         root = pathlib.Path(__file__).parents[3]
         source = (root / '.github/workflows/ios-check.yml').read_text()
         matrix = source.split('  native-phone-batches:', 1)[1]
+        matrix = re.split(r'\n  [a-z][a-z0-9-]*:\n', matrix, maxsplit=1)[0]
         compatibility = source.split('  native-phone-compatibility:', 1)[1].split('  native-phone-batches:', 1)[0]
         pairs = re.findall(r'^\s+locales: ([a-zA-Z_,]+)$', compatibility + matrix, re.MULTILINE)
         flattened = [locale for pair in pairs for locale in pair.split(',')]

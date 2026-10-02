@@ -10,8 +10,11 @@ or a statement that App Review has approved the app.
 
 - Latest owner-approved Japanese App Store title (2026-10-02):
   `ひたすら広告　151のドパガキ向けミニゲーム集`. This supersedes earlier store-title proposals.
-  The Japanese in-app title uses the same approved wording. The short installed
-  name `Hitasura Ads`, other locale names, game art and layouts remain unchanged. This title does not establish a Kids-category
+  The Japanese in-app title uses the same approved wording. The iOS Home-screen
+  short labels are localized to `ひたすら広告` (Japanese) and `Nothing But Ads`
+  (English); explicit resources preserve `Hitasura Ads` for the other 18 supported
+  locales. Full in-app/store titles, game art and layouts are independent of
+  these short system labels. This title does not establish a Kids-category
   audience or replace truthful age-rating/content answers.
 - Latest owner-approved English App Store and in-app title (2026-10-02):
   `Nothing But Ads: 151 Games`, selected after the shorter App Store name was
@@ -58,11 +61,15 @@ or a statement that App Review has approved the app.
   entitlements/catalogue in the background. Eight-second background bounds
   preserve cached access on no-account/offline stalls; explicit Restore retains
   a separate two-minute authentication allowance. Late timed-out reads cannot
-  apply stale state. A native no-account first-frame proof is still required.
-- Arithmetic gate labels in G002/G018 explicitly use LTR operation notation
+  apply stale state. Native no-account first-frame proof passed on iPhone and
+  iPad with source `1a686d4635935fae70253041a08840c6f08e2887` (see below).
+- Arithmetic gate and floating gain labels in G002/G018 explicitly use LTR operation notation
   inside RTL languages; surrounding Arabic remains RTL. The text-cache key
   includes the override. Pixel regressions compare the same unchanged font,
-  symbols and geometry under both paragraph directions.
+  symbols and geometry under both paragraph directions. The two spaced Home
+  discovered/total counters also isolate their numeric run as LTR, preserving
+  surrounding Arabic/Urdu/Persian layout. Unspaced Collection fractions already
+  keep their numeric order and are covered without changing their layout.
 
 - The complete bundled Kosugi Maru Apache 2.0 license and copyright/designer
   attribution are packaged as assets and accessible under Settings → Credits →
@@ -95,10 +102,11 @@ verification is unchanged. See [evidence rules and the signed Sandbox checklist]
    They were separately published and anonymously checked on 2026-10-02. The old
    browser/Firebase/AdSense policy must not replace these mobile pages. This
    branch does not deploy or alter the website.
-2. **AdMob account configuration.** Configure and publish applicable UMP privacy
-   messages for the exact iOS AdMob application ID. Verify consent required/not
-   required, refusal, update/form failure, retry, and later privacy changes on
-   actual devices. UMP code does not establish the account-side setup.
+2. **AdMob account configuration.** The exact iOS application's published EEA
+   UMP message and accept/refuse/reopened-choice SDK callbacks passed actual
+   simulator QA below. US-state publication/testing, other geography paths and
+   physical-device/network-failure coverage remain separate. UMP code alone
+   does not establish account-side configuration or privacy disclosures.
 3. **Tracking decision.** ATT is conditional on whether the app/SDK configuration
    actually performs tracking under Apple's definition. No ATT prompt or
    tracking-purpose description was invented. Inspect production SDK data
@@ -237,3 +245,30 @@ require native evidence, encoder validation and pixel review; postproduction
 music is explicitly distinguished from native captured audio. No shipping game
 logic/art changed. Full20-locale capture and actual UMP accept/refuse/options QA
 remain separate gates; neither mock tests nor this media harness prove UMP.
+
+
+## Verified native startup and consent checkpoint (2026-10-02)
+
+[GitHub run 37064188852](https://github.com/yorimichi-works/hitasura_ads/actions/runs/37064188852)
+used source `1a686d4635935fae70253041a08840c6f08e2887`. Actual JA/AR iPhone and iPad
+captures on the installed iOS 18.6 runtime reached `controller_ready` in 11–18ms
+and first frame in 0.86–1.16s with the real purchase initialization path. This
+closes the observed no-account startup stall; it is not signed Sandbox purchase,
+refund/account-switch or newest-OS device QA.
+
+The separate no-ad UMP target completed both actual published EEA consent paths:
+accept → reopen required privacy choices → refuse, and refuse → reopen → accept.
+Native screenshots and SDK callback evidence were reviewed. Both final callbacks
+reported obtained consent status, required privacy-options entry and no error.
+`canRequestAds=true` also followed refusal, so it is **not** interpreted as consent
+to personalized ads. No Mobile Ads initialization or ad request ran in this test.
+US-state message publication/testing and production disclosure alignment remain
+separate checks.
+
+`tool/ad_qa` prepares a separately opt-in Debug simulator smoke using only Google's
+[official rewarded demo unit](https://developers.google.com/admob/ios/test-ads).
+It requires a native SDK **Test mode** indicator before any ad interaction, records
+real load/reward/dismiss callbacks and distinguishes a show request from native
+presentation evidence. Local guards do not establish native ad success; the
+actual result must be reviewed before claiming this coverage. Production archives
+must contain neither QA entrypoint nor its debug-only native bridge.
