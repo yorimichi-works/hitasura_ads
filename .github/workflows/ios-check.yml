@@ -10,7 +10,7 @@ on:
 jobs:
   ios:
     # A reuse-only probe must independently verify that no compiled source changed.
-    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]'))
+    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]') && !contains(github.event.head_commit.message, '[ump-reuse]'))
     runs-on: macos-15
     timeout-minutes: 60
     outputs:
@@ -361,5 +361,53 @@ jobs:
         with:
           name: hitasura-ump-native-evidence
           path: build/ump_qa_evidence
+          if-no-files-found: warn
+          retention-days: 7
+
+  ump-qa-reuse:
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[ump-reuse]')
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check UMP reuse and runtime guards
+        run: python3 -m unittest discover -s tool/ump_qa -p 'test_*.py' -v
+      - name: Download exact retained unsigned UMP QA products
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, pathlib, subprocess
+          descriptor = json.loads(pathlib.Path('tool/ump_qa/retained_build.json').read_text())
+          out = pathlib.Path('build/ump_qa_reuse_download')
+          out.mkdir(parents=True, exist_ok=False)
+          base = f"repos/yorimichi-works/hitasura_ads/actions/artifacts/{descriptor['artifact_id']}"
+          for endpoint, name in [(base, 'metadata.json'), (base + '/zip', 'artifact.zip')]:
+              with (out / name).open('wb') as stream:
+                  subprocess.run(['gh', 'api', endpoint], stdout=stream, check=True, timeout=120)
+          PYTHON
+      - name: Verify retained UMP identity, hashes and unchanged consent dependencies
+        run: python3 tool/ump_qa/reuse_qa_build.py --metadata build/ump_qa_reuse_download/metadata.json --zip build/ump_qa_reuse_download/artifact.zip > build/ump_qa_xctestrun.txt
+      - name: Test real consent on the confirmed installed compatible runtime
+        timeout-minutes: 14
+        run: |
+          xctestrun=$(cat build/ump_qa_xctestrun.txt)
+          python3 -u tool/ump_qa/run_native_qa.py --app build/ump_qa_retained/verified/qa_app/Runner.app --xctestrun "$xctestrun" --source-sha 95977f83a70e1c4818d44f25f2260fc54809160e --runtime-version 18.6
+      - name: Retain UMP reuse and real-runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-ump-reused-native-evidence
+          path: |
+            build/ump_qa_evidence
+            build/ump_qa_retained/verified_reuse.json
+            build/ump_qa_reuse_download/metadata.json
           if-no-files-found: warn
           retention-days: 7

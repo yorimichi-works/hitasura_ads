@@ -16,6 +16,9 @@ ARCHIVE_SPEC.loader.exec_module(ARCHIVE)
 RUN_SPEC = importlib.util.spec_from_file_location('qa_run', pathlib.Path(__file__).with_name('run_native_qa.py'))
 RUN = importlib.util.module_from_spec(RUN_SPEC)
 RUN_SPEC.loader.exec_module(RUN)
+REUSE_SPEC = importlib.util.spec_from_file_location('qa_reuse', pathlib.Path(__file__).with_name('reuse_qa_build.py'))
+REUSE = importlib.util.module_from_spec(REUSE_SPEC)
+REUSE_SPEC.loader.exec_module(REUSE)
 
 
 class QaGuardTests(unittest.TestCase):
@@ -163,6 +166,38 @@ class QaGuardTests(unittest.TestCase):
             write(events + [{**event, 'stage': 'qa_error'}])
             with self.assertRaises(ValueError):
                 RUN.verify_sdk_events(path, '2026-10-02T19:00:00Z')
+
+    def test_retained_qa_artifact_identity_and_expiry(self):
+        descriptor = json.loads((ROOT / 'tool/ump_qa/retained_build.json').read_text())
+        meta = {'id': descriptor['artifact_id'], 'name': 'hitasura-ump-qa-harness',
+                'digest': 'sha256:' + descriptor['zip_sha256'], 'expired': False,
+                'workflow_run': {'id': descriptor['run_id'], 'head_sha': descriptor['source_sha']}}
+        REUSE.verify_metadata(meta, descriptor)
+        for change in [{'expired': True}, {'id': 1}, {'digest': 'sha256:' + '0' * 64},
+                       {'workflow_run': {'id': descriptor['run_id'], 'head_sha': 'a' * 40}}]:
+            with self.assertRaises(ValueError):
+                REUSE.verify_metadata({**meta, **change}, descriptor)
+
+    def test_reuse_job_does_not_compile_or_change_release_configuration(self):
+        workflow = (ROOT / '.github/workflows/ios-check.yml').read_text()
+        job = workflow.split('  ump-qa-reuse:', 1)[1]
+        self.assertIn("contains(github.event.head_commit.message, '[ump-reuse]')", job)
+        self.assertIn('--runtime-version 18.6', job)
+        self.assertIn('runs-on: macos-15', job)
+        self.assertIn('actions: read', job)
+        self.assertNotIn('flutter build', job)
+        self.assertNotIn('xcodebuild build', job)
+
+    def test_older_runtime_selection_requires_actual_compatible_inventory(self):
+        capture = RUN.module('capture_test', ROOT / 'tool/store_assets/capture_ios_simulator.py')
+        rid = 'com.apple.CoreSimulator.SimRuntime.iOS-18-6'
+        inventory = {'devices': {rid: [{'udid': 'listed-device', 'name': 'iPhone 16 Pro Max', 'isAvailable': True}]}}
+        runtimes = {'runtimes': [{'identifier': rid, 'version': '18.6', 'isAvailable': True}]}
+        selected = RUN.select_compatible_device(capture, inventory, runtimes, '26.2', '18.6', '15.0')
+        self.assertEqual(selected[2]['udid'], 'listed-device')
+        for runtime, minimum in [('18.5', '15.0'), ('18.6', '19.0'), ('27.0', '15.0')]:
+            with self.assertRaises((ValueError, RuntimeError)):
+                RUN.select_compatible_device(capture, inventory, runtimes, '26.2', runtime, minimum)
 
 
 if __name__ == '__main__':

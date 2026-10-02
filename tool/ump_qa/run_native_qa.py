@@ -8,6 +8,7 @@ import pathlib
 import plistlib
 import re
 import shutil
+import subprocess
 import sys
 import time
 
@@ -45,6 +46,21 @@ def module(name, path):
     return value
 
 
+def select_compatible_device(capture, inventory, runtimes, sdk, runtime_version, minimum_os):
+    if runtime_version is None:
+        return capture.select_devices(inventory, runtimes, sdk, ['iphone_6_9'])[0]
+    if not re.fullmatch(r'\d+\.\d+', runtime_version):
+        raise ValueError('An explicit installed major.minor runtime is required')
+    version = tuple(map(int, runtime_version.split('.')))
+    minimum = tuple(map(int, str(minimum_os).split('.')[:2]))
+    maximum = tuple(map(int, sdk.split('.')[:2]))
+    if not minimum <= version <= maximum:
+        raise ValueError('Requested runtime falls outside the built app/SDK range')
+    # This function still requires an actual available inventory entry and its
+    # real device. It does not download or invent a runtime/device identifier.
+    return capture.select_devices(inventory, runtimes, runtime_version, ['iphone_6_9'])[0]
+
+
 def main():
     if sys.platform != 'darwin':
         raise RuntimeError('Actual native UMP QA requires macOS and an installed iOS simulator')
@@ -52,6 +68,7 @@ def main():
     parser.add_argument('--app', default='build/ump_qa_app/Runner.app')
     parser.add_argument('--xctestrun', required=True)
     parser.add_argument('--source-sha', required=True)
+    parser.add_argument('--runtime-version', help='Explicit installed compatible runtime for infrastructure diagnosis')
     parser.add_argument('--output', default='build/ump_qa_evidence')
     args = parser.parse_args()
     if not re.fullmatch(r'[0-9a-f]{40}', args.source_sha):
@@ -70,6 +87,7 @@ def main():
     container = None
     result = {'native_ump': True, 'status': 'not_run', 'native_bridge': native,
               'source_sha': args.source_sha,
+              'host_script_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True, timeout=10).strip(),
               'ad_initialization_requested': False, 'ad_load_requested': False}
     shutil.copyfile(app.parent / 'provenance.json', out / 'qa_app_provenance.json')
     privacy = [{'path': str(path.relative_to(app)), 'contents': plistlib.loads(path.read_bytes())}
@@ -79,7 +97,7 @@ def main():
         inventory = capture.read_simulator_inventory(host, 'devices')
         runtimes = capture.read_simulator_inventory(host, 'runtimes')
         sdk = host.run('xcrun', '--sdk', 'iphonesimulator', '--show-sdk-version', timeout=30).strip()
-        (_, runtime, device), = capture.select_devices(inventory, runtimes, sdk, ['iphone_6_9'])
+        _, runtime, device = select_compatible_device(capture, inventory, runtimes, sdk, args.runtime_version, info.get('MinimumOSVersion', '15.0'))
         udid = device['udid']
         result.update({'runtime': runtime, 'device': device, 'sdk': sdk})
         if device['state'] != 'Booted':

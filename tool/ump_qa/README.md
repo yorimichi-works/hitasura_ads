@@ -55,3 +55,20 @@ Sources:
 - [Google Flutter UMP integration and test APIs](https://developers.google.com/admob/flutter/privacy)
 - [Google iOS simulator test-device behavior](https://developers.google.com/admob/ios/privacy#testing)
 - [Apple native application UI-test proxy](https://developer.apple.com/documentation/xcuiautomation/xcuiapplication/init(bundleidentifier:))
+
+## Bounded infrastructure recovery
+
+Run `37055844526` compiled both QA targets and verified archive transfer, but
+iOS 26.2 simulator installation timed out after a 117-second boot. No app launch
+or UMP request occurred. Its retained inventory explicitly lists available
+iOS 18.6 and iPhone 16 Pro Max. A tagged `[ump-reuse]` diagnostic uses that
+existing compatible runtime, retaining SDK 26.2 build provenance and the actual
+device/runtime label. It does not replace newest-OS release QA.
+
+`retained_build.json` pins that exact source/run/artifact and both ZIP/tar hashes.
+Reuse verifies expiry, the UMP Dart/native-test sources, shipping consent service,
+SDK locks and iOS configuration. Only the reviewed purchase-bridge-only native
+revision is additionally permitted; the simulator attestation block must remain
+identical and the QA target does not call the purchase bridge. Unknown native
+revisions require a fresh build. No runtime download, signing or larger runner
+is used, and repeated installation is not attempted after an uncertain timeout.
