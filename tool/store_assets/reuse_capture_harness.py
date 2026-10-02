@@ -15,6 +15,7 @@ RUN_ID = 37042725105
 ARTIFACT_ID = 11243670913
 DIGEST = 'bc61661d3e65df2618bf5794dc749df5a9e1a7edf9cf80762de3891b68e432d4'
 ALLOWED_DELTA = {
+    'codemagic.yaml', 'tool/release/README.md', 'tool/release/tests/test_preflight.py',
     '.github/workflows/ios-check.yml', 'docs/app_store_readiness_20261002.md',
     'tool/store_assets/README.md', 'tool/store_assets/capture_ios_simulator.py',
     'tool/store_assets/reuse_capture_harness.py',

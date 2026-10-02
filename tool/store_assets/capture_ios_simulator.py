@@ -128,6 +128,36 @@ def record_host_resources(host):
     host.best_effort('vm_stat', timeout=5)
 
 
+def read_simulator_inventory(host, kind):
+    """Allow cold disk-image initialization, retrying only a bounded read timeout."""
+    if kind not in {'devices', 'runtimes'}:
+        raise ValueError('Unsupported simulator inventory kind')
+    command = ['xcrun', 'simctl', 'list', kind]
+    if kind == 'devices':
+        command.append('available')
+    command.append('--json')
+    for attempt in range(1, 4):
+        host.stage('inventory_read', kind=kind, attempt=attempt, maximum_attempts=3)
+        try:
+            value = json.loads(host.run(*command, timeout=30))
+        except subprocess.TimeoutExpired:
+            if attempt == 3:
+                raise
+            deadline = host.work_deadline
+            if deadline is not None and deadline - time.monotonic() <= 5:
+                host.stage('inventory_retry_budget_exhausted', kind=kind, attempt=attempt)
+                raise
+            host.stage('inventory_retry_wait', kind=kind, attempt=attempt, seconds=5)
+            time.sleep(5)
+            continue
+        if not isinstance(value, dict) or kind not in value:
+            raise ValueError(f'Invalid simulator {kind} inventory')
+        if not isinstance(value[kind], dict if kind == 'devices' else list):
+            raise ValueError(f'Invalid simulator {kind} inventory structure')
+        return value
+    raise AssertionError('Inventory read must return or raise within three attempts')
+
+
 def override_status_bar(host, udid):
     """Cosmetic metadata must never block a real native capture."""
     try:
@@ -349,8 +379,8 @@ def main():
     state_path = None
     try:
         host.stage('inventory_start')
-        inventory = json.loads(host.run('xcrun','simctl','list','devices','available','--json', timeout=30))
-        runtimes = json.loads(host.run('xcrun','simctl','list','runtimes','--json', timeout=30))
+        inventory = read_simulator_inventory(host, 'devices')
+        runtimes = read_simulator_inventory(host, 'runtimes')
         sdk_version = host.run('xcrun','--sdk','iphonesimulator','--show-sdk-version', timeout=30).strip()
         (out/'simulator_inventory.json').write_text(json.dumps(inventory, indent=2))
         (out/'simulator_runtimes.json').write_text(json.dumps(runtimes, indent=2))

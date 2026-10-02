@@ -143,6 +143,61 @@ class HostCommandTests(unittest.TestCase):
         self.assertTrue(all(call.kwargs['timeout'] == 10 for call in run.call_args_list))
 
 
+class InventoryReadTests(unittest.TestCase):
+    def setUp(self):
+        self.host = mock.Mock()
+        self.host.work_deadline = None
+
+    def test_successful_later_read_retries_only_inventory(self):
+        self.host.run.side_effect = [subprocess.TimeoutExpired('simctl', 30), '{"devices": {}}']
+        with mock.patch.object(capture.time, 'sleep') as sleep:
+            self.assertEqual(capture.read_simulator_inventory(self.host, 'devices'), {'devices': {}})
+        sleep.assert_called_once_with(5)
+        for call in self.host.run.call_args_list:
+            self.assertEqual(call.args, ('xcrun', 'simctl', 'list', 'devices', 'available', '--json'))
+            self.assertEqual(call.kwargs['timeout'], 30)
+
+    def test_exhaustion_stops_after_three_reads(self):
+        self.host.run.side_effect = subprocess.TimeoutExpired('simctl', 30)
+        with mock.patch.object(capture.time, 'sleep') as sleep:
+            with self.assertRaises(subprocess.TimeoutExpired):
+                capture.read_simulator_inventory(self.host, 'runtimes')
+        self.assertEqual(self.host.run.call_count, 3)
+        self.assertEqual(sleep.call_count, 2)
+
+    def test_explicit_failure_and_invalid_json_are_not_retried(self):
+        for failure in (subprocess.CalledProcessError(2, 'simctl'), ValueError('invalid JSON')):
+            host = mock.Mock(work_deadline=None)
+            host.run.side_effect = failure
+            with self.subTest(failure=failure), mock.patch.object(capture.time, 'sleep') as sleep:
+                with self.assertRaises(type(failure)):
+                    capture.read_simulator_inventory(host, 'devices')
+                self.assertEqual(host.run.call_count, 1)
+                sleep.assert_not_called()
+        for value in ('not JSON', '{}', '{"runtimes":{}}', '[]'):
+            host = mock.Mock(work_deadline=None)
+            host.run.return_value = value
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                capture.read_simulator_inventory(host, 'runtimes')
+            self.assertEqual(host.run.call_count, 1)
+
+    def test_retry_wait_does_not_cross_work_deadline(self):
+        self.host.work_deadline = 105
+        self.host.run.side_effect = subprocess.TimeoutExpired('simctl', 30)
+        with mock.patch.object(capture.time, 'monotonic', return_value=100), mock.patch.object(capture.time, 'sleep') as sleep:
+            with self.assertRaises(subprocess.TimeoutExpired):
+                capture.read_simulator_inventory(self.host, 'devices')
+        self.assertEqual(self.host.run.call_count, 1)
+        sleep.assert_not_called()
+
+    def test_runtime_shape_and_kind_are_strict(self):
+        self.host.run.return_value = '{"runtimes": []}'
+        self.assertEqual(capture.read_simulator_inventory(self.host, 'runtimes'), {'runtimes': []})
+        self.assertEqual(self.host.run.call_args.args, ('xcrun', 'simctl', 'list', 'runtimes', '--json'))
+        with self.assertRaises(ValueError):
+            capture.read_simulator_inventory(self.host, 'boot')
+
+
 class ContainerLookupTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()

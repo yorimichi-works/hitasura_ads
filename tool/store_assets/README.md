@@ -90,16 +90,32 @@ Run866c8d4 reached Dart startup, but all Platform.environment capture values wer
 
 ### Isolated reuse proof
 
-A readiness-branch push whose message includes `[capture-reuse]` selects the
-bounded `native-probe` job instead of the iOS compile job. It downloads only
-artifact `11243670913` from run `37042725105` (app source `17321d1`), requires its
-published ZIP digest and unexpired status, validates the embedded simulator-only
-provenance, and rejects changes to any compiled source. The job grants only
+A readiness-branch push whose message includes `[capture-reuse]` selects bounded
+capture jobs instead of the iOS compile job. The first reuse proof pinned artifact
+`11243670913` from run `37042725105` (app source `17321d1`). Reuse requires the
+reviewed ZIP digest and unexpired status, validates embedded simulator-only
+provenance, and rejects changes to any compiled source. Each job grants only
 `contents: read` and `actions: read` to its existing ephemeral GitHub token; it
 creates no credential and performs no signing or App Store operation.
 
-This proof captures one English iPhone home screen with the natural system status
-bar. Cosmetic override failures in other capture modes are reported but do not
-block app launch. Manifests distinguish the app source SHA from the capture-script
-SHA. Ordinary pushes retain the existing full iOS build; Android checks are
-unchanged. After this artifact expires (2026-10-09), a fresh compile is required.
+That original proof succeeded with an actual English iPhone home image. The
+current retained-artifact descriptor pins the newer `dc10fbe` harness from run
+`37051269307`, artifact `11247365869`. Its Japanese/Arabic phone chunk produced
+ten native screenshots and four raw gameplay segments; pixel/encoding review is
+separate from capture success. The first iPad chunk stopped before boot when a
+cold CoreSimulator inventory read timed out. Read-only inventory timeouts now
+allow at most three 30-second attempts, separated by bounded five-second waits;
+explicit errors and malformed responses are not retried.
+
+A `[capture-reuse]` push first captures genuine English iPad home/Settings using
+the retained binary, including its actual purchase availability and price text.
+It then runs the Japanese/Arabic iPad media recovery. No purchase, entitlement or
+price is synthesized, and no new app compilation is requested by these jobs.
+The Settings image still requires pixel review of the visible upgrade/restore
+section before use as an IAP review attachment.
+
+Natural system status bars are retained. Manifests distinguish app and capture
+script revisions. Each capture chunk has an eight-minute work deadline, one
+90-second cleanup reserve and a ten-minute step cap. After the pinned artifact
+expires on 2026-10-09, a fresh compile is required. Ordinary unmarked pushes retain
+the existing build workflow; Android checks are unchanged.

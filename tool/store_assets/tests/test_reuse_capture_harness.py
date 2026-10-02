@@ -1,6 +1,7 @@
 import copy
 import hashlib
 import importlib.util
+import json
 import pathlib
 import tempfile
 import unittest
@@ -12,6 +13,32 @@ spec.loader.exec_module(reuse)
 
 
 class ReuseHarnessTests(unittest.TestCase):
+    def test_reviewed_recovery_uses_retained_dc10_and_prioritizes_real_settings(self):
+        root = pathlib.Path(__file__).parents[3]
+        approved = reuse.descriptor(json.loads((root / 'tool/store_assets/native_capture_artifact.json').read_text()))
+        self.assertEqual(approved['source_sha'], 'dc10fbe5f05f12ecfaa2edea9eb3dabcac786f91')
+        self.assertEqual(approved['artifact_id'], 11247365869)
+        source = (root / '.github/workflows/ios-check.yml').read_text()
+        settings = source.split('  native-probe:', 1)[1].split('  native-media-recovery:', 1)[0]
+        media = source.split('  native-media-recovery:', 1)[1]
+        self.assertIn('--locales en --devices ipad_13 --scenes home', settings)
+        self.assertIn('--include-settings', settings)
+        self.assertNotIn('--videos', settings)
+        self.assertIn('needs: native-probe', media)
+        self.assertIn('--locales ja,ar --devices ipad_13', media)
+        self.assertIn('--session-loop --videos', media)
+        for job in (settings, media):
+            self.assertIn('runs-on: macos-15', job)
+            self.assertIn('timeout-minutes: 10', job)
+            self.assertIn('--work-deadline-seconds 480', job)
+            self.assertIn('--descriptor tool/store_assets/native_capture_artifact.json', job)
+            self.assertNotIn('flutter build', job)
+            self.assertIn("contains(github.event.head_commit.message, '[capture-reuse]')", job)
+
+    def test_noncompiled_upload_schema_changes_do_not_require_app_rebuild(self):
+        reuse.verify_source_delta(['codemagic.yaml', 'tool/release/README.md',
+                                   'tool/release/tests/test_preflight.py'])
+
     def test_descriptor_requires_exact_repository_and_full_identities(self):
         baseline = reuse.descriptor()
         self.assertEqual(reuse.descriptor(baseline), baseline)
