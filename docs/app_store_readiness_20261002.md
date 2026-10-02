@@ -150,3 +150,29 @@ language selection does not promise to override StoreKit/UMP system UI language.
   https://developer.apple.com/library/archive/qa/qa1828/_index.html
 - Flutter iOS bundle localization guidance:
   https://docs.flutter.dev/ui/internationalization#localizing-for-ios-updating-the-ios-app-bundle
+
+### Existing icon, ad-content filter, and bounded capture follow-up
+
+- The native iOS template icon was replaced using the existing TV/AD web brand
+  artwork from commit `2c18926afebf0edf02aac454d48b25a248506ffc`. All 15 PNG
+  exports are opaque RGB and match the existing 19 catalog entries. The 1024px
+  marketing export is a 2x resample of the available 512px original, not a new
+  higher-resolution master. Provenance and pixel-review limitations are in
+  `tool/store_assets/ios_icon_export_manifest.json`; no game artwork changed.
+- After successful UMP consent, the app awaits an AdMob maximum content rating
+  of `T` before SDK initialization, and rechecks consent before proceeding. This
+  filters MA creatives but does not guarantee every ad is appropriate. No child,
+  under-consent, or age-treatment assertion is set; account-wide AdMob settings
+  are unchanged. Configuration failure prevents initialization and requests.
+- Native run `37032299479` compiled both targets with Xcode 26.3 and passed tests,
+  but the simulator container lookup timed out before app launch. The next retry
+  repeats only that timed-out read, at most three 30-second attempts with two
+  5-second gaps. Explicit errors stop immediately. CPU/memory diagnostics each
+  have a 5-second bound and do not collect environment variables or arguments.
+- The capture harness is now retained as a permission-preserving tar archive with
+  source/mode metadata for seven days. It remains an ads-disabled simulator-only
+  diagnostic target, not an App Store archive. No workflow token permission,
+  signing resource, automatic upload/review/release behavior was added.
+
+Google configuration ordering/content-filter guidance:
+https://developers.google.com/admob/flutter/targeting

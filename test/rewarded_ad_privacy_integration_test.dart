@@ -18,6 +18,9 @@ void main() {
   const channelName = 'plugins.flutter.io/google_mobile_ads';
   late List<String> calls;
   late Completer<int> loadRequested;
+  late Completer<void> configurationRequested;
+  Completer<void>? configurationGate;
+  bool configurationFails = false;
   late FakeConsent gateway;
   late GoogleRewardedAdService service;
 
@@ -34,10 +37,28 @@ void main() {
   setUp(() {
     calls = [];
     loadRequested = Completer<int>();
+    configurationRequested = Completer<void>();
+    configurationGate = null;
+    configurationFails = false;
     gateway = FakeConsent();
     instanceManager = AdInstanceManager(channelName);
     messenger.setMockMethodCallHandler(instanceManager.channel, (call) async {
+      // One-time Dart/native channel bootstrap, not MobileAds initialization.
+      if (call.method == '_init') return null;
       calls.add(call.method);
+      if (call.method == 'MobileAds#updateRequestConfiguration') {
+        expect(gateway.calls, contains('collect'));
+        expect(gateway.calls.last, 'permission');
+        expect(call.arguments['maxAdContentRating'], MaxAdContentRating.t);
+        expect(call.arguments['tagForChildDirectedTreatment'], isNull);
+        expect(call.arguments['tagForUnderAgeOfConsent'], isNull);
+        expect(call.arguments['ageRestrictedTreatment'], isNull);
+        configurationRequested.complete();
+        if (configurationFails) {
+          throw PlatformException(code: 'configuration_failed');
+        }
+        await configurationGate?.future;
+      }
       if (call.method == 'MobileAds#initialize') {
         expect(gateway.calls.last, 'permission');
         return InitializationStatus({});
@@ -79,8 +100,70 @@ void main() {
         hasLength(1),
       );
       expect(calls.where((call) => call == 'loadRewardedAd'), hasLength(1));
+      expect(calls.take(3), [
+        'MobileAds#updateRequestConfiguration',
+        'MobileAds#initialize',
+        'loadRewardedAd',
+      ]);
     },
   );
+
+  test('SDK initialization awaits the T rating configuration', () async {
+    configurationGate = Completer<void>();
+    final initialize = service.initialize();
+    await configurationRequested.future;
+    expect(calls, ['MobileAds#updateRequestConfiguration']);
+    configurationGate!.complete();
+    final id = await loadRequested.future;
+    await loaded(id);
+    await initialize;
+    expect(service.status, RewardedAdStatus.ready);
+  });
+
+  test(
+    'configuration failure prevents SDK initialization and ad load',
+    () async {
+      configurationFails = true;
+      await service.initialize();
+      expect(calls, ['MobileAds#updateRequestConfiguration']);
+      expect(service.status, RewardedAdStatus.failed);
+    },
+  );
+
+  test(
+    'consent denial prevents configuration, initialization and ad load',
+    () async {
+      gateway.allowed = false;
+      await service.initialize();
+      expect(calls, isEmpty);
+      expect(service.status, RewardedAdStatus.failed);
+    },
+  );
+
+  test(
+    'consent revoked during configuration prevents SDK initialization',
+    () async {
+      configurationGate = Completer<void>();
+      final initialize = service.initialize();
+      await configurationRequested.future;
+      gateway.allowed = false;
+      configurationGate!.complete();
+      await initialize;
+      expect(calls, ['MobileAds#updateRequestConfiguration']);
+      expect(service.status, RewardedAdStatus.failed);
+    },
+  );
+
+  test('disposal during configuration prevents SDK initialization', () async {
+    configurationGate = Completer<void>();
+    final initialize = service.initialize();
+    await configurationRequested.future;
+    service.dispose();
+    configurationGate!.complete();
+    await initialize;
+    expect(calls, ['MobileAds#updateRequestConfiguration']);
+    service = GoogleRewardedAdService(platform: TargetPlatform.linux);
+  });
 
   test(
     'revoked permission disposes a cached ad and never presents it',

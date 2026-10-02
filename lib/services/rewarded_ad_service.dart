@@ -227,6 +227,15 @@ class GoogleRewardedAdService extends RewardedAdService {
         return;
       }
       if (!_initialized) {
+        // Limit sponsor creatives to T or below for this app. This does not
+        // assert a user's age or replace UMP consent/child-directed settings.
+        await MobileAds.instance.updateRequestConfiguration(
+          RequestConfiguration(maxAdContentRating: MaxAdContentRating.t),
+        );
+        if (_disposed || !await _privacy.refreshPermission()) {
+          _setStatus(RewardedAdStatus.failed);
+          return;
+        }
         await MobileAds.instance.initialize();
         if (_disposed) return;
         _initialized = true;

@@ -1,0 +1,205 @@
+{
+  "source": {
+    "repository": "yorimichi-works/hitasura_ads",
+    "commit": "2c18926afebf0edf02aac454d48b25a248506ffc",
+    "path": "web/icons/Icon-512.png",
+    "git_blob": "129a43e1714d0653dfd9acce5cc316f533f53b4a",
+    "sha256": "c98b6247509b8c4c156f4e292e3b8ea2eb2e2517cebe83c5112abaf9a9635671",
+    "pixels": [
+      512,
+      512
+    ],
+    "mode": "RGB",
+    "url": "https://github.com/yorimichi-works/hitasura_ads/blob/2c18926afebf0edf02aac454d48b25a248506ffc/web/icons/Icon-512.png"
+  },
+  "scope": "iOS AppIcon PNG exports only; existing approved TV AD artwork, unchanged geometry/colors/text; no redraw, crop, padding, sharpening, or premasking",
+  "export": {
+    "tool": "Pillow",
+    "version": "12.3.0",
+    "operation": "Image.resize(size, Image.Resampling.LANCZOS)",
+    "png": "8-bit truecolor RGB, no alpha or tRNS, sRGB rendering intent0, compress_level9, optimizeFalse",
+    "upscale_caveat": "The 1024px marketing icon is a 2x raster resample of the existing 512px source, not a native 1024px or vector master."
+  },
+  "catalog": {
+    "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+    "sha256": "3b1e214f466ffedff74baa5598ad5c4421130eea6bc8d57b8fe23435e8280ae4",
+    "entries": 19,
+    "unique_pngs": 15,
+    "unchanged": true
+  },
+  "masking_qa": {
+    "square_unmasked_exports": true,
+    "dark_foreground_pixels": 92036,
+    "dark_foreground_pixels_outside_conservative_25_percent_circular_corner_mask": 0,
+    "status": "Static geometry and pixel review only; actual native iOS masking still requires simulator/device verification",
+    "official_guidance": "https://developer.apple.com/design/human-interface-guidelines/app-icons",
+    "pixel_review": "Inspected the actual 1024px export and native-size 20px, 29px, 60px, and 180px outputs. Existing TV/AD composition is preserved. Small sizes naturally lose fine detail; no manual sharpening or design changes were introduced."
+  },
+  "records": [
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "bytes": 108477,
+      "sha256": "9049044877ed632370996da4b5af282254b74b3cb38cc930d5f1675203ea0399",
+      "resample_scale": 2.0,
+      "upscaled": true
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png",
+      "pixels": [
+        20,
+        20
+      ],
+      "bytes": 963,
+      "sha256": "3d00d7f76ce1e467e8ee5e3668d0c8db55ce9b1dff10fdf11f9f64edd6cea4ac",
+      "resample_scale": 0.0390625,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png",
+      "pixels": [
+        40,
+        40
+      ],
+      "bytes": 2255,
+      "sha256": "1247fcd39ebf67fe6edbd953f216b459e44f27551a01c9e044a17117610c24e4",
+      "resample_scale": 0.078125,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png",
+      "pixels": [
+        60,
+        60
+      ],
+      "bytes": 3650,
+      "sha256": "b6bcdc81884d78c63017d844217055f25f71af37ed2f9a624a37d0dcc1f7e2e5",
+      "resample_scale": 0.1171875,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png",
+      "pixels": [
+        29,
+        29
+      ],
+      "bytes": 1544,
+      "sha256": "b4f92f45a3801424867a39f933a132325326d7926403bc64e251577eeefb5b8e",
+      "resample_scale": 0.056640625,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png",
+      "pixels": [
+        58,
+        58
+      ],
+      "bytes": 3473,
+      "sha256": "82171524d3cfcb168498ddcdc1ed9a1e7648d61932b4e2fa3fa7e8e0654816d0",
+      "resample_scale": 0.11328125,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png",
+      "pixels": [
+        87,
+        87
+      ],
+      "bytes": 5596,
+      "sha256": "f3df192bd3133c80936fe10c3e2f00e18290e4b5d1c35078d53661db72a37168",
+      "resample_scale": 0.169921875,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png",
+      "pixels": [
+        40,
+        40
+      ],
+      "bytes": 2255,
+      "sha256": "1247fcd39ebf67fe6edbd953f216b459e44f27551a01c9e044a17117610c24e4",
+      "resample_scale": 0.078125,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png",
+      "pixels": [
+        80,
+        80
+      ],
+      "bytes": 5102,
+      "sha256": "4434b1d7d7d3e351ec563083affb16bd2ea10f903f813e70ea516b9433715797",
+      "resample_scale": 0.15625,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png",
+      "pixels": [
+        120,
+        120
+      ],
+      "bytes": 8291,
+      "sha256": "4d632ec7ad970525077d62400056ffa695e401e38ccec7659537ec3edd168520",
+      "resample_scale": 0.234375,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png",
+      "pixels": [
+        120,
+        120
+      ],
+      "bytes": 8291,
+      "sha256": "4d632ec7ad970525077d62400056ffa695e401e38ccec7659537ec3edd168520",
+      "resample_scale": 0.234375,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
+      "pixels": [
+        180,
+        180
+      ],
+      "bytes": 13574,
+      "sha256": "27a8d745eb889110a22b00acffa10c9bdde64b0a702a16778a945a20da57f1bc",
+      "resample_scale": 0.3515625,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png",
+      "pixels": [
+        76,
+        76
+      ],
+      "bytes": 4792,
+      "sha256": "31f70652de5b06c73e973c8b7a7ddd210eb4b5687878e7d42fd0b982149dbb0a",
+      "resample_scale": 0.1484375,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png",
+      "pixels": [
+        152,
+        152
+      ],
+      "bytes": 11139,
+      "sha256": "0387f5677617aadad43a92dcd5b2f49123a06062a91ec2a0c8c2a0f04e2b01a5",
+      "resample_scale": 0.296875,
+      "upscaled": false
+    },
+    {
+      "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png",
+      "pixels": [
+        167,
+        167
+      ],
+      "bytes": 12494,
+      "sha256": "e8e4678a669a961bbf3255103b93c1d135f54ed3128435ec57b8330d83e04956",
+      "resample_scale": 0.326171875,
+      "upscaled": false
+    }
+  ]
+}

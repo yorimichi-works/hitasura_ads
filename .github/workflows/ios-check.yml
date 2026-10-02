@@ -58,6 +58,31 @@ jobs:
       - name: Build native capture harness
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
         run: flutter build ios --simulator --debug --no-codesign -t tool/store_assets/native_capture_main.dart --dart-define=ADMOB_MODE=disabled
+      - name: Package native capture harness
+        if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
+        run: |
+          # A tar archive preserves executable bits for a later diagnostic run.
+          tar -czf build/hitasura-native-capture-harness.tar.gz -C build/ios/iphonesimulator Runner.app
+          python3 - <<'PY'
+          import json, os, pathlib
+          pathlib.Path('build/native-capture-provenance.json').write_text(json.dumps({
+              'source_sha': os.environ['GITHUB_SHA'],
+              'target': 'tool/store_assets/native_capture_main.dart',
+              'mode': 'debug_ios_simulator',
+              'admob_mode': 'disabled',
+              'app_store_archive': False,
+          }, indent=2))
+          PY
+      - name: Retain native capture harness
+        if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-native-capture-harness
+          path: |
+            build/hitasura-native-capture-harness.tar.gz
+            build/native-capture-provenance.json
+          retention-days: 7
+          compression-level: 0
       - name: Capture localized native smoke assets
         if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
         timeout-minutes: 20

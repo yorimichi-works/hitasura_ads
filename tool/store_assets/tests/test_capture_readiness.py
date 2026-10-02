@@ -143,5 +143,56 @@ class HostCommandTests(unittest.TestCase):
         self.assertTrue(all(call.kwargs['timeout'] == 10 for call in run.call_args_list))
 
 
+class ContainerLookupTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.path = pathlib.Path(self.directory.name)
+        self.host = mock.Mock()
+
+    def test_success_does_not_retry(self):
+        self.host.run.return_value = str(self.path) + '\n'
+        self.assertEqual(capture.lookup_app_container(self.host, 'device'), self.path)
+        self.assertEqual(self.host.run.call_count, 1)
+
+    def test_transient_timeout_retries_only_the_read(self):
+        self.host.run.side_effect = [subprocess.TimeoutExpired('simctl', 30), str(self.path)]
+        with mock.patch.object(capture.time, 'sleep') as sleep:
+            self.assertEqual(capture.lookup_app_container(self.host, 'device'), self.path)
+        sleep.assert_called_once_with(5)
+        for call in self.host.run.call_args_list:
+            self.assertEqual(call.args, ('xcrun', 'simctl', 'get_app_container', 'device', capture.BUNDLE, 'data'))
+            self.assertEqual(call.kwargs['timeout'], 30)
+
+    def test_third_timeout_stops_without_further_attempts(self):
+        self.host.run.side_effect = subprocess.TimeoutExpired('simctl', 30)
+        with mock.patch.object(capture.time, 'sleep') as sleep:
+            with self.assertRaises(subprocess.TimeoutExpired):
+                capture.lookup_app_container(self.host, 'device')
+        self.assertEqual(self.host.run.call_count, 3)
+        self.assertEqual(sleep.call_count, 2)
+
+    def test_explicit_error_is_not_retried(self):
+        self.host.run.side_effect = subprocess.CalledProcessError(2, 'simctl')
+        with mock.patch.object(capture.time, 'sleep') as sleep:
+            with self.assertRaises(subprocess.CalledProcessError):
+                capture.lookup_app_container(self.host, 'device')
+        self.assertEqual(self.host.run.call_count, 1)
+        sleep.assert_not_called()
+
+    def test_invalid_container_is_not_retried(self):
+        self.host.run.return_value = 'relative/path'
+        with self.assertRaisesRegex(RuntimeError, 'Invalid app data container'):
+            capture.lookup_app_container(self.host, 'device')
+        self.assertEqual(self.host.run.call_count, 1)
+
+    def test_resource_snapshots_are_bounded_and_omit_arguments(self):
+        capture.record_host_resources(self.host)
+        calls = self.host.best_effort.call_args_list
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0].args, ('ps', '-Ao', 'pid,ppid,%cpu,rss,comm'))
+        self.assertTrue(all(call.kwargs['timeout'] == 5 for call in calls))
+
+
 if __name__ == '__main__':
     unittest.main()

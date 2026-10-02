@@ -105,6 +105,32 @@ def process_alive(pid):
         return False
 
 
+def record_host_resources(host):
+    """Read-only host evidence; omit environment variables and process arguments."""
+    host.best_effort('ps', '-Ao', 'pid,ppid,%cpu,rss,comm', timeout=5)
+    host.best_effort('vm_stat', timeout=5)
+
+
+def lookup_app_container(host, udid):
+    """Retry only a timed-out read, never installation, launch or an explicit error."""
+    for attempt in range(1, 4):
+        host.stage('container_lookup', udid=udid, attempt=attempt, maximum_attempts=3)
+        try:
+            output = host.run('xcrun', 'simctl', 'get_app_container', udid,
+                              BUNDLE, 'data', timeout=30).strip()
+        except subprocess.TimeoutExpired:
+            if attempt == 3:
+                raise
+            host.stage('container_lookup_retry_wait', seconds=5)
+            time.sleep(5)
+            continue
+        container = pathlib.Path(output)
+        if not container.is_absolute() or not container.is_dir():
+            raise RuntimeError(f'Invalid app data container: {output!r}')
+        return container
+    raise AssertionError('Container lookup must return or raise within three attempts')
+
+
 def wait_for_capture(path, locale, scene, launch_id, timeout=90, poll=.25, alive=None):
     """Reject stale or failed startup evidence; report the last stage on timeout."""
     deadline = time.monotonic() + timeout
@@ -253,11 +279,10 @@ def main():
             if device['state'] != 'Booted':
                 host.run('xcrun','simctl','boot',udid, timeout=120)
             host.run('xcrun','simctl','bootstatus',udid,'-b', timeout=120)
+            record_host_resources(host)
             host.run('xcrun','simctl','status_bar',udid,'override','--time','9:41','--dataNetwork','wifi','--wifiMode','active','--wifiBars','3','--batteryState','charged','--batteryLevel','100', timeout=30)
             host.run('xcrun','simctl','install',udid,str(app), timeout=60)
-            container = pathlib.Path(host.run('xcrun','simctl','get_app_container',udid,BUNDLE,'data', timeout=30).strip())
-            if not container.is_absolute() or not container.is_dir():
-                raise RuntimeError(f'Invalid app data container: {container}')
+            container = lookup_app_container(host, udid)
             state_path = container / 'Documents/HitasuraCapture/state.json'
             for locale in locales:
                 dest = out/locale/group
@@ -298,6 +323,7 @@ def main():
         manifest.update({'status':'failed','error':str(error)})
         save()
         host.stage('capture_failed', error=str(error), udid=udid)
+        record_host_resources(host)
         collect_diagnostics(host, udid, state_path, out / 'setup_or_capture_failure')
         raise
     finally:
