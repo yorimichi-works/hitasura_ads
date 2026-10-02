@@ -37,8 +37,28 @@ final class UmpQaUITests: XCTestCase {
         throw NSError(domain: "HitasuraUmpQa", code: 1)
       }
       for label in labels {
-        let button = app.buttons.matching(NSPredicate(format: "label == %@", label)).firstMatch
-        if button.exists && button.isHittable { return button }
+        let query = NSPredicate(format: "label == %@", label)
+        let nativeChoice = ["Consent", "Do not consent", "Manage options"].contains(label)
+        var candidates: [XCUIElement] = []
+        if nativeChoice {
+          // UMP retains an inaccessible prefetched WebView at (-1,-1). The
+          // observed presented view starts at (0,0); do not ask the hidden
+          // copy for an activation point or guess a screen tap coordinate.
+          for view in app.webViews.allElementsBoundByIndex.reversed() {
+            let frame = view.frame
+            if !frame.isEmpty && frame.minX >= 0 && frame.minY >= 0 {
+              candidates.append(contentsOf: view.buttons.matching(query).allElementsBoundByIndex)
+            }
+          }
+        } else {
+          candidates = app.buttons.matching(query).allElementsBoundByIndex
+        }
+        for button in candidates {
+          let frame = button.frame
+          if button.exists && !frame.isEmpty && app.frame.intersects(frame) && button.isHittable {
+            return button
+          }
+        }
       }
       Thread.sleep(forTimeInterval: 0.25)
     } while Date() < deadline

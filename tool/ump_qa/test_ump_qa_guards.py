@@ -208,6 +208,13 @@ class QaGuardTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 REUSE.verify_dependencies('a' * 40, rebuild_ui_driver=True)
 
+    def test_native_buttons_are_scoped_away_from_observed_prefetched_webview(self):
+        source = (ROOT / 'tool/ump_qa/UmpQaUITests.swift').read_text()
+        self.assertIn('app.webViews.allElementsBoundByIndex.reversed()', source)
+        self.assertIn('frame.minX >= 0 && frame.minY >= 0', source)
+        self.assertNotIn('.firstMatch', source)
+        self.assertNotIn('coordinate(withNormalizedOffset:', source)
+
     def test_older_runtime_selection_requires_actual_compatible_inventory(self):
         capture = RUN.module('capture_test', ROOT / 'tool/store_assets/capture_ios_simulator.py')
         rid = 'com.apple.CoreSimulator.SimRuntime.iOS-18-6'

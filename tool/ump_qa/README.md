@@ -82,3 +82,10 @@ the previous choice using those observed buttons, then requires the shipping
 service's privacy-options completion callback. A driver-only rebuild can reuse
 the unchanged Flutter app, with separate app/driver/source provenance; it cannot
 skip dependency checks for the shipping UMP service or other compiled files.
+
+The next run completed the actual accept → reopen → refusal callback. Its second
+test exposed a hidden prefetched WebView at (-1,-1) preceding the real onscreen
+view in XCTest's query. The driver now scopes native choice buttons to observed
+onscreen WebViews, without guessed tap coordinates. `[release-proof]` builds a
+fresh QA app when shipping configuration changes, and runs both choices on the
+confirmed installed 18.6 runtime. It does not relax retained-app source checks.

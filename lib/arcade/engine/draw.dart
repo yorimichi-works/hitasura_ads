@@ -89,12 +89,14 @@ abstract final class D {
     double letterSpacing = 0,
     bool italic = false,
     String? family,
+    TextDirection? direction,
   }) {
     if (text.isEmpty) return Size.zero;
+    final effectiveDirection = direction ?? textDirection;
     final sw = stroke == null ? 0.0 : (strokeWidth > 0 ? strokeWidth : size * .22);
     final key = _TextKey(text, size, color.toARGB32(), weight.value, stroke?.toARGB32() ?? 0,
         sw, maxWidth ?? -1, align.index, letterSpacing, italic, family ?? fontFamily,
-        textDirection.index);
+        effectiveDirection.index);
     var entry = _textCache.remove(key);
     if (entry == null) {
       TextPainter make(Paint? foreground, Color? col) {
@@ -114,7 +116,7 @@ abstract final class D {
             ),
           ),
           textAlign: align,
-          textDirection: textDirection,
+          textDirection: effectiveDirection,
         );
         tp.layout(maxWidth: maxWidth ?? double.infinity);
         return tp;

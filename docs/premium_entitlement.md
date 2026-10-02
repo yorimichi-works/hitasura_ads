@@ -4,6 +4,16 @@ The non-consumable product is `ad_free_unlimited`. Access is reconciled at start
 on app resume, on matching StoreKit purchase updates, and after the user selects
 Restore Purchases. Product-catalog availability is not required for reconciliation.
 
+Startup installs the purchase listener and starts reconciliation/catalogue reads
+in the background, so unavailable StoreKit accounts cannot hold the app on its
+launch screen. Background verification and catalogue queries are bounded to eight
+seconds. Explicit Restore synchronization permits two minutes for Apple sign-in;
+its subsequent plugin enumeration uses the shorter bound. A timeout is unknown,
+retains the cache, releases the serial purchase queue and discards that operation's
+late result. Repeated foreground refreshes coalesce while one is pending.
+An unavailable catalogue is retried on foreground refresh so recovering the
+connection or signing into the store does not require restarting the app.
+
 ## Evidence and cache rules
 
 - Only native StoreKit `.verified` transactions can grant iOS premium access.

@@ -159,7 +159,7 @@ jobs:
           CAPTURE_DEVICE: ${{ matrix.device }}
         run: |
           xcodebuild -version
-          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales ja,ar --devices "$CAPTURE_DEVICE" --session-loop --work-deadline-seconds 480 --natural-status-bar --videos
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales ja,ar --devices "$CAPTURE_DEVICE" --scenes home,runner --session-loop --work-deadline-seconds 480 --natural-status-bar --runtime-version 18.6
       - name: Upload native checkpoints and provenance
         if: always()
         uses: actions/upload-artifact@v4
@@ -283,7 +283,7 @@ jobs:
           retention-days: 7
 
   ump-qa-build:
-    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[ump-qa]')
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && (contains(github.event.head_commit.message, '[ump-qa]') || contains(github.event.head_commit.message, '[release-proof]'))
     runs-on: macos-15
     timeout-minutes: 35
     permissions:
@@ -354,7 +354,7 @@ jobs:
         timeout-minutes: 14
         run: |
           xctestrun=$(cat build/ump_qa_xctestrun.txt)
-          python3 -u tool/ump_qa/run_native_qa.py --app build/ump_qa_reused/qa_app/Runner.app --xctestrun "$xctestrun" --source-sha "$GITHUB_SHA"
+          python3 -u tool/ump_qa/run_native_qa.py --app build/ump_qa_reused/qa_app/Runner.app --xctestrun "$xctestrun" --source-sha "$GITHUB_SHA" --runtime-version 18.6
       - name: Retain actual UMP native evidence
         if: always()
         uses: actions/upload-artifact@v4

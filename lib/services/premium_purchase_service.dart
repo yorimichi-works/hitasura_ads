@@ -17,9 +17,17 @@ class PremiumPurchaseService extends ChangeNotifier {
     this.onEntitlement,
     ReadPremiumEntitlement? readEntitlement,
     this.restorePurchases,
+    this.purchaseUpdates,
+    this.isStoreAvailable,
+    this.queryProducts,
+    bool? supportedPlatform,
+    this.storeTimeout = const Duration(seconds: 8),
+    this.userSyncTimeout = const Duration(minutes: 2),
   }) : _verifyPurchase = verifyPurchase ?? verifyCurrentPurchase,
        _readEntitlement =
-           readEntitlement ?? (Platform.isIOS ? readPremiumEntitlement : null);
+           readEntitlement ?? (Platform.isIOS ? readPremiumEntitlement : null),
+       _supportedPlatform =
+           supportedPlatform ?? (Platform.isIOS || Platform.isAndroid);
 
   static const productId = 'ad_free_unlimited';
 
@@ -30,7 +38,16 @@ class PremiumPurchaseService extends ChangeNotifier {
   final Future<void> Function(PremiumEntitlementDecision)? onEntitlement;
   final ReadPremiumEntitlement? _readEntitlement;
   final Future<void> Function()? restorePurchases;
+  final Stream<List<PurchaseDetails>>? purchaseUpdates;
+  final Future<bool> Function()? isStoreAvailable;
+  final Future<ProductDetailsResponse> Function(Set<String>)? queryProducts;
+  final bool _supportedPlatform;
+  final Duration storeTimeout;
+  final Duration userSyncTimeout;
   Future<void> _purchaseQueue = Future<void>.value();
+  Future<void>? _backgroundRefresh;
+  bool _catalogueLoading = false;
+  bool _started = false;
   bool _disposed = false;
   InAppPurchase get _store => InAppPurchase.instance;
   StreamSubscription<List<PurchaseDetails>>? _subscription;
@@ -54,53 +71,91 @@ class PremiumPurchaseService extends ChangeNotifier {
   }
 
   Future<void> initialize() async {
-    if (!Platform.isAndroid && !Platform.isIOS) return;
-    _subscription ??= _store.purchaseStream.listen(
-      (purchases) {
-        unawaited(handlePurchaseUpdates(purchases));
-      },
-      onError: (Object failure) {
-        if (_disposed) return;
-        error = '$failure';
-        busy = false;
-        notifyListeners();
-      },
-    );
-    // Entitlements do not depend on the product catalogue being available.
-    await refreshEntitlement();
+    if (_disposed || _started || !_supportedPlatform) return;
+    _started = true;
     try {
-      available = await _store.isAvailable();
-      if (available) {
-        final response = await _store.queryProductDetails({productId});
-        product = response.productDetails
-            .where((p) => p.id == productId)
-            .firstOrNull;
-        error = response.error?.message;
-      }
+      _subscription = (purchaseUpdates ?? _store.purchaseStream).listen(
+        (purchases) {
+          unawaited(handlePurchaseUpdates(purchases));
+        },
+        onError: (Object failure) {
+          if (_disposed) return;
+          error = '$failure';
+          busy = false;
+          notifyListeners();
+        },
+      );
     } catch (e) {
       error = '$e';
+    }
+    // Install the listener first, then let the app render its cached state.
+    // StoreKit can wait indefinitely for a storefront/account response even
+    // when the device is online. Neither read belongs on the UI startup path.
+    unawaited(refreshEntitlement());
+  }
+
+  Future<({bool available, ProductDetailsResponse? products})>
+  _fetchCatalogue() async {
+    final available = await (isStoreAvailable ?? _store.isAvailable)();
+    if (!available) return (available: false, products: null);
+    final products = await (queryProducts ?? _store.queryProductDetails)({
+      productId,
+    });
+    return (available: true, products: products);
+  }
+
+  Future<void> _loadCatalogue() async {
+    if (_disposed || _catalogueLoading) return;
+    _catalogueLoading = true;
+    try {
+      final response = await _fetchCatalogue().timeout(storeTimeout);
+      if (_disposed) return;
+      available = response.available;
+      product = response.products?.productDetails
+          .where((p) => p.id == productId)
+          .firstOrNull;
+      error = response.products?.error?.message;
+    } catch (e) {
+      if (_disposed) return;
+      error = '$e';
+    } finally {
+      _catalogueLoading = false;
     }
     if (!_disposed) notifyListeners();
   }
 
   /// Startup/resume reads preserve the cache on an empty or uncertain response.
   /// This never invokes AppStore.sync or asks the user to authenticate.
-  Future<void> refreshEntitlement() => _enqueue(() async {
-    if (!_reconcilesEntitlements) return;
-    try {
-      await _reconcile(userInitiatedSync: false);
-    } catch (_) {
-      // Offline, StoreKit and persistence errors cannot revoke cached access.
-    }
-  });
+  Future<void> refreshEntitlement() {
+    if (_disposed) return Future<void>.value();
+    // A foreground retry lets a store/account that recovered after startup
+    // make the upgrade available without requiring an app restart.
+    if (_started && product == null) unawaited(_loadCatalogue());
+    if (!_reconcilesEntitlements) return Future<void>.value();
+    if (_backgroundRefresh != null) return _backgroundRefresh!;
+    final operation = _enqueue(() async {
+      try {
+        await _reconcile(userInitiatedSync: false);
+      } catch (_) {
+        // Offline, StoreKit and persistence errors cannot revoke cached access.
+      }
+    });
+    final tracked = operation.whenComplete(() => _backgroundRefresh = null);
+    _backgroundRefresh = tracked;
+    return tracked;
+  }
 
   Future<PremiumEntitlementDecision> _reconcile({
     required bool userInitiatedSync,
   }) async {
-    final decision = await _readEntitlement!(
-      cached: cachedEntitlement!(),
-      userInitiatedSync: userInitiatedSync,
-    );
+    final decision =
+        await _readEntitlement!(
+          cached: cachedEntitlement!(),
+          userInitiatedSync: userInitiatedSync,
+        ).timeout(
+          userInitiatedSync ? userSyncTimeout : storeTimeout,
+          onTimeout: () => const PremiumEntitlementDecision.unknown(),
+        );
     if (_disposed ||
         decision.status == PremiumEntitlementStatus.unknown ||
         (!userInitiatedSync &&
@@ -148,7 +203,11 @@ class PremiumPurchaseService extends ChangeNotifier {
           }
         });
       }
-      if (!_disposed) await (restorePurchases ?? _store.restorePurchases)();
+      if (!_disposed) {
+        await (restorePurchases ?? _store.restorePurchases)().timeout(
+          storeTimeout,
+        );
+      }
     } catch (e) {
       error = '$e';
     } finally {

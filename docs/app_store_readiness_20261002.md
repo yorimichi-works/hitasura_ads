@@ -54,6 +54,15 @@ or a statement that App Review has approved the app.
   save precedes transaction completion. No server receipt validation is claimed.
 - Credits now distinguish fictional in-game parodies from real optional sponsor
   videos. Gameplay/art was not redesigned by this readiness change.
+- StoreKit initialization installs its listener immediately, then refreshes
+  entitlements/catalogue in the background. Eight-second background bounds
+  preserve cached access on no-account/offline stalls; explicit Restore retains
+  a separate two-minute authentication allowance. Late timed-out reads cannot
+  apply stale state. A native no-account first-frame proof is still required.
+- Arithmetic gate labels in G002/G018 explicitly use LTR operation notation
+  inside RTL languages; surrounding Arabic remains RTL. The text-cache key
+  includes the override. Pixel regressions compare the same unchanged font,
+  symbols and geometry under both paragraph directions.
 
 - The complete bundled Kosugi Maru Apache 2.0 license and copyright/designer
   attribution are packaged as assets and accessible under Settings → Credits →
@@ -166,6 +175,11 @@ language selection does not promise to override StoreKit/UMP system UI language.
   filters MA creatives but does not guarantee every ad is appropriate. No child,
   under-consent, or age-treatment assertion is set; account-wide AdMob settings
   are unchanged. Configuration failure prevents initialization and requests.
+- The final-review plist adds only Google's official `cstr6suwn9.skadnetwork`
+  attribution identifier. It does not add the optional third-party buyer list,
+  another SDK, an ATT prompt, or any change to consent/partner settings. Tests
+  reject duplicate keys/identifiers and preserve the production app-ID variable.
+  Source: [Google's iOS setup guide](https://developers.google.com/admob/ios/quick-start#update_your_infoplist).
 - Native run `37032299479` compiled both targets with Xcode 26.3 and passed tests,
   but the simulator container lookup timed out before app launch. The next retry
   repeats only that timed-out read, at most three 30-second attempts with two

@@ -480,7 +480,8 @@ class G002 extends MiniGame {
   void _gateLabel(Canvas c, Offset s, double k, _Op op) {
     final txt = switch (op.kind) { 'x' => '×${op.v}', '/' => '÷${op.v}', _ => '${op.kind}${op.v}' };
     final size = (k * .95).clamp(8.0, 70.0);
-    D.text(c, txt, s, size: size, color: Pal.white, stroke: op.good ? const Color(0xFF0B4FA8) : const Color(0xFF8A0F2A));
+    // Operation-before-operand notation stays LTR inside an otherwise RTL game.
+    D.text(c, txt, s, size: size, color: Pal.white, stroke: op.good ? const Color(0xFF0B4FA8) : const Color(0xFF8A0F2A), direction: TextDirection.ltr);
   }
 
   void _flag(Canvas c, Offset p, double scale, String txt, Color col) {

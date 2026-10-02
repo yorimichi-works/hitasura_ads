@@ -431,7 +431,7 @@ class G018 extends MiniGame {
       D.rrect(c, Rect.fromLTWH(r.left + 5, r.top + 4, r.width - 10, 10), 5, Color.fromRGBO(255, 255, 255, dim ? .1 : .35));
       final label = op.label;
       D.text(c, label, r.center + const Offset(0, 2), size: lanes == 3 ? 26 : 32,
-          color: Color.fromRGBO(255, 255, 255, dim ? .4 : 1), stroke: Pal.ink.withValues(alpha: dim ? .3 : 1), strokeWidth: 6);
+          color: Color.fromRGBO(255, 255, 255, dim ? .4 : 1), stroke: Pal.ink.withValues(alpha: dim ? .3 : 1), strokeWidth: 6, direction: TextDirection.ltr);
       // posts
       for (final x in [r.left, r.right]) {
         D.rrect(c, Rect.fromCenter(center: Offset(x, y - 5), width: 8, height: 62), 4, const Color(0xFFDDE3F0),
