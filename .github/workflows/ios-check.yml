@@ -10,7 +10,7 @@ on:
 jobs:
   ios:
     # A reuse-only probe must independently verify that no compiled source changed.
-    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]') && !contains(github.event.head_commit.message, '[ump-reuse]') && !contains(github.event.head_commit.message, '[capture-phones]') && !contains(github.event.head_commit.message, '[encode-captures]') && !contains(github.event.head_commit.message, '[capture-xctest]'))
+    if: github.ref != 'refs/heads/codex/app-store-readiness-20261002' || (!contains(github.event.head_commit.message, '[capture-reuse]') && !contains(github.event.head_commit.message, '[ump-qa]') && !contains(github.event.head_commit.message, '[ump-reuse]') && !contains(github.event.head_commit.message, '[capture-phones]') && !contains(github.event.head_commit.message, '[encode-captures]') && !contains(github.event.head_commit.message, '[capture-xctest]') && !contains(github.event.head_commit.message, '[ipad-startup-probe]'))
     runs-on: macos-15
     timeout-minutes: 60
     outputs:
@@ -742,5 +742,65 @@ jobs:
         with:
           name: hitasura-rewarded-native-evidence
           path: build/rewarded_qa_evidence
+          if-no-files-found: warn
+          retention-days: 7
+
+
+  native-ipad-startup-probe:
+    # Isolated diagnostic: reuse exactly the already-validated current app.
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[ipad-startup-probe]')
+    runs-on: macos-15
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run all capture and release guard tests
+        run: |
+          python3 -m unittest discover -s tool/store_assets/tests -v
+          python3 -m unittest discover -s tool/release/tests -v
+      - name: Download exact approved-icon simulator harness
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/reuse_download build/store_assets/native_ios
+          python3 - <<'PYTHON'
+          import json, pathlib, shutil, subprocess
+          expected = {
+              'repository': 'yorimichi-works/hitasura_ads',
+              'source_sha': '38ef419d3970e53ed18de605df50453faeaacf30',
+              'run_id': 37116904903,
+              'artifact_id': 11272226107,
+              'zip_sha256': 'dc0da045e9e2e01cedcda6c4c667f61a6c6c5292b725619cff83b1ba78d6383e',
+          }
+          descriptor = pathlib.Path('build/reuse_download/descriptor.json')
+          descriptor.write_text(json.dumps(expected, indent=2))
+          shutil.copyfile(descriptor, 'build/store_assets/native_ios/expected_artifact.json')
+          base = f"repos/{expected['repository']}/actions/artifacts/{expected['artifact_id']}"
+          for endpoint, name in [(base, 'metadata.json'), (base + '/zip', 'artifact.zip')]:
+              with pathlib.Path('build/reuse_download', name).open('wb') as output:
+                  subprocess.run(['gh', 'api', endpoint], stdout=output, check=True, timeout=120)
+              if name == 'metadata.json':
+                  shutil.copyfile('build/reuse_download/metadata.json', 'build/store_assets/native_ios/download_metadata.json')
+          PYTHON
+      - name: Verify exact source, digest and native bridge
+        run: |
+          python3 tool/store_assets/reuse_capture_harness.py --descriptor build/reuse_download/descriptor.json --metadata build/reuse_download/metadata.json --zip build/reuse_download/artifact.zip
+          python3 tool/store_assets/verify_native_bridge.py --app build/reused_native_harness/Runner.app > build/store_assets/native_ios/native_bridge_check.json
+      - name: Probe screenshot startup before unchanged iPad scene capture
+        timeout-minutes: 10
+        run: |
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha 38ef419d3970e53ed18de605df50453faeaacf30 --locales ja,ar --devices ipad_13 --scenes home,runner --session-loop --work-deadline-seconds 480 --natural-status-bar --runtime-version 18.6 --probe-screenshot-startup
+      - name: Retain diagnostic and independently accepted scene evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-ipad-startup-probe-attempt${{ github.run_attempt }}
+          path: build/store_assets/native_ios
           if-no-files-found: warn
           retention-days: 7

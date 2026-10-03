@@ -142,6 +142,42 @@ def record_host_resources(host):
     host.best_effort('vm_stat', timeout=5)
 
 
+def probe_screenshot_startup(host, udid, group, output):
+    """One diagnostic screen capture before app install/launch, never QA evidence.
+
+    A successful command and complete native-size PNG are required. This does
+    not retry, accept timed-out bytes, or change any actual app-capture limit.
+    """
+    allowed = {'iphone_6_9': {(1290, 2796), (1320, 2868), (1260, 2736)},
+               'ipad_13': {(2048, 2732), (2064, 2752)}}
+    if group not in allowed:
+        raise ValueError('Unknown screenshot startup device group')
+    if host.work_deadline is not None and host.work_deadline - time.monotonic() < 65:
+        raise TimeoutError('Screenshot startup probe needs its full 65-second reserve')
+    path = output / 'screenshot_startup_probe' / f'{group}.png'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists() or path.is_symlink():
+        raise ValueError('Screenshot startup probe refuses an existing output')
+    host.stage('screenshot_startup_probe_start', device_group=group, udid=udid,
+               before_app_install=True, counts_as_app_evidence=False)
+    started = time.monotonic()
+    host.run('xcrun', 'simctl', 'io', udid, 'screenshot', '--type=png', str(path), timeout=60)
+    spec = importlib.util.spec_from_file_location(
+        'startup_png_validation', pathlib.Path(__file__).with_name('xctest_screenshot.py'))
+    validation = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(validation)
+    data = path.read_bytes()
+    dimensions = validation._png_dimensions(data)
+    if tuple(dimensions) not in allowed[group]:
+        raise ValueError(f'Unexpected startup screenshot dimensions: {dimensions}')
+    record = {'status': 'diagnostic_only_command_completed', 'counts_as_app_evidence': False,
+              'device_udid': udid, 'device_group': group, 'dimensions': dimensions,
+              'path': str(path.relative_to(output)), 'sha256': hashlib.sha256(data).hexdigest(),
+              'elapsed_seconds': time.monotonic() - started}
+    host.stage('screenshot_startup_probe_complete', **record)
+    return record
+
+
 def read_simulator_inventory(host, kind):
     """Allow cold disk-image initialization, retrying only a bounded read timeout."""
     if kind not in {'devices', 'runtimes'}:
@@ -348,6 +384,8 @@ def main():
     parser.add_argument('--screenshot-xctestrun', help='Use a separately compiled foreground-only XCTest screenshot driver')
     parser.add_argument('--screenshot-driver-sha', help='Exact separate screenshot driver source SHA')
     parser.add_argument('--startup-timeout', type=float, default=90)
+    parser.add_argument('--probe-screenshot-startup', action='store_true',
+                        help='One diagnostic native screenshot before app install/launch; never counted as an app scene')
     args = parser.parse_args()
     if sys.platform != 'darwin':
         parser.error('Native captures require macOS/Xcode; Flutter previews are not native captures.')
@@ -387,6 +425,7 @@ def main():
         'app_source_sha':args.app_source_sha,'capture_script_sha':os.environ.get('GITHUB_SHA'),
         'ci':{name:os.environ.get(key) for name,key in [('run_id','GITHUB_RUN_ID'),('job','GITHUB_JOB'),('workflow','GITHUB_WORKFLOW'),('run_attempt','GITHUB_RUN_ATTEMPT')]},
         'session_loop':args.session_loop,'work_deadline_seconds':args.work_deadline_seconds,
+        'screenshot_startup_probe_enabled':args.probe_screenshot_startup,
         'screenshot_method':'xctest_existing_foreground_app' if args.screenshot_xctestrun else 'simctl_io_screenshot',
         'screenshot_driver_source_sha':args.screenshot_driver_sha,
         'requested_locales':locales,'requested_scenes':selected_scenes,
@@ -434,6 +473,9 @@ def main():
             status_bar_applied = False if args.natural_status_bar else override_status_bar(host, udid)
             manifest['status_bar_overrides'][group] = status_bar_applied
             save()
+            if args.probe_screenshot_startup:
+                manifest.setdefault('screenshot_startup_probes', {})[group] = probe_screenshot_startup(host, udid, group, out)
+                save()
             host.run('xcrun','simctl','install',udid,str(app), timeout=60)
             container = lookup_app_container(host, udid)
             state_path = container / 'Documents/HitasuraCapture/state.json'

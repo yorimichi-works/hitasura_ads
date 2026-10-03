@@ -352,5 +352,83 @@ class BatchDeadlineTests(unittest.TestCase):
             run.assert_not_called()
 
 
+class ScreenshotStartupProbeTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = pathlib.Path(self.temp.name)
+        self.host = mock.Mock(work_deadline=None)
+
+    @staticmethod
+    def png(width=2064, height=2752):
+        import struct, zlib
+        def chunk(kind, data):
+            return struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data) & 0xffffffff)
+        return (b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 2, 0, 0, 0))
+                + chunk(b'IDAT', zlib.compress(b'\0' * ((width * 3 + 1) * height))) + chunk(b'IEND', b''))
+
+    def test_one_bounded_prelaunch_command_cannot_count_as_app_evidence(self):
+        self.host.run.side_effect = lambda *a, **kw: pathlib.Path(a[-1]).write_bytes(self.png())
+        result = capture.probe_screenshot_startup(self.host, 'exact-device', 'ipad_13', self.root)
+        self.host.run.assert_called_once_with('xcrun', 'simctl', 'io', 'exact-device', 'screenshot',
+            '--type=png', str(self.root / 'screenshot_startup_probe/ipad_13.png'), timeout=60)
+        self.assertEqual(result['dimensions'], [2064, 2752])
+        self.assertIs(result['counts_as_app_evidence'], False)
+        self.assertNotIn('app_evidence', result)
+        self.assertNotIn('scene', result)
+        self.assertEqual(result['status'], 'diagnostic_only_command_completed')
+
+    def test_timeout_is_not_retried_or_accepted_even_with_complete_output(self):
+        def timeout(*a, **kw):
+            pathlib.Path(a[-1]).write_bytes(self.png())
+            raise subprocess.TimeoutExpired('simctl', 60)
+        self.host.run.side_effect = timeout
+        with self.assertRaises(subprocess.TimeoutExpired):
+            capture.probe_screenshot_startup(self.host, 'device', 'ipad_13', self.root)
+        self.assertEqual(self.host.run.call_count, 1)
+        self.assertFalse(any(c.args[0] == 'screenshot_startup_probe_complete' for c in self.host.stage.call_args_list))
+
+    def test_native_dimensions_are_required(self):
+        self.host.run.side_effect = lambda *a, **kw: pathlib.Path(a[-1]).write_bytes(self.png(1320, 2868))
+        with self.assertRaisesRegex(ValueError, 'dimensions'):
+            capture.probe_screenshot_startup(self.host, 'device', 'ipad_13', self.root)
+
+    def test_corrupt_png_is_rejected(self):
+        self.host.run.side_effect = lambda *a, **kw: pathlib.Path(a[-1]).write_bytes(b'partial')
+        with self.assertRaisesRegex(ValueError, 'PNG'):
+            capture.probe_screenshot_startup(self.host, 'device', 'ipad_13', self.root)
+
+    def test_reserve_is_checked_before_command(self):
+        self.host.work_deadline = 64
+        with mock.patch.object(capture.time, 'monotonic', return_value=0):
+            with self.assertRaisesRegex(TimeoutError, '65-second'):
+                capture.probe_screenshot_startup(self.host, 'device', 'ipad_13', self.root)
+        self.host.run.assert_not_called()
+
+    def test_existing_output_is_not_reused(self):
+        folder = self.root / 'screenshot_startup_probe'
+        folder.mkdir(); (folder / 'ipad_13.png').write_bytes(b'old')
+        with self.assertRaisesRegex(ValueError, 'existing'):
+            capture.probe_screenshot_startup(self.host, 'device', 'ipad_13', self.root)
+        self.host.run.assert_not_called()
+
+    def test_probe_precedes_install_and_regular_capture_is_unchanged(self):
+        text = pathlib.Path(capture.__file__).read_text()
+        main = text.split('def main():', 1)[1]
+        self.assertLess(main.index('= probe_screenshot_startup('), main.index("host.run('xcrun','simctl','install'"))
+        session_text = pathlib.Path(capture.__file__).with_name('capture_session.py').read_text()
+        self.assertIn('str(candidate), timeout=30)', session_text)
+        workflow = pathlib.Path(capture.__file__).parents[2] / '.github/workflows/ios-check.yml'
+        job = workflow.read_text().split('  native-ipad-startup-probe:', 1)[1]
+        for required in ['38ef419d3970e53ed18de605df50453faeaacf30', '11272226107',
+                         'dc0da045e9e2e01cedcda6c4c667f61a6c6c5292b725619cff83b1ba78d6383e',
+                         '--locales ja,ar --devices ipad_13 --scenes home,runner',
+                         '--work-deadline-seconds 480', 'reuse_capture_harness.py',
+                         'unittest discover -s tool/store_assets/tests', 'unittest discover -s tool/release/tests']:
+            self.assertIn(required, job)
+        self.assertNotIn('continue-on-error', job)
+        self.assertNotIn('secrets.', job)
+
+
 if __name__ == '__main__':
     unittest.main()
