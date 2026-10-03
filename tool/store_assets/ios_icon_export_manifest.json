@@ -1,24 +1,25 @@
 {
   "source": {
     "repository": "yorimichi-works/hitasura_ads",
-    "commit": "2c18926afebf0edf02aac454d48b25a248506ffc",
-    "path": "web/icons/Icon-512.png",
-    "git_blob": "129a43e1714d0653dfd9acce5cc316f533f53b4a",
-    "sha256": "c98b6247509b8c4c156f4e292e3b8ea2eb2e2517cebe83c5112abaf9a9635671",
+    "commit": "981afecb2c609b811630ae42d0b118b21288e49c",
+    "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
+    "git_blob": "585dc6a1c884434d59802d9b34f62851d9bf733f",
+    "sha256": "a43ae036210326621429d25e8bb40c739dc6236b3e688caf631e0ebd5abae8b6",
     "pixels": [
-      512,
-      512
+      1024,
+      1024
     ],
     "mode": "RGB",
-    "url": "https://github.com/yorimichi-works/hitasura_ads/blob/2c18926afebf0edf02aac454d48b25a248506ffc/web/icons/Icon-512.png"
+    "url": "https://github.com/yorimichi-works/hitasura_ads/blob/981afecb2c609b811630ae42d0b118b21288e49c/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
+    "renderer": "tool/icon/build_icons.mjs",
+    "vector_source": "tool/icon/icon.mjs"
   },
-  "scope": "iOS AppIcon PNG exports only; existing approved TV AD artwork, unchanged geometry/colors/text; no redraw, crop, padding, sharpening, or premasking",
+  "scope": "Approved fanned AD-screen icon. iOS AppIcon PNG exports only, copied from the approved commit at each native output size; no redraw, pixel changes, crop, resize, padding, sharpening, or premasking.",
   "export": {
-    "tool": "Pillow",
-    "version": "12.3.0",
-    "operation": "Image.resize(size, Image.Resampling.LANCZOS)",
-    "png": "8-bit truecolor RGB, no alpha or tRNS, sRGB rendering intent0, compress_level9, optimizeFalse",
-    "upscale_caveat": "The 1024px marketing icon is a 2x raster resample of the existing 512px source, not a native 1024px or vector master."
+    "operation": "Insert only a PNG sRGB chunk (rendering intent 0) immediately after IHDR; retain all original PNG chunks and compressed pixel data byte-for-byte.",
+    "png": "8-bit truecolor RGB; no alpha or tRNS; explicit sRGB rendering intent 0",
+    "rasterization": "The approved renderer rasterizes the SVG directly at every target size, including native 1024px. This metadata-only import performs no raster resampling.",
+    "upscale_caveat": "None: the approved 1024px source is a native-size vector render, and every imported size is retained without resampling."
   },
   "catalog": {
     "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
@@ -29,11 +30,8 @@
   },
   "masking_qa": {
     "square_unmasked_exports": true,
-    "dark_foreground_pixels": 92036,
-    "dark_foreground_pixels_outside_conservative_25_percent_circular_corner_mask": 0,
-    "status": "Static geometry and pixel review only; actual native iOS masking still requires simulator/device verification",
-    "official_guidance": "https://developer.apple.com/design/human-interface-guidelines/app-icons",
-    "pixel_review": "Inspected the actual 1024px export and native-size 20px, 29px, 60px, and 180px outputs. Existing TV/AD composition is preserved. Small sizes naturally lose fine detail; no manual sharpening or design changes were introduced."
+    "status": "Actual 1024px artwork inspected. PNG normalization preserves all approved source bytes except the added color-space chunk. Native iOS masking is not established by this static check.",
+    "official_guidance": "https://developer.apple.com/design/human-interface-guidelines/app-icons"
   },
   "records": [
     {
@@ -42,10 +40,13 @@
         1024,
         1024
       ],
-      "bytes": 108477,
-      "sha256": "9049044877ed632370996da4b5af282254b74b3cb38cc930d5f1675203ea0399",
-      "resample_scale": 2.0,
-      "upscaled": true
+      "bytes": 424210,
+      "sha256": "936cd5bf256fe17253e7b6d2de0d23168246831df68bbc6adb780b8c0d413640",
+      "source_bytes": 424197,
+      "source_sha256": "a43ae036210326621429d25e8bb40c739dc6236b3e688caf631e0ebd5abae8b6",
+      "source_git_blob": "585dc6a1c884434d59802d9b34f62851d9bf733f",
+      "resample_scale": 1.0,
+      "upscaled": false
     },
     {
       "file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png",
@@ -53,9 +54,12 @@
         20,
         20
       ],
-      "bytes": 963,
-      "sha256": "3d00d7f76ce1e467e8ee5e3668d0c8db55ce9b1dff10fdf11f9f64edd6cea4ac",
-      "resample_scale": 0.0390625,
+      "bytes": 1274,
+      "sha256": "c03dce6b052d071189db1e0b0d6c3c250363e054b5375b9053d4a727b506358d",
+      "source_bytes": 1261,
+      "source_sha256": "e6414bc4076bc38e3014a0b3101dfcd825c8ad14e7262d6fac91724c90c3790a",
+      "source_git_blob": "cc67a66770067865f1ddc63ecc5a7356b98bbf49",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -64,9 +68,12 @@
         40,
         40
       ],
-      "bytes": 2255,
-      "sha256": "1247fcd39ebf67fe6edbd953f216b459e44f27551a01c9e044a17117610c24e4",
-      "resample_scale": 0.078125,
+      "bytes": 4303,
+      "sha256": "e309d0a4270f5192f6cb558e75def80f459704886f65bbbd8a3b3eb451a0b303",
+      "source_bytes": 4290,
+      "source_sha256": "4b2f42874f045984b24fd6ae3526d2472e1b362e1f682fd860d39b57cbb193bc",
+      "source_git_blob": "7065d9cf3e3a0c683d2d20d63bd7fdf5d4b3ffbb",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -75,9 +82,12 @@
         60,
         60
       ],
-      "bytes": 3650,
-      "sha256": "b6bcdc81884d78c63017d844217055f25f71af37ed2f9a624a37d0dcc1f7e2e5",
-      "resample_scale": 0.1171875,
+      "bytes": 8320,
+      "sha256": "9de694be0f3a7fff0b5df177d6ad5ddee5995c0c0a702341df6cc226c436b7d0",
+      "source_bytes": 8307,
+      "source_sha256": "aa8bcd42f4f465bea3c330347537effd2af320b385aa09d22cc111511c151b03",
+      "source_git_blob": "6248b40bd879a6a0ba97fd5635157ca84dfe6265",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -86,9 +96,12 @@
         29,
         29
       ],
-      "bytes": 1544,
-      "sha256": "b4f92f45a3801424867a39f933a132325326d7926403bc64e251577eeefb5b8e",
-      "resample_scale": 0.056640625,
+      "bytes": 2445,
+      "sha256": "285ac8e784a1a692a2d6a8a0669ec09cdbed6e8b6482c588b6882893cb7123a5",
+      "source_bytes": 2432,
+      "source_sha256": "691598e4d9dd1fe29a30a9334c12b49270477f1d56eb73da8d5821dfa31e8e5a",
+      "source_git_blob": "771ee8d2be57da3e98a77b7698570bf0ceace4b3",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -97,9 +110,12 @@
         58,
         58
       ],
-      "bytes": 3473,
-      "sha256": "82171524d3cfcb168498ddcdc1ed9a1e7648d61932b4e2fa3fa7e8e0654816d0",
-      "resample_scale": 0.11328125,
+      "bytes": 7790,
+      "sha256": "9226c8b932a0581b036e5727b19aaba66c6667e13c53d0c9b82f60db5bab1581",
+      "source_bytes": 7777,
+      "source_sha256": "b45080d1745a3d8f0421e1134382fc1ebb8ee1ee109db46268f412c6394f4081",
+      "source_git_blob": "4caf454d06d82cfb34e7bf1802f511ecc86ed2b0",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -108,9 +124,12 @@
         87,
         87
       ],
-      "bytes": 5596,
-      "sha256": "f3df192bd3133c80936fe10c3e2f00e18290e4b5d1c35078d53661db72a37168",
-      "resample_scale": 0.169921875,
+      "bytes": 14546,
+      "sha256": "ec3ccf36ba64b22cdc051b00be745f011c77004ba5156e581e7475151add1be2",
+      "source_bytes": 14533,
+      "source_sha256": "a360efd196acdc2e028d811664000802925b81ab7e2d1a3e6445b759c23e9e3b",
+      "source_git_blob": "7579f24ad0b81a73b4e31b1822e309bfba981db9",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -119,9 +138,12 @@
         40,
         40
       ],
-      "bytes": 2255,
-      "sha256": "1247fcd39ebf67fe6edbd953f216b459e44f27551a01c9e044a17117610c24e4",
-      "resample_scale": 0.078125,
+      "bytes": 4303,
+      "sha256": "e309d0a4270f5192f6cb558e75def80f459704886f65bbbd8a3b3eb451a0b303",
+      "source_bytes": 4290,
+      "source_sha256": "4b2f42874f045984b24fd6ae3526d2472e1b362e1f682fd860d39b57cbb193bc",
+      "source_git_blob": "7065d9cf3e3a0c683d2d20d63bd7fdf5d4b3ffbb",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -130,9 +152,12 @@
         80,
         80
       ],
-      "bytes": 5102,
-      "sha256": "4434b1d7d7d3e351ec563083affb16bd2ea10f903f813e70ea516b9433715797",
-      "resample_scale": 0.15625,
+      "bytes": 12805,
+      "sha256": "5696e3d66e29b7e60d9a1a0ca6b8c6a67014b30701a5cb18ee0aeee67ecaee39",
+      "source_bytes": 12792,
+      "source_sha256": "df46a0d4434a0a8205cf602b5c059e481d4dd257fc4431c1a50a3f0a45dbe91d",
+      "source_git_blob": "c33d50cd39084537d4b117885fb3dfc9106de0f5",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -141,9 +166,12 @@
         120,
         120
       ],
-      "bytes": 8291,
-      "sha256": "4d632ec7ad970525077d62400056ffa695e401e38ccec7659537ec3edd168520",
-      "resample_scale": 0.234375,
+      "bytes": 23139,
+      "sha256": "c90bcdae4d47dff683d07720d1521bcb411c80b354ecf4bc1a7332adf34f3125",
+      "source_bytes": 23126,
+      "source_sha256": "05ed8e59b81ffc104e169135c5711b10454c024f3467e95e52dc497bcc067403",
+      "source_git_blob": "cd6b8bf47edec45a622e0ae907d2513b070ecdbb",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -152,9 +180,12 @@
         120,
         120
       ],
-      "bytes": 8291,
-      "sha256": "4d632ec7ad970525077d62400056ffa695e401e38ccec7659537ec3edd168520",
-      "resample_scale": 0.234375,
+      "bytes": 23139,
+      "sha256": "c90bcdae4d47dff683d07720d1521bcb411c80b354ecf4bc1a7332adf34f3125",
+      "source_bytes": 23126,
+      "source_sha256": "05ed8e59b81ffc104e169135c5711b10454c024f3467e95e52dc497bcc067403",
+      "source_git_blob": "cd6b8bf47edec45a622e0ae907d2513b070ecdbb",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -163,9 +194,12 @@
         180,
         180
       ],
-      "bytes": 13574,
-      "sha256": "27a8d745eb889110a22b00acffa10c9bdde64b0a702a16778a945a20da57f1bc",
-      "resample_scale": 0.3515625,
+      "bytes": 40875,
+      "sha256": "fd12d09f1092b455f74c8e7eb70fcd5e628b82280a57d187665b24f20c86fbca",
+      "source_bytes": 40862,
+      "source_sha256": "a5d909817ee192a8549015b3b8fcebefa6c2645b7b0d32b8c4c09ed47bd0bdb8",
+      "source_git_blob": "5bd7e548ea81e4b24ac1303a8849ca6b9495685f",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -174,9 +208,12 @@
         76,
         76
       ],
-      "bytes": 4792,
-      "sha256": "31f70652de5b06c73e973c8b7a7ddd210eb4b5687878e7d42fd0b982149dbb0a",
-      "resample_scale": 0.1484375,
+      "bytes": 11930,
+      "sha256": "93798eb94fc0e44ba84a7824b575cf75df610a15094836d0ee59011dc1eee34a",
+      "source_bytes": 11917,
+      "source_sha256": "09933869ec4629a666fb067ecc9fdc7b49a35f00e31cc21394580db475d553a5",
+      "source_git_blob": "d116e057c42a3b7f13436986e5b3b0870cd13d37",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -185,9 +222,12 @@
         152,
         152
       ],
-      "bytes": 11139,
-      "sha256": "0387f5677617aadad43a92dcd5b2f49123a06062a91ec2a0c8c2a0f04e2b01a5",
-      "resample_scale": 0.296875,
+      "bytes": 32108,
+      "sha256": "08a544ca0760af0c3de1d3146ea118ca7e68f94d71ef427d0997b39c03620c97",
+      "source_bytes": 32095,
+      "source_sha256": "79f7a148f5c04d6398df252909bdf3505f1641d2b4e8ddfe5c1b119b644a992a",
+      "source_git_blob": "f149c749509ccec3fa56d5e1fb18fcf2d60690c4",
+      "resample_scale": 1.0,
       "upscaled": false
     },
     {
@@ -196,9 +236,12 @@
         167,
         167
       ],
-      "bytes": 12494,
-      "sha256": "e8e4678a669a961bbf3255103b93c1d135f54ed3128435ec57b8330d83e04956",
-      "resample_scale": 0.326171875,
+      "bytes": 36824,
+      "sha256": "3d861fa882ad754a091a075bb1ac69aa7b72d23413400118995f5608eae8175e",
+      "source_bytes": 36811,
+      "source_sha256": "a73928849a7f9547498e9bb3be01685987aa3606f84a70a15bb508abb1f78540",
+      "source_git_blob": "c66acbd1daae35fa71357aab183b1276e146800e",
+      "resample_scale": 1.0,
       "upscaled": false
     }
   ]
