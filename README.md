@@ -38,6 +38,7 @@ flutter run -d chrome -t lib/playtest_main.dart     # 開発用：151本を番�
 | `lib/state/app_controller.dart` | 発見・スター・コイン・経験値・チケット・クラウド同期 |
 | `assets/audio/{sfx,bgm}/` | 効果音100種・BGM18曲。すべて `python tool/audio/synth.py` で合成 |
 | `tool/arcade/GAME_DEV_GUIDE.md` | ミニゲーム制作ガイド（API・品質基準・テスト方法） |
+| `tool/icon/` | アプリアイコン。`icon.mjs` が元のSVG、`node tool/icon/build_icons.mjs` で Web・iOS・Android（アダプティブ）・macOS・Windows の全サイズを書き出し |
 | `docs/AD_DEMO_151_LINEUP.md` | 全151本の一覧（ジャンル・絵柄・レア度・秒数） |
 
 ## テスト
