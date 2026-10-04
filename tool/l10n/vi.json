@@ -134,7 +134,12 @@
   "stamina_full_title": "Vé đã đầy!",
   "support": "Hỗ trợ",
   "unlimited": "KHÔNG GIỚI HẠN",
-  "unlock_any": "Mở khóa quảng cáo này"
+  "unlock_any": "Mở khóa quảng cáo này",
+  "premium_home_entry": "Bỏ quảng cáo thật",
+  "premium_games_stay": "Bạn vẫn có thể chơi các trò chơi nhỏ nhại quảng cáo.",
+  "premium_loading": "Đang tải giá từ cửa hàng…",
+  "premium_retry": "Thử lại",
+  "premium_error": "Không thể hoàn tất yêu cầu đến cửa hàng. Vui lòng thử lại."
  },
  "games": {
   "1": [

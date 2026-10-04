@@ -15,6 +15,7 @@ import '../state/app_controller.dart';
 import 'ad_player.dart';
 import 'collection.dart';
 import 'kit.dart';
+import 'premium.dart';
 import 'reveal.dart';
 import 'rush.dart';
 import 'settings.dart';
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final RewardedAdService _ads;
   late final Timer _ticker;
   bool _busy = false;
+  bool _premiumOpen = false;
 
   AppController get c => widget.controller;
 
@@ -166,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await showDiscoveryReveal(context, g);
   }
 
-  void _open(Widget page) async {
+  Future<void> _open(Widget page) async {
     await Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (_) => page));
     ArcadeAudio.instance.bgm('menu');
@@ -213,6 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(child: _capsuleCard()),
                       ],
                     ),
+                    const SizedBox(height: 20),
+                    _premiumEntry(),
                   ],
                 ),
               ),
@@ -222,6 +226,43 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Future<void> _openPremium() async {
+    if (_premiumOpen) return;
+    _premiumOpen = true;
+    K.tap();
+    try {
+      await _open(PremiumScreen(controller: c));
+    } finally {
+      _premiumOpen = false;
+    }
+  }
+
+  Widget _premiumEntry() => OutlinedButton(
+    key: const ValueKey('home-premium-entry'),
+    onPressed: _openPremium,
+    style: OutlinedButton.styleFrom(
+      foregroundColor: K.paper,
+      minimumSize: const Size.fromHeight(56),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      side: const BorderSide(color: K.paper, width: 2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+    child: Row(
+      children: [
+        Icon(c.premiumNoAds ? Icons.check_circle_outline : Icons.block_rounded),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            L10n.ui(c.premiumNoAds ? 'premium_active' : 'premium_home_entry'),
+            style: K.t(16, color: K.paper),
+          ),
+        ),
+        const SizedBox(width: 8),
+        const Icon(Icons.chevron_right_rounded),
+      ],
+    ),
+  );
 
   Widget _topBar() {
     final a = c.arcade;

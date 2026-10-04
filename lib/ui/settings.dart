@@ -10,6 +10,7 @@ import '../services/app_licenses.dart';
 import '../services/rewarded_ad_service.dart';
 import '../state/app_controller.dart';
 import 'kit.dart';
+import 'premium.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
@@ -154,55 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     _section(
                       L10n.ui('premium_title'),
-                      AnimatedBuilder(
-                        animation: c.purchases,
-                        builder: (context, _) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              L10n.ui('premium_desc'),
-                              style: K.t(14, color: K.ink),
-                            ),
-                            const SizedBox(height: 8),
-                            if (c.premiumNoAds)
-                              Text(
-                                L10n.ui('premium_active'),
-                                style: K.t(
-                                  16,
-                                  color: K.ink,
-                                  weight: FontWeight.w900,
-                                ),
-                              )
-                            else
-                              ElevatedButton(
-                                onPressed:
-                                    c.purchases.product == null ||
-                                        c.purchases.busy
-                                    ? null
-                                    : c.purchases.buy,
-                                child: Text(
-                                  '${L10n.ui('premium_buy')} ${c.purchases.product?.price ?? ''}',
-                                ),
-                              ),
-                            if (!c.premiumNoAds && c.purchases.product == null)
-                              Text(
-                                L10n.ui('premium_unavailable'),
-                                style: K.t(12, color: K.ink),
-                              ),
-                            TextButton(
-                              onPressed: c.purchases.canRestore
-                                  ? c.purchases.restore
-                                  : null,
-                              child: Text(L10n.ui('restore_purchases')),
-                            ),
-                            if (c.purchases.error != null)
-                              Text(
-                                c.purchases.error!,
-                                style: K.t(12, color: K.red),
-                              ),
-                          ],
-                        ),
-                      ),
+                      PremiumPurchasePanel(controller: c),
                     ),
                     _section(
                       L10n.ui('privacy_and_support'),

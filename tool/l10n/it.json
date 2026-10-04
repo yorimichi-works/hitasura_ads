@@ -134,7 +134,12 @@
   "stamina_full_title": "Biglietti al massimo!",
   "support": "Assistenza",
   "unlimited": "ILLIMITATI",
-  "unlock_any": "Sblocca questo annuncio"
+  "unlock_any": "Sblocca questo annuncio",
+  "premium_home_entry": "Rimuovi le vere pubblicità",
+  "premium_games_stay": "I minigiochi che parodiano le pubblicità restano disponibili.",
+  "premium_loading": "Caricamento del prezzo dello store…",
+  "premium_retry": "Riprova",
+  "premium_error": "Impossibile completare la richiesta allo store. Riprova."
  },
  "games": {
   "1": [

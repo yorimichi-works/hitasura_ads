@@ -250,10 +250,11 @@ void main() {
     )..addListener(() => notifications++);
     await service.initialize();
     await tester.pump();
+    final notificationsBeforeDispose = notifications;
     service.dispose();
     products.complete(noProducts);
     await tester.pump();
-    expect(notifications, 0);
+    expect(notifications, notificationsBeforeDispose);
     unawaited(updates.close());
     await tester.pump();
   });

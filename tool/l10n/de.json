@@ -134,7 +134,12 @@
   "stamina_full_title": "Tickets sind voll!",
   "support": "Support",
   "unlimited": "UNBEGRENZT",
-  "unlock_any": "Dieses Werbespiel freischalten"
+  "unlock_any": "Dieses Werbespiel freischalten",
+  "premium_home_entry": "Echte Werbung entfernen",
+  "premium_games_stay": "Die Werbeparodie-Minispiele bleiben spielbar.",
+  "premium_loading": "Preis aus dem Store wird geladen…",
+  "premium_retry": "Erneut versuchen",
+  "premium_error": "Die Store-Anfrage konnte nicht abgeschlossen werden. Bitte versuche es erneut."
  },
  "games": {
   "1": [

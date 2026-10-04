@@ -134,7 +134,12 @@
   "stamina_full_title": "티켓 충전 완료!",
   "support": "지원",
   "unlimited": "무제한",
-  "unlock_any": "이 광고 게임 잠금 해제"
+  "unlock_any": "이 광고 게임 잠금 해제",
+  "premium_home_entry": "진짜 광고 없애기",
+  "premium_games_stay": "광고 패러디 미니게임은 계속 즐길 수 있어요.",
+  "premium_loading": "스토어 가격 확인 중…",
+  "premium_retry": "다시 시도",
+  "premium_error": "스토어 요청을 완료하지 못했어요. 다시 시도해 주세요."
  },
  "games": {
   "1": [

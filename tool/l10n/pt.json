@@ -134,7 +134,12 @@
   "stamina_full_title": "Tickets cheios!",
   "support": "Suporte",
   "unlimited": "ILIMITADOS",
-  "unlock_any": "Desbloquear este anúncio"
+  "unlock_any": "Desbloquear este anúncio",
+  "premium_home_entry": "Remover anúncios reais",
+  "premium_games_stay": "Os minijogos que parodiam anúncios continuam disponíveis.",
+  "premium_loading": "Carregando o preço da loja…",
+  "premium_retry": "Tentar novamente",
+  "premium_error": "Não foi possível concluir a solicitação à loja. Tente novamente."
  },
  "games": {
   "1": [

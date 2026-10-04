@@ -134,7 +134,12 @@
   "stamina_full_title": "Tiket sudah penuh!",
   "support": "Bantuan",
   "unlimited": "TANPA BATAS",
-  "unlock_any": "Buka iklan ini"
+  "unlock_any": "Buka iklan ini",
+  "premium_home_entry": "Hapus iklan sungguhan",
+  "premium_games_stay": "Mini game parodi iklan tetap bisa dimainkan.",
+  "premium_loading": "Memuat harga dari toko…",
+  "premium_retry": "Coba lagi",
+  "premium_error": "Permintaan ke toko tidak dapat diselesaikan. Silakan coba lagi."
  },
  "games": {
   "1": [

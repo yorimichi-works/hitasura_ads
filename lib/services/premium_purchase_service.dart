@@ -46,19 +46,23 @@ class PremiumPurchaseService extends ChangeNotifier {
   final Duration userSyncTimeout;
   Future<void> _purchaseQueue = Future<void>.value();
   Future<void>? _backgroundRefresh;
-  bool _catalogueLoading = false;
+  Future<void>? _catalogueRefresh;
   bool _started = false;
   bool _disposed = false;
   InAppPurchase get _store => InAppPurchase.instance;
   StreamSubscription<List<PurchaseDetails>>? _subscription;
   ProductDetails? product;
-  String? error;
+  String? _operationError;
+  String? _catalogueError;
+  String? get error => _operationError ?? _catalogueError;
   bool busy = false;
   bool available = false;
   bool get _reconcilesEntitlements =>
       _readEntitlement != null &&
       cachedEntitlement != null &&
       onEntitlement != null;
+  bool get catalogueLoading => _catalogueRefresh != null;
+  bool get canBuy => !busy && !catalogueLoading && available && product != null;
   bool get canRestore => !busy && (_reconcilesEntitlements || available);
 
   Future<void> _enqueue(Future<void> Function() operation) {
@@ -80,13 +84,13 @@ class PremiumPurchaseService extends ChangeNotifier {
         },
         onError: (Object failure) {
           if (_disposed) return;
-          error = '$failure';
+          _operationError = '$failure';
           busy = false;
           notifyListeners();
         },
       );
     } catch (e) {
-      error = '$e';
+      _operationError = '$e';
     }
     // Install the listener first, then let the app render its cached state.
     // StoreKit can wait indefinitely for a storefront/account response even
@@ -104,9 +108,27 @@ class PremiumPurchaseService extends ChangeNotifier {
     return (available: true, products: products);
   }
 
+  /// Prices belong to the current store account, not the app's UI language.
+  /// Discard the previous catalogue while refreshing, so a failed request can
+  /// never leave an old storefront's price available for purchase.
+  Future<void> refreshCatalogue() {
+    if (_disposed || !_started || !_supportedPlatform) {
+      return Future<void>.value();
+    }
+    if (_catalogueRefresh != null) return _catalogueRefresh!;
+    product = null;
+    _catalogueError = null;
+    final operation = _loadCatalogue();
+    final tracked = operation.whenComplete(() {
+      _catalogueRefresh = null;
+      if (!_disposed) notifyListeners();
+    });
+    _catalogueRefresh = tracked;
+    notifyListeners();
+    return tracked;
+  }
+
   Future<void> _loadCatalogue() async {
-    if (_disposed || _catalogueLoading) return;
-    _catalogueLoading = true;
     try {
       final response = await _fetchCatalogue().timeout(storeTimeout);
       if (_disposed) return;
@@ -114,23 +136,20 @@ class PremiumPurchaseService extends ChangeNotifier {
       product = response.products?.productDetails
           .where((p) => p.id == productId)
           .firstOrNull;
-      error = response.products?.error?.message;
+      _catalogueError = response.products?.error?.message;
     } catch (e) {
       if (_disposed) return;
-      error = '$e';
-    } finally {
-      _catalogueLoading = false;
+      _catalogueError = '$e';
     }
-    if (!_disposed) notifyListeners();
   }
 
   /// Startup/resume reads preserve the cache on an empty or uncertain response.
   /// This never invokes AppStore.sync or asks the user to authenticate.
   Future<void> refreshEntitlement() {
     if (_disposed) return Future<void>.value();
-    // A foreground retry lets a store/account that recovered after startup
-    // make the upgrade available without requiring an app restart.
-    if (_started && product == null) unawaited(_loadCatalogue());
+    // The storefront can change while the app is in the background, even
+    // after a successful response. Never pin the first price for the session.
+    if (_started) unawaited(refreshCatalogue());
     if (!_reconcilesEntitlements) return Future<void>.value();
     if (_backgroundRefresh != null) return _backgroundRefresh!;
     final operation = _enqueue(() async {
@@ -168,9 +187,9 @@ class PremiumPurchaseService extends ChangeNotifier {
 
   Future<void> buy() async {
     final selected = product;
-    if (busy || selected == null) return;
+    if (!canBuy || selected == null) return;
     busy = true;
-    error = null;
+    _operationError = null;
     notifyListeners();
     try {
       final started = await _store.buyNonConsumable(
@@ -178,12 +197,12 @@ class PremiumPurchaseService extends ChangeNotifier {
       );
       if (!started) {
         busy = false;
-        error = 'Purchase could not start';
+        _operationError = 'Purchase could not start';
         notifyListeners();
       }
     } catch (e) {
       busy = false;
-      error = '$e';
+      _operationError = '$e';
       notifyListeners();
     }
   }
@@ -191,7 +210,7 @@ class PremiumPurchaseService extends ChangeNotifier {
   Future<void> restore() async {
     if (!canRestore) return;
     busy = true;
-    error = null;
+    _operationError = null;
     notifyListeners();
     try {
       if (_reconcilesEntitlements) {
@@ -199,7 +218,7 @@ class PremiumPurchaseService extends ChangeNotifier {
         await _enqueue(() async {
           final decision = await _reconcile(userInitiatedSync: true);
           if (decision.status == PremiumEntitlementStatus.unknown) {
-            error = 'Purchases could not be verified. Please try again.';
+            _operationError = 'Purchases could not be verified. Please try again.';
           }
         });
       }
@@ -209,7 +228,7 @@ class PremiumPurchaseService extends ChangeNotifier {
         );
       }
     } catch (e) {
-      error = '$e';
+      _operationError = '$e';
     } finally {
       busy = false;
       if (!_disposed) notifyListeners();
@@ -233,7 +252,7 @@ class PremiumPurchaseService extends ChangeNotifier {
               final decision = await _reconcile(userInitiatedSync: false);
               if (_disposed) return;
               if (decision.status == PremiumEntitlementStatus.unknown) {
-                error = 'Purchase could not be verified. Please try restoring purchases.';
+                _operationError = 'Purchase could not be verified. Please try restoring purchases.';
                 continue;
               }
               // A StoreKit update can be a refund. Reconcile access first,
@@ -242,11 +261,11 @@ class PremiumPurchaseService extends ChangeNotifier {
                   decision.transactionId == purchase.purchaseID) {
                 await (completePurchase ?? _store.completePurchase)(purchase);
               }
-              error = null;
+              _operationError = null;
               break;
             }
             if (!await _verifyPurchase(purchase)) {
-              error = 'Purchase could not be verified. Please try restoring purchases.';
+              _operationError = 'Purchase could not be verified. Please try restoring purchases.';
               continue;
             }
             if (_disposed) return;
@@ -255,17 +274,17 @@ class PremiumPurchaseService extends ChangeNotifier {
             if (purchase.pendingCompletePurchase) {
               await (completePurchase ?? _store.completePurchase)(purchase);
             }
-            error = null;
+            _operationError = null;
             break;
           case PurchaseStatus.error:
-            error = purchase.error?.message ?? 'Purchase failed';
+            _operationError = purchase.error?.message ?? 'Purchase failed';
             break;
           case PurchaseStatus.canceled:
           case PurchaseStatus.pending:
             break;
         }
       } catch (e) {
-        error = '$e';
+        _operationError = '$e';
       }
     }
     if (!hasMatchingPurchase || _disposed) return;

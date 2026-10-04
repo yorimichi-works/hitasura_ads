@@ -134,7 +134,12 @@
   "stamina_full_title": "¡Boletos al máximo!",
   "support": "Ayuda",
   "unlimited": "ILIMITADOS",
-  "unlock_any": "Desbloquear este anuncio"
+  "unlock_any": "Desbloquear este anuncio",
+  "premium_home_entry": "Quitar anuncios reales",
+  "premium_games_stay": "Los minijuegos que parodian anuncios seguirán disponibles.",
+  "premium_loading": "Cargando el precio de la tienda…",
+  "premium_retry": "Reintentar",
+  "premium_error": "No se pudo completar la solicitud a la tienda. Inténtalo de nuevo."
  },
  "games": {
   "1": [

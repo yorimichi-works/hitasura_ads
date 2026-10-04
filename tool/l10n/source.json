@@ -134,7 +134,12 @@
   "ad_privacy_options": "Ad privacy choices",
   "ad_privacy_failed": "Privacy settings could not be updated. Sponsor ads are paused. Please try again.",
   "link_unavailable": "This link is currently unavailable. Please try again later.",
-  "licenses": "Licenses"
+  "licenses": "Licenses",
+  "premium_home_entry": "Remove real ads",
+  "premium_games_stay": "The ad-parody mini-games remain available to play.",
+  "premium_loading": "Loading the store price…",
+  "premium_retry": "Try again",
+  "premium_error": "The store request could not be completed. Please try again."
  },
  "ui_ja": {
   "app_title": "ひたすら広告　151のドパガキ向けミニゲーム集",
@@ -173,7 +178,7 @@
   "stamina_full_body": "広告チケットが満タンになりました。遊びに来てね！",
   "return_reminder_title": "次の広告が待っています",
   "return_reminder_body": "最後に遊んでから3日。新しい広告を見に来てね！",
-  "premium_title": "広告なし・ライフ無制限",
+  "premium_title": "広告なし・チケット無制限",
   "premium_desc": "買い切りでチケット無制限。スポンサー広告なしで好きな通常広告を解放できます。",
   "premium_buy": "購入",
   "premium_active": "購入済み・チケット無制限",
@@ -271,7 +276,12 @@
   "ad_privacy_options": "広告のプライバシー設定",
   "ad_privacy_failed": "プライバシー設定を更新できませんでした。スポンサー広告を停止しています。もう一度お試しください。",
   "link_unavailable": "現在このリンクを開けません。しばらくしてからお試しください。",
-  "licenses": "ライセンス"
+  "licenses": "ライセンス",
+  "premium_home_entry": "広告（本物）をなくす",
+  "premium_games_stay": "「広告」のミニゲームは、引き続き遊べます。",
+  "premium_loading": "ストアの価格を確認中…",
+  "premium_retry": "もう一度確認",
+  "premium_error": "ストアで処理を完了できませんでした。もう一度お試しください。"
  },
  "games_en": {
   "1": [

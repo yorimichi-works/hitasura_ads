@@ -134,7 +134,12 @@
   "stamina_full_title": "Tickets rechargés !",
   "support": "Assistance",
   "unlimited": "ILLIMITÉS",
-  "unlock_any": "Débloquer cette publicité"
+  "unlock_any": "Débloquer cette publicité",
+  "premium_home_entry": "Supprimer les vraies pubs",
+  "premium_games_stay": "Les mini-jeux parodiant les pubs restent disponibles.",
+  "premium_loading": "Chargement du prix de la boutique…",
+  "premium_retry": "Réessayer",
+  "premium_error": "La demande à la boutique a échoué. Veuillez réessayer."
  },
  "games": {
   "1": [

@@ -134,7 +134,12 @@
   "stamina_full_title": "Biletler doldu!",
   "support": "Destek",
   "unlimited": "SINIRSIZ",
-  "unlock_any": "Bu reklamın kilidini aç"
+  "unlock_any": "Bu reklamın kilidini aç",
+  "premium_home_entry": "Gerçek reklamları kaldır",
+  "premium_games_stay": "Reklam parodisi mini oyunları oynamaya devam edebilirsin.",
+  "premium_loading": "Mağaza fiyatı yükleniyor…",
+  "premium_retry": "Yeniden dene",
+  "premium_error": "Mağaza isteği tamamlanamadı. Lütfen yeniden dene."
  },
  "games": {
   "1": [

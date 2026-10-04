@@ -134,7 +134,12 @@
   "stamina_full_title": "廣告券已滿！",
   "support": "支援",
   "unlimited": "無限",
-  "unlock_any": "解鎖此廣告遊戲"
+  "unlock_any": "解鎖此廣告遊戲",
+  "premium_home_entry": "移除真正的廣告",
+  "premium_games_stay": "廣告題材迷你遊戲仍可繼續遊玩。",
+  "premium_loading": "正在取得商店價格…",
+  "premium_retry": "重試",
+  "premium_error": "無法完成商店請求，請重試。"
  },
  "games": {
   "1": [

@@ -12,6 +12,12 @@ void main() {
       'notifications',
       'notifications_desc',
       'premium_active',
+      'premium_home_entry',
+      'premium_games_stay',
+      'premium_loading',
+      'premium_retry',
+      'premium_error',
+
       'premium_buy',
       'premium_desc',
       'premium_title',
