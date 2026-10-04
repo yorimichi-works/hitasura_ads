@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 import '../l10n/l10n.dart';
 import '../services/premium_purchase_service.dart';
+import '../services/store_price_diagnostic.dart';
 import '../state/app_controller.dart';
 import 'kit.dart';
+import 'store_price_diagnostic.dart';
 
 /// The home entry and Settings share the same purchase and restore controls.
 class PremiumScreen extends StatelessWidget {
@@ -198,6 +200,10 @@ class _PremiumPurchasePanelState extends State<PremiumPurchasePanel> {
                 L10n.ui('premium_error'),
                 style: K.t(14, color: K.red),
               ),
+            ),
+          if (priceDiagnosticsEnabled)
+            StorePriceDiagnosticPanel(
+              displayedProduct: () => purchases.product,
             ),
         ],
       );

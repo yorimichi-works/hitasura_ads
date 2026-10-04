@@ -4,6 +4,8 @@ import UIKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
+  private var priceDiagnosticID: UUID?
+  private var priceDiagnosticTask: Task<Void, Never>?
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -45,6 +47,10 @@ import UIKit
       name: "hitasura_ads/purchases", binaryMessenger: registrar.messenger()
     )
     channel.setMethodCallHandler { call, result in
+      if call.method == "readStorePriceDiagnostic" {
+        self.readStorePriceDiagnostic(result: result)
+        return
+      }
       if call.method == "readPremiumEntitlement" {
         guard let arguments = call.arguments as? [String: Any],
           arguments["productId"] as? String == "ad_free_unlimited"
@@ -104,6 +110,81 @@ import UIKit
         result(false)
       }
     }
+  }
+
+  // Owner-only, read-only diagnostic. It never changes the purchase catalogue,
+  // account, receipt, transactions or entitlements used by the app.
+  private func readStorePriceDiagnostic(result: @escaping FlutterResult) {
+    guard Bundle.main.object(forInfoDictionaryKey: "HitasuraPriceDiagnostics") as? Bool == true else {
+      result(["status": "disabled"])
+      return
+    }
+    guard priceDiagnosticID == nil else {
+      result(["status": "busy"])
+      return
+    }
+    let identifier = UUID()
+    priceDiagnosticID = identifier
+    let startedAt = Date()
+    priceDiagnosticTask = Task { @MainActor [weak self] in
+      guard let self else { return }
+      let before = await Storefront.current
+      do {
+        let products = try await Product.products(for: ["ad_free_unlimited"])
+        let after = await Storefront.current
+        guard !Task.isCancelled, self.priceDiagnosticID == identifier else { return }
+        let prices = products.filter { $0.id == "ad_free_unlimited" }.map { product in
+          [
+            "id": product.id,
+            "rawPrice": NSDecimalNumber(decimal: product.price).stringValue,
+            "currencyCode": product.priceFormatStyle.currencyCode,
+            "displayPrice": product.displayPrice,
+            "priceLocale": product.priceFormatStyle.locale.identifier
+          ]
+        }
+        self.finishPriceDiagnostic(identifier, result: result, payload: [
+          "status": prices.isEmpty ? "empty" : "ok",
+          "rawProductCount": products.count,
+          "products": prices,
+          "storefrontBefore": Self.rawStorefront(before),
+          "storefrontAfter": Self.rawStorefront(after),
+          "startedAt": ISO8601DateFormatter().string(from: startedAt),
+          "elapsedMs": Int(Date().timeIntervalSince(startedAt) * 1000),
+          "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
+          "build": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "",
+          "os": UIDevice.current.systemVersion,
+          "bundleMatches": Bundle.main.bundleIdentifier == "com.syamo.hitasuraads"
+        ])
+      } catch {
+        guard !Task.isCancelled, self.priceDiagnosticID == identifier else { return }
+        let failure = error as NSError
+        self.finishPriceDiagnostic(identifier, result: result, payload: [
+          "status": "error", "errorDomain": failure.domain, "errorCode": failure.code,
+          "storefrontBefore": Self.rawStorefront(before)
+        ])
+      }
+    }
+    Task { @MainActor [weak self] in
+      try? await Task.sleep(nanoseconds: 15_000_000_000)
+      guard let self, self.priceDiagnosticID == identifier else { return }
+      self.priceDiagnosticTask?.cancel()
+      self.finishPriceDiagnostic(identifier, result: result, payload: ["status": "timeout"])
+    }
+  }
+
+  private static func rawStorefront(_ storefront: Storefront?) -> [String: String] {
+    guard let storefront else { return [:] }
+    // Preserve BOTH raw values; never infer a country from just one of them.
+    return ["countryCode": storefront.countryCode, "identifier": storefront.id]
+  }
+
+  private func finishPriceDiagnostic(
+    _ identifier: UUID, result: FlutterResult, payload: [String: Any]
+  ) {
+    guard priceDiagnosticID == identifier else { return }
+    priceDiagnosticID = nil
+    priceDiagnosticTask = nil
+    result(payload)
   }
 
   private static func entitlementResult(
