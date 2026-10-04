@@ -1,12 +1,11 @@
 import '../engine/engine.dart';
 
-/// No.115 Plinko Pachinko — neon peg board, moving FEVER tulip, cruel x0.2
-/// bins right next to the x20 JACKPOT pocket.
+/// No.115 Peg Drop — aim ten balls through a neon peg board into score pockets.
+/// The moving bonus gate adds points and briefly boosts the score; no stake.
 class G115 extends MiniGame {
-  static const _target = 700;
-  static const _bet = 10;
+  static const _target = 250;
   static const _binL = 18.0, _binW = 36.0, _binTop = 468.0, _binFloor = 522.0;
-  static const _mult = <double>[5, 1, 3, .2, 20, .2, 3, 1, 5];
+  static const _pocketPoints = <int>[30, 10, 20, 10, 80, 10, 20, 10, 30];
   static const _rowYs = <double>[150, 178, 206, 234, 302, 330, 358, 386, 414, 442];
   static const _tulipY = 268.0;
 
@@ -14,19 +13,19 @@ class G115 extends MiniGame {
   final List<_Ball> _balls = [];
   final List<double> _binFlash = List.filled(9, 0);
   int _ballsLeft = 10;
-  int _coins = 0;
-  double _shownCoins = 0;
+  int _points = 0;
+  double _shownPoints = 0;
   double _t = 0;
   double _dropCd = 0;
   double _aimX = 180;
-  double _fever = 0;
-  double _feverFlash = 0;
+  double _boost = 0;
+  double _boostFlash = 0;
   double _tickCd = 0;
   double _tulipX = 180;
   double _tulipOpen = 0;
-  double _jackpotFlash = 0;
+  double _targetFlash = 0;
   double _slowmo = 0;
-  int _jackpots = 0;
+  int _centerHits = 0;
   bool _ended = false;
 
   @override
@@ -40,7 +39,7 @@ class G115 extends MiniGame {
     }
   }
 
-  bool get _feverOn => _fever > 0;
+  bool get _boostOn => _boost > 0;
 
   static const _auto = bool.fromEnvironment('AUTOPLAY');
 
@@ -48,7 +47,7 @@ class G115 extends MiniGame {
   void update(double dt) {
     _t += dt;
     if (_auto && !host.finished) _drop(180);
-    // Near-miss slow motion: a ball dropping right above the jackpot pocket.
+    // Target approach slow motion: a ball dropping right above the center target pocket.
     var tension = false;
     for (final b in _balls) {
       if (!b.inBin && b.p.dy > 380 && (b.p.dx - 180).abs() < 40 && b.v.dy > 0) tension = true;
@@ -58,13 +57,13 @@ class G115 extends MiniGame {
 
     _dropCd -= dt;
     _tickCd -= dt;
-    _fever = max(0, _fever - dt);
-    _feverFlash = M.approach(_feverFlash, 0, 3, dt);
-    _jackpotFlash = M.approach(_jackpotFlash, 0, 2.5, dt);
+    _boost = max(0, _boost - dt);
+    _boostFlash = M.approach(_boostFlash, 0, 3, dt);
+    _targetFlash = M.approach(_targetFlash, 0, 2.5, dt);
     _tulipOpen = M.approach(_tulipOpen, 0, 4, dt);
     _tulipX = 180 + sin(_t * 1.5 * host.speed) * 112;
-    _shownCoins = M.approach(_shownCoins, _coins.toDouble(), 7, dt);
-    if ((_shownCoins - _coins).abs() < 1) _shownCoins = _coins.toDouble();
+    _shownPoints = M.approach(_shownPoints, _points.toDouble(), 7, dt);
+    if ((_shownPoints - _points).abs() < 1) _shownPoints = _points.toDouble();
     for (var i = 0; i < 9; i++) {
       _binFlash[i] = M.approach(_binFlash[i], 0, 3, dt);
     }
@@ -86,7 +85,7 @@ class G115 extends MiniGame {
     }
     _balls.removeWhere((b) => b.dead);
 
-    if (!host.finished && !_ended && _ballsLeft == 0 && _balls.isEmpty && _coins < _target) {
+    if (!host.finished && !_ended && _ballsLeft == 0 && _balls.isEmpty && _points < _target) {
       _ended = true;
       host.sfx(Sfx.aww);
       host.fx.pop(host.tr('so_close', 'SO CLOSE!'), const Offset(180, 330), color: Pal.pink, size: 34, life: 1.4);
@@ -114,7 +113,7 @@ class G115 extends MiniGame {
       b.fromTulip = true;
       b.p = Offset(_tulipX, _tulipY + 16);
       b.v = Offset(rand(-30, 30), 60);
-      _triggerFever();
+      _triggerBoost();
     }
     if (b.inBin) {
       final l = _binL + b.bin * _binW + r + 2, rr = _binL + (b.bin + 1) * _binW - r - 2;
@@ -156,11 +155,12 @@ class G115 extends MiniGame {
     }
   }
 
-  void _triggerFever() {
-    _fever = 5;
-    _feverFlash = 1;
+  void _triggerBoost() {
+    _boost = 5;
+    _boostFlash = 1;
     _tulipOpen = 1;
-    _ballsLeft += 3;
+    _points += 20;
+    host.addScore(20);
     host.sfx(Sfx.ssr);
     host.sfx(Sfx.powerup, volume: .7);
     host.flash(Pal.pink, .25);
@@ -168,43 +168,43 @@ class G115 extends MiniGame {
     host.punch(.05);
     host.fx.ring(Offset(_tulipX, _tulipY), Pal.pink, size: 120);
     host.fx.burst(Offset(_tulipX, _tulipY), Pal.pink, count: 30, speed: 320, shape: PartShape.star, colors: Pal.candy);
-    host.fx.pop(host.tr('fever', 'FEVER!'), Offset(180, _tulipY - 30), color: Pal.pink, size: 40, life: 1.2);
-    host.fx.pop('+3', Offset(_tulipX, _tulipY + 30), color: Pal.white, size: 26);
+    host.fx.pop(host.tr('bonus', 'BONUS!'), Offset(180, _tulipY - 30), color: Pal.pink, size: 40, life: 1.2);
+    host.fx.pop('+20', Offset(_tulipX, _tulipY + 30), color: Pal.white, size: 26);
   }
 
   void _score(_Ball b) {
     b.dead = true;
-    final m = _mult[b.bin] * (_feverOn ? 2 : 1);
-    final gain = (_bet * m).round();
-    _coins += gain;
+    final gain = _pocketPoints[b.bin] * (_boostOn ? 2 : 1);
+    _points += gain;
+    host.addScore(gain);
     _binFlash[b.bin] = 1;
     final at = Offset(_binL + (b.bin + .5) * _binW, _binTop - 10);
     if (b.bin == 4) {
-      _jackpots++;
-      _jackpotFlash = 1;
+      _centerHits++;
+      _targetFlash = 1;
       host.sfx(Sfx.fanfare, volume: 1);
-      host.sfx(Sfx.coins);
+      host.sfx(Sfx.sparkle);
       host.shake(10, .4);
       host.hitStop(.08);
       host.flash(Pal.yellow, .2);
-      host.fx.coins(at, count: 30, speed: 520);
+      host.fx.burst(at, Pal.sky, count: 30, speed: 520, shape: PartShape.star);
       host.fx.ring(at, Pal.yellow, size: 150, life: .5);
-      host.fx.pop(host.tr('jackpot', 'JACKPOT!'), const Offset(180, 400), color: Pal.yellow, size: 44, life: 1.2);
-    } else if (_mult[b.bin] < 1) {
+      host.fx.pop(host.tr('perfect', 'PERFECT!'), const Offset(180, 400), color: Pal.yellow, size: 44, life: 1.2);
+    } else if (_pocketPoints[b.bin] == 10) {
       host.sfx(Sfx.oops, volume: .7);
       host.fx.burst(at, Pal.gray, count: 8, speed: 120);
       if (b.bin == 3 || b.bin == 5) {
         host.fx.pop(host.tr('so_close', 'SO CLOSE!'), const Offset(180, 420), color: Pal.pink, size: 26);
       }
     } else {
-      host.sfx(Sfx.coin, rate: 1 + m * .04);
-      host.fx.coins(at, count: (m * 2).round().clamp(3, 14), speed: 320);
+      host.sfx(Sfx.ding, rate: 1 + gain * .004);
+      host.fx.burst(at, Pal.sky, count: (gain ~/ 5).clamp(3, 14), speed: 320, shape: PartShape.star);
     }
-    host.fx.pop('+$gain', at + const Offset(0, -18), color: m >= 3 ? Pal.yellow : Pal.white, size: m >= 10 ? 34 : 24);
-    if (!host.finished && _coins >= _target) {
+    host.fx.pop('+$gain', at + const Offset(0, -18), color: gain >= 20 ? Pal.yellow : Pal.white, size: gain >= 80 ? 34 : 24, direction: TextDirection.ltr);
+    if (!host.finished && _points >= _target) {
       final spare = _ballsLeft + _balls.where((b) => !b.dead).length;
-      final stars = spare >= 5 || _jackpots >= 3 ? 3 : (spare >= 2 ? 2 : 1);
-      host.fx.coins(const Offset(180, 300), count: 40, speed: 600);
+      final stars = spare >= 5 || _centerHits >= 3 ? 3 : (spare >= 2 ? 2 : 1);
+      host.fx.burst(const Offset(180, 300), Pal.sky, count: 40, speed: 600, shape: PartShape.star);
       host.win(stars: stars);
     }
   }
@@ -234,7 +234,7 @@ class G115 extends MiniGame {
 
   @override
   void onTimeUp() {
-    if (_coins >= _target) {
+    if (_points >= _target) {
       host.win(stars: 1);
     } else {
       host.lose();
@@ -244,18 +244,18 @@ class G115 extends MiniGame {
   // ------------------------------------------------------------ render ---
 
   Color _hueCol(double off, [double s = .85, double v = 1]) =>
-      D.hsv(_feverOn ? (_t * 240 + off) : 280 + off * .15, s, v);
+      D.hsv(_boostOn ? (_t * 240 + off) : 280 + off * .15, s, v);
 
   @override
   void render(Canvas c) {
     // Background: deep neon night with a scrolling grid.
     D.gradientBg(c, [
-      Color.lerp(const Color(0xFF1A0838), const Color(0xFF3A0A4A), _feverFlash)!,
+      Color.lerp(const Color(0xFF1A0838), const Color(0xFF3A0A4A), _boostFlash)!,
       const Color(0xFF07031A),
       const Color(0xFF12052A),
     ]);
     final grid = Paint()
-      ..color = _feverOn ? D.hsv(_t * 200, .8, 1, .13) : const Color(0x1A9A6BFF)
+      ..color = _boostOn ? D.hsv(_t * 200, .8, 1, .13) : const Color(0x1A9A6BFF)
       ..strokeWidth = 1;
     final off = (_t * 20) % 24;
     for (var y = 40.0 + off; y < 640; y += 24) {
@@ -264,8 +264,8 @@ class G115 extends MiniGame {
     for (var x = 6.0; x < 360; x += 24) {
       c.drawLine(Offset(x, 40), Offset(x, 640), grid);
     }
-    if (_feverOn || _jackpotFlash > .05) {
-      D.rays(c, const Offset(180, 330), 520, D.hsv(_t * 90, .7, 1, .08 + _jackpotFlash * .1), count: 16, t: _t * .8);
+    if (_boostOn || _targetFlash > .05) {
+      D.rays(c, const Offset(180, 330), 520, D.hsv(_t * 90, .7, 1, .08 + _targetFlash * .1), count: 16, t: _t * .8);
     }
 
     // Cabinet frame with chasing bulbs.
@@ -302,31 +302,30 @@ class G115 extends MiniGame {
       c.drawCircle(pg.p, _Peg.r, D.fill(Color.lerp(col, Pal.white, .55 + pg.flash * .45)!));
     }
 
-    // Tulip (FEVER pocket) in its lane.
+    // Tulip (bonus pocket) in its lane.
     c.drawLine(const Offset(20, _tulipY + 14), const Offset(340, _tulipY + 14), D.stroke(const Color(0x33FF5FC8), 2));
     _tulip(c, Offset(_tulipX, _tulipY));
 
     // Bins.
     for (var i = 0; i < 9; i++) {
       final r = Rect.fromLTWH(_binL + i * _binW + 2, _binTop, _binW - 4, 76);
-      final m = _mult[i];
+      final points = _pocketPoints[i];
       final base = i == 4
           ? Pal.gold
-          : m >= 5
+          : points >= 30
               ? Pal.pink
-              : m >= 3
+              : points >= 20
                   ? Pal.sky
-                  : m >= 1
+                  : points >= 10
                       ? Pal.teal
                       : const Color(0xFF6A6A8A);
       final fl = _binFlash[i];
       final glow = i == 4 ? .35 + .25 * M.wave(_t, 3) : .15;
       D.rrect(c, r.inflate(3 + fl * 4), 8, base.withValues(alpha: glow + fl * .5));
       D.rrect(c, r, 7, Color.lerp(const Color(0xFF140A2E), base, .25 + fl * .6)!, border: base, borderWidth: 2.5);
-      final label = m < 1 ? 'x0.2' : 'x${m.toInt()}';
-      final disp = _feverOn ? (m < 1 ? 'x0.4' : 'x${(m * 2).toInt()}') : label;
+      final disp = '+${points * (_boostOn ? 2 : 1)}';
       D.text(c, disp, r.center + const Offset(0, 14),
-          size: i == 4 ? 15 : (m < 1 ? 11 : 13), color: Color.lerp(base, Pal.white, .5)!, stroke: Pal.ink, strokeWidth: 3);
+          size: i == 4 ? 15 : 13, color: Color.lerp(base, Pal.white, .5)!, stroke: Pal.ink, strokeWidth: 3, direction: TextDirection.ltr);
     }
     // dividers
     for (var i = 0; i <= 9; i++) {
@@ -334,7 +333,7 @@ class G115 extends MiniGame {
       c.drawLine(Offset(x, _binTop - 2), Offset(x, _binTop + 76), D.stroke(const Color(0xFFB7A6FF), 2.5));
       c.drawCircle(Offset(x, _binTop - 2), 3, D.fill(Pal.white));
     }
-    // jackpot pocket sign
+    // center target pocket sign
     final jp = Offset(180, _binTop + 18);
     D.star(c, jp, 9 + 2 * M.wave(_t, 2), Pal.yellow, border: Pal.ink);
 
@@ -381,16 +380,16 @@ class G115 extends MiniGame {
         d -= r.width;
         p = Offset(r.left, r.bottom - d);
       }
-      final chase = ((i - _t * (_feverOn ? 30 : 10)) % 4 + 4) % 4 < 1.2;
-      final col = D.hsv(_feverOn ? i * 30 + _t * 300 : (chase ? 50 : 300), .8, 1);
+      final chase = ((i - _t * (_boostOn ? 30 : 10)) % 4 + 4) % 4 < 1.2;
+      final col = D.hsv(_boostOn ? i * 30 + _t * 300 : (chase ? 50 : 300), .8, 1);
       c.drawCircle(p, chase ? 6 : 4, D.fill(col.withValues(alpha: chase ? .45 : .15)));
       c.drawCircle(p, 2.6, D.fill(chase ? Pal.white : col.withValues(alpha: .6)));
     }
   }
 
   void _tulip(Canvas c, Offset o) {
-    final open = .35 + _tulipOpen * .65 + (_feverOn ? .2 : 0);
-    final col = _feverOn ? D.hsv(_t * 300, .6, 1) : Pal.pink;
+    final open = .35 + _tulipOpen * .65 + (_boostOn ? .2 : 0);
+    final col = _boostOn ? D.hsv(_t * 300, .6, 1) : Pal.pink;
     c.drawCircle(o, 22, D.fill(col.withValues(alpha: .18)));
     for (final s in [-1.0, 1.0]) {
       c.save();
@@ -407,7 +406,7 @@ class G115 extends MiniGame {
     }
     D.rrect(c, Rect.fromCenter(center: o + const Offset(0, 10), width: 20, height: 10), 4, const Color(0xFF2B1650),
         border: col, borderWidth: 2);
-    D.text(c, '+3', o + const Offset(0, -20), size: 11, color: Pal.white, stroke: Pal.ink, strokeWidth: 3);
+    D.text(c, '+20', o + const Offset(0, -20), size: 11, color: Pal.white, stroke: Pal.ink, strokeWidth: 3);
   }
 
   void _chrome(Canvas c, Offset p, double r, double a) {
@@ -419,29 +418,29 @@ class G115 extends MiniGame {
   }
 
   void _hud(Canvas c) {
-    // coin counter panel
+    // score counter panel
     final panel = const Rect.fromLTWH(20, 40, 320, 48);
     D.rrect(c, panel, 14, const Color(0xCC0B0620), border: _hueCol(40, .6, 1), borderWidth: 2.5);
-    D.coin(c, const Offset(44, 60), 12, spin: _t * .6);
-    final pulse = _coins >= _target ? 1.15 : 1.0;
+    D.star(c, const Offset(44, 60), 12, Pal.sky, border: Pal.ink);
+    final pulse = _points >= _target ? 1.15 : 1.0;
     c.save();
     c.translate(118, 58);
     c.scale(pulse);
-    D.text(c, _fmt(_shownCoins.round()), Offset.zero, size: 26, color: Pal.yellow, stroke: Pal.ink, strokeWidth: 5);
+    D.text(c, _fmt(_shownPoints.round()), Offset.zero, size: 26, color: Pal.yellow, stroke: Pal.ink, strokeWidth: 5);
     c.restore();
-    D.bar(c, const Rect.fromLTWH(62, 76, 130, 7), _shownCoins / _target, Pal.yellow, border: const Color(0x55FFFFFF));
+    D.bar(c, const Rect.fromLTWH(62, 76, 130, 7), _shownPoints / _target, Pal.yellow, border: const Color(0x55FFFFFF));
     D.text(c, '/$_target', const Offset(206, 80), size: 11, color: const Color(0xCCFFFFFF), anchor: Alignment.centerLeft);
     // balls left
     for (var i = 0; i < min(_ballsLeft, 12); i++) {
       _chrome(c, Offset(326 - (i % 6) * 15, 55 + (i ~/ 6) * 15), 5.5, 1);
     }
-    if (_feverOn) {
+    if (_boostOn) {
       final s = 1 + .08 * sin(_t * 18);
-      D.title(c, host.tr('fever', 'FEVER!'), const Offset(180, 582), size: 38, color: D.hsv(_t * 300, .6, 1), scale: s);
-      D.bar(c, const Rect.fromLTWH(110, 610, 140, 8), _fever / 5, Pal.pink);
+      D.title(c, host.tr('bonus', 'BONUS!'), const Offset(180, 582), size: 38, color: D.hsv(_t * 300, .6, 1), scale: s);
+      D.bar(c, const Rect.fromLTWH(110, 610, 140, 8), _boost / 5, Pal.pink);
     } else {
       D.text(c, 'x2', const Offset(180, 588), size: 14, color: const Color(0x88FFFFFF));
-      D.text(c, host.tr('fever', 'FEVER!'), const Offset(180, 606), size: 14, color: const Color(0x88FF5FC8));
+      D.text(c, host.tr('bonus', 'BONUS!'), const Offset(180, 606), size: 14, color: const Color(0x88FF5FC8));
     }
   }
 

@@ -3,23 +3,20 @@ import 'dart:ui' as ui;
 
 import '../engine/engine.dart';
 
-/// No.114 Wheel of Fate — hold to charge the power meter, release inside
-/// the GOLD zone to send the wheel onto x100 / CAR. Small prizes give you
-/// another spin (with a wider gold zone); the red zone means BANKRUPT.
+/// No.114 Timing Wheel — hold and release inside the gold timing zone.
+/// Three attempts add fixed points. Misses add zero; earned score never drops.
 
 Paint _glow(Color c, double blur) => Paint()
   ..color = c
   ..maskFilter = ui.MaskFilter.blur(ui.BlurStyle.normal, blur);
 
-// slice kinds: 2/5/10 multipliers, 100 jackpot, -1 bankrupt, 0 car
-const _slices = <int>[100, 2, 5, -1, 10, 2, 0, 5, 2, -1, 10, 5];
+// Slice point values: additive scores, with zero-point misses.
+const _slices = <int>[100, 20, 50, 0, 50, 20, 100, 50, 20, 0, 50, 50];
 const _sliceCols = <int, Color>{
-  2: Color(0xFF3FB8FF),
-  5: Color(0xFF7ED957),
-  10: Color(0xFFFF8A1F),
+  0: Color(0xFF6A627A),
+  20: Color(0xFF3FB8FF),
+  50: Color(0xFF7ED957),
   100: Color(0xFFFFD23F),
-  -1: Color(0xFF231A2E),
-  0: Color(0xFFFF5FC8),
 };
 
 enum _St { ready, hold, spin, result, over }
@@ -36,13 +33,11 @@ class G114 extends MiniGame {
   double _hold = 0;
   double _power = 0;
   int _spins = 0;
-  int _bank = 1000;
-  double _bankDisp = 1000;
+  int _points = 0;
+  double _pointsDisp = 0;
   double _flap = 0;
   int _lastPeg = 0;
-  int _result = 2;
   Face _face = Face.happy;
-  double _carT = -1;
   double _bulbT = 0;
 
   @override
@@ -62,9 +57,8 @@ class G114 extends MiniGame {
     _t += dt;
     _stT += dt;
     _flap = M.approach(_flap, 0, 14, dt);
-    _bankDisp = M.approach(_bankDisp, _bank.toDouble(), 4, dt);
-    if ((_bankDisp - _bank).abs() < 1) _bankDisp = _bank.toDouble();
-    if (_carT >= 0) _carT += dt;
+    _pointsDisp = M.approach(_pointsDisp, _points.toDouble(), 4, dt);
+    if ((_pointsDisp - _points).abs() < 1) _pointsDisp = _points.toDouble();
     switch (_st) {
       case _St.hold:
         _hold += dt;
@@ -87,15 +81,15 @@ class G114 extends MiniGame {
         _bulbT += dt * (1 + (1 - u) * 6);
         if (u >= 1) _land();
       case _St.result:
-        if (_result > 0 && _result < 100 && _stT > .8) {
+        if (_stT > .8 && _spins < 3) {
           _st = _St.ready;
           _stT = 0;
           _power = 0;
           _face = Face.happy;
         }
       case _St.over:
-        if ((_result == 100 || _result == 0) && chance(.4)) {
-          host.fx.coins(Offset(rand(20, 340), 660), count: 2, speed: 850);
+        if (_points >= 100 && chance(.2)) {
+          host.fx.sparkle(Offset(rand(20, 340), 200), count: 2, radius: 25, color: Pal.sky);
         }
       default:
         _bulbT += dt;
@@ -106,7 +100,7 @@ class G114 extends MiniGame {
 
   @override
   void onDown(Offset p) {
-    if (_st != _St.ready) return;
+    if (_st != _St.ready || _spins >= 3 || host.finished) return;
     _st = _St.hold;
     _stT = 0;
     _hold = 0;
@@ -143,17 +137,17 @@ class G114 extends MiniGame {
     int target;
     double off;
     if (p <= _red || p > g[1]) {
-      // Both red zones (too weak / overshoot) are BANKRUPT, as drawn.
-      target = chance(.5) ? 3 : 9;
-      off = rand(-.3, .3);
+      // Missing the timing window costs this attempt, never previous points.
+      target = p <= _red ? 3 : 9;
+      off = 0;
     } else if (p >= g[0] && p <= g[1]) {
-      target = chance(.5) ? 0 : 6;
-      off = pick(const [-.36, .36, -.3, .3]); // agonisingly close to the edge
+      target = p < (g[0] + g[1]) / 2 ? 0 : 6;
+      off = 0;
     } else {
       final small = <int>[1, 2, 4, 5, 7, 8, 10, 11];
-      target = pick(small);
-      // near miss: land beside a jackpot slice when possible
-      off = rand(-.35, .35);
+      target = small[((p - _red) / (g[0] - _red) * small.length).floor().clamp(0, small.length - 1)];
+      // Mid-range timing adds the displayed points.
+      off = 0;
     }
     _spins++;
     _st = _St.spin;
@@ -189,52 +183,30 @@ class G114 extends MiniGame {
 
   void _land() {
     _theta = _to;
-    final kind = _slices[_under];
-    _result = kind;
-    _st = _St.result;
+    final gained = _slices[_under];
+    _points += gained;
+    host.addScore(gained);
     _stT = 0;
-    host.sfx(Sfx.reelStop);
-    const top = Offset(180, 176);
-    if (kind == 100 || kind == 0) {
+    _st = _St.result;
+    _face = gained > 0 ? Face.happy : Face.sad;
+    host.sfx(gained > 0 ? Sfx.ding : Sfx.oops);
+    host.fx.pop(gained > 0 ? '+$gained' : host.tr('miss', 'MISS'),
+        const Offset(180, 470), color: gained > 0 ? Pal.sky : Pal.gray, size: 32, direction: gained > 0 ? TextDirection.ltr : null);
+    if (_points >= 100) {
       _st = _St.over;
       _face = Face.love;
-      if (kind == 100) {
-        _bank *= 100;
-      } else {
-        _carT = 0;
-        _bank += 3000000;
-        host.sfx(Sfx.engine, volume: .7);
-      }
-      host.sfx(Sfx.ssr);
-      host.sfx(Sfx.fanfare);
-      host.sfx(Sfx.cash);
+      host.fx.confetti(count: 120);
       host.flash(Pal.white, .3);
       host.shake(16, .6);
       host.hitStop(.12);
       host.punch(.08);
-      host.fx.confetti(count: 120);
-      host.fx.coins(_c, count: 40, speed: 800);
-      host.fx.burst(top, Pal.yellow, count: 40, speed: 420, shape: PartShape.star, gravity: 200);
+      host.fx.burst(_c, Pal.yellow, count: 40, speed: 800, shape: PartShape.star);
+      host.fx.burst(const Offset(180, 176), Pal.yellow, count: 40, speed: 420, shape: PartShape.star);
+      host.sfx(Sfx.fanfare);
       host.win(stars: _spins == 1 ? 3 : (_spins == 2 ? 2 : 1));
-    } else if (kind == -1) {
+    } else if (_spins >= 3) {
       _st = _St.over;
-      _face = Face.dead;
-      _bank = 0;
-      host.sfx(Sfx.buzzer);
-      host.sfx(Sfx.jingleLose);
-      host.shake(12, .5);
-      host.flash(const Color(0xAA000000), .3);
-      host.fx.smoke(top, count: 10, color: const Color(0xCC333333), size: 24);
-      host.fx.pop(host.tr('bankrupt', 'BANKRUPT'), const Offset(180, 470), color: Pal.red, size: 34, life: 1.4);
       host.lose();
-    } else {
-      _bank *= kind;
-      _face = Face.happy;
-      host.sfx(Sfx.coins, rate: 1 + kind * .03);
-      host.shake(5);
-      host.fx.coins(top, count: 6 + kind, speed: 450);
-      host.fx.pop('x$kind!', top + const Offset(0, 70), color: Pal.yellow, size: 36);
-      host.fx.pop(host.tr('again', 'AGAIN!'), const Offset(180, 470), color: Pal.white, size: 26, life: 1.1);
     }
   }
 
@@ -243,15 +215,14 @@ class G114 extends MiniGame {
   @override
   void render(Canvas c) {
     _stage(c);
-    _bankHud(c);
+    _scoreHud(c);
     _wheel(c);
     _pointer(c);
     _meter(c);
     _hostGuy(c);
-    if (_carT >= 0) _car(c);
-    if (_st == _St.over && (_result == 100 || _result == 0)) {
+    if (_st == _St.over && _points >= 100) {
       final k = M.easeOutBack(M.clamp01(_stT / .4));
-      D.title(c, _result == 100 ? 'x100!!' : host.tr('jackpot', 'JACKPOT!'), const Offset(180, 322), size: 50,
+      D.title(c, host.tr('perfect', 'PERFECT!'), const Offset(180, 322), size: 50,
           color: D.hsv(_t * 400, .6, 1), scale: k, rotate: -.08);
     }
   }
@@ -305,12 +276,12 @@ class G114 extends MiniGame {
     }
   }
 
-  void _bankHud(Canvas c) {
+  void _scoreHud(Canvas c) {
     const r = Rect.fromLTWH(84, 66, 192, 40);
     D.rrect(c, r, 20, const Color(0xEE1A0612), border: Pal.gold, borderWidth: 3);
-    D.coin(c, const Offset(106, 86), 12, spin: _t * .7);
-    final v = _bankDisp.round();
-    D.text(c, _fmt(v), const Offset(196, 86), size: 22, color: v == 0 ? Pal.red : Pal.yellow, stroke: Pal.ink, strokeWidth: 5, maxWidth: 150);
+    D.star(c, const Offset(106, 86), 12, Pal.sky, border: Pal.ink);
+    final v = _pointsDisp.round();
+    D.text(c, '${_fmt(v)} / 100', const Offset(196, 86), size: 22, color: v == 0 ? Pal.red : Pal.yellow, stroke: Pal.ink, strokeWidth: 5, maxWidth: 150);
   }
 
   static String _fmt(int v) {
@@ -381,17 +352,9 @@ class G114 extends MiniGame {
       c.rotate(mid);
       c.translate(_r * .66, 0);
       c.rotate(math.pi / 2);
-      switch (kind) {
-        case -1:
-          _skull(c, Offset.zero, 15);
-        case 0:
-          c.rotate(-math.pi / 2);
-          _carIcon(c, Offset.zero, 17);
-        case 100:
-          D.text(c, 'x100', Offset.zero, size: 21, color: const Color(0xFFD01A2A), stroke: Pal.white, strokeWidth: 4, italic: true);
-        default:
-          D.text(c, 'x$kind', Offset.zero, size: 22, color: Pal.white, stroke: Pal.ink, strokeWidth: 5);
-      }
+      D.text(c, kind == 0 ? '0' : '+$kind', Offset.zero,
+          size: kind == 100 ? 19 : 22, color: Pal.white, stroke: Pal.ink, strokeWidth: 4, direction: TextDirection.ltr);
+
       c.restore();
     }
     c.restore();
@@ -419,24 +382,6 @@ class G114 extends MiniGame {
           ..lineTo(o.dx + r * .12, o.dy + r * .32)
           ..close(),
         D.fill(const Color(0xFF231A2E)));
-  }
-
-  void _carIcon(Canvas c, Offset o, double s) {
-    final body = RRect.fromRectAndRadius(Rect.fromCenter(center: o + Offset(0, s * .1), width: s * 2.2, height: s * .7), Radius.circular(s * .25));
-    final cab = Path()
-      ..moveTo(o.dx - s * .6, o.dy - s * .25)
-      ..lineTo(o.dx - s * .3, o.dy - s * .7)
-      ..lineTo(o.dx + s * .45, o.dy - s * .7)
-      ..lineTo(o.dx + s * .75, o.dy - s * .25)
-      ..close();
-    c.drawPath(cab, D.fill(const Color(0xFFBFE8FF)));
-    c.drawPath(cab, D.stroke(Pal.ink, 2));
-    c.drawRRect(body, D.fill(Pal.red));
-    c.drawRRect(body, D.stroke(Pal.ink, 2));
-    for (final sx in [-.65, .65]) {
-      c.drawCircle(o + Offset(sx * s, s * .45), s * .28, D.fill(Pal.ink));
-      c.drawCircle(o + Offset(sx * s, s * .45), s * .12, D.fill(const Color(0xFFCCCCCC)));
-    }
   }
 
   void _pointer(Canvas c) {
@@ -526,13 +471,4 @@ class G114 extends MiniGame {
     c.drawCircle(feet + const Offset(23, -79), 5, D.fill(const Color(0xFF8E93A8)));
   }
 
-  void _car(Canvas c) {
-    final u = M.easeOutBack(M.clamp01(_carT / .7));
-    final x = M.lerp(460, 262, u);
-    final o = Offset(x, 596 + math.sin(_t * 30) * (u < 1 ? 1.5 : 0));
-    D.shadow(c, o + const Offset(0, 26), 150, 16, .4);
-    c.drawCircle(o, 70, _glow(const Color(0x66FF5FC8), 20));
-    D.rays(c, o, 90, const Color(0x33FFFFFF), count: 10, t: _t * 2);
-    _carIcon(c, o, 44);
-  }
 }

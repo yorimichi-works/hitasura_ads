@@ -19,4 +19,13 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze --no-pub
       - run: flutter test --no-pub
+      - name: Render updated score-game scenes
+        run: flutter test test/arcade/game_snap_test.dart --no-pub --dart-define=GAMES=56,102,110,111,114,115,117
+      - name: Retain score-game scene review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: score-game-scenes
+          path: build/snaps
+          if-no-files-found: error
       - run: flutter build apk --debug --target-platform android-arm64 --no-pub

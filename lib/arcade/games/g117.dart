@@ -1,22 +1,22 @@
 import '../engine/engine.dart';
 
-/// No.117 Coin Pusher — drop coins in front of the sliding shelf, shove the
-/// overhanging pile off the edge. Time a drop into the moving CHANCE slot for
-/// a coin rain.
+/// No.117 Disc Pusher — place colored discs in front of the sliding shelf.
+/// Push discs over the edge for points. Aim at the moving gate for a bonus.
+/// Thirty-two attempts; scored points can never be spent or lost.
 class G117 extends MiniGame {
   static const _target = 30;
   static const _fw = 300.0; // field width (world units)
   static const _edge = 300.0; // front edge (world y)
   static const _r = 13.0;
   static const _auto = bool.fromEnvironment('AUTOPLAY');
-  static const _shelfOut = 80.0; // shelf extended beyond this -> dropped coin is lost
+  static const _shelfOut = 80.0; // shelf extended beyond this -> dropped disc is lost
 
-  final List<_Coin> _coins = [];
+  final List<_Disc> _discs = [];
   final List<_Drop> _drops = [];
   final List<_Fall> _falls = [];
-  int _hand = 32;
-  int _won = 0;
-  double _shownWon = 0;
+  int _dropsLeft = 32;
+  int _points = 0;
+  double _shownPoints = 0;
   double _t = 0;
   double _push = 72;
   double _cd = 0;
@@ -36,13 +36,13 @@ class G117 extends MiniGame {
     for (var y = 150.0; y < _edge - 6; y += _r * 1.74, row++) {
       final odd = row.isOdd;
       for (var x = _r + (odd ? _r : 0); x <= _fw - _r; x += _r * 2.02) {
-        _coins.add(_Coin(x + rand(-1.5, 1.5), y + rand(-1.5, 1.5), _r, _CoinKind.normal));
+        _discs.add(_Disc(x + rand(-1.5, 1.5), y + rand(-1.5, 1.5), _r, _DiscKind.normal));
       }
     }
-    // the tempting big gold coin + gems near the edge
-    _coins.add(_Coin(rand(80, 220), _edge - 36, 21, _CoinKind.big));
-    _coins.add(_Coin(rand(20, 120), _edge - 50, 12, _CoinKind.gem));
-    _coins.add(_Coin(rand(180, 280), _edge - 58, 12, _CoinKind.gem));
+    // the tempting big gold disc + gems near the edge
+    _discs.add(_Disc(rand(80, 220), _edge - 36, 21, _DiscKind.big));
+    _discs.add(_Disc(rand(20, 120), _edge - 50, 12, _DiscKind.gem));
+    _discs.add(_Disc(rand(180, 280), _edge - 58, 12, _DiscKind.gem));
     for (var i = 0; i < 6; i++) {
       _relax();
     }
@@ -59,12 +59,12 @@ class G117 extends MiniGame {
 
   // -------------------------------------------------------------- logic ---
   void _relax() {
-    final n = _coins.length;
+    final n = _discs.length;
     for (var it = 0; it < 4; it++) {
       for (var i = 0; i < n; i++) {
-        final a = _coins[i];
+        final a = _discs[i];
         for (var j = i + 1; j < n; j++) {
-          final b = _coins[j];
+          final b = _discs[j];
           final dx = b.x - a.x, dy = b.y - a.y;
           final rr = a.r + b.r - 1;
           if (dx.abs() >= rr || dy.abs() >= rr) continue;
@@ -73,7 +73,7 @@ class G117 extends MiniGame {
           final d = sqrt(d2) + 1e-4;
           final ov = (rr - d) / 2;
           final nx = dx / d, ny = dy / d;
-          // heavier big coin moves less
+          // heavier big disc moves less
           final wa = b.r / (a.r + b.r), wb = a.r / (a.r + b.r);
           a.x -= nx * ov * 2 * wa;
           a.y -= ny * ov * 2 * wa;
@@ -81,7 +81,7 @@ class G117 extends MiniGame {
           b.y += ny * ov * 2 * wb;
         }
       }
-      for (final c in _coins) {
+      for (final c in _discs) {
         if (c.x < c.r) c.x = c.r;
         if (c.x > _fw - c.r) c.x = _fw - c.r;
         if (c.y < _push + c.r) c.y = _push + c.r;
@@ -95,7 +95,7 @@ class G117 extends MiniGame {
     _cd -= dt;
     _slotFlash = M.approach(_slotFlash, 0, 3, dt);
     _trayBump = M.approach(_trayBump, 0, 8, dt);
-    _shownWon = M.approach(_shownWon, _won.toDouble(), 10, dt);
+    _shownPoints = M.approach(_shownPoints, _points.toDouble(), 10, dt);
     _push = 70 + 36 * sin(_t * 2.5 * host.speed);
     _slotX = 150 + sin(_t * 1.9 * host.speed) * 105;
     if (_auto && !host.finished && _dropOk) _drop(_proj(150 + sin(_t * 3) * 100, 60).dx);
@@ -107,7 +107,7 @@ class G117 extends MiniGame {
         d.checkedSlot = true;
         if ((d.wx - _slotX).abs() < 11) {
           d.dead = true;
-          _jackpot();
+          _gateBonus();
           continue;
         }
       }
@@ -118,8 +118,8 @@ class G117 extends MiniGame {
           _wasted(d.wx);
           continue;
         }
-        final c = _Coin(d.wx.clamp(_r, _fw - _r), _push + _r + 2, _r, _CoinKind.normal)..bounce = 1;
-        _coins.add(c);
+        final c = _Disc(d.wx.clamp(_r, _fw - _r), _push + _r + 2, _r, _DiscKind.normal)..bounce = 1;
+        _discs.add(c);
         host.sfx(Sfx.clang, volume: .35, rate: 1.6 + rand(0, .3));
       }
     }
@@ -127,15 +127,15 @@ class G117 extends MiniGame {
 
     // pusher contact + relax
     _relax();
-    for (final c in _coins) {
+    for (final c in _discs) {
       c.bounce = M.approach(c.bounce, 0, 8, dt);
     }
 
-    // coins over the edge
-    for (var i = _coins.length - 1; i >= 0; i--) {
-      final c = _coins[i];
+    // discs over the edge
+    for (var i = _discs.length - 1; i >= 0; i--) {
+      final c = _discs[i];
       if (c.y > _edge) {
-        _coins.removeAt(i);
+        _discs.removeAt(i);
         _fallOff(c);
       }
     }
@@ -153,38 +153,39 @@ class G117 extends MiniGame {
     _falls.removeWhere((f) => f.p.dy > 700);
 
     if (!host.finished && !_done) {
-      if (_hand <= 0 && _drops.isEmpty) {
+      if (_dropsLeft <= 0 && _drops.isEmpty) {
         _idle += dt;
         if (_idle > 2.2) {
           _done = true;
-          host.fx.pop(host.tr('out_of_coins', 'NO COINS'), const Offset(180, 330), color: Pal.red, size: 32);
+          host.fx.pop(host.tr('out', 'OUT'), const Offset(180, 330), color: Pal.red, size: 32);
           host.lose();
         }
       }
     }
   }
 
-  void _fallOff(_Coin c) {
-    final v = switch (c.kind) { _CoinKind.big => 5, _CoinKind.gem => 3, _CoinKind.normal => 1 };
-    _won += v;
+  void _fallOff(_Disc c) {
+    final v = switch (c.kind) { _DiscKind.big => 5, _DiscKind.gem => 3, _DiscKind.normal => 1 };
+    _points += v;
+    host.addScore(v);
     _streak++;
     _lastFall = _t;
     _idle = 0;
     final at = _proj(c.x, _edge);
     _falls.add(_Fall(at, c.kind, c.r * _scale(_edge)));
-    if (c.kind == _CoinKind.big) {
+    if (c.kind == _DiscKind.big) {
       host.sfx(Sfx.jingleWin, volume: .6);
-      host.sfx(Sfx.coins);
+      host.sfx(Sfx.sparkle);
       host.shake(8, .35);
       host.flash(Pal.yellow, .18);
-      host.fx.coins(at, count: 24, speed: 480);
-      host.fx.pop(host.tr('big_coin', 'BIG COIN!'), at + const Offset(0, -40), color: Pal.yellow, size: 34, life: 1.1);
-    } else if (c.kind == _CoinKind.gem) {
+      host.fx.burst(at, Pal.sky, count: 24, speed: 480, shape: PartShape.star);
+      host.fx.pop(host.tr('great', 'GREAT!'), at + const Offset(0, -40), color: Pal.yellow, size: 34, life: 1.1);
+    } else if (c.kind == _DiscKind.gem) {
       host.sfx(Sfx.gem);
       host.fx.burst(at, Pal.sky, count: 14, shape: PartShape.star, speed: 260);
       host.fx.pop('+3', at + const Offset(0, -30), color: Pal.sky, size: 28);
     } else {
-      host.sfx(Sfx.coin, rate: 1 + min(_streak, 12) * .06, volume: .8);
+      host.sfx(Sfx.ding, rate: 1 + min(_streak, 12) * .06, volume: .8);
       host.fx.sparkle(at, count: 3, radius: 10, color: Pal.yellow);
       host.fx.pop('+1', at + const Offset(0, -24), color: Pal.yellow, size: 20, life: .6);
     }
@@ -193,34 +194,34 @@ class G117 extends MiniGame {
       host.sfx(Sfx.combo, rate: 1 + _streak * .04);
       host.punch(.02);
     }
-    if (!host.finished && _won >= _target) {
+    if (!host.finished && _points >= _target) {
       final left = host.timeLeft;
-      host.fx.coins(const Offset(180, 560), count: 40, speed: 620);
-      host.fx.pop(host.tr('jackpot', 'JACKPOT!'), const Offset(180, 300), color: Pal.yellow, size: 48, life: 1.4);
+      host.fx.burst(const Offset(180, 560), Pal.sky, count: 40, speed: 620, shape: PartShape.star);
+      host.fx.pop(host.tr('perfect', 'PERFECT!'), const Offset(180, 300), color: Pal.yellow, size: 48, life: 1.4);
       host.win(stars: left > 6 ? 3 : (left > 2.5 ? 2 : 1));
     }
   }
 
-  void _jackpot() {
+  void _gateBonus() {
     _slotFlash = 1;
     host.sfx(Sfx.ssr);
-    host.sfx(Sfx.coins, volume: .8);
+    host.sfx(Sfx.sparkle, volume: .8);
     host.shake(7, .3);
     host.flash(const Color(0xFFFFE066), .2);
     final sp = Offset(_proj(_slotX, 40).dx, 170);
     host.fx.ring(sp, Pal.yellow, size: 110, life: .5);
     host.fx.burst(sp, Pal.yellow, count: 26, shape: PartShape.star, speed: 300, colors: Pal.candy);
-    host.fx.pop(host.tr('chance', 'CHANCE!'), sp + const Offset(0, -30), color: Pal.pink, size: 34, life: 1.2);
-    // coin rain onto the field + refund
+    host.fx.pop(host.tr('bonus', 'BONUS!'), sp + const Offset(0, -30), color: Pal.pink, size: 34, life: 1.2);
+    // Accuracy bonus launches a small fan of discs onto the playfield.
     for (var i = 0; i < 6; i++) {
       _drops.add(_Drop(rand(20, _fw - 20))
         ..t = -i * .05
         ..checkedSlot = true);
     }
-    _hand += 3;
+    // A gate hit launches extra discs onto the playfield, never refunds attempts.
   }
 
-  /// Would a coin dropped now land in front of the shelf (not on top of it)?
+  /// Would a disc dropped now land in front of the shelf (not on top of it)?
   bool get _dropOk => 70 + 36 * sin((_t + .3) * 2.5 * host.speed) <= _shelfOut;
 
   void _wasted(double wx) {
@@ -232,9 +233,9 @@ class G117 extends MiniGame {
   }
 
   void _drop(double sx) {
-    if (host.finished || _hand <= 0 || _cd > 0) return;
+    if (host.finished || _dropsLeft <= 0 || _cd > 0) return;
     _cd = .13;
-    _hand--;
+    _dropsLeft--;
     _aimX = sx.clamp(40.0, 320.0);
     final wx = _unprojX(_aimX, 40).clamp(_r, _fw - _r);
     _drops.add(_Drop(wx)..fromRail = true);
@@ -263,7 +264,7 @@ class G117 extends MiniGame {
     D.gradientBg(c, const [Color(0xFF3B1466), Color(0xFF1A0B33)]);
     D.rays(c, const Offset(180, 150), 500, const Color(0x10FFFFFF), count: 14, t: _t * .2);
 
-    // cabinet top: marquee + chance slot wall
+    // cabinet top: marquee + bonus gate wall
     D.rrect(c, const Rect.fromLTRB(14, 42, 346, 240), 22, const Color(0xFFE23C8A),
         border: Pal.ink,
         borderWidth: 4,
@@ -276,19 +277,19 @@ class G117 extends MiniGame {
       c.drawCircle(p, on ? 6.5 : 4.5, D.fill(on ? const Color(0x88FFE066) : const Color(0x00000000)));
       c.drawCircle(p, 4, D.fill(on ? const Color(0xFFFFF3B0) : const Color(0xFF8A2A5C)));
     }
-    // coin launcher rail
+    // disc launcher rail
     D.rrect(c, const Rect.fromLTRB(30, 64, 330, 84), 10, const Color(0xFF2A0F40), border: Pal.ink, borderWidth: 2.5);
     final ok = _dropOk;
     c.drawCircle(Offset(_aimX, 74), 13, D.fill(ok ? const Color(0xAA7CFF6B) : const Color(0x88FF4D4D)));
-    D.coin(c, Offset(_aimX, 74), 9, spin: _t);
-    // back wall with chance slot
+    _disc(c, Offset(_aimX, 74), 9);
+    // back wall with bonus gate
     const wall = Rect.fromLTRB(30, 92, 330, 232);
     D.rrect(c, wall, 14, const Color(0xFF1C0F38), border: Pal.ink, borderWidth: 3);
     for (var i = 0; i < 12; i++) {
       final a = i / 12 * pi * 2 + _t * .6;
       c.drawCircle(Offset(180 + cos(a) * 110, 160 + sin(a) * 42), 3, D.fill(D.hsv(i * 30 + _t * 120, .7, 1, .6)));
     }
-    D.text(c, host.tr('chance', 'CHANCE!'), const Offset(180, 118), size: 20, color: D.hsv(_t * 200, .5, 1), stroke: Pal.ink);
+    D.text(c, host.tr('bonus', 'BONUS!'), const Offset(180, 118), size: 20, color: D.hsv(_t * 200, .5, 1), stroke: Pal.ink);
     final sp = _proj(_slotX, 40);
     final slotRect = Rect.fromCenter(center: Offset(sp.dx, 170), width: 40, height: 22);
     D.rrect(c, slotRect.inflate(6 + _slotFlash * 10), 12, Pal.yellow.withValues(alpha: .25 + _slotFlash * .5));
@@ -328,11 +329,11 @@ class G117 extends MiniGame {
       c.drawPath(wallP, D.stroke(const Color(0xCCE6F6FF), 2));
     }
 
-    // coins behind the pusher front never exist; draw pusher, then coins by depth
+    // discs behind the pusher front never exist; draw pusher, then discs by depth
     _drawPusher(c);
-    _coins.sort((a, b) => a.y.compareTo(b.y));
-    for (final co in _coins) {
-      _drawCoin(c, co);
+    _discs.sort((a, b) => a.y.compareTo(b.y));
+    for (final co in _discs) {
+      _drawDisc(c, co);
     }
     // airborne drops (fall from rail to field)
     for (final d in _drops) {
@@ -341,7 +342,7 @@ class G117 extends MiniGame {
       final k = (d.t / .3).clamp(0.0, 1.0);
       final y = M.lerp(80, land.dy, k * k);
       final x = M.lerp(_aimXFor(d.wx), land.dx, k);
-      D.coin(c, Offset(x, y), 11 + k * 2, spin: d.t * 3);
+      _disc(c, Offset(x, y), 11 + k * 2);
     }
 
     // front edge lip with warning lights
@@ -356,32 +357,32 @@ class G117 extends MiniGame {
     const tray = Rect.fromLTRB(14, 556, 346, 636);
     D.rrect(c, tray, 18, const Color(0xFF2A1250), border: Pal.ink, borderWidth: 4);
     D.rrect(c, Rect.fromLTRB(26, 566 + _trayBump * 3, 334, 626), 12, const Color(0xFF12071F));
-    // pile of won coins inside tray
-    for (var i = 0; i < min(_won, 40); i++) {
+    // pile of scored discs inside tray
+    for (var i = 0; i < min(_points, 40); i++) {
       final x = 50 + (i * 37 % 260).toDouble();
       final y = 616 - (i ~/ 7) * 5.0 + _trayBump * 2;
-      c.drawOval(Rect.fromCenter(center: Offset(x, y + 2), width: 24, height: 10), D.fill(const Color(0xFFB8860B)));
-      c.drawOval(Rect.fromCenter(center: Offset(x, y), width: 24, height: 10), D.fill(Pal.gold));
+      c.drawOval(Rect.fromCenter(center: Offset(x, y + 2), width: 24, height: 10), D.fill(const Color(0xFF236B91)));
+      c.drawOval(Rect.fromCenter(center: Offset(x, y), width: 24, height: 10), D.fill(Pal.sky));
     }
     for (final f in _falls) {
       switch (f.kind) {
-        case _CoinKind.gem:
-          D.gem(c, f.p, 11, Pal.sky);
+        case _DiscKind.gem:
+          D.star(c, f.p, 11, Pal.lime, border: Pal.ink);
         default:
-          D.coin(c, f.p, f.r, spin: f.spin * .1);
+          _disc(c, f.p, f.r);
       }
     }
     // counter
-    final full = _won >= _target;
-    D.text(c, '${min(_shownWon.round(), 99)}', const Offset(150, 590),
+    final full = _points >= _target;
+    D.text(c, '${min(_shownPoints.round(), 99)}', const Offset(150, 590),
         size: 38 + _trayBump * 6, color: full ? Pal.lime : Pal.yellow, stroke: Pal.ink, strokeWidth: 7);
     D.text(c, '/$_target', const Offset(200, 598), size: 18, color: Pal.white, stroke: Pal.ink, anchor: Alignment.centerLeft);
-    // coins in hand
+    // attempts remaining
     D.rrect(c, const Rect.fromLTRB(250, 568, 334, 598), 12, const Color(0xCC000000));
-    D.coin(c, const Offset(266, 583), 9);
-    D.text(c, 'x$_hand', const Offset(280, 583), size: 16, color: _hand <= 5 ? Pal.red : Pal.white, anchor: Alignment.centerLeft);
+    _disc(c, const Offset(266, 583), 9);
+    D.text(c, 'x$_dropsLeft', const Offset(280, 583), size: 16, color: _dropsLeft <= 5 ? Pal.red : Pal.white, anchor: Alignment.centerLeft);
 
-    if (host.time < 2.4 && _hand >= 30) {
+    if (host.time < 2.4 && _dropsLeft >= 30) {
       D.hand(c, Offset(_proj(_slotX, 0).dx, 200), _t);
       D.text(c, host.tr('tap', 'TAP!'), const Offset(180, 216), size: 24, color: Pal.yellow, stroke: Pal.ink);
     }
@@ -417,7 +418,14 @@ class G117 extends MiniGame {
     }
   }
 
-  void _drawCoin(Canvas c, _Coin co) {
+  void _disc(Canvas c, Offset p, double r) {
+    c.drawCircle(p + const Offset(0, 2), r, D.fill(const Color(0xFF236B91)));
+    c.drawCircle(p, r, D.fill(Pal.sky));
+    c.drawCircle(p, r, D.stroke(Pal.ink, 1.5));
+    D.star(c, p, r * .55, Pal.white);
+  }
+
+  void _drawDisc(Canvas c, _Disc co) {
     final s = _scale(co.y);
     var p = _proj(co.x, co.y);
     final danger = co.y > _edge - co.r * .7;
@@ -425,23 +433,23 @@ class G117 extends MiniGame {
     p += Offset(0, -co.bounce * 8);
     final w = co.r * 2 * s * 1.02, h = co.r * 1.1 * s;
     switch (co.kind) {
-      case _CoinKind.gem:
+      case _DiscKind.gem:
         c.drawOval(Rect.fromCenter(center: p + const Offset(0, 3), width: w, height: h), D.fill(const Color(0x55000000)));
-        D.gem(c, p + Offset(0, -h * .4), co.r * s, Pal.sky);
+        D.star(c, p + Offset(0, -h * .4), co.r * s, Pal.lime, border: Pal.ink);
         if ((_t * 2 + co.x * .01) % 1 < .5) D.star(c, p + Offset(w * .35, -h * 1.2), 3.5, Pal.white);
-      case _CoinKind.big || _CoinKind.normal:
-        final big = co.kind == _CoinKind.big;
+      case _DiscKind.big || _DiscKind.normal:
+        final big = co.kind == _DiscKind.big;
         c.drawOval(Rect.fromCenter(center: p + Offset(0, 3.5 * s), width: w, height: h),
-            D.fill(big ? const Color(0xFF9A6A00) : const Color(0xFFA87A12)));
-        c.drawOval(Rect.fromCenter(center: p, width: w, height: h), D.fill(big ? const Color(0xFFFFD84A) : Pal.gold));
-        c.drawOval(Rect.fromCenter(center: p, width: w * .72, height: h * .66), D.stroke(const Color(0xFFE0A019), 1.6 * s));
+            D.fill(big ? const Color(0xFF356727) : const Color(0xFF236B91)));
+        c.drawOval(Rect.fromCenter(center: p, width: w, height: h), D.fill(big ? const Color(0xFF91ED5A) : Pal.sky));
+        c.drawOval(Rect.fromCenter(center: p, width: w * .72, height: h * .66), D.stroke(const Color(0xFF1C5277), 1.6 * s));
         c.drawOval(Rect.fromCenter(center: p + Offset(-w * .18, -h * .15), width: w * .25, height: h * .22),
             D.fill(const Color(0xAAFFFFFF)));
         if (big) {
           c.save();
           c.translate(p.dx, p.dy);
           c.scale(1, .52);
-          D.star(c, Offset.zero, co.r * s * .5, const Color(0xFFFF9E1F), border: const Color(0xFF9A6A00));
+          D.star(c, Offset.zero, co.r * s * .5, const Color(0xFFB8FF88), border: const Color(0xFF356727));
           c.restore();
           if ((_t * 2) % 1 < .5) D.star(c, p + Offset(w * .4, -h * .7), 4, Pal.white);
         }
@@ -450,13 +458,13 @@ class G117 extends MiniGame {
   }
 }
 
-enum _CoinKind { normal, big, gem }
+enum _DiscKind { normal, big, gem }
 
-class _Coin {
-  _Coin(this.x, this.y, this.r, this.kind);
+class _Disc {
+  _Disc(this.x, this.y, this.r, this.kind);
   double x, y;
   final double r;
-  final _CoinKind kind;
+  final _DiscKind kind;
   double bounce = 0;
 }
 
@@ -472,7 +480,7 @@ class _Drop {
 class _Fall {
   _Fall(this.p, this.kind, this.r);
   Offset p;
-  final _CoinKind kind;
+  final _DiscKind kind;
   final double r;
   double vy = -60;
   double spin = 0;

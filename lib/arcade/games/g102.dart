@@ -2,18 +2,17 @@ import 'dart:math' as math;
 
 import '../engine/engine.dart';
 
-/// No.102 Lucky Dice 3D — hold to shake, release in the LUCKY zone, roll a 7.
+/// No.102 Timing Dice 3D — hold to shake, release in the perfect zone.
 ///
-/// Two real 3D dice (custom-projected rounded cubes with pips) tumble across
-/// a casino felt table. Releasing the shake meter in the gold zone "loads"
-/// the dice (it's an ad — of course it's rigged). 3 throws, hit 7 once.
+/// Two 3D numbered cubes tumble across a tabletop. Releasing the meter
+/// in the gold zone makes their values add up to 7. Three throws, hit 7 once.
 class G102 extends MiniGame {
   static const _target = 7;
   static const _maxThrows = 3;
   static const _rollTime = 1.45;
 
   final scene = Scene3();
-  late final Mesh _felt, _rails, _chipsA, _chipsB, _base;
+  late final Mesh _tabletop, _rails, _base;
   final _dice = <_Die>[];
 
   _Ph _ph = _Ph.ready;
@@ -25,7 +24,7 @@ class G102 extends MiniGame {
   Offset _prev = Offset.zero;
   double _swipeVx = 0;
   int _sum = 0;
-  bool _lucky = false;
+  bool _timed = false;
   double _celebrate = 0;
   double _winDelay = -1;
   final _history = <int>[];
@@ -53,16 +52,16 @@ class G102 extends MiniGame {
     scene.ambient = .5;
     scene.diffuse = .6;
     scene.light = const V3(-.35, 1, -.5).normalized;
-    const feltA = Color(0xFF138A4E), feltB = Color(0xFF17975A);
-    _felt = Mesh.grid(9.2, 9.0, 12, 12, (i, j) {
+    const tableA = Color(0xFF82BED1), tableB = Color(0xFF95CBDA);
+    _tabletop = Mesh.grid(9.2, 9.0, 12, 12, (i, j) {
       final d = ((i - 5.5).abs() + (j - 5.5).abs());
-      return d < 4 ? feltB : ((i + j).isOdd ? feltA : const Color(0xFF12824A));
+      return d < 4 ? tableB : ((i + j).isOdd ? tableA : const Color(0xFF79B2C7));
     });
-    _base = Mesh.box(11.4, 1.2, 11.0, const Color(0xFF4A1E14));
-    const wood = Color(0xFF8A3B1E), gold = Color(0xFFFFC53D);
+    _base = Mesh.box(11.4, 1.2, 11.0, const Color(0xFF875E42));
+    const wood = Color(0xFFBA8C63), edge = Color(0xFFE4C69C);
     final parts = <(Mesh, V3)>[];
     Mesh seg(double w, double d) =>
-        Mesh.box(w, .55, d, wood, colors: [gold, wood, wood, wood, wood, wood]);
+        Mesh.box(w, .55, d, wood, colors: [edge, wood, wood, wood, wood, wood]);
     for (var i = 0; i < 7; i++) {
       final x = -4.8 + i * 1.6;
       parts.add((seg(1.6, .8), V3(x, .27, -4.9)));
@@ -74,12 +73,6 @@ class G102 extends MiniGame {
       parts.add((seg(.8, 1.64), V3(5.0, .27, z)));
     }
     _rails = Mesh.merge(parts);
-    Mesh chips(List<Color> cols) => Mesh.merge([
-          for (var i = 0; i < cols.length; i++)
-            (Mesh.cylinder(.42, .16, cols[i], seg: 10, cap: Color.lerp(cols[i], Pal.white, .35)), V3(0, .08 + i * .17, 0)),
-        ]);
-    _chipsA = chips(const [Pal.red, Pal.white, Pal.red, Pal.ink, Pal.red, Pal.gold]);
-    _chipsB = chips(const [Pal.blue, Pal.gold, Pal.blue, Pal.white]);
     _dice
       ..add(_Die(const Color(0xFFE8304A), Pal.white, Pal.white))
       ..add(_Die(const Color(0xFFFFF4E4), Pal.ink, Pal.red));
@@ -166,16 +159,16 @@ class G102 extends MiniGame {
     if (gold || (green && chance(.5))) {
       v1 = 1 + randInt(6);
       v2 = _target - v1;
-      _lucky = true;
+      _timed = true;
     } else {
       v1 = 1 + randInt(6);
       v2 = 1 + randInt(6);
-      // an honest near-miss is funnier than a random blowout
+      // keep a missed timing attempt close to the target
       if (v1 + v2 != _target && chance(.45)) v2 = (_target - v1 + (chance(.5) ? 1 : -1)).clamp(1, 6);
-      _lucky = false;
+      _timed = false;
     }
     if (gold) {
-      host.fx.pop(host.tr('lucky', 'LUCKY!'), const Offset(180, 470), color: Pal.gold, size: 34);
+      host.fx.pop(host.tr('perfect', 'PERFECT!'), const Offset(180, 470), color: Pal.gold, size: 34);
       host.sfx(Sfx.sparkle);
       host.fx.sparkle(const Offset(180, 560), count: 14, radius: 60, color: Pal.gold);
     } else if (green) {
@@ -246,7 +239,7 @@ class G102 extends MiniGame {
         if (_chargeT > 3.0) _throw();
       case _Ph.rolling:
         _simDice(dt);
-        if (_lucky && (_t * 14).floor() != ((_t - dt) * 14).floor()) {
+        if (_timed && (_t * 14).floor() != ((_t - dt) * 14).floor()) {
           for (final d in _dice) {
             final sp = scene.cam.project(d.pos);
             if (sp != null) host.fx.sparkle(sp, count: 2, radius: 22, color: Pal.gold);
@@ -359,16 +352,16 @@ class G102 extends MiniGame {
       _ph = _Ph.done;
       _celebrate = 3;
       host.sfx(Sfx.fanfare);
-      host.sfx(Sfx.coins);
+      host.sfx(Sfx.sparkle);
       host.sfx(Sfx.cheer, volume: .7);
       host.shake(10, .4);
       host.flash(Pal.gold, .25);
       host.punch(.08);
-      host.fx.coins(at, count: 30, speed: 520);
+      host.fx.burst(at, Pal.gold, count: 30, speed: 520, shape: PartShape.star);
       host.fx.confetti();
       host.fx.ring(at, Pal.gold, size: 160, life: .6);
-      host.fx.pop(host.tr('jackpot', 'JACKPOT!'), const Offset(180, 290), color: Pal.gold, size: 42, life: 1.4);
-      host.addScore(_throws == 1 ? 7777 : 777, const Offset(180, 330));
+      host.fx.pop(host.tr('clear', 'CLEAR!'), const Offset(180, 290), color: Pal.gold, size: 42, life: 1.4);
+      host.addScore((_maxThrows - _throws + 1) * 100, const Offset(180, 330));
       _winDelay = .55;
     } else {
       final off = (_sum - _target).abs();
@@ -402,26 +395,22 @@ class G102 extends MiniGame {
       ..focal = 410
       ..pos = V3(_camX, 8.6 - (_celebrate > 0 ? .6 : 0), -10.2 + _camZ)
       ..lookAt(V3(_camX * .6, 0, .9 + _camZ));
-    // pass 1: table + felt art + shadows
+    // pass 1: tabletop + target art + shadows
     scene.clear();
     scene.add(_base, pos: const V3(0, -.62, 0));
     scene.render(c);
     scene.clear();
-    scene.add(_felt, pos: const V3(0, .001, 0));
+    scene.add(_tabletop, pos: const V3(0, .001, 0));
     scene.render(c);
-    _feltArt(c, cam);
+    _tabletopArt(c, cam);
     for (final d in _dice) {
       final h = max(0.0, d.pos.y - .5);
       _groundPoly(c, cam, d.pos.x + h * .25, d.pos.z + h * .3, .62 + h * .12,
           Color.fromRGBO(0, 20, 5, (.45 - h * .08).clamp(.08, .45)));
     }
-    // pass 2: rails, chips, dice
+    // pass 2: rails and dice
     scene.clear();
     scene.add(_rails);
-    scene.add(_chipsA, pos: const V3(-5.0, .55, 3.9));
-    scene.add(_chipsB, pos: const V3(-5.0, .55, 2.9), rotY: .4);
-    scene.add(_chipsB, pos: const V3(5.0, .55, 3.7), rotY: 1.1);
-    scene.add(_chipsA, pos: V3(5.0, .55, 2.6), rotY: _t);
     for (final d in _dice) {
       scene.addSprite(d.pos, (cv, s, k) => _drawDie(cv, d));
     }
@@ -430,8 +419,8 @@ class G102 extends MiniGame {
   }
 
   void _background(Canvas c) {
-    D.gradientBg(c, const [Color(0xFF3A0A2A), Color(0xFF6A1238), Color(0xFF200818)]);
-    // casino bokeh
+    D.gradientBg(c, const [Color(0xFF24436B), Color(0xFF49789A), Color(0xFF1B3154)]);
+    // playroom lights
     for (var i = 0; i < 14; i++) {
       final x = (i * 71.3 + _t * (8 + i % 4 * 3)) % 400 - 20;
       final y = 60 + (i * 37 % 150).toDouble();
@@ -439,7 +428,7 @@ class G102 extends MiniGame {
       c.drawCircle(Offset(x, y), 10 + (i % 5) * 5.0,
           Paint()..color = col.withValues(alpha: .12 + .08 * sin(_t * 2 + i)));
     }
-    // marquee bulbs arc
+    // decorative lights
     for (var i = 0; i < 19; i++) {
       final a = pi + i / 18 * pi;
       final p = Offset(180 + cos(a) * 170, 225 + sin(a) * 140);
@@ -465,7 +454,7 @@ class G102 extends MiniGame {
     c.drawPath(path, Paint()..color = col);
   }
 
-  void _feltArt(Canvas c, Camera3 cam) {
+  void _tabletopArt(Canvas c, Camera3 cam) {
     // painted target ring + "7"
     final glow = _celebrate > 0 ? .5 + .5 * sin(_t * 20) : .0;
     _ringOutline(c, cam, 0, 1.2, 1.7, Color.lerp(const Color(0xAAFFD23F), Pal.white, glow)!, 4);
@@ -478,8 +467,6 @@ class G102 extends MiniGame {
       D.text(c, '$_target', Offset.zero, size: 90, color: const Color(0x55FFE9A0));
       c.restore();
     }
-    // pass line
-    _ringOutline(c, cam, 0, 0.8, 3.7, const Color(0x33FFFFFF), 2);
   }
 
   void _ringOutline(Canvas c, Camera3 cam, double x, double z, double r, Color col, double w) {
@@ -607,7 +594,7 @@ class G102 extends MiniGame {
       Rect zone(double a, double b) => Rect.fromLTRB(r.left + r.width * a, r.top, r.left + r.width * b, r.bottom);
       D.rrect(c, zone(_greenA, _greenB), 6, const Color(0xFF3BAA55));
       D.rrect(c, zone(_goldA, _goldB), 6, Color.lerp(Pal.gold, Pal.white, .3 * M.wave(_t, 3))!);
-      D.text(c, host.tr('lucky', 'LUCKY'), Offset(r.left + r.width * (_goldA + _goldB) / 2, r.top - 16), size: 14,
+      D.text(c, host.tr('perfect', 'PERFECT'), Offset(r.left + r.width * (_goldA + _goldB) / 2, r.top - 16), size: 14,
           color: Pal.gold, stroke: Pal.ink, strokeWidth: 4);
       final nx = r.left + r.width * (_ph == _Ph.charging ? _charge : 0);
       final tri = Path()

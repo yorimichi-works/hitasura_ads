@@ -3,12 +3,9 @@ import 'dart:ui' as ui;
 
 import '../engine/engine.dart';
 
-/// No.110 Triple 7 Slots — neon slot machine with STOP buttons.
-///
-/// Tap (or pull the lever) to spin, then tap each STOP button when the 7
-/// comes around. Reels slow with an overshoot; two 7s trigger REACH! with
-/// pachinko strobes and a slow-motion last reel (sometimes it "revives" one
-/// notch into a 7). Reach the coin goal within 3 spins. 777 = JACKPOT.
+/// No.110 Pattern Stop — stop three moving symbol strips on the target circle.
+/// Each accurate stop adds 100 points; three rounds, no stake or payout.
+/// Tap the same STOP buttons or pull the starter handle as before.
 
 const _rainbow = <Color>[
   Color(0xFFFF3B5C),
@@ -24,28 +21,27 @@ Paint _glow(Color c, double blur) => Paint()
   ..color = c
   ..maskFilter = ui.MaskFilter.blur(ui.BlurStyle.normal, blur);
 
-/// 0 = seven, 1 = cherry, 2 = bell, 3 = BAR, 4 = star
+/// 0 = target circle, 1 = triangle, 2 = square, 3 = cross, 4 = star
 const _strip = <int>[0, 1, 2, 3, 4, 1, 2, 3];
 
 int _symAt(int i) => _strip[((i % 8) + 8) % 8];
 
-enum _RS { idle, spin, stop, revive, done }
+enum _RS { idle, spin, stop, done }
 
 class _Reel {
   double pos = 0, speed = 0;
   _RS st = _RS.idle;
   double from = 0, to = 0, dur = .35, u = 0;
-  bool slow = false, willRevive = false;
-  double wait = 0;
+  bool slow = false;
   double press = 0;
   double glow = 0;
   int get sym => _symAt(to.round());
 }
 
-enum _St { ready, spinning, payout, over }
+enum _St { ready, spinning, result, over }
 
 class G110 extends MiniGame {
-  static const _goal = 500;
+  static const _goal = 300;
   static const _payY = 286.0;
   static const _symH = 72.0;
   static const _reelX = <double>[77, 159, 241];
@@ -55,21 +51,20 @@ class G110 extends MiniGame {
   _St _st = _St.ready;
   double _t = 0, _stT = 0;
   int _spin = 0; // spins used
-  int _coins = 0;
-  double _coinsDisp = 0;
+  int _points = 0;
+  double _pointsDisp = 0;
   double _lever = 0; // 0..1 pulled
   bool _leverDrag = false;
   double _leverY0 = 0;
   bool _reach = false;
   double _idle = 0;
-  int _lastPay = 0;
-  String _payLabel = '';
-  bool _jackpot = false;
+  int _lastScore = 0;
+  String _scoreLabel = '';
+  bool _allTargets = false;
   double _winAt = -1;
   double _strobe = 0;
   double _lineFlash = 0;
   Face _mood = Face.smug;
-  final _pile = <Offset>[];
   final _lights = <double>[];
 
   @override
@@ -80,13 +75,6 @@ class G110 extends MiniGame {
     for (final r in _reels) {
       r.pos = randInt(8).toDouble() + 2;
     }
-    for (var i = 0; i < 70; i++) {
-      // heap-shaped scatter for the coin pile
-      final x = rand(-1, 1);
-      final h = (1 - x * x) * rand(0, 1);
-      _pile.add(Offset(180 + x * 120, 612 - h * 40));
-    }
-    _pile.sort((a, b) => b.dy.compareTo(a.dy));
     for (var i = 0; i < 12; i++) {
       _lights.add(rand(0, 6.28));
     }
@@ -112,7 +100,6 @@ class G110 extends MiniGame {
         ..st = _RS.spin
         ..speed = -4 - i * 1.5
         ..slow = false
-        ..willRevive = false
         ..glow = 0;
     }
   }
@@ -140,16 +127,6 @@ class G110 extends MiniGame {
     }
     var target = seven ?? nat;
     if (reachStop) {
-      final mercy = [.35, .55, 1.0][math.min(2, _spin - 1)];
-      if (seven == null && chance(mercy)) {
-        // stop one notch short of the 7... then REVIVE!
-        var s = nat;
-        while (_symAt(s) != 0) {
-          s++;
-        }
-        target = s - 1;
-        r.willRevive = true;
-      }
       target += 8; // one extra agonising loop
       r
         ..slow = true
@@ -188,68 +165,42 @@ class G110 extends MiniGame {
       host.flash(const Color(0x88FF3B5C), .2);
       host.shake(8);
       host.punch(.05);
-      host.fx.pop(host.tr('reach', 'REACH!'), const Offset(180, 230), color: Pal.red, size: 44, life: 1.2);
+      host.fx.pop(host.tr('combo', 'COMBO'), const Offset(180, 230), color: Pal.red, size: 44, life: 1.2);
     }
-    if (done.length == 3) _payout();
+    if (done.length == 3) _scoreRound();
   }
 
-  void _payout() {
-    _st = _St.payout;
+  void _scoreRound() {
+    _st = _St.result;
     _stT = 0;
-    final s = _reels.map((e) => e.sym).toList();
-    var pay = 0;
-    var label = '';
-    if (s[0] == s[1] && s[1] == s[2]) {
-      pay = const [777, 100, 150, 200, 300][s[0]];
-      label = s[0] == 0 ? host.tr('jackpot', 'JACKPOT!') : host.tr('bingo', 'BINGO!');
-    } else {
-      final sevens = s.where((e) => e == 0).length;
-      if (sevens == 2) {
-        pay = 77;
-        label = host.tr('so_close', 'SO CLOSE!');
-      } else if (s[0] == s[1] || s[1] == s[2] || s[0] == s[2]) {
-        pay = 30;
-      }
-      pay += s.where((e) => e == 1).length * 15;
-    }
-    _jackpot = s.every((e) => e == 0);
-    _lastPay = pay;
-    _payLabel = label;
-    _coins += pay;
-    if (pay > 0) _lineFlash = 1;
+    final hits = _reels.where((r) => r.sym == 0).length;
+    final gained = hits * 100;
+    _allTargets = hits == 3;
+    _lastScore = gained;
+    _scoreLabel = _allTargets ? host.tr('perfect', 'PERFECT!')
+        : hits > 0 ? host.tr('good', 'GOOD') : host.tr('miss', 'MISS');
+    _points += gained;
+    host.addScore(gained);
+    _lineFlash = hits > 0 ? 1 : 0;
+    _mood = hits > 0 ? Face.happy : Face.sad;
     host.setMusicVolume(1);
-    if (_jackpot) {
-      _mood = Face.love;
-      host.sfx(Sfx.ssr);
-      host.sfx(Sfx.fanfare);
-      host.sfx(Sfx.coins);
-      host.flash(Pal.white, .3);
-      host.shake(16, .6);
-      host.hitStop(.12);
-      host.punch(.08);
-      host.fx.burst(const Offset(180, _payY), Pal.yellow, count: 60, speed: 520, colors: _rainbow, shape: PartShape.star, gravity: 200);
-      host.fx.coins(const Offset(180, 470), count: 40, speed: 750);
-      host.fx.confetti(count: 90);
-    } else if (pay >= 100) {
-      _mood = Face.happy;
-      host.sfx(Sfx.jingleWin);
-      host.sfx(Sfx.coins);
-      host.shake(6);
-      host.fx.coins(const Offset(180, 470), count: 22, speed: 600);
-    } else if (pay > 0) {
-      _mood = Face.happy;
-      host.sfx(Sfx.coin);
-      host.fx.coins(const Offset(180, 470), count: 6 + pay ~/ 10, speed: 420);
-    } else {
-      _mood = Face.sad;
-      host.sfx(Sfx.buzzer, volume: .6);
+    host.sfx(hits > 0 ? Sfx.ding : Sfx.buzzer);
+    if (hits > 0) {
+      host.fx.burst(const Offset(180, 286), Pal.sky, count: 10 + hits * 8,
+          speed: 280, shape: PartShape.star);
+      host.fx.pop('+$gained', const Offset(180, 480), color: Pal.sky, size: 30, direction: TextDirection.ltr);
+      host.shake(_allTargets ? 16 : 6, _allTargets ? .6 : .2);
+      if (_allTargets) {
+        host.sfx(Sfx.ssr);
+        host.sfx(Sfx.fanfare);
+        host.flash(Pal.white, .3);
+        host.hitStop(.12);
+        host.punch(.08);
+        host.fx.burst(const Offset(180, 286), Pal.yellow, count: 60, speed: 520, colors: _rainbow, shape: PartShape.star, gravity: 200);
+        host.fx.confetti(count: 90);
+      }
     }
-    if (_reach && !_jackpot) {
-      _mood = Face.cry;
-      host.sfx(Sfx.aww, volume: .7);
-    }
-    if (pay > 0) host.fx.pop('+$pay', const Offset(180, 350), color: Pal.yellow, size: _jackpot ? 46 : 32, life: 1.2);
-    if (_coins >= _goal) _winAt = host.time + (_jackpot ? 1.3 : .8);
+    if (_points >= _goal) _winAt = host.time + .8;
   }
 
   // --------------------------------------------------------------- update --
@@ -262,10 +213,10 @@ class G110 extends MiniGame {
     _lineFlash = M.approach(_lineFlash, 0, 1.2, dt);
     if (!_leverDrag) _lever = M.approach(_lever, 0, 9, dt);
 
-    final prevDisp = _coinsDisp.floor();
-    _coinsDisp = M.approach(_coinsDisp, _coins.toDouble(), 3.2, dt);
-    if ((_coins - _coinsDisp) < .6) _coinsDisp = _coins.toDouble();
-    if (_coinsDisp.floor() ~/ 10 != prevDisp ~/ 10) host.sfx(Sfx.tick, volume: .35, rate: 1.5);
+    final prevDisp = _pointsDisp.floor();
+    _pointsDisp = M.approach(_pointsDisp, _points.toDouble(), 3.2, dt);
+    if ((_points - _pointsDisp) < .6) _pointsDisp = _points.toDouble();
+    if (_pointsDisp.floor() ~/ 10 != prevDisp ~/ 10) host.sfx(Sfx.tick, volume: .35, rate: 1.5);
 
     for (var i = 0; i < 3; i++) {
       final r = _reels[i];
@@ -285,32 +236,7 @@ class G110 extends MiniGame {
           if (r.slow && r.pos.floor() != before) host.sfx(Sfx.tick, rate: .8 + r.u * .6, volume: .8);
           if (r.u >= 1) {
             r.pos = r.to;
-            if (r.willRevive) {
-              r.st = _RS.revive;
-              r.wait = 0;
-              host.sfx(Sfx.reelStop, rate: .8);
-              _mood = Face.sad;
-              host.sfx(Sfx.aww, volume: .5);
-            } else {
-              _reelLanded(i);
-            }
-          }
-        case _RS.revive:
-          r.wait += dt;
-          if (r.wait > .55) {
-            r.willRevive = false;
-            r
-              ..st = _RS.stop
-              ..slow = false
-              ..from = r.pos
-              ..to = r.pos + 1
-              ..dur = .28
-              ..u = 0;
-            host.sfx(Sfx.powerup);
-            host.sfx(Sfx.thud);
-            host.flash(const Color(0xAAFFE23F), .2);
-            host.fx.pop(host.tr('revive', 'REVIVE!!'), Offset(_reelX[i], 180), color: Pal.yellow, size: 30);
-            _mood = Face.shocked;
+            _reelLanded(i);
           }
         default:
           break;
@@ -329,8 +255,8 @@ class G110 extends MiniGame {
             }
           }
         }
-      case _St.payout:
-        if (_winAt < 0 && _stT > (_lastPay >= 100 ? 1.4 : 1.0)) {
+      case _St.result:
+        if (_winAt < 0 && _stT > (_lastScore >= 100 ? 1.4 : 1.0)) {
           if (_spin >= 3) {
             _st = _St.over;
             _mood = Face.cry;
@@ -347,18 +273,18 @@ class G110 extends MiniGame {
     }
     if (_winAt > 0 && (host.time >= _winAt || host.timeLeft < .3) && !host.finished) {
       _st = _St.over;
-      host.win(stars: _spin == 1 || _coins >= 900 ? 3 : (_spin == 2 ? 2 : 1));
+      host.win(stars: _spin == 1 || _points >= 900 ? 3 : (_spin == 2 ? 2 : 1));
     }
-    if (_jackpot && _stT < 3) {
-      // coin avalanche from the top
+    if (_allTargets && _stT < 3) {
+      // star shower from the top
       if (chance(.7)) {
         host.fx.add(Particle(
           pos: Offset(rand(0, 360), -10),
           vel: Offset(rand(-40, 40), rand(100, 300)),
           life: 2.2,
-          color: Pal.gold,
+          color: Pal.sky,
           size: rand(7, 11),
-          shape: PartShape.coin,
+          shape: PartShape.star,
           gravity: 700,
           spin: rand(2, 6),
         ));
@@ -376,7 +302,7 @@ class G110 extends MiniGame {
   }
 
   @override
-  void onTimeUp() => _coins >= _goal ? host.win(stars: 1) : host.lose();
+  void onTimeUp() => _points >= _goal ? host.win(stars: 1) : host.lose();
 
   // ---------------------------------------------------------------- input --
 
@@ -459,16 +385,16 @@ class G110 extends MiniGame {
       final col = _rainbow[(_t * 14).floor() % 7];
       c.drawRect(GameHost.bounds, D.fill(col.withValues(alpha: .12 * _strobe)));
       final k = _strobe;
-      D.title(c, host.tr('reach', 'REACH!'), Offset(180, 150 + math.sin(_t * 10) * 3), size: 40,
+      D.title(c, host.tr('combo', 'COMBO'), Offset(180, 150 + math.sin(_t * 10) * 3), size: 40,
           color: (_t * 8).floor().isEven ? Pal.red : Pal.yellow, scale: (1 + .08 * math.sin(_t * 16)) * k, rotate: -.06);
     }
-    if (_st == _St.payout && _payLabel.isNotEmpty && _stT < 2.4) {
+    if (_st == _St.result && _scoreLabel.isNotEmpty && _stT < 2.4) {
       final k = M.easeOutBack(M.clamp01(_stT / .3));
-      if (_jackpot) {
+      if (_allTargets) {
         D.rays(c, const Offset(180, 230), 500, const Color(0xFFFFE27A).withValues(alpha: .3), count: 16, t: _t * 2);
       }
-      D.title(c, _payLabel, const Offset(180, 232), size: _jackpot ? 50 : 34,
-          color: _jackpot ? _rainbow[(_t * 12).floor() % 7] : Pal.yellow, scale: k, rotate: -.05);
+      D.title(c, _scoreLabel, const Offset(180, 232), size: _allTargets ? 50 : 34,
+          color: _allTargets ? _rainbow[(_t * 12).floor() % 7] : Pal.yellow, scale: k, rotate: -.05);
     }
   }
 
@@ -527,19 +453,19 @@ class G110 extends MiniGame {
   }
 
   void _topSign(Canvas c) {
-    // jackpot marquee
+    // scoreboard
     const r = Rect.fromLTWH(34, 44, 292, 50);
     final rr = RRect.fromRectAndRadius(r, const Radius.circular(14));
     c.drawRRect(rr, D.fill(const Color(0xF0180626)));
-    final col = _jackpot ? _rainbow[(_t * 12).floor() % 7] : const Color(0xFFFF3BD2);
+    final col = _allTargets ? _rainbow[(_t * 12).floor() % 7] : const Color(0xFFFF3BD2);
     c.drawRRect(rr, _glow(col, 8)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6);
     c.drawRRect(rr, D.stroke(Pal.white, 2));
     final blink = (_t * 3).floor().isEven;
-    D.text(c, host.tr('jackpot', 'JACKPOT'), const Offset(116, 69), size: 22, color: blink ? Pal.yellow : const Color(0xFFFF9EE0),
+    D.text(c, host.tr('score', 'SCORE'), const Offset(116, 69), size: 22, color: blink ? Pal.yellow : const Color(0xFFFF9EE0),
         stroke: const Color(0xFF7A0F4A), strokeWidth: 5, italic: true);
-    D.text(c, '777', const Offset(262, 69), size: 30, color: Pal.red, stroke: Pal.yellow, strokeWidth: 5, italic: true);
+    D.text(c, '300', const Offset(262, 69), size: 30, color: Pal.sky, stroke: Pal.white, strokeWidth: 4);
     // mascot
     const mc = Offset(159, 138);
     c.drawCircle(mc, 36, _glow(const Color(0x88FFE23F), 12));
@@ -547,9 +473,9 @@ class G110 extends MiniGame {
     c.drawCircle(mc, 30, D.stroke(Pal.ink, 3.5));
     final bounce = _mood == Face.love ? math.sin(_t * 18).abs() * 4 : 0.0;
     D.face(c, mc + Offset(0, 2 - bounce), 26, _mood, look: Offset(math.sin(_t * 1.3) * .5, .3));
-    // little 7 wings
+    // target stars
     for (final sx in [-1.0, 1.0]) {
-      D.text(c, '7', mc + Offset(sx * 70, 0), size: 34, color: Pal.red, stroke: Pal.yellow, strokeWidth: 5, italic: true);
+      D.star(c, mc + Offset(sx * 70, 0), 21, Pal.sky, border: Pal.ink);
       c.drawCircle(mc + Offset(sx * 105, 0), 5, D.fill((_t * 4).floor().isEven ? Pal.yellow : Pal.pink));
     }
   }
@@ -571,7 +497,7 @@ class G110 extends MiniGame {
       final base = r.pos.floor();
       for (var k = -3; k <= 3; k++) {
         final idx = base + k;
-        final off = (r.pos - idx) * _symH; // positive = below payline
+        final off = (r.pos - idx) * _symH; // positive = below target line
         final th = off / 125;
         if (th.abs() > 1.45) continue;
         final y = _payY + math.sin(th) * 125;
@@ -601,8 +527,8 @@ class G110 extends MiniGame {
       c.restore();
       c.drawRect(rect, D.stroke(Pal.ink, 3));
     }
-    // payline
-    final pk = _lineFlash > 0 && _lastPay > 0 ? (0.5 + 0.5 * math.sin(_t * 30)) : 0.0;
+    // target line
+    final pk = _lineFlash > 0 && _lastScore > 0 ? (0.5 + 0.5 * math.sin(_t * 30)) : 0.0;
     final lc = Color.lerp(const Color(0xCCFF2040), Pal.yellow, pk)!;
     c.drawLine(const Offset(30, _payY), const Offset(288, _payY), _glow(lc, 4)..strokeWidth = 5);
     c.drawLine(const Offset(30, _payY), const Offset(288, _payY), D.stroke(lc, 2));
@@ -621,47 +547,26 @@ class G110 extends MiniGame {
   void _symbol(Canvas c, Offset o, int s, double sy, double blur, double flash) {
     c.save();
     c.translate(o.dx, o.dy);
-    c.scale(1 + flash * .15 * math.sin(_t * 20).abs(), sy * (1 + blur * .5));
-    if (blur > 0) c.saveLayer(const Rect.fromLTWH(-40, -40, 80, 80), Paint()..color = Color.fromRGBO(0, 0, 0, 1 - blur * .45));
+    c.scale(1 + flash * .1, sy * (1 + blur * .3));
+    const colors = [Pal.sky, Pal.pink, Pal.lime, Pal.purple, Pal.orange];
+    final color = colors[s];
     switch (s) {
       case 0:
-        D.text(c, '7', const Offset(0, 3), size: 60, color: Pal.ink, stroke: Pal.ink, strokeWidth: 14, italic: true);
-        D.text(c, '7', Offset.zero, size: 60, color: const Color(0xFFFF2D3F), stroke: Pal.yellow, strokeWidth: 7, italic: true);
+        c.drawCircle(Offset.zero, 24, D.fill(color));
+        c.drawCircle(Offset.zero, 24, D.stroke(Pal.ink, 4));
+        c.drawCircle(Offset.zero, 11, D.stroke(Pal.white, 4));
       case 1:
-        c.drawPath(
-            Path()
-              ..moveTo(-10, 6)
-              ..quadraticBezierTo(-4, -14, 6, -22)
-              ..moveTo(12, 8)
-              ..quadraticBezierTo(10, -10, 6, -22),
-            D.stroke(const Color(0xFF3F7A1F), 3.5)..style = PaintingStyle.stroke);
-        c.drawOval(const Rect.fromLTWH(6, -30, 20, 11), D.fill(Pal.lime));
-        for (final p in const [Offset(-10, 12), Offset(12, 14)]) {
-          c.drawCircle(p, 13, D.fill(const Color(0xFFE0102F)));
-          c.drawCircle(p, 13, D.stroke(Pal.ink, 3));
-          c.drawCircle(p + const Offset(-4, -5), 3.5, D.fill(const Color(0xCCFFFFFF)));
-        }
+        final shape = Path()..moveTo(0, -26)..lineTo(26, 23)..lineTo(-26, 23)..close();
+        c.drawPath(shape, D.fill(color));
+        c.drawPath(shape, D.stroke(Pal.ink, 4));
       case 2:
-        final bell = Path()
-          ..moveTo(-24, 14)
-          ..quadraticBezierTo(-18, 8, -17, -4)
-          ..quadraticBezierTo(-16, -24, 0, -24)
-          ..quadraticBezierTo(16, -24, 17, -4)
-          ..quadraticBezierTo(18, 8, 24, 14)
-          ..close();
-        c.drawCircle(const Offset(0, 18), 6, D.fill(const Color(0xFFB07000)));
-        c.drawPath(bell, Paint()..shader = ui.Gradient.linear(const Offset(-24, 0), const Offset(24, 0), const [Color(0xFFFFF09A), Color(0xFFFFC53D), Color(0xFFB07000)], const [0, .5, 1]));
-        c.drawPath(bell, D.stroke(Pal.ink, 3));
-        c.drawCircle(const Offset(0, -27), 4, D.fill(Pal.gold));
-        c.drawLine(const Offset(-9, -14), const Offset(-11, 2), D.stroke(const Color(0xAAFFFFFF), 4));
+        D.rrect(c, const Rect.fromLTWH(-23, -23, 46, 46), 5, color, border: Pal.ink, borderWidth: 4);
       case 3:
-        D.rrect(c, const Rect.fromLTWH(-30, -16, 60, 32), 6, Pal.ink, border: Pal.gold, borderWidth: 3);
-        D.text(c, 'BAR', Offset.zero, size: 19, color: Pal.white, letterSpacing: 1);
+        c.drawLine(const Offset(-19, -19), const Offset(19, 19), D.stroke(color, 11));
+        c.drawLine(const Offset(-19, 19), const Offset(19, -19), D.stroke(color, 11));
       default:
-        D.star(c, Offset.zero, 26, Pal.sky, border: Pal.ink);
-        c.drawCircle(const Offset(-6, -8), 4, D.fill(const Color(0xAAFFFFFF)));
+        D.star(c, Offset.zero, 26, color, border: Pal.ink);
     }
-    if (blur > 0) c.restore();
     c.restore();
   }
 
@@ -712,23 +617,15 @@ class G110 extends MiniGame {
     final rr = RRect.fromRectAndRadius(r, const Radius.circular(20));
     c.drawRRect(rr, Paint()..shader = ui.Gradient.linear(r.topCenter, r.bottomCenter, const [Color(0xFF2B1238), Color(0xFF12061A)]));
     c.drawRRect(rr, D.stroke(const Color(0xFFFFD86B), 4));
-    // coin pile
-    final n = math.min(_pile.length, (_coinsDisp / 10).floor());
-    for (var i = 0; i < n; i++) {
-      final p = _pile[_pile.length - 1 - i];
-      c.save();
-      c.translate(p.dx, p.dy);
-      c.scale(1, .5);
-      c.drawCircle(Offset.zero, 12, D.fill(const Color(0xFFB8860B)));
-      c.drawCircle(const Offset(0, -3), 12, D.fill(Pal.gold));
-      c.drawCircle(const Offset(0, -3), 8, D.stroke(const Color(0xFFE0A019), 2));
-      c.restore();
+    // Collected target marks show progress, never a currency balance.
+    for (var i = 0; i < math.min(_points ~/ 100, 9); i++) {
+      D.star(c, Offset(68 + i * 28.0, 607), 10, Pal.sky, border: Pal.ink);
     }
     // counter
     const bar = Rect.fromLTWH(44, 522, 272, 16);
-    D.bar(c, bar, _coinsDisp / _goal, _coins >= _goal ? _rainbow[(_t * 10).floor() % 7] : Pal.gold, border: Pal.ink);
-    D.coin(c, const Offset(52, 562), 13, spin: _t * .8);
-    D.text(c, '${_coinsDisp.round()}', const Offset(74, 562), size: 28, color: Pal.yellow, stroke: Pal.ink, anchor: Alignment.centerLeft);
+    D.bar(c, bar, _pointsDisp / _goal, _points >= _goal ? _rainbow[(_t * 10).floor() % 7] : Pal.gold, border: Pal.ink);
+    D.star(c, const Offset(52, 562), 13, Pal.sky, border: Pal.ink);
+    D.text(c, '${_pointsDisp.round()}', const Offset(74, 562), size: 28, color: Pal.yellow, stroke: Pal.ink, anchor: Alignment.centerLeft);
     D.text(c, '/ $_goal', const Offset(304, 564), size: 18, color: const Color(0xFFFFD6F0), stroke: Pal.ink, anchor: Alignment.centerRight);
   }
 

@@ -1,8 +1,8 @@
 import '../engine/engine.dart';
 
-/// No.056 Shell Game — a slick street hustler hides a coin under one of 3
-/// cups and shuffles them 8 times, faster and faster. Track the coin and tap
-/// the right cup. The CPU crowd places (usually wrong) bets too.
+/// No.056 Cup Tracking — a presenter hides a blue token under one of 3
+/// cups and shuffles them 8 times, faster and faster. Track the token and tap
+/// the right cup. Spectators make their own guesses too.
 class G056 extends MiniGame {
   static const _slotX = [84.0, 180.0, 276.0];
   static const _baseY = 448.0;
@@ -12,7 +12,7 @@ class G056 extends MiniGame {
   final _cupPos = [Offset.zero, Offset.zero, Offset.zero];
   final _cupScale = [1.0, 1.0, 1.0];
   final _cupLift = [0.0, 0.0, 0.0];
-  int _coinCup = 0;
+  int _tokenCup = 0;
   _Ph _ph = _Ph.show;
   double _pt = 0;
   double _t = 0;
@@ -24,25 +24,25 @@ class G056 extends MiniGame {
   int _picked = -1;
   bool _right = false;
   double _chooseAt = 0;
-  final _bets = [-1, -1, -1]; // cpu 1..3 bet cup ids
-  double _hustlerLaugh = 0;
-  double _hustlerShock = 0;
+  final _guesses = [-1, -1, -1]; // spectator 1..3 guessed cup ids
+  double _presenterLaugh = 0;
+  double _presenterShock = 0;
   double _sweat = 0;
-  final List<_Bill> _bills = [];
+  final List<_FallingStar> _stars = [];
 
   @override
   void init() {
-    _coinCup = randInt(3);
+    _tokenCup = randInt(3);
     for (var i = 0; i < 3; i++) {
       _cupPos[i] = Offset(_slotX[i], _baseY);
-      _cupLift[i] = i == _coinCup ? 1 : 0;
+      _cupLift[i] = i == _tokenCup ? 1 : 0;
     }
   }
 
   void _startSwap() {
-    // pick two different slots; later swaps tend to involve the coin cup
+    // pick two different slots; later swaps tend to involve the token cup
     var a = randInt(3);
-    if (_swapN >= 3 && chance(.55)) a = _coinCup;
+    if (_swapN >= 3 && chance(.55)) a = _tokenCup;
     var b = randInt(3);
     while (b == a) {
       b = randInt(3);
@@ -60,23 +60,23 @@ class G056 extends MiniGame {
   void update(double dt) {
     _t += dt;
     _pt += dt;
-    _hustlerLaugh = max(0, _hustlerLaugh - dt);
-    _hustlerShock = max(0, _hustlerShock - dt * .5);
+    _presenterLaugh = max(0, _presenterLaugh - dt);
+    _presenterShock = max(0, _presenterShock - dt * .5);
     _sweat += dt;
-    for (final b in _bills) {
+    for (final b in _stars) {
       b.pos += b.vel * dt;
       b.vel = Offset(b.vel.dx * .98 + sin(_t * 5 + b.phase) * 20 * dt, min(b.vel.dy + 300 * dt, 120));
       b.rot += b.spin * dt;
     }
-    _bills.removeWhere((b) => b.pos.dy > 700);
+    _stars.removeWhere((b) => b.pos.dy > 700);
 
     switch (_ph) {
       case _Ph.show:
-        // coin visible under a lifted cup, then it drops
+        // token visible under a lifted cup, then it drops
         if (_pt > 1.2) {
-          _cupLift[_coinCup] = M.approach(_cupLift[_coinCup], 0, 16, dt);
+          _cupLift[_tokenCup] = M.approach(_cupLift[_tokenCup], 0, 16, dt);
           if (_pt > 1.5) {
-            _cupLift[_coinCup] = 0;
+            _cupLift[_tokenCup] = 0;
             host.sfx(Sfx.thud);
             host.shake(3);
             _ph = _Ph.shuffle;
@@ -109,10 +109,10 @@ class G056 extends MiniGame {
             _pt = 0;
             _chooseAt = host.time;
             host.sfx(Sfx.ding);
-            // crowd bets (green is sharp, red is stubborn, yellow is asleep)
-            _bets[0] = chance(.4) ? _coinCup : randInt(3);
-            _bets[1] = chance(.6) ? _coinCup : randInt(3);
-            _bets[2] = randInt(3);
+            // crowd guesses (green is sharp, red is stubborn, yellow is asleep)
+            _guesses[0] = chance(.4) ? _tokenCup : randInt(3);
+            _guesses[1] = chance(.6) ? _tokenCup : randInt(3);
+            _guesses[2] = randInt(3);
           } else {
             _startSwap();
           }
@@ -121,28 +121,28 @@ class G056 extends MiniGame {
         break;
       case _Ph.reveal:
         _cupLift[_picked] = M.approach(_cupLift[_picked], 1, 12, dt);
-        if (!_right && _pt > .55) _cupLift[_coinCup] = M.approach(_cupLift[_coinCup], 1, 12, dt);
+        if (!_right && _pt > .55) _cupLift[_tokenCup] = M.approach(_cupLift[_tokenCup], 1, 12, dt);
         if (_pt > .3 && !host.finished) {
           if (_right) {
-            _hustlerShock = 2;
+            _presenterShock = 2;
             host.sfx(Sfx.fanfare);
-            host.sfx(Sfx.coins);
+            host.sfx(Sfx.sparkle);
+            host.fx.burst(_cupPos[_picked], Pal.sky, count: 30, speed: 520, shape: PartShape.star);
             host.sfx(Sfx.cheer, volume: .6);
             final at = _cupPos[_picked] + const Offset(0, -10);
-            host.fx.coins(at, count: 30, speed: 520);
             host.fx.burst(at, Pal.yellow, count: 20, speed: 300, shape: PartShape.star, size: 8);
             host.fx.ring(at, Pal.yellow, size: 90);
-            host.fx.pop(host.tr('jackpot', 'JACKPOT!'), const Offset(180, 330), color: Pal.yellow, size: 36, life: 1.2);
+            host.fx.pop(host.tr('great', 'GREAT!'), const Offset(180, 330), color: Pal.yellow, size: 36, life: 1.2);
             host.flash(const Color(0x88FFF1A8));
             host.shake(7);
             for (var i = 0; i < 24; i++) {
-              _bills.add(_Bill(Offset(rand(0, 360), rand(-200, -10)), Offset(rand(-40, 40), rand(40, 120)),
+              _stars.add(_FallingStar(Offset(rand(0, 360), rand(-200, -10)), Offset(rand(-40, 40), rand(40, 120)),
                   rand(0, 6), rand(-3, 3)));
             }
             final quick = host.time - _chooseAt < 2.2;
             host.win(stars: quick ? 3 : 2);
           } else {
-            _hustlerLaugh = 3;
+            _presenterLaugh = 3;
             host.sfx(Sfx.wrong);
             host.sfx(Sfx.oops, volume: .7);
             host.fx.pop(host.tr('haha', 'HA HA!'), const Offset(180, 150), color: Pal.pink, size: 30, life: 1.2);
@@ -170,7 +170,7 @@ class G056 extends MiniGame {
 
   void _pick(int cup) {
     _picked = cup;
-    _right = cup == _coinCup;
+    _right = cup == _tokenCup;
     _ph = _Ph.reveal;
     _pt = 0;
     host.sfx(Sfx.drumroll, volume: .6);
@@ -189,8 +189,8 @@ class G056 extends MiniGame {
   // ------------------------------------------------------------ render ---
   @override
   void render(Canvas c) {
-    // alley backdrop: bricks + neon
-    D.gradientBg(c, const [Color(0xFF2A0F3D), Color(0xFF571A4F), Color(0xFF7A2A3A)]);
+    // colorful backdrop: bricks + neon
+    D.gradientBg(c, const [Color(0xFF183A62), Color(0xFF35567A), Color(0xFF63508C)]);
     final brick = D.fill(const Color(0x22000000));
     for (var row = 0; row < 14; row++) {
       final off = row.isEven ? 0.0 : 22.0;
@@ -207,14 +207,14 @@ class G056 extends MiniGame {
       D.rrect(c, const Rect.fromLTWH(206, 48, 136, 58), 14, const Color(0x00000000),
           border: const Color(0x44FF5FC8), borderWidth: 8);
     }
-    D.coin(c, const Offset(236, 77), 12, spin: _t * .5);
-    D.text(c, 'x3', const Offset(286, 78), size: 28, color: neonOn ? Pal.yellow : const Color(0xFF7A6A3A));
+    D.star(c, const Offset(236, 77), 14, Pal.yellow, border: Pal.ink);
+    D.text(c, '3', const Offset(286, 78), size: 28, color: neonOn ? Pal.yellow : const Color(0xFF7A6A3A));
     // lamp glow
     c.drawCircle(const Offset(40, 90), 70, D.fill(const Color(0x22FFE080)));
     D.rrect(c, const Rect.fromLTWH(34, 60, 12, 30), 4, const Color(0xFF3A2A3A));
     c.drawCircle(const Offset(40, 94), 10, D.fill(const Color(0xFFFFE9A0)));
 
-    _drawHustler(c);
+    _drawPresenter(c);
 
     // table
     final table = Path()
@@ -224,7 +224,7 @@ class G056 extends MiniGame {
       ..lineTo(0, 540)
       ..close();
     c.drawPath(table.shift(const Offset(0, 10)), D.fill(const Color(0xFF3A1F12)));
-    c.drawPath(table, D.fill(const Color(0xFF1E8A4C)));
+    c.drawPath(table, D.fill(const Color(0xFFB88458)));
     c.drawPath(
         table,
         Paint()
@@ -232,16 +232,18 @@ class G056 extends MiniGame {
               .createShader(Rect.fromCircle(center: const Offset(180, 440), radius: 200)));
     c.drawPath(table, D.stroke(const Color(0xFF8A4A22), 10));
     c.drawPath(table, D.stroke(Pal.ink, 2));
-    // felt pattern
+    // cup positions
     for (final x in _slotX) {
       c.drawOval(Rect.fromCenter(center: Offset(x, _baseY + 8), width: 86, height: 28), D.stroke(const Color(0x33FFFFFF), 2));
     }
 
-    // coin under its cup (visible when cup lifted)
-    final coinP = _cupPos[_coinCup] + const Offset(0, 4);
-    if (_cupLift[_coinCup] > .1) {
-      c.drawCircle(coinP, 28 * _cupLift[_coinCup], D.fill(const Color(0x33FFE680)));
-      D.coin(c, coinP, 16, spin: _t * .8);
+    // blue token under its cup (visible when cup lifted)
+    final tokenP = _cupPos[_tokenCup] + const Offset(0, 4);
+    if (_cupLift[_tokenCup] > .1) {
+      c.drawCircle(tokenP, 28 * _cupLift[_tokenCup], D.fill(const Color(0x337FD3FF)));
+      c.drawCircle(tokenP, 16, D.fill(Pal.sky));
+      c.drawCircle(tokenP, 16, D.stroke(Pal.ink, 2.5));
+      c.drawCircle(tokenP + const Offset(-5, -5), 4, D.fill(Pal.white));
     }
 
     // cups sorted by y (front last)
@@ -250,7 +252,7 @@ class G056 extends MiniGame {
       _drawCup(c, _cupPos[i], _cupScale[i], _cupLift[i], i == _picked);
     }
 
-    // hustler gloves on moving cups
+    // presenter gloves on moving cups
     if (_ph == _Ph.shuffle) {
       _glove(c, _cupPos[_swapA] + Offset(0, -62 * _cupScale[_swapA]), _t);
       _glove(c, _cupPos[_swapB] + Offset(0, -62 * _cupScale[_swapB]), _t + 1);
@@ -259,12 +261,12 @@ class G056 extends MiniGame {
       _glove(c, const Offset(330, 380), 0);
     }
 
-    // CPU bets (flags) during choose/reveal
+    // spectator guesses during choose/reveal
     if (_ph == _Ph.choose || _ph == _Ph.reveal) {
       final k = M.clamp01((_ph == _Ph.choose ? _pt : 1) / .35);
       final counts = [0, 0, 0];
       for (var j = 0; j < 3; j++) {
-        final cup = _bets[j];
+        final cup = _guesses[j];
         if (cup < 0) continue;
         final slotN = counts[cup]++;
         final o = _cupPos[cup] + Offset(-22 + slotN * 22.0, 52);
@@ -280,11 +282,11 @@ class G056 extends MiniGame {
       var face = _Cast.face[i];
       if (_ph == _Ph.shuffle) face = Face.shocked;
       if (host.finished) {
-        final betRight = i == 0 ? _right : _bets[i - 1] == _coinCup;
-        face = betRight ? Face.love : Face.cry;
+        final guessRight = i == 0 ? _right : _guesses[i - 1] == _tokenCup;
+        face = guessRight ? Face.love : Face.cry;
       }
-      // eyes follow the coin cup... mostly
-      final look = Offset(((_cupPos[_coinCup].dx - x) / 120).clamp(-1, 1), -1);
+      // eyes follow the token cup... mostly
+      final look = Offset(((_cupPos[_tokenCup].dx - x) / 120).clamp(-1, 1), -1);
       _Cast.draw(c, i, Offset(x, 594 + bob), i == 0 ? 24 : 20, face: face, look: look);
       if (i == 0) {
         D.text(c, host.tr('you', 'YOU'), Offset(x, 630), size: 12, color: Pal.white, stroke: Pal.blue, strokeWidth: 4);
@@ -301,21 +303,20 @@ class G056 extends MiniGame {
     }
     if (_ph == _Ph.show) {
       D.title(c, host.tr('watch', 'WATCH!'), const Offset(180, 300), size: 34, color: Pal.yellow);
-      final p = _cupPos[_coinCup];
+      final p = _cupPos[_tokenCup];
       D.arrow(c, p + const Offset(0, -110 + 0.0), const Offset(0, 1), 34, Pal.yellow, width: 9);
     }
     if (_ph == _Ph.choose) {
       D.title(c, host.tr('which', 'WHICH?'), const Offset(180, 310), size: 36 * (1 + .05 * sin(_t * 8)), color: Pal.white);
       if (_pt > .6 && host.time - _chooseAt < 4) D.hand(c, _cupPos[_cupSlot.indexOf(1)] + const Offset(0, -20), _t);
     }
-    // money rain
-    for (final b in _bills) {
+    // falling celebration stars
+    for (final b in _stars) {
       c.save();
       c.translate(b.pos.dx, b.pos.dy);
       c.rotate(b.rot);
       c.scale(cos(b.rot * 2).abs().clamp(.2, 1), 1);
-      D.rrect(c, const Rect.fromLTWH(-16, -9, 32, 18), 3, const Color(0xFF7BD389), border: const Color(0xFF2E7D4A), borderWidth: 2);
-      c.drawCircle(Offset.zero, 5, D.stroke(const Color(0xFF2E7D4A), 2));
+      D.star(c, Offset.zero, 12, D.hsv(b.phase * 60, .65, 1), border: Pal.ink);
       c.restore();
     }
   }
@@ -378,10 +379,10 @@ class G056 extends MiniGame {
     c.restore();
   }
 
-  void _drawHustler(Canvas c) {
+  void _drawPresenter(Canvas c) {
     const hc = Offset(180, 218);
-    final laugh = _hustlerLaugh > 0;
-    final shock = _hustlerShock > 0;
+    final laugh = _presenterLaugh > 0;
+    final shock = _presenterShock > 0;
     final shakeX = laugh ? sin(_t * 40) * 3 : (shock ? sin(_t * 60) * 2 : 0.0);
     final lean = _ph == _Ph.shuffle ? sin(_t * 9) * .05 : 0.0;
     c.save();
@@ -461,8 +462,8 @@ class G056 extends MiniGame {
 
 enum _Ph { show, shuffle, choose, reveal }
 
-class _Bill {
-  _Bill(this.pos, this.vel, this.phase, this.spin);
+class _FallingStar {
+  _FallingStar(this.pos, this.vel, this.phase, this.spin);
   Offset pos;
   Offset vel;
   final double phase;
@@ -470,7 +471,7 @@ class _Bill {
   double rot = 0;
 }
 
-/// The party cast: YOU (blue hero) and 3 CPU rivals.
+/// The party cast: YOU (blue hero) and 3 spectators.
 abstract final class _Cast {
   static const col = [Color(0xFF3D6BFF), Color(0xFFFF3B5C), Color(0xFF2ECC71), Color(0xFFFFC21F)];
   static const face = [Face.happy, Face.angry, Face.smug, Face.sleepy];

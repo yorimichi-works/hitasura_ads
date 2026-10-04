@@ -413,9 +413,9 @@
    "Müzik durunca… OTUR!"
   ],
   "56": [
-   "Bardak Oyunu",
+   "Bardağı Takip Et",
    "İZLE!",
-   "Gözünü paradan ayırma"
+   "Gözünü mavi oyun taşından ayırma"
   ],
   "57": [
    "Tampon Sumo",
@@ -643,9 +643,9 @@
    "O seni bulmadan çıkışı bul"
   ],
   "102": [
-   "Şanslı Zar 3D",
+   "Zamanlama Zarı 3D",
    "AT!",
-   "7 at, BÜYÜK kazan"
+   "Tam zamanında bırak, toplam 7 olsun!"
   ],
   "103": [
    "Boya Rulo Küp",
@@ -683,14 +683,14 @@
    "SSR oranı ARTTI!!! (%0,0001)"
   ],
   "110": [
-   "Üçlü 7 Slot",
+   "Tam Yerinde Dur",
    "ÇEVİR!",
-   "JACKPOT ÇOK yakın…"
+   "Dairelerde dur: her isabete 100 puan!"
   ],
   "111": [
-   "Kazı Kazan",
+   "Kazıma Sanatı",
    "KAZI!",
-   "3'ü eşleştir, 1.000.000 TL KAZAN"
+   "Kazıyarak 3 yıldız bul!"
   ],
   "112": [
    "Holo Paket Yırt",
@@ -703,14 +703,14 @@
    "Sadece bir kutu daha…"
   ],
   "114": [
-   "Kader Çarkı",
+   "Zamanlama Çarkı",
    "DUR!",
-   "Nerede duracak?"
+   "Tam zamanında bırak, 100 puanı hedefle!"
   ],
   "115": [
-   "Plinko Pachinko",
+   "Neon Top Düşüşü",
    "BIRAK!",
-   "Büyük para en altta"
+   "10 top. 80 puanlık bölmeyi hedefle!"
   ],
   "116": [
    "Pençe Makinesi",
@@ -718,9 +718,9 @@
    "Pençe bilerek zayıf"
   ],
   "117": [
-   "Jeton İtici",
+   "Disk İtici",
    "İT!",
-   "Düşmek ÜZERE…"
+   "Diskleri kenardan aşağı it!"
   ],
   "118": [
    "Günlük Ödül Çarkı",

@@ -550,9 +550,9 @@
    "When the music stops… SIT!"
   ],
   "56": [
-   "Shell Game",
+   "Cup Tracker",
    "WATCH!",
-   "Keep your eyes on the coin"
+   "Keep your eyes on the blue token"
   ],
   "57": [
    "Bumper Sumo",
@@ -780,9 +780,9 @@
    "Find the exit before HE finds you"
   ],
   "102": [
-   "Lucky Dice 3D",
+   "Timing Dice 3D",
    "ROLL!",
-   "Roll a 7, win BIG"
+   "Time your release to total 7!"
   ],
   "103": [
    "Paint Roller Cube",
@@ -820,14 +820,14 @@
    "SSR rate UP!!! (0.0001%)"
   ],
   "110": [
-   "Triple 7 Slots",
+   "Pattern Stop",
    "SPIN!",
-   "JACKPOT is SO close…"
+   "Stop on the circles for 100 points each!"
   ],
   "111": [
-   "Scratch & Win",
+   "Scratch Art",
    "SCRATCH!",
-   "Match 3 to WIN $1,000,000"
+   "Scratch to uncover 3 stars!"
   ],
   "112": [
    "Holo Pack Rip",
@@ -840,14 +840,14 @@
    "Just one more box…"
   ],
   "114": [
-   "Wheel of Fate",
+   "Timing Wheel",
    "STOP!",
-   "Where will it stop?"
+   "Time your release and aim for 100 points!"
   ],
   "115": [
-   "Plinko Pachinko",
+   "Neon Ball Drop",
    "DROP!",
-   "Big money at the bottom"
+   "Drop 10 balls. Aim for the 80-point pocket!"
   ],
   "116": [
    "Claw Crane",
@@ -855,9 +855,9 @@
    "The claw is weak on purpose"
   ],
   "117": [
-   "Coin Pusher",
+   "Disc Pusher",
    "PUSH!",
-   "It's ABOUT to fall…"
+   "Push the discs over the edge!"
   ],
   "118": [
    "Daily Reward Wheel",
@@ -1309,7 +1309,7 @@
   "56": [
    "どのカップ？",
    "見ろ！",
-   "コインから目を離すな"
+   "青いチップから目を離すな"
   ],
   "57": [
    "バンパー相撲",
@@ -1537,9 +1537,9 @@
    "奴に見つかる前に出口へ"
   ],
   "102": [
-   "ラッキーダイス3D",
+   "タイミングダイス3D",
    "転がせ!",
-   "合計7で大当たり"
+   "タイミングよく離して合計7を狙え！"
   ],
   "103": [
    "コロコロペイント",
@@ -1577,14 +1577,14 @@
    "SSR確率UP！！！（0.0001%）"
   ],
   "110": [
-   "スリーセブン",
+   "ぴったりストップ",
    "止めろ！",
-   "ジャックポットはすぐそこ…"
+   "丸で止めれば1つ100点！"
   ],
   "111": [
-   "スクラッチくじ",
+   "スクラッチアート",
    "削れ！",
-   "3つそろえば100万円"
+   "削って星を3つ見つけよう！"
   ],
   "112": [
    "キラキラパック開封",
@@ -1597,14 +1597,14 @@
    "あと1箱だけ…"
   ],
   "114": [
-   "運命のルーレット",
+   "タイミングホイール",
    "止めろ！",
-   "どこで止まる？"
+   "タイミングよく離して100点を狙え！"
   ],
   "115": [
-   "パチンコプリンコ",
+   "ネオンボールドロップ",
    "落とせ！",
-   "底に大金が眠る"
+   "ボールは10個。80点ポケットを狙え！"
   ],
   "116": [
    "クレーンゲーム",
@@ -1612,9 +1612,9 @@
    "アームはわざと弱い"
   ],
   "117": [
-   "コインプッシャー",
+   "ディスクプッシャー",
    "落とせ！",
-   "もう落ちそう…"
+   "ディスクを押して端から落とせ！"
   ],
   "118": [
    "デイリーボーナス",
