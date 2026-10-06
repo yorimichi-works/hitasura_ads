@@ -583,8 +583,8 @@ jobs:
     # Every matrix child downloads the exact harness compiled by this run.
     # Both device smoke proofs must pass before these larger locale batches.
     needs: [ios, native-smoke]
-    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[capture-all]')
-    runs-on: macos-15
+    if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && (contains(github.event.head_commit.message, '[capture-all]') || contains(github.event.head_commit.message, '[capture-media-proof]'))
+    runs-on: macos-26
     timeout-minutes: 20
     permissions:
       contents: read
@@ -594,17 +594,8 @@ jobs:
       max-parallel: 4
       matrix:
         # Pair axis first: phone and iPad progress together for each pair.
-        chunk:
-          - {id: ja-ar, locales: "ja,ar"}
-          - {id: en-zh, locales: "en,zh"}
-          - {id: zh_tw-ko, locales: "zh_TW,ko"}
-          - {id: es-fr, locales: "es,fr"}
-          - {id: de-pt, locales: "de,pt"}
-          - {id: ru-it, locales: "ru,it"}
-          - {id: hi-bn, locales: "hi,bn"}
-          - {id: ur-fa, locales: "ur,fa"}
-          - {id: id-tr, locales: "id,tr"}
-          - {id: vi-th, locales: "vi,th"}
+        # Proof marker wins if both markers occur; only JA/AR expands.
+        chunk: ${{ fromJSON(contains(github.event.head_commit.message, '[capture-media-proof]') && '[{"id":"ja-ar","locales":"ja,ar"}]' || '[{"id":"ja-ar","locales":"ja,ar"},{"id":"en-zh","locales":"en,zh"},{"id":"zh_tw-ko","locales":"zh_TW,ko"},{"id":"es-fr","locales":"es,fr"},{"id":"de-pt","locales":"de,pt"},{"id":"ru-it","locales":"ru,it"},{"id":"hi-bn","locales":"hi,bn"},{"id":"ur-fa","locales":"ur,fa"},{"id":"id-tr","locales":"id,tr"},{"id":"vi-th","locales":"vi,th"}]') }}
         device: [iphone_6_9, ipad_13]
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
@@ -653,7 +644,7 @@ jobs:
           CAPTURE_LOCALES: ${{ matrix.chunk.locales }}
         run: |
           xcodebuild -version
-          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales "$CAPTURE_LOCALES" --devices "$CAPTURE_DEVICE" --session-loop --videos --work-deadline-seconds 480 --natural-status-bar --runtime-version 18.6
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales "$CAPTURE_LOCALES" --devices "$CAPTURE_DEVICE" --session-loop --videos --work-deadline-seconds 480 --natural-status-bar --runtime-version 26.2
       - name: Upload native checkpoints and provenance
         if: always()
         uses: actions/upload-artifact@v4
@@ -662,6 +653,91 @@ jobs:
           path: build/store_assets/native_ios
           if-no-files-found: warn
           retention-days: 7
+
+  native-media-candidates:
+    # A separate standard runner preserves every existing macOS capture deadline.
+    # Raw media are already uploaded before this job can start; no cloud-PC download.
+    needs: native-all-media
+    if: ${{ !cancelled() && needs.native-all-media.result != 'skipped' && github.repository == 'yorimichi-works/hitasura_ads' && github.event.repository.private == false && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && (contains(github.event.head_commit.message, '[capture-all]') || contains(github.event.head_commit.message, '[capture-media-proof]')) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        # Proof marker wins if both markers occur; only JA/AR expands.
+        chunk: ${{ fromJSON(contains(github.event.head_commit.message, '[capture-media-proof]') && '[{"id":"ja-ar","locales":"ja,ar"}]' || '[{"id":"ja-ar","locales":"ja,ar"},{"id":"en-zh","locales":"en,zh"},{"id":"zh_tw-ko","locales":"zh_TW,ko"},{"id":"es-fr","locales":"es,fr"},{"id":"de-pt","locales":"de,pt"},{"id":"ru-it","locales":"ru,it"},{"id":"hi-bn","locales":"hi,bn"},{"id":"ur-fa","locales":"ur,fa"},{"id":"id-tr","locales":"id,tr"},{"id":"vi-th","locales":"vi,th"}]') }}
+        device: [iphone_6_9, ipad_13]
+    steps:
+      - uses: actions/checkout@v4
+        timeout-minutes: 1
+      - name: Retain source-tagged attempt and check installed encoders
+        timeout-minutes: 1
+        run: |
+          mkdir -p build/media_candidates
+          python3 - <<'PYTHON'
+          import json, os, pathlib, shutil
+          result = {
+              'capture_source_sha': os.environ['GITHUB_SHA'],
+              'production_base_sha': '5969bac7aab8589fb3a7ad92990c92cc059c05fe',
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'ffmpeg': shutil.which('ffmpeg'), 'ffprobe': shutil.which('ffprobe'),
+              'status': 'preflight_only_not_media_approval',
+          }
+          pathlib.Path('build/media_candidates/attempt.json').write_text(json.dumps(result, indent=2))
+          if not result['ffmpeg'] or not result['ffprobe']:
+              raise SystemExit('Standard runner lacks ffmpeg/ffprobe; no automatic install or paid fallback')
+          PYTHON
+          python3 -m unittest discover -s tool/store_assets/tests -v
+      - name: Download exact same-run raw locale and device artifact
+        timeout-minutes: 3
+        uses: actions/download-artifact@v4
+        with:
+          name: hitasura-native-media-${{ matrix.chunk.id }}-${{ matrix.device }}
+          path: build/native_media_source
+      - name: Produce bounded technical candidates and compact review evidence
+        timeout-minutes: 11
+        env:
+          CAPTURE_LOCALES: ${{ matrix.chunk.locales }}
+          CAPTURE_DEVICE: ${{ matrix.device }}
+          RAW_ARTIFACT_NAME: hitasura-native-media-${{ matrix.chunk.id }}-${{ matrix.device }}
+        run: |
+          python3 tool/store_assets/postprocess_native_media.py \
+            --manifest build/native_media_source/manifest.json \
+            --output-root "build/media_candidates/$GITHUB_SHA/$GITHUB_RUN_ID-attempt$GITHUB_RUN_ATTEMPT" \
+            --app-source-sha "$GITHUB_SHA" --capture-source-sha "$GITHUB_SHA" \
+            --production-base-sha 5969bac7aab8589fb3a7ad92990c92cc059c05fe \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --locales "$CAPTURE_LOCALES" --device "$CAPTURE_DEVICE" \
+            --raw-artifact-name "$RAW_ARTIFACT_NAME" --work-seconds 600 --execute-previews
+      - name: Retain compact review sheets and provenance separately
+        if: always()
+        timeout-minutes: 1
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-media-review-${{ github.sha }}-${{ matrix.chunk.id }}-${{ matrix.device }}-attempt${{ github.run_attempt }}
+          path: |
+            build/media_candidates/attempt.json
+            build/media_candidates/**/results.json
+            build/media_candidates/**/preview.manifest.json
+            build/media_candidates/**/screenshots-review-only.png
+            build/media_candidates/**/preview-review-only.png
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 6
+      - name: Retain candidate media, hashes, exact gaps and review-only sheets
+        if: always()
+        timeout-minutes: 2
+        uses: actions/upload-artifact@v4
+        with:
+          name: hitasura-media-candidates-${{ github.sha }}-${{ matrix.chunk.id }}-${{ matrix.device }}-attempt${{ github.run_attempt }}
+          path: build/media_candidates
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
 
   rewarded-qa-build:
     if: github.repository == 'yorimichi-works/hitasura_ads' && github.ref == 'refs/heads/codex/app-store-readiness-20261002' && github.event_name == 'push' && contains(github.event.head_commit.message, '[ad-qa]')
