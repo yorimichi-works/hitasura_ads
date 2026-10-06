@@ -308,9 +308,45 @@ class SceneSelectionTests(unittest.TestCase):
         self.assertNotIn('preview', capture.select_capture_scenes(','.join(capture.SCENES), session_loop=True))
 
     def test_legacy_gameplay_screenshots_fail_closed(self):
-        for scene in ('pin', 'runner', 'home,pin,runner'):
+        for scene in ('pin', 'runner', 'fruit', 'home,pin,runner', 'home,fruit'):
             with self.subTest(scene=scene), self.assertRaisesRegex(ValueError, '--session-loop'):
                 capture.select_capture_scenes(scene)
+
+    def test_default_fruit_slot_and_explicit_runner_are_truthfully_named(self):
+        self.assertEqual(capture.SCENES, ['home', 'collection', 'pin', 'fruit', 'rush'])
+        self.assertEqual(capture.select_capture_scenes(','.join(capture.SCENES), session_loop=True), capture.SCENES)
+        self.assertEqual(capture.select_capture_scenes('home,fruit', session_loop=True), ['home', 'fruit'])
+        self.assertEqual(capture.select_capture_scenes('runner', session_loop=True), ['runner'])
+
+    def test_screenshot_and_video_record_ids_never_collide(self):
+        image = capture.capture_record_key('ja', 'ipad_13', 'fruit', 'image')
+        video = capture.capture_record_key('ja', 'ipad_13', 'fruit', 'video')
+        self.assertEqual(image, 'ja/ipad_13/fruit_screenshot')
+        self.assertEqual(video, 'ja/ipad_13/fruit')
+        self.assertNotEqual(image, video)
+        self.assertEqual(capture.capture_record_key('ja', 'ipad_13', 'home', 'image'), 'ja/ipad_13/home')
+        self.assertEqual(capture.capture_record_key('ja', 'ipad_13', 'liquid', 'video'), 'ja/ipad_13/liquid')
+
+    def test_full_requirements_need_both_fruit_image_and_video(self):
+        keys = capture.required_record_keys(capture.LOCALES, ['iphone_6_9', 'ipad_13'], capture.SCENES, True)
+        self.assertEqual(len(keys), 280)
+        self.assertEqual(len(set(keys)), 280)
+        image = 'ja/ipad_13/fruit_screenshot'
+        video = 'ja/ipad_13/fruit'
+        self.assertIn(image, keys)
+        self.assertIn(video, keys)
+        self.assertIn(video, [key for key in keys if key not in {image}])
+        self.assertEqual(capture.required_record_keys(['ja'], ['ipad_13'], ['home', 'fruit']),
+                         ['ja/ipad_13/home', image])
+
+    def test_smoke_uses_actual_fruit_with_unchanged_native_bounds(self):
+        workflow = (pathlib.Path(__file__).parents[3] / '.github/workflows/ios-check.yml').read_text()
+        smoke = workflow.split('  native-smoke:', 1)[1].split('  native-probe:', 1)[0]
+        for value in ('--locales ja,ar', '--scenes home,fruit', '--session-loop',
+                      '--work-deadline-seconds 480', 'runs-on: macos-15',
+                      'device: [iphone_6_9, ipad_13]', 'timeout-minutes: 20'):
+            self.assertIn(value, smoke)
+        self.assertNotIn('--scenes home,runner', smoke)
 
     def test_empty_unknown_and_duplicate_scenes_rejected(self):
         for value in ['', 'home,', '../home', 'home,home', 'preview']:
@@ -342,6 +378,18 @@ class BatchDeadlineTests(unittest.TestCase):
         self.assertEqual(scenes, ['home', 'collection', 'pin', 'runner', 'rush'])
         with self.assertRaisesRegex(ValueError, '--session-loop'):
             capture.select_capture_scenes('home', True)
+
+    def test_install_uses_one_120_second_attempt_and_respects_work_deadline(self):
+        source = pathlib.Path(capture.__file__).read_text()
+        self.assertEqual(source.count("host.run('xcrun','simctl','install',udid,str(app), timeout=120)"), 1)
+        with tempfile.TemporaryDirectory() as directory:
+            host = capture.HostLog(pathlib.Path(directory))
+            host.work_deadline = 145
+            with mock.patch.object(capture.time, 'monotonic', return_value=100), \
+                 mock.patch.object(capture.subprocess, 'run', return_value=mock.Mock(returncode=0)) as run:
+                host.run('xcrun', 'simctl', 'install', 'device', 'app', timeout=120)
+            run.assert_called_once()
+            self.assertEqual(run.call_args.kwargs['timeout'], 45)
 
     def test_cleanup_uses_one_shared_reserve_and_stops_commands_when_spent(self):
         with tempfile.TemporaryDirectory() as directory:

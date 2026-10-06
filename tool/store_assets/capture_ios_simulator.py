@@ -20,7 +20,8 @@ import time
 import uuid
 
 LOCALES = ['en','ja','zh','zh_TW','ko','es','fr','de','pt','ru','it','hi','bn','ar','ur','fa','id','tr','vi','th']
-SCENES = ['home','collection','pin','runner','rush']
+SCENES = ['home','collection','pin','fruit','rush']
+SUPPORTED_SCENES = SCENES + ['runner']
 BUNDLE = 'com.syamo.hitasuraads'
 
 class HostLog:
@@ -289,17 +290,31 @@ def collect_diagnostics(host, udid, state_path, dest):
 
 def select_capture_scenes(value, include_videos=False, session_loop=False):
     selected = value.split(',')
-    if (not selected or any(scene not in SCENES for scene in selected)
+    if (not selected or any(scene not in SUPPORTED_SCENES for scene in selected)
             or len(set(selected)) != len(selected)):
         raise ValueError('Unknown or duplicate screenshot scene')
-    if not session_loop and (include_videos or any(scene in {'pin', 'runner'} for scene in selected)):
+    if not session_loop and (include_videos or any(scene in {'pin', 'runner', 'fruit'} for scene in selected)):
         raise ValueError('Gameplay capture requires --session-loop for fresh before/after evidence')
     return selected
 
 
+def capture_record_key(locale, group, scene, media_type):
+    # Preserve established video IDs while distinguishing a same-scene still.
+    suffix = '_screenshot' if media_type == 'image' and scene in {'liquid', 'fruit'} else ''
+    return f'{locale}/{group}/{scene}{suffix}'
+
+
+def required_record_keys(locales, groups, scenes, videos=False):
+    media = [(scene, 'image') for scene in scenes]
+    if videos:
+        media += [('liquid', 'video'), ('fruit', 'video')]
+    return [capture_record_key(locale, group, scene, kind)
+            for group in groups for locale in locales for scene, kind in media]
+
+
 def write_capture_request(container, locale, scene, launch_id):
     """Atomic app-owned config; no environment variables or arbitrary paths."""
-    if locale not in LOCALES or scene not in SCENES + ['preview']:
+    if locale not in LOCALES or scene not in SUPPORTED_SCENES + ['preview']:
         raise ValueError('Unsupported capture locale or scene')
     if str(uuid.UUID(launch_id, version=4)) != launch_id:
         raise ValueError('Capture launch ID must be a canonical version-4 UUID')
@@ -433,8 +448,8 @@ def main():
         'requested_locales':locales,'requested_scenes':selected_scenes,
         'fixture':'40 discovered games, 1234 coins, 900 XP, 5 tickets; notifications/audio/external ads disabled; production purchase initialization preserved',
         'status':'in_progress','records':[], 'status_bar_overrides': {}}
-    required_scenes = selected_scenes + (['liquid','fruit'] if args.session_loop and args.videos else [])
-    manifest['required_record_keys'] = [f'{locale}/{group}/{scene}' for group in args.devices.split(',') for locale in locales for scene in required_scenes]
+    manifest['required_record_keys'] = required_record_keys(
+        locales, args.devices.split(','), selected_scenes, args.session_loop and args.videos)
     def save():
         completed = {record.get('record_key', f"{record['locale']}/{record['device_group']}/{record['scene']}") for record in manifest['records']}
         manifest['remaining_required_scene_keys'] = [key for key in manifest['required_record_keys'] if key not in completed]
@@ -478,7 +493,7 @@ def main():
             if args.probe_screenshot_startup:
                 manifest.setdefault('screenshot_startup_probes', {})[group] = probe_screenshot_startup(host, udid, group, out)
                 save()
-            host.run('xcrun','simctl','install',udid,str(app), timeout=60)
+            host.run('xcrun','simctl','install',udid,str(app), timeout=120)
             container = lookup_app_container(host, udid)
             state_path = container / 'Documents/HitasuraCapture/state.json'
             for locale in locales:
@@ -492,7 +507,8 @@ def main():
                               'device_udid':udid,'runtime':runtime,'status_bar_override_applied':status_bar_applied}
                     def append_record(record):
                         record.update(common)
-                        record['id'] = record['record_key'] = f"{locale}/{group}/{record['scene']}"
+                        record['id'] = record['record_key'] = capture_record_key(
+                            locale, group, record['scene'], record['media_type'])
                         record['status'] = 'raw_native_capture_requires_pixel_review_and_normalization'
                         manifest['records'].append(record)
                         save()
