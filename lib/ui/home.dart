@@ -360,7 +360,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final ss = (wait.inSeconds % 60).toString().padLeft(2, '0');
     return Row(
       children: [
-        Text(L10n.ui('tickets'), style: K.t(13, color: Colors.white70)),
+        Flexible(
+          child: Text(
+            L10n.ui('tickets'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: K.t(13, color: Colors.white70),
+          ),
+        ),
         const SizedBox(width: 8),
         for (var i = 0; i < SearchEnergyService.maxEnergy; i++)
           Padding(
@@ -374,16 +381,24 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-        const Spacer(),
-        Text(
-          c.premiumNoAds
-              ? L10n.ui('unlimited')
-              : n >= SearchEnergyService.maxEnergy
-              ? L10n.ui('full')
-              : L10n.ui('refill_in', {'t': '$mm:$ss'}),
-          style: K.t(
-            12,
-            color: n >= SearchEnergyService.maxEnergy ? K.lime : Colors.white70,
+        const SizedBox(width: 8),
+        Expanded(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                c.premiumNoAds
+                    ? L10n.ui('unlimited')
+                    : n >= SearchEnergyService.maxEnergy
+                    ? L10n.ui('full')
+                    : L10n.ui('refill_in', {'t': '$mm:$ss'}),
+                style: K.t(
+                  12,
+                  color: n >= SearchEnergyService.maxEnergy ? K.lime : Colors.white70,
+                ),
+              ),
+            ),
           ),
         ),
       ],
@@ -431,10 +446,17 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  InkText(L10n.ui('watch_next'), size: 24, shadow: false),
-                  Text(
-                    L10n.ui('watch_sub'),
-                    style: K.t(11, color: Colors.white),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: InkText(L10n.ui('watch_next'), size: 24, shadow: false),
+                  ),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      L10n.ui('watch_sub'),
+                      maxLines: 1,
+                      style: K.t(11, color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -743,11 +765,15 @@ class _TvState extends State<_Tv> {
                       ),
                     ),
                     const SizedBox(width: 6),
-                    Text(
-                      L10n.ui('now_showing'),
-                      style: K.t(11, color: K.red, weight: FontWeight.w900),
+                    Expanded(
+                      child: Text(
+                        L10n.ui('now_showing'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: K.t(11, color: K.red, weight: FontWeight.w900),
+                      ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 4),
                     Text(
                       '${L10n.ui('channel')} ${g.no.toString().padLeft(3, '0')}',
                       style: K.t(11, color: Colors.white54),

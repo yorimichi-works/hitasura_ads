@@ -1,0 +1,23 @@
+{
+  "_doc": "App Store preview captions. Master = ja, reference = en. Game titles, app title, tagline, AD RUSH and SPEED UP come from the app's own l10n tables.",
+  "ja":    {"hook1": "広告で見た、あのゲーム", "hook2": "ホントに遊べる！", "rush2": "どんどん速くなる！", "grid1": "ドット絵も3Dもネオンも", "grid2": "全151本！", "coll1": "ぜんぶ集めて", "coll2": "コンプリートしろ！"},
+  "en":    {"hook1": "Those games from the ads?", "hook2": "You can REALLY play them!", "rush2": "Faster. And FASTER!", "grid1": "Pixel, 3D, neon…", "grid2": "151 GAMES!", "coll1": "Collect 'em all", "coll2": "100% COMPLETE!"},
+  "zh":    {"hook1": "广告里的那些游戏", "hook2": "真的能玩！", "rush2": "越来越快！", "grid1": "像素、3D、霓虹……", "grid2": "整整151款！", "coll1": "全部收集", "coll2": "冲击全图鉴！"},
+  "zh_TW": {"hook1": "廣告裡的那些遊戲", "hook2": "真的能玩！", "rush2": "越來越快！", "grid1": "像素、3D、霓虹……", "grid2": "整整151款！", "coll1": "全部收集", "coll2": "挑戰全圖鑑！"},
+  "ko":    {"hook1": "광고에서 본 그 게임", "hook2": "진짜로 할 수 있다!", "rush2": "점점 빨라진다!", "grid1": "도트, 3D, 네온…", "grid2": "무려 151개!", "coll1": "전부 모아서", "coll2": "도감 완성!"},
+  "es":    {"hook1": "¿Los juegos de los anuncios?", "hook2": "¡Ahora SÍ puedes jugarlos!", "rush2": "¡Cada vez más rápido!", "grid1": "Píxel, 3D, neón…", "grid2": "¡151 JUEGOS!", "coll1": "Consíguelos todos", "coll2": "¡Complétalo al 100%!"},
+  "fr":    {"hook1": "Les jeux des pubs ?", "hook2": "Tu peux VRAIMENT y jouer !", "rush2": "De plus en plus vite !", "grid1": "Pixel, 3D, néon…", "grid2": "151 JEUX !", "coll1": "Collectionne-les", "coll2": "Complète tout à 100 % !"},
+  "de":    {"hook1": "Die Spiele aus der Werbung?", "hook2": "Jetzt WIRKLICH spielbar!", "rush2": "Immer schneller!", "grid1": "Pixel, 3D, Neon …", "grid2": "151 SPIELE!", "coll1": "Sammle sie alle", "coll2": "100 % KOMPLETT!"},
+  "pt":    {"hook1": "Aqueles jogos dos anúncios?", "hook2": "Agora dá pra jogar MESMO!", "rush2": "Cada vez mais rápido!", "grid1": "Pixel, 3D, neon…", "grid2": "151 JOGOS!", "coll1": "Colecione todos", "coll2": "Complete 100%!"},
+  "ru":    {"hook1": "Игры из рекламы?", "hook2": "В них правда можно играть!", "rush2": "Быстрее и быстрее!", "grid1": "Пиксели, 3D, неон…", "grid2": "151 ИГРА!", "coll1": "Собери их все", "coll2": "Заверши коллекцию!"},
+  "it":    {"hook1": "I giochi delle pubblicità?", "hook2": "Ora puoi giocarci DAVVERO!", "rush2": "Sempre più veloce!", "grid1": "Pixel, 3D, neon…", "grid2": "151 GIOCHI!", "coll1": "Collezionali tutti", "coll2": "Completa al 100%!"},
+  "hi":    {"hook1": "विज्ञापनों वाले वो गेम?", "hook2": "अब सच में खेलो!", "rush2": "और तेज़, और तेज़!", "grid1": "पिक्सेल, 3D, नियॉन…", "grid2": "पूरे 151 गेम!", "coll1": "सब इकट्ठा करो", "coll2": "कलेक्शन पूरा करो!"},
+  "bn":    {"hook1": "বিজ্ঞাপনের সেই গেমগুলো?", "hook2": "এবার সত্যিই খেলো!", "rush2": "আরও দ্রুত, আরও দ্রুত!", "grid1": "পিক্সেল, 3D, নিয়ন…", "grid2": "পুরো 151টি গেম!", "coll1": "সব সংগ্রহ করো", "coll2": "কালেকশন পূর্ণ করো!"},
+  "ar":    {"hook1": "ألعاب الإعلانات تلك؟", "hook2": "الآن يمكنك لعبها فعلًا!", "rush2": "أسرع… ثم أسرع!", "grid1": "بكسل، ثلاثي الأبعاد، نيون…", "grid2": "151 لعبة!", "coll1": "اجمعها كلها", "coll2": "أكمل المجموعة!"},
+  "ur":    {"hook1": "اشتہاروں والی وہ گیمز؟", "hook2": "اب واقعی کھیلو!", "rush2": "تیز، اور تیز!", "grid1": "پکسل، 3D، نیون…", "grid2": "پوری 151 گیمز!", "coll1": "سب جمع کرو", "coll2": "کلیکشن مکمل کرو!"},
+  "fa":    {"hook1": "همان بازی‌های توی تبلیغ‌ها؟", "hook2": "حالا واقعاً بازی کن!", "rush2": "سریع‌تر و سریع‌تر!", "grid1": "پیکسلی، سه‌بعدی، نئون…", "grid2": "151 بازی!", "coll1": "همه را جمع کن", "coll2": "مجموعه را کامل کن!"},
+  "id":    {"hook1": "Game yang ada di iklan itu?", "hook2": "Sekarang BENERAN bisa dimainkan!", "rush2": "Makin lama makin cepat!", "grid1": "Piksel, 3D, neon…", "grid2": "151 GAME!", "coll1": "Kumpulkan semuanya", "coll2": "Lengkapi 100%!"},
+  "tr":    {"hook1": "Reklamlardaki o oyunlar?", "hook2": "Artık GERÇEKTEN oynanıyor!", "rush2": "Hızlan, daha da hızlan!", "grid1": "Piksel, 3D, neon…", "grid2": "TAM 151 OYUN!", "coll1": "Hepsini topla", "coll2": "Koleksiyonu tamamla!"},
+  "vi":    {"hook1": "Mấy game trong quảng cáo?", "hook2": "Giờ chơi được THẬT rồi!", "rush2": "Ngày càng nhanh!", "grid1": "Pixel, 3D, neon…", "grid2": "TẬN 151 GAME!", "coll1": "Sưu tầm tất cả", "coll2": "Hoàn thành 100%!"},
+  "th":    {"hook1": "เกมในโฆษณาพวกนั้น?", "hook2": "เล่นได้จริงแล้ว!", "rush2": "เร็วขึ้นเรื่อย ๆ!", "grid1": "พิกเซล 3D นีออน…", "grid2": "ครบ 151 เกม!", "coll1": "สะสมให้ครบ", "coll2": "เก็บครบ 100%!"}
+}
