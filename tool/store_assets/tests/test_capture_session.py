@@ -170,5 +170,160 @@ class GameplayEvidenceTests(unittest.TestCase):
             session.utc_parse('2026-10-02T10:00:00+09:00')
 
 
+
+
+class GameplayScreenshotTests(unittest.TestCase):
+    def setUp(self):
+        SessionTests.setUp(self)
+        self.ready = self.observation(stage='ready', action='show', request_id='show')
+
+    def observation(self, **changes):
+        value = {'session_id': self.capture.session_id, 'launch_id': self.capture.session_id,
+                 'request_id': 'inspection', 'requested_scene': 'runner', 'active_scene': 'runner',
+                 'locale': 'ja', 'action': 'inspect', 'stage': 'inspected',
+                 'at': session.utc_now(), 'native_simulator_attested': True,
+                 'debug_mode': True, 'is_ios': True,
+                 'scene_request_id': 'show', 'game_view_mounted': True,
+                 'same_game_session': True, 'game_no': 18, 'phase': 'play',
+                 'game_time': .1, 'time_left': 20}
+        return {**value, **changes}
+
+    def png(self, *args, **kwargs):
+        pathlib.Path(args[-1]).write_bytes(b'\x89PNG\r\n\x1a\n' + b'\x00\x00\x00\rIHDR'
+                                         + struct.pack('>II', 2064, 2752))
+
+    def test_absent_or_terminal_observations_are_recoverable_but_not_accepted(self):
+        for change in ({'phase': 'intro'}, {'phase': 'ending'}, {'phase': 'done'},
+                       {'phase': 'absent', 'game_view_mounted': False,
+                        'same_game_session': False, 'game_no': None, 'active_scene': None}):
+            with self.subTest(change=change), self.assertRaises(session.InactiveGameplay):
+                session.validate_game_observation(self.observation(**change), 'runner', 'show')
+
+    def test_invalid_dimensions_never_promote_candidate(self):
+        def invalid(*args, **kwargs):
+            pathlib.Path(args[-1]).write_bytes(b'\x89PNG\r\n\x1a\n' + b'\x00\x00\x00\rIHDR'
+                                             + struct.pack('>II', 1, 1))
+        self.host.run.side_effect = invalid
+        with mock.patch.object(self.capture, 'inspect_game', return_value=self.ready), \
+             mock.patch.object(session.time, 'sleep'):
+            with self.assertRaisesRegex(RuntimeError, 'dimensions'):
+                self.capture.screenshot('runner', 2, 'ipad_13', self.ready)
+        self.assertFalse((self.capture.dest / '02_runner.png').exists())
+
+    def test_actual_play_is_bracketed_without_four_second_delay(self):
+        before = self.observation(game_time=.2)
+        after = self.observation(game_time=.5)
+        self.host.run.side_effect = self.png
+        with mock.patch.object(self.capture, 'inspect_game', side_effect=[before, after]) as inspect, \
+             mock.patch.object(session.time, 'sleep') as sleep:
+            record = self.capture.screenshot('runner', 2, 'ipad_13', self.ready)
+        self.assertEqual(inspect.call_count, 2)
+        self.assertEqual(record['app_evidence_before_screenshot'], before)
+        self.assertEqual(record['app_evidence_after_screenshot'], after)
+        self.assertNotIn(mock.call(4), sleep.call_args_list)
+        self.assertTrue(pathlib.Path(record['path']).exists())
+
+    def test_pre_inspection_terminal_never_calls_screenshot_for_rejected_attempt(self):
+        self.host.run.side_effect = self.png
+        ended = self.observation(phase='ending')
+        with mock.patch.object(self.capture, 'inspect_game', side_effect=[session.InactiveGameplay(ended), self.ready, self.ready]), \
+             mock.patch.object(self.capture, 'show', return_value=self.ready) as show, \
+             mock.patch.object(session.time, 'sleep'):
+            record = self.capture.screenshot('runner', 2, 'ipad_13', self.ready)
+        self.host.run.assert_called_once()
+        show.assert_called_once_with('runner')
+        self.assertEqual(record['screenshot_attempt'], 2)
+        self.assertEqual(record['failed_screenshot_attempts'][0]['app_evidence'], ended)
+
+    def test_post_inspection_terminal_retains_only_rejected_candidate_then_recovers(self):
+        self.host.run.side_effect = self.png
+        absent = self.observation(phase='absent', game_view_mounted=False, same_game_session=False,
+                                  game_no=None, active_scene=None)
+        with mock.patch.object(self.capture, 'inspect_game', side_effect=[self.ready, session.InactiveGameplay(absent), self.ready, self.ready]), \
+             mock.patch.object(self.capture, 'show', return_value=self.ready), \
+             mock.patch.object(session.time, 'sleep'):
+            record = self.capture.screenshot('runner', 2, 'ipad_13', self.ready)
+        self.assertEqual(self.host.run.call_count, 2)
+        self.assertEqual(record['screenshot_attempt'], 2)
+        rejected = self.root / record['failed_screenshot_attempts'][0]['path']
+        self.assertTrue(rejected.exists())
+        self.assertNotEqual(rejected, pathlib.Path(record['path']))
+
+    def test_two_ended_captures_never_create_accepted_image(self):
+        self.host.run.side_effect = self.png
+        ended = session.InactiveGameplay(self.observation(phase='done'))
+        with mock.patch.object(self.capture, 'inspect_game', side_effect=[self.ready, ended, self.ready, ended]), \
+             mock.patch.object(self.capture, 'show', return_value=self.ready) as show, \
+             mock.patch.object(session.time, 'sleep'):
+            with self.assertRaises(session.InactiveGameplay):
+                self.capture.screenshot('runner', 2, 'ipad_13', self.ready)
+        self.assertEqual(self.host.run.call_count, 2)
+        show.assert_called_once_with('runner')
+        self.assertFalse((self.capture.dest / '02_runner.png').exists())
+
+    def test_identity_failure_is_not_an_ordinary_game_retry(self):
+        with mock.patch.object(self.capture, 'inspect_game', side_effect=RuntimeError('identity')), \
+             mock.patch.object(self.capture, 'show') as show, mock.patch.object(session.time, 'sleep'):
+            with self.assertRaisesRegex(RuntimeError, 'identity'):
+                self.capture.screenshot('runner', 2, 'ipad_13', self.ready)
+        self.host.run.assert_not_called()
+        show.assert_not_called()
+
+    def test_fresh_inspection_nonce_show_identity_and_time_are_required(self):
+        def wait(request, stage, maximum):
+            self.assertEqual(stage, 'inspected')
+            self.assertEqual(maximum, 6)
+            return self.observation(**request, requested_scene='runner', stage=stage,
+                                    at=session.utc_now(), game_time=.2)
+        with mock.patch.object(self.capture, 'wait', side_effect=wait):
+            one = self.capture.inspect_game('runner', self.ready)
+            two = self.capture.inspect_game('runner', self.ready)
+        self.assertNotEqual(one['request_id'], two['request_id'])
+        self.assertEqual(one['scene_request_id'], 'show')
+        for change in ({'scene_request_id': 'old'}, {'same_game_session': False},
+                       {'game_no': 1}, {'phase': 'unknown'}, {'game_time': float('nan')},
+                       {'game_time': -.1}, {'game_time': 0}, {'time_left': True},
+                       {'at': '2020-01-01T00:00:00Z'}):
+            with self.subTest(change=change), mock.patch.object(self.capture, 'wait', return_value=self.observation(**change)):
+                with self.assertRaises(RuntimeError) as error:
+                    self.capture.inspect_game('runner', self.ready)
+                self.assertNotIsInstance(error.exception, session.InactiveGameplay)
+
+    def test_wait_requires_full_fresh_inspection_identity(self):
+        request = self.capture.command('runner', 'inspect')
+        valid = self.observation(**request, requested_scene='runner')
+        for key in ('request_id', 'session_id', 'launch_id', 'locale', 'requested_scene', 'action'):
+            invalid = {**valid, key: 'old'}
+            with self.subTest(key=key), mock.patch.object(self.capture, 'states', return_value=[invalid]), \
+                 mock.patch.object(session.time, 'monotonic', side_effect=[0, 0, 7]), \
+                 mock.patch.object(session.time, 'sleep'):
+                with self.assertRaises(TimeoutError):
+                    self.capture.wait(request, 'inspected', maximum=6)
+
+    def test_all_gameplay_ready_states_require_live_game_evidence(self):
+        for scene, number in session.GAME_NUMBERS.items():
+            request = self.capture.command(scene, 'show')
+            ready = self.observation(**request, requested_scene=scene, active_scene=scene,
+                                     stage='ready', scene_request_id=request['request_id'], game_no=number)
+            with self.subTest(scene=scene), mock.patch.object(self.capture, 'states', return_value=[ready]):
+                self.assertEqual(self.capture.wait(request, 'ready'), ready)
+            for phase in ('intro', 'ending', 'done', None):
+                with self.subTest(scene=scene, phase=phase), \
+                     mock.patch.object(self.capture, 'states', return_value=[{**ready, 'phase': phase}]):
+                    with self.assertRaises(RuntimeError):
+                        self.capture.wait(request, 'ready')
+
+    def test_no_budget_for_retry_leaves_no_accepted_image(self):
+        self.host.run.side_effect = self.png
+        ended = session.InactiveGameplay(self.observation(phase='ending'))
+        with mock.patch.object(self.capture, 'inspect_game', side_effect=[self.ready, ended]), \
+             mock.patch.object(self.capture, 'budget', side_effect=[45, 45, 47]), \
+             mock.patch.object(self.capture, 'show') as show, mock.patch.object(session.time, 'sleep'):
+            with self.assertRaises(session.InactiveGameplay):
+                self.capture.screenshot('runner', 2, 'ipad_13', self.ready)
+        show.assert_not_called()
+        self.assertFalse((self.capture.dest / '02_runner.png').exists())
+
+
 if __name__ == '__main__':
     unittest.main()

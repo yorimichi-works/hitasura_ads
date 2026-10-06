@@ -303,8 +303,14 @@ class SceneSelectionTests(unittest.TestCase):
         self.assertEqual(capture.select_capture_scenes('home'), ['home'])
 
     def test_video_requires_explicit_flag(self):
-        self.assertEqual(capture.select_capture_scenes('home', True), ['home', 'preview'])
-        self.assertNotIn('preview', capture.select_capture_scenes(','.join(capture.SCENES)))
+        with self.assertRaisesRegex(ValueError, '--session-loop'):
+            capture.select_capture_scenes('home', True)
+        self.assertNotIn('preview', capture.select_capture_scenes(','.join(capture.SCENES), session_loop=True))
+
+    def test_legacy_gameplay_screenshots_fail_closed(self):
+        for scene in ('pin', 'runner', 'home,pin,runner'):
+            with self.subTest(scene=scene), self.assertRaisesRegex(ValueError, '--session-loop'):
+                capture.select_capture_scenes(scene)
 
     def test_empty_unknown_and_duplicate_scenes_rejected(self):
         for value in ['', 'home,', '../home', 'home,home', 'preview']:
@@ -334,7 +340,8 @@ class BatchDeadlineTests(unittest.TestCase):
     def test_session_video_mode_does_not_append_legacy_preview(self):
         scenes = capture.select_capture_scenes('home,collection,pin,runner,rush', True, session_loop=True)
         self.assertEqual(scenes, ['home', 'collection', 'pin', 'runner', 'rush'])
-        self.assertEqual(capture.select_capture_scenes('home', True), ['home', 'preview'])
+        with self.assertRaisesRegex(ValueError, '--session-loop'):
+            capture.select_capture_scenes('home', True)
 
     def test_cleanup_uses_one_shared_reserve_and_stops_commands_when_spent(self):
         with tempfile.TemporaryDirectory() as directory:

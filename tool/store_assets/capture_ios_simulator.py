@@ -292,7 +292,9 @@ def select_capture_scenes(value, include_videos=False, session_loop=False):
     if (not selected or any(scene not in SCENES for scene in selected)
             or len(set(selected)) != len(selected)):
         raise ValueError('Unknown or duplicate screenshot scene')
-    return selected + (['preview'] if include_videos and not session_loop else [])
+    if not session_loop and (include_videos or any(scene in {'pin', 'runner'} for scene in selected)):
+        raise ValueError('Gameplay capture requires --session-loop for fresh before/after evidence')
+    return selected
 
 
 def write_capture_request(container, locale, scene, launch_id):
@@ -524,7 +526,7 @@ def main():
                             record_video(host, udid, path)
                             record.update({'audio':'not captured; silent','native_unencoded':True})
                         else:
-                            time.sleep(4 if scene in ['pin','runner'] else 2)
+                            time.sleep(2)
                             path = dest/f'{index:02}_{scene}.png'
                             host.run('xcrun','simctl','io',udid,'screenshot','--type=png',str(path), timeout=30)
                             with path.open('rb') as image:

@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 
 import 'capture_request.dart';
 import 'capture_gameplay.dart';
+import 'capture_scene.dart';
 
 import 'package:hitasura_ads/app.dart';
 import 'package:hitasura_ads/arcade/registry.dart';
@@ -191,6 +192,7 @@ Future<void> _capture(_CaptureReporter report) async {
     if (nav == null) throw StateError('App navigator missing');
     nav.popUntil((r) => r.isFirst);
     await Future<void>.delayed(const Duration(milliseconds: 400));
+    routeKey = null;
     if (target == 'home') return;
     routeKey = GlobalKey();
     final Widget screen = switch (target) {
@@ -223,7 +225,11 @@ Future<void> _capture(_CaptureReporter report) async {
 
   (GameView, Element) currentGame() {
     final root = routeKey?.currentContext;
-    if (root == null) throw StateError('Game route is not mounted');
+    if (root == null ||
+        ModalRoute.of(root)?.isCurrent != true ||
+        WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) {
+      throw StateError('Game route is not current');
+    }
     (GameView, Element)? found;
     void visit(Element element) {
       if (element.widget case final GameView view) found = (view, element);
@@ -235,42 +241,83 @@ Future<void> _capture(_CaptureReporter report) async {
     return found!;
   }
 
+  GameSession? preparedGame;
+  String? sceneRequestId;
+
   Future<void> showReady(String scene) async {
     report.stage('scene_start');
+    preparedGame = null;
+    sceneRequestId = null;
     final target = scene == 'preview' ? 'runner' : scene;
     await show(target);
     await Future<void>.delayed(const Duration(milliseconds: 400));
     final details = <String, Object?>{};
-    if (target == 'liquid' || target == 'fruit') {
+    if (captureGameNumbers.containsKey(target)) {
       final deadline = DateTime.now().add(const Duration(seconds: 12));
-      GameSession? session;
       while (DateTime.now().isBefore(deadline)) {
+        GameSession? session;
         try {
           session = currentGame().$1.session;
         } on StateError {
-          /* title card */
+          /* The production title card has not mounted a GameView yet. */
         }
-        if (session?.phase == SessionPhase.play) break;
+        if (session != null && session.phase == SessionPhase.play) {
+          // A pre-frame observation can age into an ending while awaiting paint.
+          await WidgetsBinding.instance.endOfFrame.timeout(
+            const Duration(seconds: 5),
+          );
+          final current = currentGame().$1.session;
+          final observation = captureGameObservation(
+            current,
+            session,
+            report.command?.requestId,
+          );
+          if (observation['same_game_session'] != true ||
+              observation['game_no'] != captureGameNumbers[target]) {
+            throw StateError('Prepared gameplay identity changed');
+          }
+          if (current.phase == SessionPhase.play) {
+            preparedGame = current;
+            sceneRequestId = report.command?.requestId;
+            details.addAll(observation);
+            break;
+          }
+        }
         await Future<void>.delayed(const Duration(milliseconds: 25));
       }
-      if (session == null || session.phase != SessionPhase.play) {
+      if (preparedGame == null) {
         throw StateError('Actual gameplay did not become active');
       }
-      details.addAll({
-        'game_no': target == 'liquid' ? 3 : 8,
-        'phase': session.phase.name,
-        'game_time': session.time,
-        'time_left': session.timeLeft,
-      });
+    } else {
+      await WidgetsBinding.instance.endOfFrame.timeout(
+        const Duration(seconds: 30),
+      );
     }
-    await WidgetsBinding.instance.endOfFrame.timeout(
-      const Duration(seconds: 30),
-    );
     report.stage('ready', {
       'locale': L10n.code,
       'active_scene': target,
       'ready_at': DateTime.now().toUtc().toIso8601String(),
       ...details,
+    });
+  }
+
+  Future<void> inspectGame(String scene) async {
+    final prepared = preparedGame;
+    if (prepared == null || sceneRequestId == null) {
+      throw StateError('Inspection requires a prepared gameplay session');
+    }
+    await WidgetsBinding.instance.endOfFrame.timeout(
+      const Duration(seconds: 5),
+    );
+    GameSession? current;
+    try {
+      current = currentGame().$1.session;
+    } on StateError {
+      /* A real result page has no GameView: report absence, never stale play. */
+    }
+    report.stage('inspected', {
+      'active_scene': current == null ? null : scene,
+      ...captureGameObservation(current, prepared, sceneRequestId),
     });
   }
 
@@ -380,6 +427,8 @@ Future<void> _capture(_CaptureReporter report) async {
     }
     if (command.action == 'show') {
       await showReady(command.scene);
+    } else if (command.action == 'inspect') {
+      await inspectGame(command.scene);
     } else {
       await playRecorded(command.scene);
     }

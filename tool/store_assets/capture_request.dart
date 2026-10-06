@@ -148,8 +148,12 @@ class CaptureCommand {
     }, now: now);
     final action = value['action'];
     if (action is! String ||
-        !{'show', 'record_start', 'stop'}.contains(action)) {
+        !{'show', 'inspect', 'record_start', 'stop'}.contains(action)) {
       throw const FormatException('Unsupported capture action');
+    }
+    if (action == 'inspect' &&
+        !{'pin', 'runner', 'liquid', 'fruit'}.contains(base.scene)) {
+      throw const FormatException('Only gameplay scenes may be inspected');
     }
     if (action == 'record_start' && !{'liquid', 'fruit'}.contains(base.scene)) {
       throw const FormatException('Only approved gameplay scenes may record');
@@ -185,6 +189,9 @@ class CaptureSessionGuard {
     if (_scene == null && command.action != 'show') {
       throw StateError('First capture command must show a scene');
     }
+    if (command.action == 'inspect' && command.scene != _scene) {
+      throw StateError('Inspection requires the current game scene');
+    }
     if (command.action == 'record_start' &&
         (command.scene != _scene || _recorded)) {
       throw StateError('Recording requires the current, unrecorded game scene');
@@ -195,7 +202,7 @@ class CaptureSessionGuard {
       _recorded = false;
     } else if (command.action == 'record_start') {
       _recorded = true;
-    } else {
+    } else if (command.action == 'stop') {
       _stopped = true;
     }
   }

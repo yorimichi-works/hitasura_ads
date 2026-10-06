@@ -183,4 +183,49 @@ void main() {
     guard.accept(stop);
     expect(() => guard.accept(initial), throwsStateError);
   });
+
+  test('inspection is read-only, current-scene-only and replay protected', () {
+    final initial = CaptureCommand.parse(command(scene: 'runner'), now: now);
+    final guard = CaptureSessionGuard(initial.sessionId, initial.locale);
+    final inspect = CaptureCommand.parse(
+      command(
+        action: 'inspect',
+        scene: 'runner',
+        id: 'c1a9a9ab-3fb1-4300-a6f6-1ca229506795',
+      ),
+      now: now,
+    );
+    expect(() => guard.accept(inspect), throwsStateError);
+    guard.accept(initial);
+    guard.accept(inspect);
+    expect(() => guard.accept(inspect), throwsStateError);
+    final wrong = CaptureCommand.parse(
+      command(
+        action: 'inspect',
+        scene: 'pin',
+        id: 'c1a9a9ab-3fb1-4300-a6f6-1ca229506796',
+      ),
+      now: now,
+    );
+    expect(() => guard.accept(wrong), throwsStateError);
+    final second = CaptureCommand.parse(
+      command(
+        action: 'inspect',
+        scene: 'runner',
+        id: 'c1a9a9ab-3fb1-4300-a6f6-1ca229506797',
+      ),
+      now: now,
+    );
+    guard.accept(second); // An inspection must not stop or navigate the session.
+    for (final scene in ['home', 'collection', 'rush', 'settings', 'preview']) {
+      expect(
+        () => CaptureCommand.parse(
+          command(action: 'inspect', scene: scene),
+          now: now,
+        ),
+        throwsFormatException,
+      );
+    }
+  });
+
 }

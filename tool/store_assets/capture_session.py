@@ -3,6 +3,7 @@ import datetime
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import pathlib
 import re
@@ -14,7 +15,7 @@ import uuid
 
 BUNDLE = 'com.syamo.hitasuraads'
 SCENES = {'home', 'collection', 'pin', 'runner', 'rush', 'settings', 'liquid', 'fruit'}
-GAME_NUMBERS = {'liquid': 3, 'fruit': 8}
+GAME_NUMBERS = {'pin': 1, 'runner': 18, 'liquid': 3, 'fruit': 8}
 
 
 def utc_now():
@@ -34,8 +35,10 @@ def sha256(path):
 
 
 def write_request(container, session_id, request_id, locale, scene, action):
-    if scene not in SCENES or action not in {'show', 'record_start', 'stop'}:
+    if scene not in SCENES or action not in {'show', 'inspect', 'record_start', 'stop'}:
         raise ValueError('Unsupported capture scene/action')
+    if action == 'inspect' and scene not in GAME_NUMBERS:
+        raise ValueError('Only gameplay scenes may be inspected')
     for identifier in (session_id, request_id):
         if str(uuid.UUID(identifier, version=4)) != identifier:
             raise ValueError('Session and request IDs must be canonical UUID4 values')
@@ -59,6 +62,37 @@ def state_matches(state, request):
             and state.get('locale') == request['locale']
             and state.get('requested_scene') == request['scene']
             and state.get('action') == request['action'])
+
+
+class InactiveGameplay(RuntimeError):
+    """Only a truthful terminal/absent game may trigger a bounded scene retry."""
+    def __init__(self, state):
+        super().__init__('Gameplay is no longer active; candidate not accepted')
+        self.evidence = state
+
+
+def validate_game_observation(state, scene, scene_request_id):
+    if not scene_request_id or state.get('scene_request_id') != scene_request_id:
+        raise RuntimeError('Gameplay observation belongs to a different show request')
+    if state.get('game_view_mounted') is False:
+        if (state.get('phase') != 'absent' or state.get('game_no') is not None
+                or state.get('same_game_session') is not False
+                or state.get('active_scene') is not None):
+            raise RuntimeError('Contradictory absent gameplay evidence')
+        raise InactiveGameplay(state)
+    if (state.get('game_view_mounted') is not True
+            or state.get('same_game_session') is not True
+            or state.get('game_no') != GAME_NUMBERS[scene]
+            or state.get('active_scene') != scene):
+        raise RuntimeError('Native gameplay identity differs from prepared scene')
+    if state.get('phase') in {'intro', 'ending', 'done'}:
+        raise InactiveGameplay(state)
+    if state.get('phase') != 'play':
+        raise RuntimeError('Missing or unknown native gameplay phase')
+    for key in ('game_time', 'time_left'):
+        value = state.get(key)
+        if type(value) not in (int, float) or not math.isfinite(value) or value < 0:
+            raise RuntimeError('Invalid observed gameplay clock')
 
 
 def validate_gameplay(ready, started, complete, scene):
@@ -177,6 +211,8 @@ class CaptureSession:
                             raise RuntimeError('Invalid native debug simulator state')
                         if stage in {'ready', 'gameplay_started', 'gameplay_complete'} and state.get('active_scene') != request['scene']:
                             raise RuntimeError('Native active scene differs from requested scene')
+                        if stage == 'ready' and request['scene'] in GAME_NUMBERS:
+                            validate_game_observation(state, request['scene'], request['request_id'])
                         return state
             time.sleep(.1)
         raise TimeoutError(f'Native session did not reach {stage}; last_state={last}')
@@ -201,25 +237,53 @@ class CaptureSession:
         self.active_scene = scene
         return state
 
+    def inspect_game(self, scene, ready):
+        validate_game_observation(ready, scene, ready['request_id'])
+        request = self.command(scene, 'inspect')
+        state = self.wait(request, 'inspected', maximum=6)
+        if utc_parse(state['at']) < utc_parse(request['created_at']):
+            raise RuntimeError('Stale native gameplay inspection')
+        validate_game_observation(state, scene, ready['request_id'])
+        if state['game_time'] < ready['game_time']:
+            raise RuntimeError('Prepared gameplay clock moved backwards')
+        return state
+
     def screenshot(self, scene, index, group, ready=None):
         if self.screenshot_xctestrun is not None:
             return self.screenshot_via_xctest(scene, index, group, ready)
         if self.budget(45) < 45:
             raise TimeoutError('Capture work deadline leaves less than the 45-second screenshot reserve')
         ready = ready or self.show(scene)
-        pause = 4 if scene in {'pin', 'runner'} else 2
+        pause = 0 if scene in GAME_NUMBERS else 2
         path = self.dest / f'{index:02}_{scene}.png'
         failed_attempts = []
         for attempt in (1, 2):
             if self.budget(45) < 45:
                 raise TimeoutError('Capture work deadline leaves less than the 45-second screenshot reserve')
             time.sleep(pause)
-            candidate = self.dest / f'{index:02}_{scene}.attempt{attempt}.png'
+            candidate = self.dest / f'{index:02}_{scene}.{uuid.uuid4()}.attempt{attempt}.png'
             self.host.stage('screenshot_attempt', locale=self.locale, scene=scene,
                             attempt=attempt, maximum_attempts=2, path=str(candidate))
+            before = after = None
             try:
+                if scene in GAME_NUMBERS:
+                    before = self.inspect_game(scene, ready)
                 self.host.run('xcrun', 'simctl', 'io', self.udid, 'screenshot', '--type=png',
                               str(candidate), timeout=30)
+                if scene in GAME_NUMBERS:
+                    after = self.inspect_game(scene, ready)
+                    if after['game_time'] < before['game_time']:
+                        raise RuntimeError('Gameplay clock changed during screenshot')
+            except InactiveGameplay as error:
+                failed_attempts.append({'attempt': attempt, 'path': str(candidate.relative_to(self.output_root)),
+                                        'status': 'inactive_gameplay_not_accepted',
+                                        'app_evidence': error.evidence})
+                if attempt == 2 or self.budget(48) < 48:
+                    raise
+                self.host.stage('screenshot_retry_scene_reset', locale=self.locale, scene=scene,
+                                wait_seconds=0, reason='inactive_gameplay')
+                ready = self.show(scene)
+                continue
             except subprocess.TimeoutExpired:
                 failed_attempts.append({'attempt': attempt, 'path': str(candidate.relative_to(self.output_root)),
                                         'status': 'command_timeout_not_accepted'})
@@ -232,19 +296,21 @@ class CaptureSession:
                 # real scene afresh before taking a second independent image.
                 ready = self.show(scene)
                 continue
-            candidate.replace(path)
             break
-        with path.open('rb') as source:
+        with candidate.open('rb') as source:
             source.seek(16)
             dimensions = struct.unpack('>II', source.read(8))
         allowed = {(1290, 2796), (1320, 2868), (1260, 2736)} if group == 'iphone_6_9' else {(2048, 2732), (2064, 2752)}
         if dimensions not in allowed:
             raise RuntimeError(f'Unexpected native screenshot dimensions: {dimensions}')
+        candidate.replace(path)
         self.dimensions = list(dimensions)
         return {'media_type': 'image', 'scene': scene, 'app_evidence': ready,
                 'path': str(path), 'relative_path': str(path.relative_to(self.output_root)),
                 'sha256': sha256(path), 'dimensions': list(dimensions),
-                'screenshot_attempt': attempt, 'failed_screenshot_attempts': failed_attempts}
+                'screenshot_attempt': attempt, 'failed_screenshot_attempts': failed_attempts,
+                **({'app_evidence_before_screenshot': before,
+                    'app_evidence_after_screenshot': after} if scene in GAME_NUMBERS else {})}
 
     def screenshot_via_xctest(self, scene, index, group, ready=None):
         # 120s test + 30s attachment export, with frame/identity-check margin.
@@ -257,15 +323,21 @@ class CaptureSession:
         if self.pid is None:
             raise RuntimeError('XCTest screenshot requires the original running native PID')
         path = self.dest / f'{index:02}_{scene}.png'
-        candidate = self.dest / f'{index:02}_{scene}.xctest.png'
+        candidate = self.dest / f'{index:02}_{scene}.{uuid.uuid4()}.xctest.png'
+        before = self.inspect_game(scene, ready) if scene in GAME_NUMBERS else None
         proof = xctest_capture(self.host, self.udid, self.screenshot_xctestrun,
                               candidate, self.pid, self.screenshot_driver_sha)
-        current = json.loads(self.state_path.read_text())
-        if (not state_matches(current, request) or current.get('stage') != 'ready'
-                or current.get('active_scene') != scene
-                or any(current.get(key) is not True for key in
-                       ('native_simulator_attested', 'debug_mode', 'is_ios'))):
-            raise RuntimeError('Native prepared session changed during XCTest screenshot')
+        if scene in GAME_NUMBERS:
+            current = self.inspect_game(scene, ready)
+            if current['game_time'] < before['game_time']:
+                raise RuntimeError('Gameplay clock changed during XCTest screenshot')
+        else:
+            current = json.loads(self.state_path.read_text())
+            if (not state_matches(current, request) or current.get('stage') != 'ready'
+                    or current.get('active_scene') != scene
+                    or any(current.get(key) is not True for key in
+                           ('native_simulator_attested', 'debug_mode', 'is_ios'))):
+                raise RuntimeError('Native prepared session changed during XCTest screenshot')
         with candidate.open('rb') as source:
             source.seek(16)
             dimensions = struct.unpack('>II', source.read(8))
@@ -276,6 +348,7 @@ class CaptureSession:
         self.dimensions = list(dimensions)
         return {'media_type': 'image', 'scene': scene, 'app_evidence': ready,
                 'app_evidence_after_screenshot': current,
+                **({'app_evidence_before_screenshot': before} if before is not None else {}),
                 'path': str(path), 'relative_path': str(path.relative_to(self.output_root)),
                 'sha256': sha256(path), 'dimensions': list(dimensions),
                 'screenshot_method': 'xctest_existing_foreground_app',

@@ -72,5 +72,43 @@ class XCTestSessionIntegrationTests(unittest.TestCase):
         screenshot.assert_not_called()
 
 
+    def game_ready(self):
+        return {**self.ready, 'requested_scene': 'runner', 'active_scene': 'runner',
+                'scene_request_id': self.ready['request_id'], 'game_no': 18,
+                'game_view_mounted': True, 'same_game_session': True,
+                'phase': 'play', 'game_time': .1, 'time_left': 20}
+
+    def test_xctest_gameplay_requires_fresh_observations_on_both_sides(self):
+        ready = self.game_ready()
+        before, after = {**ready, 'game_time': .2}, {**ready, 'game_time': .8}
+        with mock.patch.object(self.capture, 'wait', return_value=ready), \
+             mock.patch.object(self.capture, 'inspect_game', side_effect=[before, after]) as inspect, \
+             mock.patch.object(session, 'xctest_capture', side_effect=self.fake_capture), \
+             mock.patch.object(session.struct, 'unpack', return_value=(1320, 2868)):
+            record = self.capture.screenshot('runner', 2, 'iphone_6_9', ready)
+        self.assertEqual(inspect.call_count, 2)
+        self.assertEqual(record['app_evidence_before_screenshot'], before)
+        self.assertEqual(record['app_evidence_after_screenshot'], after)
+
+    def test_xctest_postgame_candidate_cannot_become_accepted_output(self):
+        ready = self.game_ready()
+        with mock.patch.object(self.capture, 'wait', return_value=ready), \
+             mock.patch.object(self.capture, 'inspect_game', side_effect=[ready, session.InactiveGameplay({**ready, 'phase': 'ending'})]), \
+             mock.patch.object(session, 'xctest_capture', side_effect=self.fake_capture):
+            with self.assertRaises(session.InactiveGameplay):
+                self.capture.screenshot('runner', 2, 'iphone_6_9', ready)
+        self.assertFalse((self.capture.dest / '02_runner.png').exists())
+        self.assertEqual(len(list(self.capture.dest.glob('*.xctest.png'))), 1)
+
+    def test_xctest_terminal_precheck_does_not_start_driver(self):
+        ready = self.game_ready()
+        with mock.patch.object(self.capture, 'wait', return_value=ready), \
+             mock.patch.object(self.capture, 'inspect_game', side_effect=session.InactiveGameplay({**ready, 'phase': 'ending'})), \
+             mock.patch.object(session, 'xctest_capture') as screenshot:
+            with self.assertRaises(session.InactiveGameplay):
+                self.capture.screenshot('runner', 2, 'iphone_6_9', ready)
+        screenshot.assert_not_called()
+
+
 if __name__ == '__main__':
     unittest.main()

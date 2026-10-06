@@ -9,7 +9,9 @@ score, win, power-up, or artwork is fabricated.
 
 One process serves exactly one locale/device. The production thumbnail cache is
 keyed by game number, so restarting between languages is mandatory. Version 1
-single-scene requests remain supported for simple transport proofs.
+single-scene requests remain supported for static-screen transport proofs only.
+Gameplay screenshots and videos require `--session-loop`; v1 cannot provide a
+fresh post-capture observation.
 
 The host atomically replaces the fixed app-owned
 `Documents/HitasuraCapture/request.json` (maximum 4096 bytes). Version 2 has exactly
@@ -17,7 +19,7 @@ these keys: `schema_version: 2`, `session_id`, `request_id`, `locale`, `scene`,
 `action`, and `created_at`. Both identifiers are lowercase version-4 UUIDs.
 `created_at` is UTC, at most five minutes old and at most 30 seconds ahead.
 
-- Initial action is `show`. Subsequent actions are `show`, `record_start`, or `stop`
+- Initial action is `show`. Subsequent actions are `show`, `inspect`, `record_start`, or `stop`
 - The session ID and locale remain fixed; each action has a fresh request ID
 - Repeated unchanged file bytes are ignored. Reusing an earlier request ID,
   changing session/locale, recording an unprepared scene, or recording it twice
@@ -37,13 +39,36 @@ simulator attestation, debug/iOS status and capture target. Errors are sticky.
 ## Native screenshots
 
 `show` navigates the real application. `ready` is emitted after an actual frame,
-with `active_scene` and the applied locale. Settings shows the ordinary simulator
+with `active_scene` and the applied locale. Pin, runner, liquid and fruit must be
+in actual `play` after the frame wait, on the current foreground route. Evidence
+identifies the real G001/G018/G003/G008 class, not just the requested label.
+
+The read-only `inspect` command is restricted to the prepared game scene and uses
+a new request ID each time. After an actual frame it reports `scene_request_id`
+(the preparing `show` ID), `game_view_mounted` (observable on the current foreground route),
+`same_game_session` (Dart object
+identity), actual `game_no`, `phase`, `game_time` and `time_left`. If no current foreground GameView can be observed (unmounted, covered or
+backgrounded), the observation reports `phase: absent`, null game/active-scene values and false identity;
+it never reuses the previous ready state. Inspection changes no game state.
+
+Gameplay screenshots have fresh inspections immediately before and after native
+capture. Both must be in play on the same prepared session with nondecreasing
+game time. No four-second gameplay sleep remains. Simctl has at most two attempts
+within the existing work deadline: timeout or truthful inactive gameplay may
+retry by navigating to a fresh real session. Wrong/stale identities, invalid
+clocks or other errors fail closed. Each candidate has a unique filename;
+rejected candidates remain diagnostic only and never enter manifest records.
+XCTest applies the same inspections and fails closed after its single bounded
+attempt. Slow screenshots can therefore fail rather than publish an endcard.
+No clocks, seeds, physics, scores or outcomes are changed. These are lifecycle
+brackets, not frame-exact compositor attestation; pixel review is still required.
+
+Settings shows the ordinary simulator
 purchase state; it must not be described as a verified StoreKit offer or receipt.
 
 ## Native gameplay segments
 
-For liquid/fruit, `ready` additionally requires the real GameView session to be in
-`play` and reports `game_no`, `game_time`, `time_left` and `phase`. The game keeps
+For liquid/fruit recording, the same `ready` gameplay evidence applies. The game keeps
 running normally while the host starts simctl recording. No pause or clock reset
 is introduced. The host must receive an actual recorder-start acknowledgment
 before writing `record_start`. A game with less than 10.5 seconds remaining is
