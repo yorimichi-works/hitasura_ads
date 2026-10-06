@@ -343,10 +343,12 @@ class SceneSelectionTests(unittest.TestCase):
         workflow = (pathlib.Path(__file__).parents[3] / '.github/workflows/ios-check.yml').read_text()
         smoke = workflow.split('  native-smoke:', 1)[1].split('  native-probe:', 1)[0]
         for value in ('--locales ja,ar', '--scenes home,fruit', '--session-loop',
-                      '--work-deadline-seconds 480', 'runs-on: macos-15',
+                      '--work-deadline-seconds 480', 'runs-on: macos-26', '--runtime-version 26.2',
                       'device: [iphone_6_9, ipad_13]', 'timeout-minutes: 20'):
             self.assertIn(value, smoke)
         self.assertNotIn('--scenes home,runner', smoke)
+        self.assertNotIn('runs-on: macos-26-large', smoke)
+        self.assertNotIn('runs-on: macos-26-xlarge', smoke)
 
     def test_empty_unknown_and_duplicate_scenes_rejected(self):
         for value in ['', 'home,', '../home', 'home,home', 'preview']:

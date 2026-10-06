@@ -107,7 +107,7 @@ jobs:
   native-smoke:
     needs: ios
     if: github.ref == 'refs/heads/codex/app-store-readiness-20261002'
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 20
     permissions:
       contents: read
@@ -163,7 +163,7 @@ jobs:
           CAPTURE_DEVICE: ${{ matrix.device }}
         run: |
           xcodebuild -version
-          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales ja,ar --devices "$CAPTURE_DEVICE" --scenes home,fruit --session-loop --work-deadline-seconds 480 --natural-status-bar --runtime-version 18.6
+          python3 -u tool/store_assets/capture_ios_simulator.py --app build/reused_native_harness/Runner.app --app-source-sha "$GITHUB_SHA" --locales ja,ar --devices "$CAPTURE_DEVICE" --scenes home,fruit --session-loop --work-deadline-seconds 480 --natural-status-bar --runtime-version 26.2
       - name: Upload native checkpoints and provenance
         if: always()
         uses: actions/upload-artifact@v4
