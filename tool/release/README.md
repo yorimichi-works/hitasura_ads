@@ -27,10 +27,31 @@ start or authorize a paid build or perform an upload.
   placeholder, non-HTTPS, and credential-bearing URLs; it does not establish
   that the pages are live or legally sufficient.
 
-The manual build-number input defaults to `1`, matching the unchanged
-`pubspec.yaml` version `1.0.0+1`. The marketing version is read from pubspec. To
-retry after an upload, supply a higher positive integer as `build_number`
-(`IOS_BUILD_NUMBER` in the environment); the source version is never rewritten.
+The manual build-number input defaults to `1`, matching the source build suffix
+in `pubspec.yaml` version `1.0.1+1`. The marketing version is read from pubspec.
+For this update, explicitly supply a positive integer greater than every uploaded
+build as `build_number` (`IOS_BUILD_NUMBER` in the environment); the live preflight
+rejects a reused number. The source version is never rewritten by the workflow.
+
+## Version 1.0.1 media update
+
+This release branch starts at the shipping Build 4 source commit
+`5969bac7aab8589fb3a7ad92990c92cc059c05fe`. Its only changes are the marketing
+version above, the corresponding preflight test expectations, and this release
+note. Runtime code, game content, purchase and advertising behavior, bundled
+assets, dependency locks, native projects, and signing/upload configuration are
+unchanged. Later diagnostic builds and feature changes are not included.
+
+Run `ios-app-store-ipa` manually on this branch with the existing production URLs:
+
+- `privacy_policy_url`: `https://yorimichi-works.jp/apps/hitasura-ads/privacy`
+- `support_url`: `https://yorimichi-works.jp/apps/hitasura-ads/support`
+- `build_number`: the next unused positive integer, checked against both App Store
+  Connect and any in-flight CI upload immediately before launch
+
+After the IPA is uploaded and Apple finishes processing, select the new build for
+the 1.0.1 App Store version and update its screenshots separately. Keep public
+release manual; this workflow does not submit for review or release the app.
 
 ## Guards and execution
 

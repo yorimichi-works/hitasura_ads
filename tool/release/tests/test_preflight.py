@@ -188,7 +188,7 @@ class RepositoryConfigurationTests(unittest.TestCase):
 
     def test_repository_metadata_and_version(self):
         report = preflight.configuration(preflight.ROOT, self.env)
-        self.assertEqual(report["version"], "1.0.0")
+        self.assertEqual(report["version"], "1.0.1")
         self.assertEqual(report["build_number"], "1")
         self.assertEqual(report["bundle_id"], "com.syamo.hitasuraads")
 
@@ -260,7 +260,7 @@ class RepositoryConfigurationTests(unittest.TestCase):
                 "--cm-env", str(env_file), "--report", str(report_file),
             ])
             self.assertEqual(code, 0)
-            self.assertEqual(env_file.read_text(), "RELEASE_BUILD_NAME=1.0.0\nRELEASE_BUILD_NUMBER=1\n")
+            self.assertEqual(env_file.read_text(), "RELEASE_BUILD_NAME=1.0.1\nRELEASE_BUILD_NUMBER=1\n")
             report = json.loads(report_file.read_text())
             self.assertTrue(report["app_store_checked"])
             self.assertTrue(report["profile_checked"])
